@@ -4,10 +4,7 @@ node_js:
  - "6.10.1"
  
 before_script:
- - npm install -g @angular-cli
  - cd loganalyzer
+ - npm install -g @angular/cli
  - npm install
- 
-script:
- - ng set --global warnings.packageDeprecation=false
- - ng build --dev
+ - ng build
