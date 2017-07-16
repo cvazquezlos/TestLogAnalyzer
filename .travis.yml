@@ -28,4 +28,4 @@ before_script:
  - sleep 5
  
 script:
- - ng test --watch=false && ng e2e
+ - ng test --watch=false
