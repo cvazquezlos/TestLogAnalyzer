@@ -4,8 +4,8 @@ node_js:
  - "6.10.1"
  
 before_script:
- - cd ./loganalyzer
- - npm install -g angular-cli
+ - npm install -g @angular-cli
+ - cd loganalyzer
  - npm install
  
 script:
