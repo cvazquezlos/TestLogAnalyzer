@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AgGridNg2 as Grid} from 'ag-grid-ng2/main';
+import {AgGridNg2 as Grid} from 'ag-grid-angular/main';
 import {GridOptions} from 'ag-grid/main';
 
 import {ElasticService} from './service/elastic.service';
@@ -67,7 +67,7 @@ export class AppComponent {
     if (this.gridOptions.api && this.rowData) {
       var model = this.gridOptions.api.getModel();
       var totalRows = this.rowData.length;
-      var processedRows = model.getVirtualRowCount();
+      var processedRows = model.getRowCount();
       this.rowCount = processedRows.toLocaleString() + ' / ' + totalRows.toLocaleString();
     }
   }
