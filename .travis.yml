@@ -9,4 +9,5 @@ before_script:
  - npm install
  
 script:
- - ng build --prod
+ - ng set --global warnings.packageDeprecation=false
+ - ng build --dev
