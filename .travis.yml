@@ -1,35 +1,27 @@
-language: node_js
-sudo: true
-
-cache:
-  directories:
-    - node
-    - node_modules
-    
+sudo: required
 dist: trusty
-
+language: node_js
 node_js:
-  - '5.6.0'
-  
-branches:
-  only:
-  - master
-  
+  - '6.9.4'
+
+addons:
+apt:
+  sources:
+    - google-chrome
+  packages:
+    - google-chrome-stable
+    - google-chrome-beta
+
 before_install:
- - npm install -g angular-cli
- - export CHROME_BIN=/usr/bin/google-chrome
- - export DISPLAY=:99.0
- - sh -e /etc/init.d/xvfb start
- - sudo apt-get update
- - sudo apt-get install -y libappindicator1 fonts-liberation
- - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
- - sudo dpkg -i google-chrome*.deb
- 
-script:
- - ng test
- 
-notifications:
-  webhooks:
-    on_success: change  # options: [always|never|change] default: always
-    on_failure: always  # options: [always|never|change] default: always
-    on_start: false     # default: false
+  - export CHROME_BIN=chromium-browser
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+before_script:
+  - cd loganalyzer
+  - npm install -g angular-cli
+  - npm install -g karma
+  - npm install
+  - ng build
+
+script: karma start karma.conf.js --single-runse
