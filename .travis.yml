@@ -18,9 +18,7 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 
 before_script:
-  - cd loganalyzer
+  - cd angular-cli
   - npm install -g @angular/cli
   - npm install -g karma
   - npm install
-
-script: karma start karma.conf.js --single-runse
