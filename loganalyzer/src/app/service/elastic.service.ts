@@ -4,6 +4,7 @@ import {Injectable} from "@angular/core";
 
 @Injectable()
 export class ElasticService {
+  /*
 
   constructor(private _http: Http) {}
 
@@ -29,5 +30,5 @@ export class ElasticService {
         }
         return result;
       })
-  }
+  }*/
 }
