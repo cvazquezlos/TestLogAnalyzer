@@ -3,30 +3,6 @@
 <head>
   <!--<script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
   <script src="node_modules/systemjs/dist/system.js"></script>-->
-  <link href="node_modules/ag-grid/dist/styles/ag-grid.css" rel="stylesheet" />
-  <link href="node_modules/ag-grid/dist/styles/theme-fresh.css" rel="stylesheet" />
-  <script>
-    System.config({
-      // we want to import modules without writing .js at the end
-      defaultJSExtensions: true,
-      packages: {
-        lib: {
-          format: 'register',
-        },
-        'ag-grid-angular': {},
-        'ag-grid': {}
-      },
-      // the app will need the following dependencies
-      map: {
-        'angular2': 'node_modules/@angular',
-        'rxjs': 'node_modules/rxjs',
-        'ag-grid-ng2': 'node_modules/ag-grid-ng2',
-        'ag-grid': 'node_modules/ag-grid'
-      }
-    });
-    // and to finish, let's boot the app!
-    System.import('built/bootstrap');
-  </script>
   <meta charset="UTF-8">
   <title>LogAnalyzer</title>
 </head>

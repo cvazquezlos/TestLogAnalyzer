@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {AgGridNg2 as Grid} from 'ag-grid-angular/main';
 import {GridOptions} from 'ag-grid/main';
 
 import {ElasticService} from './service/elastic.service';
