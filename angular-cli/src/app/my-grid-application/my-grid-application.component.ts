@@ -1,7 +1,7 @@
-import {Component} from "@angular/core";
+import {Component} from '@angular/core';
 import {RedComponentComponent} from "../red-component/red-component.component";
 
-import {GridOptions} from "ag-grid/main";
+import {GridOptions} from 'ag-grid/main';
 
 @Component({
     selector: 'app-my-grid-application',
