@@ -46,6 +46,7 @@ export class AppComponent {
 
 
   list() {
+    /*
     this.elasticService.listIndices()
       .subscribe(list => {
         let todos: Array<any> = [];
@@ -59,7 +60,7 @@ export class AppComponent {
             })
         });
 
-      });
+      });*/
   }
 
   private calculateRowCount() {
