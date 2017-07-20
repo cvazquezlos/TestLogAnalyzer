@@ -1,13 +1,11 @@
 version: 2
 jobs:
   build:
+    working_directory: ~/angular-cli
     docker:
       - image: circleci/node:latest-browsers
     steps:
       - checkout
-      - run:
-          name: navigation
-          command: 'cd ../angular-cli'
       - run:
           name: angular-cli
           command: npm install -g @angular/cli
