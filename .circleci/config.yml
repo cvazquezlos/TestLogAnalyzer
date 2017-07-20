@@ -8,13 +8,13 @@ jobs:
       - checkout
       - run:
           name: angular-cli
-          command: npm install -g @angular/cli
+          command: sudo npm install -g @angular/cli
       - run:
           name: angular-karma
-          command: npm install -g karma
+          command: sudo npm install -g karma
       - run:
           name: npm
-          command: npm install
+          command: sudo npm install
       - run:
           name: building
-          command: ng build --prod
+          command: sudo ng build --prod
