@@ -1,6 +1,0 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/angular-cli
-    docker:
-      - image: circleci/node:latest-browsers
