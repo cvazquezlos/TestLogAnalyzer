@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: navigation
-          command: cd ../angular-cli
+          command: 'cd ../angular-cli'
       - run:
           name: angular-cli
           command: npm install -g @angular/cli
