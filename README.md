@@ -6,4 +6,4 @@
 
 # LOGANALYZER
 
-[logo]: media\README\LOGANALYZER-logo.png
+[logo]: media/README/LOGANALYZER-logo.png
