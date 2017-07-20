@@ -1,14 +1,16 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/angular-cli
-    machine:
-      node:
-        version: 6.8.0
-    dependencies:
-      pre:
-        - npm install npm@latest -g # Should fix bug in ng test
-        - npm install angular-cli@latest -g
-    test:
-      override:
-        - npm run test
+    working_directory: ~/LOGANALYZER
+    docker:
+      - image: angular/ngcontainer
+    steps:
+      - checkout
+      - restore_cache:
+          key: angular-cli-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - run: yarn --frozen-lockfile
+      - save_cache:
+          key: angular-cli-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths:
+            - "node_modules"
+      - run: ng build --prod
