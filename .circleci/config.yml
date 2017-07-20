@@ -3,14 +3,25 @@ jobs:
   build:
     working_directory: ~/LOGANALYZER
     docker:
-      - image: angular/ngcontainer
+      - image: circleci/node:6-browsers
     steps:
       - checkout
       - restore_cache:
-          key: angular-cli-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn --frozen-lockfile
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: install-dependencies
+          command: yarn install
       - save_cache:
-          key: angular-cli-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
-            - "node_modules"
-      - run: npm install
+            - ~/.cache/yarn
+            - ./node_modules
+      - run:
+          name: angular-build
+          command: yarn ng -- build --prod --aot --no-progress
+      - run:
+          name: angular-test
+          command: yarn test -- --single-run --no-progress
+      - run:
+          name: angular-lint
+          command: yarn lint
