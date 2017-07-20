@@ -13,4 +13,4 @@ jobs:
           key: angular-cli-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
             - "node_modules"
-      - run: ng build --prod
+      - run: ng build -prod
