@@ -1,1 +1,8 @@
-<app-my-grid-application></app-my-grid-application>
+<h1>LOGANALYZER</h1>
+<ag-grid-angular style="width: 500px; height: 115px;"
+                 class="ag-fresh"
+                 [rowData]="rowData"
+                 [columnDefs]="columnDefs"
+                 [gridOptions]="gridOptions"
+                 (gridReady)="onGridReady($event)">
+</ag-grid-angular>

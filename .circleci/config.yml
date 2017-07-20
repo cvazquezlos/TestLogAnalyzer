@@ -1,8 +1,22 @@
 version: 2
 jobs:
-   build:
-     docker:
-       - image: circleci/node:latest-browsers
-     steps:
-       - checkout
-       - run: echo "hello world"
+  build:
+    docker:
+      - image: circleci/node:latest-browsers
+    steps:
+      - checkout
+      - run:
+          name: navigation
+          command: cd ../angular-cli
+      - run:
+          name: angular-cli
+          command: npm install -g @angular/cli
+      - run:
+          name: angular-karma
+          command: npm install -g karma
+      - run:
+          name: npm
+          command: npm install
+      - run:
+          name: building
+          command: ng build --prod
