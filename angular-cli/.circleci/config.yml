@@ -1,7 +1,0 @@
-version: 2
-machine:
-    node:
-        version: 6.5.0
-test:
-  override:
-    - ng test --watch=false

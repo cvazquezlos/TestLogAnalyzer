@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/angular-cli
+    machine:
+      node:
+        version: 6.8.0
+    dependencies:
+      pre:
+        - npm install npm@latest -g # Should fix bug in ng test
+        - npm install angular-cli@latest -g
+    test:
+      override:
+        - npm run test
