@@ -4,17 +4,3 @@ jobs:
     working_directory: ~/angular-cli
     docker:
       - image: circleci/node:latest-browsers
-    steps:
-      - checkout
-      - run:
-          name: angular-cli
-          command: sudo npm install -g @angular/cli
-      - run:
-          name: angular-karma
-          command: sudo npm install -g karma
-      - run:
-          name: npm
-          command: sudo npm install
-      - run:
-          name: building
-          command: sudo ng build --prod
