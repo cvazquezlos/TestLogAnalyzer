@@ -39,6 +39,8 @@
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
     "codelyzer": "~3.0.1",
+    "coveralls": "^2.13.1",
+    "http-server": "0.9.x",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
@@ -51,7 +53,6 @@
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3",
-    "webdriver-manager": "10.2.5",
-    "http-server": "0.9.x"
+    "webdriver-manager": "10.2.5"
   }
 }
