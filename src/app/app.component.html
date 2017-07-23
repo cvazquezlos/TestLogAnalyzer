@@ -1,8 +1,23 @@
-<h1>LOGANALYZER</h1>
-<ag-grid-angular style="width: 500px; height: 115px;"
-                 class="ag-fresh"
-                 [rowData]="rowData"
-                 [columnDefs]="columnDefs"
-                 [gridOptions]="gridOptions"
-                 (gridReady)="onGridReady($event)">
-</ag-grid-angular>
+<div style="width: 100%">
+
+  <h1>LOGANALYZER</h1>
+
+  <div style="padding: 4px;">
+    <div style="float: right;">
+      <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput" placeholder="Type text to filter..."/>
+      <button [disabled]="!showGrid" (click)="showGrid=false">Destroy Grid</button>
+      <button [disabled]="showGrid" (click)="showGrid=true">Create Grid</button>
+    </div>
+  </div>
+
+  <ag-grid-angular style="width: 100%; height: 350px;"
+                   class="ag-fresh"
+                   [rowData]="rowData"
+                   [columnDefs]="columnDefs"
+                   [gridOptions]="gridOptions"
+                   [enableColResize]="true"
+                   [enableFilter]="true"
+                   (gridReady)="onGridReady($event)">
+  </ag-grid-angular>
+
+</div>
