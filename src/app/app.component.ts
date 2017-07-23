@@ -38,7 +38,7 @@ export class AppComponent {
         this.gridOptions.api.selectAll();
     }
 
-    private onQuickFilterChanged($event) {
+    onQuickFilterChanged($event) {
         this.gridOptions.api.setQuickFilter($event.target.value);
     }
 }

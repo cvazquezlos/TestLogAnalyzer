@@ -20,3 +20,6 @@ Once you have three cmd openned, follow these steps (it is important to follow t
 1. **Elasticsearch**: Navigate to Elk directory and then execute `cd elasticsearch` (navigate into elasticsearch directory) and then `bin\elasticsearch` and the process will start.
 2. **Kibana**: Open *config/kibana.yml* and modify *elasticsearch.url* value to point at your Elasticsearch instance. Navigate to Elk directory and then execute `cd kibana` (navigate into kibana directory) and then `bin\kibana` and the process will start.
 3. **Logstash**: Soon (Logstash needs a file which contains data).
+
+## Bibliography
+1. https://www.ag-grid.com/javascript-grid-properties
