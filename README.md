@@ -9,3 +9,14 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # LOGANALYZER
+
+## Getting started
+You need ELK system to run this web application. [ELK](https://www.elastic.co/blog/getting-started-with-elk) is Elasticsearch + Logstash + Kibana (the last one is not necessary). Follow these steps to run ELK stack:
+1. Create a directory inside root directory (f.e. in Windows is C:) called "Elk".
+2. Download [Elasticsearch](https://www.elastic.co/downloads/elasticsearch), [Logstash](https://www.elastic.co/downloads/logstash) and [Kibana](https://www.elastic.co/downloads/kibana) and install it inside "Elk" directory (just unzip them inside of it). *You can skip these steps by downloading and installing the [Elk installer](https://github.com/gigi81/elk-windows-installer).*
+3. Each component needs its own command prompt, so you have to open 3 (doesn't matter if you open it with normal priviledges).
+
+Once you have three cmd openned, follow these steps (it is important to follow the order):
+1. **Elasticsearch**: Navigate to Elk directory and then execute `cd elasticsearch` (navigate into elasticsearch directory) and then `bin\elasticsearch` and the process will start.
+2. **Kibana**: Open *config/kibana.yml* and modify *elasticsearch.url* value to point at your Elasticsearch instance. Navigate to Elk directory and then execute `cd kibana` (navigate into kibana directory) and then `bin\kibana` and the process will start.
+3. **Logstash**: Soon (Logstash needs a file which contains data).
