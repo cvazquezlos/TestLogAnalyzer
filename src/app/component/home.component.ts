@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {RedComponentComponent} from '../red-component/red-component.component';
+import {Component} from "@angular/core";
+import {RedComponentComponent} from "../red-component/red-component.component";
 
-import {GridOptions} from 'ag-grid/main';
+import {GridOptions} from "ag-grid/main";
 
 @Component({
-  selector: 'app-home-component',
+  selector: 'app-home',
   templateUrl: './home.component.html'
 })
 

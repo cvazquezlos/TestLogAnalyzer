@@ -1,13 +1,13 @@
-import {Component} from '@angular/core';
+import {Component} from "@angular/core";
 
 @Component({
-    selector: 'app-red-component',
-    templateUrl: './red-component.component.html'
+  selector: 'app-red-component',
+  templateUrl: './red-component.component.html'
 })
 export class RedComponentComponent {
-    public params: any;
+  public params: any;
 
-    agInit(params: any): void {
-        this.params = params;
-    }
+  agInit(params: any): void {
+    this.params = params;
+  }
 }
