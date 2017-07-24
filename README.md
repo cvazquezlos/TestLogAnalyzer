@@ -17,9 +17,15 @@ You need ELK system to run this web application. [ELK](https://www.elastic.co/bl
 3. Each component needs its own command prompt, so you have to open 3 (doesn't matter if you open it with normal priviledges).
 
 Once you have three cmd openned, follow these steps (it is important to follow the order):
-1. **Elasticsearch**: Navigate to Elk directory and then execute `cd elasticsearch` (navigate into elasticsearch directory) and then `bin\elasticsearch` and the process will start.
-2. **Kibana**: Open *config/kibana.yml* and modify *elasticsearch.url* value to point at your Elasticsearch instance. Navigate to Elk directory and then execute `cd kibana` (navigate into kibana directory) and then `bin\kibana` and the process will start.
-3. **Logstash**: Soon (Logstash needs a file which contains data).
+1. **Elasticsearch**: Navigate to Elk directory and then execute `cd elasticsearch` (navigate into elasticsearch directory) and then `bin/elasticsearch`(Linux) or `bin\elasticsearch.bat`(Windows) and the process will start.
+2. **Kibana**: Open *config/kibana.yml* and modify *elasticsearch.url* value to point at your Elasticsearch instance. Navigate to Elk directory and then execute `cd kibana` (navigate into kibana directory) and then `bin/kibana`(Linux) or `bin\kibana.bat`(Windows) and the process will start. Before start using Kibana, you must upload data from Logstash (see below steps).
+3. **Logstash**: Execute `cd logstash`. At the root directory, create *logstash.conf*, a file which must contain the *input, filter* and *output* declaration. You can find my own declaration here. You need a file which contains data. Right now, this file contains Apache logs and you can find it here. Once all is ready, execute `bin/logstash -f logstash.conf`(Linux) or `bin\logstash -f logstash.conf`(Windows).
+4. Navigate to `localhost:5601`, create an index, *logstash-**, and now, all your data is avaible.
+
+For further information, you can read my Jupyter Notebook guide.
 
 ## Bibliography
 1. https://www.ag-grid.com/javascript-grid-properties
+2. https://qbox.io/blog/parsing-logs-using-logstash
+3. https://www.elastic.co/guide/index.html
+4. http://jupyter.org/
