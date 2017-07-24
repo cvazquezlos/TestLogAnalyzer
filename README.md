@@ -20,9 +20,9 @@ Once you have three cmd openned, follow these steps (it is important to follow t
 1. **Elasticsearch**: Navigate to Elk directory and then execute `cd elasticsearch` (navigate into elasticsearch directory) and then `bin/elasticsearch`(Linux) or `bin\elasticsearch.bat`(Windows) and the process will start.
 2. **Kibana**: Open *config/kibana.yml* and modify *elasticsearch.url* value to point at your Elasticsearch instance. Navigate to Elk directory and then execute `cd kibana` (navigate into kibana directory) and then `bin/kibana`(Linux) or `bin\kibana.bat`(Windows) and the process will start. Before start using Kibana, you must upload data from Logstash (see below steps).
 3. **Logstash**: Execute `cd logstash`. At the root directory, create *logstash.conf*, a file which must contain the *input, filter* and *output* declaration. You can find my own declaration here. You need a file which contains data. Right now, this file contains Apache logs and you can find it here. Once all is ready, execute `bin/logstash -f logstash.conf`(Linux) or `bin\logstash -f logstash.conf`(Windows).
-4. Navigate to `localhost:5601`, create an index, *logstash-**, and now, all your data is avaible.
+4. Navigate to `localhost:5601`, create an index, `logstash-*`, and now, all your data is avaible.
 
-For further information, you can read my Jupyter Notebook guide.
+For further information about how to prepare ELK in this project, you can read my Jupyter Notebook guide.
 
 ## Bibliography
 1. https://www.ag-grid.com/javascript-grid-properties
