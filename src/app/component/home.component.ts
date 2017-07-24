@@ -11,7 +11,7 @@ import {GridOptions} from 'ag-grid/main';
 export class HomeComponent {
   showGrid: boolean;
   gridOptions: GridOptions;
-  columnDefs: any[]
+  columnDefs: any[];
   rowData: any[];
 
   constructor() {

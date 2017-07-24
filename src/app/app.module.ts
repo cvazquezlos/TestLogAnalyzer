@@ -8,6 +8,8 @@ import {RedComponentComponent} from './red-component/red-component.component';
 
 import {routing} from './app.routing';
 
+import {ElasticsearchService} from './service/elasticsearch.service';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -21,7 +23,9 @@ import {routing} from './app.routing';
         ),
         routing
     ],
-    providers: [],
+    providers: [
+      ElasticsearchService
+    ],
     bootstrap: [AppComponent]
 })
 
