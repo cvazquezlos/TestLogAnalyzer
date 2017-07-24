@@ -4,7 +4,7 @@ import {RedComponentComponent} from '../red-component/red-component.component';
 import {GridOptions} from 'ag-grid/main';
 
 @Component({
-  selector: 'home-component',
+  selector: 'app-home-component',
   templateUrl: './home.component.html'
 })
 
