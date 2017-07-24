@@ -8,12 +8,12 @@
 [![Code Climate](https://codeclimate.com/github/cvazquezlos/LOGANALYZER.png)](https://codeclimate.com/github/cvazquezlos/LOGANALYZER)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# LOGANALYZER
+# LOGANALYZER - Product development
 
 ## Getting started
 You need ELK system to run this web application. [ELK](https://www.elastic.co/blog/getting-started-with-elk) is Elasticsearch + Logstash + Kibana (the last one is not necessary). Follow these steps to run ELK stack:
 1. Create a directory inside root directory (f.e. in Windows is C:) called "Elk".
-2. Download [Elasticsearch](https://www.elastic.co/downloads/elasticsearch), [Logstash](https://www.elastic.co/downloads/logstash) and [Kibana](https://www.elastic.co/downloads/kibana) and install it inside "Elk" directory (just unzip them inside of it). *You can skip these steps by downloading and installing the [Elk installer](https://github.com/gigi81/elk-windows-installer).*
+2. Download [Elasticsearch](https://www.elastic.co/downloads/elasticsearch), [Logstash](https://www.elastic.co/downloads/logstash) and [Kibana](https://www.elastic.co/downloads/kibana) and install it inside "Elk" directory (just unzip them inside of it). *You can skip these steps by downloading the [Elk installer](https://github.com/gigi81/elk-windows-installer).*
 3. Each component needs its own command prompt, so you have to open 3 (doesn't matter if you open it with normal priviledges).
 
 Once you have three cmd openned, follow these steps (it is important to follow the order):
@@ -22,7 +22,7 @@ Once you have three cmd openned, follow these steps (it is important to follow t
 3. **Logstash**: Execute `cd logstash`. At the root directory, create *logstash.conf*, a file which must contain the *input, filter* and *output* declaration. You can find my own declaration here. You need a file which contains data. Right now, this file contains Apache logs and you can find it here. Once all is ready, execute `bin/logstash -f logstash.conf`(Linux) or `bin\logstash -f logstash.conf`(Windows).
 4. Navigate to `localhost:5601`, create an index, `logstash-*`, and now, all your data is avaible.
 
-For further information about how to prepare ELK in this project, you can read my Jupyter Notebook guide.
+For further information about how to prepare ELK in this project, you can read my [Jupyter Notebook guide](https://github.com/cvazquezlos/LOGANALYZER-Jupyter-Notebook/).
 
 ## Bibliography
 1. https://www.ag-grid.com/javascript-grid-properties
