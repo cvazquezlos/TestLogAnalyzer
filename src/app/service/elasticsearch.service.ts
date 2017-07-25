@@ -6,7 +6,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class ElasticsearchService {
 
-  URL = "http://localhost:9200/logstash-*/_search?pretty";
+  URL = 'http://localhost:9200/logstash-*/_search?pretty';
 
   constructor(private http: Http) {
   }
@@ -16,7 +16,20 @@ export class ElasticsearchService {
 
   listAllLogs() {
     return this.http.get(this.URL)
-      .map(response => console.log(response.json()))
-      .catch(error => Observable.throw('Server error'));
+      .map( (responseData) => {
+        console.log(responseData.json());
+        return responseData.json();
+      })
+      .map((answer) => {
+        let result: any[];
+        result = [];
+        if (answer) {
+          answer.hits.hits.forEach(log=> {
+            result.push(log._source);
+            console.log(log._source);
+          })
+        }
+        return result;
+      })
   }
 }

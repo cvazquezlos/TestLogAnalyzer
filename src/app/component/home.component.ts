@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
-import {RedComponentComponent} from '../red-component/red-component.component';
-import {GridOptions} from 'ag-grid/main';
+import {Component} from "@angular/core";
+import {RedComponentComponent} from "../red-component/red-component.component";
+import {GridOptions} from "ag-grid/main";
 
-import {Log} from '../model/log.model';
-import {Response} from '../model/response.model';
+import {Log} from "../model/log.model";
+import {Response} from "../model/response.model";
 
-import {ElasticsearchService} from '../service/elasticsearch.service';
+import {ElasticsearchService} from "../service/elasticsearch.service";
 
 @Component({
   selector: 'app-home',
@@ -38,14 +38,15 @@ export class HomeComponent {
   }
 
   addLogs() {
-    this.elasticsearchService.listAllLogs().subscribe(
-      response => this.response,
-      error => console.log('Fail trying to get ES logs.')
-    );/*
-    this.logs = this.response.hits;
-    for (let log of this.logs) {
-      console.log(log._id);
-    }*/
+    let todos: any[];
+    todos = [];
+    this.elasticsearchService.listAllLogs()
+      .subscribe(data => {
+        todos = todos.concat(data);
+        console.log(todos[0]);
+        /*this.rowData = todos;
+        this.gridOptions.api.setRowData(todos);*/
+      })
   }
 
   onGridReady(params) {
