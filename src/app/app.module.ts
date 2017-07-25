@@ -1,5 +1,6 @@
 import {AgGridModule} from 'ag-grid-angular/main';
 import {BrowserModule} from '@angular/platform-browser';
+import {HttpModule, JsonpModule} from '@angular/http';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
@@ -19,10 +20,12 @@ import {ElasticsearchService} from './service/elasticsearch.service';
     RedComponentComponent
   ],
   imports: [
-    BrowserModule,
     AgGridModule.withComponents(
       [RedComponentComponent]
     ),
+    BrowserModule,
+    HttpModule,
+    JsonpModule,
     routing
   ],
   providers: [

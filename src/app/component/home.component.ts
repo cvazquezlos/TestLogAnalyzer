@@ -2,18 +2,25 @@ import {Component} from '@angular/core';
 import {RedComponentComponent} from '../red-component/red-component.component';
 import {GridOptions} from 'ag-grid/main';
 
+import {Log} from '../model/log.model';
+import {Response} from '../model/response.model';
+
+import {ElasticsearchService} from '../service/elasticsearch.service';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html'
 })
 
 export class HomeComponent {
+  response: Response;
+  logs: Log[];
   showGrid: boolean;
   gridOptions: GridOptions;
   columnDefs: any[];
   rowData: any[];
 
-  constructor() {
+  constructor(private elasticsearchService: ElasticsearchService) {
     this.gridOptions = <GridOptions>{};
     this.columnDefs = [
       {headerName: 'Make', field: 'make'},
@@ -26,6 +33,19 @@ export class HomeComponent {
       {make: 'Porsche', model: 'Boxter', price: 72000}
     ];
     this.showGrid = true;
+    this.logs = [];
+    this.addLogs();
+  }
+
+  addLogs() {
+    this.elasticsearchService.listAllLogs().subscribe(
+      response => this.response,
+      error => console.log('Fail trying to get ES logs.')
+    );/*
+    this.logs = this.response.hits;
+    for (let log of this.logs) {
+      console.log(log._id);
+    }*/
   }
 
   onGridReady(params) {
