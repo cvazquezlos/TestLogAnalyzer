@@ -29,3 +29,4 @@ For further information about how to prepare ELK in this project, you can read m
 2. https://qbox.io/blog/parsing-logs-using-logstash
 3. https://www.elastic.co/guide/index.html
 4. http://jupyter.org/
+5. https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
