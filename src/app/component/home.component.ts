@@ -1,11 +1,10 @@
-import {Component} from "@angular/core";
+import {Component} from '@angular/core';
+import {GridOptions} from 'ag-grid/main';
 import {RedComponentComponent} from "../red-component/red-component.component";
-import {GridOptions} from "ag-grid/main";
 
-import {Log} from "../model/log.model";
-import {Response} from "../model/response.model";
+import {Log} from '../model/source.model';
 
-import {ElasticsearchService} from "../service/elasticsearch.service";
+import {ElasticsearchService} from '../service/elasticsearch.service';
 
 @Component({
   selector: 'app-home',
@@ -23,30 +22,33 @@ export class HomeComponent {
   constructor(private elasticsearchService: ElasticsearchService) {
     this.gridOptions = <GridOptions>{};
     this.columnDefs = [
-      {headerName: 'Make', field: 'make'},
-      {headerName: 'Model', field: 'model', cellRendererFramework: RedComponentComponent},
-      {headerName: 'Price', field: 'price'}
+      {headerName: '@timestamp', field: 'timestamp', width: 150},
+      {headerName: 'agent', field: 'agent', width: 500},
+      {headerName: 'auth', field: 'auth', width: 20},
+      {headerName: 'bytes', field: 'bytes', width: 20},
+      {headerName: 'ident', field: 'ident', width: 30},
+      {headerName: 'request', field: 'request', width: 80},
+      {headerName: 'response', field: 'response', width: 20},
+      {headerName: 'verb', field: 'verb', width: 20}
     ];
-    this.rowData = [
-      {make: 'Toyota', model: 'Celica', price: 35000},
-      {make: 'Ford', model: 'Mondeo', price: 32000},
-      {make: 'Porsche', model: 'Boxter', price: 72000}
-    ];
-    this.showGrid = true;
     this.logs = [];
     this.addLogs();
   }
 
   addLogs() {
-    let todos: any[];
-    todos = [];
-    this.elasticsearchService.listAllLogs()
-      .subscribe(data => {
-        todos = todos.concat(data);
-        console.log(todos[0]);
-        /*this.rowData = todos;
-        this.gridOptions.api.setRowData(todos);*/
-      })
+    this.elasticsearchService.listAllLogs().subscribe(
+      data => {
+        this.logs = this.logs.concat(data);
+        this.rowData = [];
+        for (let log of this.logs) {
+          console.log('HEY2');
+          this.rowData = this.rowData.concat({timestamp: log.timestamp, agent: log.agent, auth: log.auth, bytes: log.bytes,
+            ident: log.ident, request: log.request, response: log.response, verb: log.verb});
+        }
+        this.showGrid = true;
+      },
+      error => console.log('Fail trying to get ES logs.')
+    );
   }
 
   onGridReady(params) {

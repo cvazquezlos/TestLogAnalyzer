@@ -2,11 +2,11 @@ import {AgGridModule} from 'ag-grid-angular/main';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule, JsonpModule} from '@angular/http';
 import {NgModule} from '@angular/core';
+import {RedComponentComponent} from './red-component/red-component.component';
 
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './component/header/header.component';
 import {HomeComponent} from './component/home.component';
-import {RedComponentComponent} from './red-component/red-component.component';
 
 import {routing} from './app.routing';
 
