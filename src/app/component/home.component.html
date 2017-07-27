@@ -26,7 +26,14 @@
                      [suppressRowClickSelection]="true"
                      [toolPanelSuppressValues]="true"
 
-                     (gridReady)="onGridReady($event)">
+                     (gridReady)="onGridReady($event)"
+                     (cellClicked)="onCellClicked($event)"
+                     (cellDoubleClicked)="onCellDoubleClicked($event)"
+                     (cellContextMenu)="onCellContextMenu($event)"
+                     (cellFocused)="onCellFocused($event)"
+                     (rowSelected)="onRowSelected($event)"
+                     (beforeFilterChanged)="onBeforeFilterChanged()"
+                     (afterFilterChanged)="onAfterFilterChanged()">
     </ag-grid-angular>
   </div>
 </div>

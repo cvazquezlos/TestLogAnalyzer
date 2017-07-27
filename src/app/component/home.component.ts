@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {GridOptions} from 'ag-grid/main';
-import {RedComponentComponent} from "../red-component/red-component.component";
 
 import {Log} from '../model/source.model';
 
@@ -41,13 +40,12 @@ export class HomeComponent {
         this.logs = this.logs.concat(data);
         this.rowData = [];
         for (let log of this.logs) {
-          console.log('HEY2');
           this.rowData = this.rowData.concat({timestamp: log.timestamp, agent: log.agent, auth: log.auth, bytes: log.bytes,
             ident: log.ident, request: log.request, response: log.response, verb: log.verb});
         }
         this.showGrid = true;
       },
-      error => console.log('Fail trying to get ES logs.')
+      error => console.log('Fail trying to get Elasticsearch logs.')
     );
   }
 
@@ -59,7 +57,35 @@ export class HomeComponent {
     this.gridOptions.api.selectAll();
   }
 
+  onAfterFilterChanged() {
+    console.log('onAfterSortChanged');
+  }
+
+  onBeforeFilterChanged() {
+    console.log('beforeFilterChanged');
+  }
+
+  onCellClicked($event) {
+    console.log('onCellClicked: ' + $event.rowIndex + ' ' + $event.colDef.field);
+  }
+
+  onCellDoubleClicked($event) {
+    console.log('onCellDoubleClicked: ' + $event.rowIndex + ' ' + $event.colDef.field);
+  }
+
+  onCellContextMenu($event) {
+    console.log('onCellContextMenu: ' + $event.rowIndex + ' ' + $event.colDef.field);
+  }
+
+  onCellFocused($event) {
+    console.log('onCellFocused: (' + $event.rowIndex + ')');
+  }
+
   onQuickFilterChanged($event) {
     this.gridOptions.api.setQuickFilter($event.target.value);
+  }
+
+  onRowSelected($event) {
+    console.log('onRowSelected: ' + $event.node.data.name);
   }
 }
