@@ -24,7 +24,7 @@ export class ElasticsearchService {
         let result: any[];
         result = [];
         if (answer) {
-          answer.hits.hits.forEach(log=> {
+          answer.hits.hits.forEach(log => {
             result.push(log._source);
             console.log(log._source);
           })

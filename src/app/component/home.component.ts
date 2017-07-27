@@ -39,7 +39,7 @@ export class HomeComponent {
       data => {
         this.logs = this.logs.concat(data);
         this.rowData = [];
-        for (let log of this.logs) {
+        for (const log of this.logs) {
           this.rowData = this.rowData.concat({timestamp: log.timestamp, agent: log.agent, auth: log.auth, bytes: log.bytes,
             ident: log.ident, request: log.request, response: log.response, verb: log.verb});
         }
