@@ -8,7 +8,7 @@
     </div>
   </div>
 
-  <div *ngIf="showGrid">
+  <div *ngIf="showGrid; else emptyGrid">
     <ag-grid-angular style="width: 80%; height: 350px;"
                      class="ag-fresh resizable"
 
@@ -36,4 +36,7 @@
                      (afterFilterChanged)="onAfterFilterChanged()">
     </ag-grid-angular>
   </div>
+  <ng-template #emptyGrid>
+    <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
+  </ng-template>
 </div>

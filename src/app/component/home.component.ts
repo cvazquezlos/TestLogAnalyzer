@@ -19,6 +19,7 @@ export class HomeComponent {
   rowData: any[];
 
   constructor(private elasticsearchService: ElasticsearchService) {
+    this.showGrid = false;
     this.gridOptions = <GridOptions>{};
     this.columnDefs = [
       {headerName: '@timestamp', field: 'timestamp', width: 150},
@@ -43,7 +44,7 @@ export class HomeComponent {
           this.rowData = this.rowData.concat({timestamp: log.timestamp, agent: log.agent, auth: log.auth, bytes: log.bytes,
             ident: log.ident, request: log.request, response: log.response, verb: log.verb});
         }
-        this.showGrid = true;
+        this.showGrid = false;
       },
       error => console.log('Fail trying to get Elasticsearch logs.')
     );
