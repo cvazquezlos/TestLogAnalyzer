@@ -6,7 +6,7 @@ export interface Log {
   verb?: any;
   message?: any;
   referrer?: any;
-  timestamp?: any;
+  timestamp?: string;
   response?: any;
   bytes?: any;
   clientip?: any;

@@ -14,8 +14,8 @@ export class ElasticsearchService {
   listAllLogsPaged(page?: number) {
   }
 
-  listAllLogs() {
-    return this.http.get(this.URL)
+  listAllLogs(currentResults: number) {
+    return this.http.get(this.URL + '&size=' + currentResults)
       .map( (responseData) => {
         console.log(responseData.json());
         return responseData.json();

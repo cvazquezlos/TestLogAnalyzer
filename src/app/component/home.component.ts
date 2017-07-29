@@ -11,18 +11,19 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 })
 
 export class HomeComponent {
-  response: Response;
+  columnDefs: any[];
+  currentResults: number;
+  gridOptions: GridOptions;
   logs: Log[];
   showGrid: boolean;
-  gridOptions: GridOptions;
-  columnDefs: any[];
+  response: Response;
+  rowCount: number;
   rowData: any[];
 
   constructor(private elasticsearchService: ElasticsearchService) {
-    this.showGrid = false;
     this.gridOptions = <GridOptions>{};
     this.columnDefs = [
-      {headerName: '@timestamp', field: 'timestamp', width: 150},
+      {headerName: 'timestamp', field: 'timestamp', width: 150},
       {headerName: 'agent', field: 'agent', width: 500},
       {headerName: 'auth', field: 'auth', width: 20},
       {headerName: 'bytes', field: 'bytes', width: 20},
@@ -31,31 +32,47 @@ export class HomeComponent {
       {headerName: 'response', field: 'response', width: 20},
       {headerName: 'verb', field: 'verb', width: 20}
     ];
+    this.currentResults = 1;
     this.logs = [];
     this.addLogs();
   }
 
   addLogs() {
-    this.elasticsearchService.listAllLogs().subscribe(
+    this.elasticsearchService.listAllLogs(this.currentResults).subscribe(
       data => {
+        this.showGrid = false;
         this.logs = this.logs.concat(data);
         this.rowData = [];
         for (const log of this.logs) {
           this.rowData = this.rowData.concat({timestamp: log.timestamp, agent: log.agent, auth: log.auth, bytes: log.bytes,
             ident: log.ident, request: log.request, response: log.response, verb: log.verb});
         }
-        this.showGrid = false;
+        this.rowCount = this.rowData.length;
+        this.showGrid = true;
       },
       error => console.log('Fail trying to get Elasticsearch logs.')
     );
   }
 
-  onGridReady(params) {
-    params.api.sizeColumnsToFit();
+  getDefaultFromValue() {
+
   }
 
-  selectAllRows() {
-    this.gridOptions.api.selectAll();
+  getDefaultToValue() {
+
+  }
+
+  loadByDate(to: Date, from: Date) {
+
+  }
+
+  loadMore() {
+    this.currentResults++;
+    this.addLogs();
+  }
+
+  onGridReady(params) {
+    params.api.sizeColumnsToFit();
   }
 
   onAfterFilterChanged() {
@@ -88,5 +105,9 @@ export class HomeComponent {
 
   onRowSelected($event) {
     console.log('onRowSelected: ' + $event.node.data.name);
+  }
+
+  selectAllRows() {
+    this.gridOptions.api.selectAll();
   }
 }
