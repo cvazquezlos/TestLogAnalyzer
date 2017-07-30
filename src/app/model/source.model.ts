@@ -13,4 +13,5 @@ export interface Log {
   version?: any;
   host?: any;
   httpversion?: any;
+  parsedDate?: Date;
 }

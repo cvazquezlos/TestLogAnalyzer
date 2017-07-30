@@ -27,6 +27,7 @@ For further information about how to prepare ELK in this project, you can read m
 ## Bibliography
 1. https://www.ag-grid.com/javascript-grid-properties
 2. https://qbox.io/blog/parsing-logs-using-logstash
-3. https://www.elastic.co/guide/index.html
-4. http://jupyter.org/
-5. https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+3. https://www.elastic.co/guide/index.html - Getting started guide, API, Pagination and Kibana requests.
+4. http://jupyter.org/ - Getting started guide, kernels and design.
+5. https://developer.mozilla.org/es/ - Date type in TypeScript language and CORS disable for Elasticsearch requests.
+6. https://www.typescriptlang.org/docs/home.html - Looking for TS simple and complex types.

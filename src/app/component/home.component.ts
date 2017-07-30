@@ -49,8 +49,9 @@ export class HomeComponent {
           this.logs = this.logs.concat(data);
           this.rowData = [];
           for (const log of this.logs) {
+            log.parsedDate = this.parseDate(log.timestamp);
             this.rowData = this.rowData.concat({
-              timestamp: log.timestamp, agent: log.agent, auth: log.auth, bytes: log.bytes,
+              timestamp: log.parsedDate, agent: log.agent, auth: log.auth, bytes: log.bytes,
               ident: log.ident, request: log.request, response: log.response, verb: log.verb
             });
           }
@@ -121,6 +122,17 @@ export class HomeComponent {
 
   onRowSelected($event) {
     console.log('onRowSelected: ' + $event.node.data.name);
+  }
+
+  private parseDate(date: string) {
+    let dayMonth: string[] = date.split("/");
+    const yearHourMin: string[] = dayMonth[dayMonth.length-1].split(":");
+    const secUTCDif: string[] = yearHourMin[yearHourMin.length-1].split(" ");
+    console.log(dayMonth);
+    console.log(yearHourMin);
+    console.log(secUTCDif);
+    return new Date(yearHourMin[0] + "-" + dayMonth[0] + "-" + dayMonth[1] + ":" + yearHourMin[1] + ":" +
+      yearHourMin[2] + ":" + secUTCDif[0] + secUTCDif[1]);
   }
 
   selectAllRows() {
