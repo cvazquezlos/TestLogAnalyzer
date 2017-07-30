@@ -27,7 +27,7 @@
   </form>
 
   <div *ngIf="showGrid; else emptyGrid">
-    <ag-grid-angular style="width: 80%; height: 350px;"
+    <ag-grid-angular style="width: 80%;"
                      class="ag-fresh resizable"
 
                      [rowData]="rowData"
@@ -52,7 +52,8 @@
                      (rowSelected)="onRowSelected($event)"
                      (beforeFilterChanged)="onBeforeFilterChanged()"
                      (afterFilterChanged)="onAfterFilterChanged()">
-    </ag-grid-angular>
+    </ag-grid-angular><br>
+    <button (click)="loadMore()">Cargar más</button>
   </div>
   <ng-template #emptyGrid>
     <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">

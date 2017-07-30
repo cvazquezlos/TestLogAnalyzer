@@ -14,6 +14,7 @@ export class HomeComponent {
   columnDefs: any[];
   currentResults: number;
   gridOptions: GridOptions;
+  lastCount: number;
   logs: Log[];
   showGrid: boolean;
   response: Response;
@@ -49,6 +50,7 @@ export class HomeComponent {
         }
         this.rowCount = this.rowData.length;
         this.showGrid = true;
+        this.gridOptions.domLayout = 'autoHeight';
       },
       error => console.log('Fail trying to get Elasticsearch logs.')
     );
@@ -67,6 +69,7 @@ export class HomeComponent {
   }
 
   loadMore() {
+    this.logs = [];
     this.currentResults++;
     this.addLogs();
   }
