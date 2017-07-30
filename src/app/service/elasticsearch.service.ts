@@ -6,16 +6,13 @@ import 'rxjs/Rx';
 @Injectable()
 export class ElasticsearchService {
 
-  URL = 'http://localhost:9200/logstash-*/_search?pretty';
+  URL = 'http://localhost:9200/logstash-*/_search';
 
   constructor(private http: Http) {
   }
 
-  listAllLogsPaged(page?: number) {
-  }
-
   listAllLogs(currentResults: number) {
-    return this.http.get(this.URL + '&size=' + currentResults)
+    return this.http.get(this.URL + '?pretty&size=' + currentResults)
       .map( (responseData) => {
         console.log(responseData.json());
         return responseData.json();
@@ -31,5 +28,20 @@ export class ElasticsearchService {
         }
         return result;
       })
+  }
+
+  listAllLogsByDate(date: String) {
+    const body = {
+      query: {
+        match: {
+          timestamp: date
+        }
+      }
+    };
+    const headers: Headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.URL, JSON.stringify(body), { headers: headers })
+      .map(response => console.log(response))
+      .catch(error => Observable.throw('Fail'));
   }
 }

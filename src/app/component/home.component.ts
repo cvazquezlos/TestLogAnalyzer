@@ -26,7 +26,7 @@ export class HomeComponent {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
-      {headerName: 'timestamp', field: 'timestamp', width: 150},
+      {headerName: 'timestamp', field: 'timestamp', width: 110},
       {headerName: 'agent', field: 'agent', width: 500},
       {headerName: 'auth', field: 'auth', width: 20},
       {headerName: 'bytes', field: 'bytes', width: 20},
@@ -51,7 +51,7 @@ export class HomeComponent {
           for (const log of this.logs) {
             log.parsedDate = this.parseDate(log.timestamp);
             this.rowData = this.rowData.concat({
-              timestamp: log.parsedDate.toUTCString(), agent: log.agent, auth: log.auth, bytes: log.bytes,
+              timestamp: log.parsedDate.toUTCString().replace(" GMT", ""), agent: log.agent, auth: log.auth, bytes: log.bytes,
               ident: log.ident, request: log.request, response: log.response, verb: log.verb
             });
             // console.log(log.parsedDate.toUTCString()); Format: Wed, 18 May 2011 19:40:18 GMT
@@ -67,6 +67,10 @@ export class HomeComponent {
           }
           this.currentResults--;
         }
+        this.elasticsearchService.listAllLogsByDate('18/May/2011').subscribe(
+          data => console.log('Success 2'),
+          error => console.log('Failure 2')
+        );
       },
       error => console.log('Fail trying to get Elasticsearch logs.')
     );
