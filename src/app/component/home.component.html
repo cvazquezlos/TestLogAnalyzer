@@ -53,7 +53,7 @@
                      (beforeFilterChanged)="onBeforeFilterChanged()"
                      (afterFilterChanged)="onAfterFilterChanged()">
     </ag-grid-angular><br>
-    <button (click)="loadMore()">Cargar más</button>
+    <button *ngIf="showButton" (click)="loadMore()">Cargar más</button>
   </div>
   <ng-template #emptyGrid>
     <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">

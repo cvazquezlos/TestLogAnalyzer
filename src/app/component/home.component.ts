@@ -16,6 +16,7 @@ export class HomeComponent {
   gridOptions: GridOptions;
   lastCount: number;
   logs: Log[];
+  showButton: boolean;
   showGrid: boolean;
   response: Response;
   rowCount: number;
@@ -23,6 +24,7 @@ export class HomeComponent {
 
   constructor(private elasticsearchService: ElasticsearchService) {
     this.gridOptions = <GridOptions>{};
+    this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
       {headerName: 'timestamp', field: 'timestamp', width: 150},
       {headerName: 'agent', field: 'agent', width: 500},
@@ -33,24 +35,33 @@ export class HomeComponent {
       {headerName: 'response', field: 'response', width: 20},
       {headerName: 'verb', field: 'verb', width: 20}
     ];
+    this.showButton = true;
     this.currentResults = 1;
     this.logs = [];
-    this.addLogs();
+    this.addLogs(true);
   }
 
-  addLogs() {
+  addLogs(real: boolean) {
     this.elasticsearchService.listAllLogs(this.currentResults).subscribe(
       data => {
-        this.showGrid = false;
-        this.logs = this.logs.concat(data);
-        this.rowData = [];
-        for (const log of this.logs) {
-          this.rowData = this.rowData.concat({timestamp: log.timestamp, agent: log.agent, auth: log.auth, bytes: log.bytes,
-            ident: log.ident, request: log.request, response: log.response, verb: log.verb});
+        if (real) {
+          this.showGrid = false;
+          this.logs = this.logs.concat(data);
+          this.rowData = [];
+          for (const log of this.logs) {
+            this.rowData = this.rowData.concat({
+              timestamp: log.timestamp, agent: log.agent, auth: log.auth, bytes: log.bytes,
+              ident: log.ident, request: log.request, response: log.response, verb: log.verb
+            });
+          }
+          this.rowCount = this.rowData.length;
+          this.showGrid = true;
+        } else {
+          if (this.rowCount >= data.length) {
+            this.showButton = false;
+          }
+          this.currentResults--;
         }
-        this.rowCount = this.rowData.length;
-        this.showGrid = true;
-        this.gridOptions.domLayout = 'autoHeight';
       },
       error => console.log('Fail trying to get Elasticsearch logs.')
     );
@@ -71,7 +82,9 @@ export class HomeComponent {
   loadMore() {
     this.logs = [];
     this.currentResults++;
-    this.addLogs();
+    this.addLogs(true);
+    this.currentResults++;
+    this.addLogs(false);
   }
 
   onGridReady(params) {
