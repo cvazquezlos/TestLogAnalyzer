@@ -51,9 +51,13 @@ export class HomeComponent {
           for (const log of this.logs) {
             log.parsedDate = this.parseDate(log.timestamp);
             this.rowData = this.rowData.concat({
-              timestamp: log.parsedDate, agent: log.agent, auth: log.auth, bytes: log.bytes,
+              timestamp: log.parsedDate.toUTCString(), agent: log.agent, auth: log.auth, bytes: log.bytes,
               ident: log.ident, request: log.request, response: log.response, verb: log.verb
             });
+            // console.log(log.parsedDate.toUTCString()); Format: Wed, 18 May 2011 19:40:18 GMT
+            // console.log(log.parsedDate.toLocaleDateString()); Format: 18/5/2011
+            // console.log(log.parsedDate.toLocaleString()); Format: 18/5/2011 21:40:18
+            // console.log(log.parsedDate.toLocaleTimeString()); Format: 21:40:18
           }
           this.rowCount = this.rowData.length;
           this.showGrid = true;
@@ -125,14 +129,14 @@ export class HomeComponent {
   }
 
   private parseDate(date: string) {
-    let dayMonth: string[] = date.split("/");
-    const yearHourMin: string[] = dayMonth[dayMonth.length-1].split(":");
-    const secUTCDif: string[] = yearHourMin[yearHourMin.length-1].split(" ");
+    let dayMonth: string[] = date.split('/');
+    const yearHourMin: string[] = dayMonth[dayMonth.length - 1].split(':');
+    const secUTCDif: string[] = yearHourMin[yearHourMin.length - 1].split(' ');
     console.log(dayMonth);
     console.log(yearHourMin);
     console.log(secUTCDif);
-    return new Date(yearHourMin[0] + "-" + dayMonth[0] + "-" + dayMonth[1] + ":" + yearHourMin[1] + ":" +
-      yearHourMin[2] + ":" + secUTCDif[0] + secUTCDif[1]);
+    return new Date(yearHourMin[0] + '-' + dayMonth[0] + '-' + dayMonth[1] + ':' + yearHourMin[1] + ':' +
+      yearHourMin[2] + ':' + secUTCDif[0] + secUTCDif[1]);
   }
 
   selectAllRows() {
