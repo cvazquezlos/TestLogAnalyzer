@@ -69,7 +69,7 @@ export class HomeComponent {
           this.currentResults--;
         }
       },
-      error => console.log('Fail trying to get Elasticsearch logs.')
+      error => console.log(error)
     );
   }
 

@@ -28,6 +28,7 @@ export class ElasticsearchService {
         }
         return result;
       })
+      .catch(error => Observable.throw('Fail trying to get all Elasticsearch logs.'));
   }
 
   listAllLogsBetweenDates(from: string, to: string) {
@@ -44,7 +45,21 @@ export class ElasticsearchService {
     const headers: Headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.URL, JSON.stringify(body), { headers: headers })
-      .map(response => console.log(response))
+      .map( (responseData) => {
+        console.log(responseData.json());
+        return responseData.json();
+      })
+      .map((answer) => {
+        let result: any[];
+        result = [];
+        if (answer) {
+          answer.hits.hits.forEach(log => {
+            result.push(log._source);
+            console.log(log._source);
+          })
+        }
+        return result;
+      })
       .catch(error => Observable.throw('Fail trying to get logs between ' + from.toString() + ' and ' + to.toString()));
   }
 
