@@ -1,9 +1,13 @@
 import {Component} from '@angular/core';
 import {GridOptions} from 'ag-grid/main';
 
+import {TreeComponent} from './files/tree.component';
+
+import {Directory} from '../model/directory.model';
 import {Log} from '../model/source.model';
 
 import {ElasticsearchService} from '../service/elasticsearch.service';
+import {getDirectories} from '../service/format.service';
 
 @Component({
   selector: 'app-home',
@@ -13,8 +17,9 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 export class HomeComponent {
   columnDefs: any[];
   currentResults: number;
-  private defaultFrom = new Date(new Date().valueOf() - (10 * 60 * 60 * 1000));
-  private defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
+  defaultFrom = new Date(new Date().valueOf() - (10 * 60 * 60 * 1000));
+  defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
+  directories:Array<Directory>;
   gridOptions: GridOptions;
   logs: Log[];
   showButton: boolean;
@@ -87,6 +92,14 @@ export class HomeComponent {
 
   getDefaultToValue() {
     return this.defaultTo;
+  }
+
+  getDirectories() {
+    return getDirectories(this.rowData);
+  }
+
+  dirChecked(dir: string) {
+    console.log(dir);
   }
 
   loadMore() {

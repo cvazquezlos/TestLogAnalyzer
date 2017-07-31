@@ -51,8 +51,12 @@
                      (beforeFilterChanged)="onBeforeFilterChanged()"
                      (afterFilterChanged)="onAfterFilterChanged()">
     </ag-grid-angular><br>
-    <button *ngIf="showButton" (click)="loadMore()">Cargar más</button>
+    <div id="tree" style="float:right;overflow:scroll; height:15em; width:16%">
+      <h4>Source Files</h4>
+      <app-tree [directories] = "directories" (checked)="dirChecked($event)"></app-tree>
+    </div>
   </div>
+  <button *ngIf="showButton" (click)="loadMore()">Cargar más</button>
   <ng-template #emptyGrid>
     <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
   </ng-template>
