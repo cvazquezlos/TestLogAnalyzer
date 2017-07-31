@@ -13,14 +13,15 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 export class HomeComponent {
   columnDefs: any[];
   currentResults: number;
+  private defaultFrom = new Date(new Date().valueOf() - (10 * 60 * 60 * 1000));
+  private defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
   gridOptions: GridOptions;
-  lastCount: number;
   logs: Log[];
   showButton: boolean;
   showGrid: boolean;
-  response: Response;
   rowCount: number;
   rowData: any[];
+
 
   constructor(private elasticsearchService: ElasticsearchService) {
     this.gridOptions = <GridOptions>{};
@@ -51,7 +52,7 @@ export class HomeComponent {
           for (const log of this.logs) {
             log.parsedDate = this.parseDate(log.timestamp);
             this.rowData = this.rowData.concat({
-              timestamp: log.parsedDate.toUTCString().replace(" GMT", ""), agent: log.agent, auth: log.auth, bytes: log.bytes,
+              timestamp: log.parsedDate.toUTCString().replace(' GMT', ''), agent: log.agent, auth: log.auth, bytes: log.bytes,
               ident: log.ident, request: log.request, response: log.response, verb: log.verb
             });
             // console.log(log.parsedDate.toUTCString()); Format: Wed, 18 May 2011 19:40:18 GMT
@@ -67,25 +68,25 @@ export class HomeComponent {
           }
           this.currentResults--;
         }
-        this.elasticsearchService.listAllLogsByDate('18/May/2011').subscribe(
-          data => console.log('Success 2'),
-          error => console.log('Failure 2')
-        );
       },
       error => console.log('Fail trying to get Elasticsearch logs.')
     );
   }
 
-  getDefaultFromValue() {
+  addLogsBetweenDates(from: Date, to: Date) {
+    console.log(from.toString() + ' ' + to.toString());
+    this.elasticsearchService.listAllLogsBetweenDates(from.toString(), to.toString()).subscribe(
+      data => console.log(data),
+      error => console.log(error)
+    );
+  }
 
+  getDefaultFromValue() {
+    return this.defaultFrom;
   }
 
   getDefaultToValue() {
-
-  }
-
-  loadByDate(to: Date, from: Date) {
-
+    return this.defaultTo;
   }
 
   loadMore() {
@@ -133,7 +134,7 @@ export class HomeComponent {
   }
 
   private parseDate(date: string) {
-    let dayMonth: string[] = date.split('/');
+    const dayMonth: string[] = date.split('/');
     const yearHourMin: string[] = dayMonth[dayMonth.length - 1].split(':');
     const secUTCDif: string[] = yearHourMin[yearHourMin.length - 1].split(' ');
     console.log(dayMonth);

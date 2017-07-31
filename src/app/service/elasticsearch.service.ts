@@ -30,7 +30,25 @@ export class ElasticsearchService {
       })
   }
 
-  listAllLogsByDate(date: String) {
+  listAllLogsBetweenDates(from: string, to: string) {
+    const body = {
+      query: {
+        range: {
+          '@timestamp': {
+            gte: from.toString(),
+            lte: to.toString()
+          }
+        }
+      }
+    };
+    const headers: Headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.URL, JSON.stringify(body), { headers: headers })
+      .map(response => console.log(response))
+      .catch(error => Observable.throw('Fail trying to get logs between ' + from.toString() + ' and ' + to.toString()));
+  }
+
+  listAllLogsByDate(date: string) {
     const body = {
       query: {
         match: {

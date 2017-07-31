@@ -13,7 +13,6 @@
     </div>
   </div>
 
-  <form class="form-inline">
     <div class="form-group">
       <label for="from">From</label>
       <input #from type="datetime-local" class="form-control" id="from" placeholder="Yesterday" [value]="getDefaultFromValue()" novalidate="true" step=1>
@@ -23,8 +22,7 @@
       <label for="to">To</label>
       <input #to type="datetime-local" class="form-control" id="to" placeholder="Now" [value]="getDefaultToValue()" novalidate="true" step=1>
     </div>
-    <button (click)="loadByDate(to.value, from.value)" class="btn btn-default">Search</button>
-  </form>
+    <button (click)="addLogsBetweenDates(from.value, to.value)" class="btn btn-default">Search</button>
 
   <div *ngIf="showGrid; else emptyGrid">
     <ag-grid-angular style="width: 80%;"
