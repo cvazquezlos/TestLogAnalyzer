@@ -12,9 +12,9 @@ function buildTree(parts, treeNode) {
   if (parts.length === 0) {
     return;
   }
-  if (parts[0] != "") {
+  if (parts[0] !== '') {
     for (var i = 0; i < treeNode.length; i++) {
-      if (parts[0] == treeNode[i].text) {
+      if (parts[0] === treeNode[i].text) {
         buildTree(parts.splice(1, parts.length), treeNode[i].children);
         return;
       }
@@ -36,7 +36,7 @@ function recursiveFormat(d) {
     return new Directory(d.text, subDirectories, [])
   }
   let i = 0;
-  for (let c of d.children) {  //children were objects, now they are strings
+  for (let c of d.children) {  // children were objects, now they are strings
     d.children[i] = c.text;
     i++;
   }

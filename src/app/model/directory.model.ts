@@ -1,14 +1,15 @@
-import {Output, EventEmitter} from "@angular/core";
+import {EventEmitter, Output} from '@angular/core';
 
-export class Directory{
+export class Directory {
   @Output() dirChecked = new EventEmitter();
 
   name: string;
   directories: Array<Directory>;
   files: Array<String>;
-  expanded:boolean;
-  checked:boolean;
-  constructor(name,directories,files) {
+  expanded: boolean;
+  checked: boolean;
+
+  constructor(name, directories, files) {
     this.name = name;
     this.files = files;
     this.directories = directories;
@@ -16,18 +17,18 @@ export class Directory{
     this.checked = false;
   }
 
-  toggle(){
+  toggle() {
     this.expanded = !this.expanded;
   }
 
-  check(){
+  check() {
     let newState = !this.checked;
     this.checked = newState;
     this.checkRecursive(newState);
-    this.dirChecked.emit(this.name);        //quizá this checked ya que se llama también cuando descheckeas.
+    this.dirChecked.emit(this.name);        // quizá this checked ya que se llama también cuando descheckeas.
   }
 
-  checkRecursive(state){
+  checkRecursive(state) {
     this.directories.forEach(d => {
       d.checked = state;
       d.checkRecursive(state);
