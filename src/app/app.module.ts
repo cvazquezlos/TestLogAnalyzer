@@ -6,7 +6,6 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './component/header/header.component';
 import {HomeComponent} from './component/home.component';
-import {TreeComponent} from './component/files/tree.component';
 
 import {routing} from './app.routing';
 
@@ -16,8 +15,7 @@ import {ElasticsearchService} from './service/elasticsearch.service';
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent,
-    TreeComponent
+    HomeComponent
   ],
   imports: [
     AgGridModule.withComponents(

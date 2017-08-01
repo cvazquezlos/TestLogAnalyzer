@@ -1,13 +1,9 @@
 import {Component} from '@angular/core';
 import {GridOptions} from 'ag-grid/main';
 
-import {TreeComponent} from './files/tree.component';
-
-import {Directory} from '../model/directory.model';
 import {Log} from '../model/source.model';
 
 import {ElasticsearchService} from '../service/elasticsearch.service';
-import {getDirectories} from '../service/format.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +15,6 @@ export class HomeComponent {
   currentResults: number;
   defaultFrom = new Date(new Date().valueOf() - (10 * 60 * 60 * 1000));
   defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
-  directories:Array<Directory>;
   gridOptions: GridOptions;
   logs: Log[];
   showButton: boolean;
@@ -94,10 +89,6 @@ export class HomeComponent {
     return this.defaultTo;
   }
 
-  getDirectories() {
-    return getDirectories(this.rowData);
-  }
-
   dirChecked(dir: string) {
     console.log(dir);
   }
@@ -150,9 +141,6 @@ export class HomeComponent {
     const dayMonth: string[] = date.split('/');
     const yearHourMin: string[] = dayMonth[dayMonth.length - 1].split(':');
     const secUTCDif: string[] = yearHourMin[yearHourMin.length - 1].split(' ');
-    console.log(dayMonth);
-    console.log(yearHourMin);
-    console.log(secUTCDif);
     return new Date(yearHourMin[0] + '-' + dayMonth[0] + '-' + dayMonth[1] + ':' + yearHourMin[1] + ':' +
       yearHourMin[2] + ':' + secUTCDif[0] + secUTCDif[1]);
   }
