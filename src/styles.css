@@ -1,3 +1,6 @@
+
+/* ---- FOOTER ---- */
+
 footer{
   position: fixed;
   bottom: 0;
@@ -24,8 +27,6 @@ footer{
   font-size: 14px;
   margin: 0;
 }
-
-/* Footer links */
 
 .footer-distributed p.footer-links{
   font-size:18px;
@@ -62,8 +63,6 @@ footer{
 
   margin-left: 3px;
 }
-
-/* If you don't want the footer to be responsive, remove these media queries */
 
 @media (max-width: 600px) {
 
