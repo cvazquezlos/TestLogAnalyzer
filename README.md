@@ -26,7 +26,7 @@ For further information about how to prepare ELK in this project, you can read m
 1. Clone this repository.
 2. Open a cmd and navigate to project location, then execute `npm install`(this repo doesn't contain node-modules folder).
 3. Make sure that your Elasticsearch instance is active on port 9200 (if your instance doesn't, change *URL* variable value in elasticsearch.service.ts or in your config file) and you have imported data from Logstash or Beats following this format.
-4. Execute `ng serve` in your root project diretory and app will start.
+4. Execute `ng serve` in your root project directory and loganalyzer will start.
 
 ## Bibliography
 1. https://www.ag-grid.com/javascript-grid-properties
