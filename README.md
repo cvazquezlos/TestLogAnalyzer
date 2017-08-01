@@ -22,7 +22,11 @@ Once you have three cmd openned, follow these steps (it is important to follow t
 3. **Logstash**: Execute `cd logstash`. At the root directory, create *logstash.conf*, a file which must contain the *input, filter* and *output* declaration. You can find my own declaration here. You need a file which contains data. Right now, this file contains Apache logs and you can find it here. Once all is ready, execute `bin/logstash -f logstash.conf`(Linux) or `bin\logstash -f logstash.conf`(Windows).
 4. Navigate to `localhost:5601`, create an index, `logstash-*`, and now, all your data is avaible.
 
-For further information about how to prepare ELK in this project, you can read my [Jupyter Notebook guide](https://github.com/cvazquezlos/LOGANALYZER-Jupyter-Notebook/).
+For further information about how to prepare ELK in this project, you can read my [Jupyter Notebook guide](https://github.com/cvazquezlos/LOGANALYZER-Jupyter-Notebook/). Once your Elastic Stack is properly working, follow these steps:
+1. Clone this repository.
+2. Open a cmd and navigate to project location, then execute `npm install`(this repo doesn't contain node-modules folder).
+3. Make sure that your Elasticsearch instance is active on port 9200 (if your instance doesn't, change *URL* variable value in elasticsearch.service.ts or in your config file) and you have imported data from Logstash or Beats following this format.
+4. Execute `ng serve` in your root project diretory and app will start.
 
 ## Bibliography
 1. https://www.ag-grid.com/javascript-grid-properties
