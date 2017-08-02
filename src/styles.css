@@ -9,10 +9,52 @@ header{
   box-sizing: border-box;
   width: 100%;
   height: 50px;
+
+  padding: 0px 45px;
   text-align: left;
   font: normal 16px sans-serif;
+}
 
-  padding: 45px 50px;
+.header-distributed .header-left{
+  float: left;
+  margin-top: 10px;
+  max-width: 180px;
+}
+
+.header-distributed .header-left p{
+  color:  #8f9296;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  padding: 0;
+  line-height: 1.8;
+}
+
+.header-distributed .header-right{
+  float: right;
+  margin-top: 10px;
+}
+
+.header-distributed .header-right p{
+  color:  #8f9296;
+  font-size: 14px;
+  margin: 0;
+}
+
+.header-distributed p.header-links{
+  font-size:18px;
+  font-weight: bold;
+  color:  #ffffff;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.header-distributed p.header-links a{
+  display:inline-block;
+  line-height: 1.8;
+  text-decoration: none;
+  color:  inherit;
+  margin-right: 10px;
 }
 
 /* ---- FOOTER ---- */
