@@ -1,4 +1,4 @@
-<div style="width: 100%">
+<div style="width: 100%" class="col-md-12">
   <div style="padding: 4px;">
     <div style="float: right;">
       <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput"
@@ -24,7 +24,7 @@
     </div>
     <button (click)="addLogsBetweenDates(from.value, to.value)" class="btn btn-default">Search</button>
 
-  <div *ngIf="showGrid; else emptyGrid">
+  <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
     <ag-grid-angular style="width: 80%;"
                      class="ag-fresh resizable"
 

@@ -2,6 +2,7 @@ import {AgGridModule} from 'ag-grid-angular/main';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule, JsonpModule} from '@angular/http';
 import {NgModule} from '@angular/core';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {AppComponent} from './app.component';
 import {FooterComponent} from './component/footer/footer.component';
@@ -26,6 +27,7 @@ import {ElasticsearchService} from './service/elasticsearch.service';
     BrowserModule,
     HttpModule,
     JsonpModule,
+    NgbModule.forRoot(),
     routing
   ],
   providers: [
