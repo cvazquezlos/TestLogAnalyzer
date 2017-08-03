@@ -1,16 +1,23 @@
+<div class="content">
+  <div class="ag-full-width-row">
+    <div style="padding: 40px;">
+      <div style="float: right;">
+        <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput"
+               placeholder="Type text to filter..."/>
+        <button [disabled]="!showGrid" (click)="showGrid=false">Destroy Grid</button>
+        <button [disabled]="showGrid" (click)="showGrid=true">Create Grid</button>
+      </div>
+
+      <div style="float: left;">
+        <b>Row count</b>
+        {{rowCount}}
+      </div>
+    </div>
+  </div>
+</div>
+
 <div style="width: 100%">
   <div style="padding: 4px;">
-    <div style="float: right;">
-      <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput"
-             placeholder="Type text to filter..."/>
-      <button [disabled]="!showGrid" (click)="showGrid=false">Destroy Grid</button>
-      <button [disabled]="showGrid" (click)="showGrid=true">Create Grid</button>
-    </div>
-
-    <div style="float: left;">
-      <b>Row count</b>
-      {{rowCount}}
-    </div>
   </div>
 
     <div class="form-group">
