@@ -27,7 +27,7 @@ import {ElasticsearchService} from './service/elasticsearch.service';
     BrowserModule,
     HttpModule,
     JsonpModule,
-    NgbModule.forRoot(),
+    NgbModule,
     routing
   ],
   providers: [
