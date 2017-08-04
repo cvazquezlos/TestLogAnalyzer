@@ -1,17 +1,17 @@
 <div class="content">
-  <div class="ag-full-width-row">
-    <div style="padding: 40px;">
-      <div style="float: right;">
-        <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput"
-               placeholder="Type text to filter..."/>
-        <button class="btn btn-danger" [disabled]="!showGrid" (click)="showGrid=false">Delete filtering</button>
-        <button class="btn btn-primary"[disabled]="showGrid" (click)="showGrid=true">Reset grid</button>
-      </div>
-
-      <div style="float: left;">
-        <b>Showing </b>
-        {{rowCount}}
-         results.
+  <div class="row">
+    <div class="col-md-6">
+      <b>Showing </b>
+      {{rowCount}}
+      results.
+    </div>
+    <div class="col-md-6 float-right">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
+        <input (keyup)="onQuickFilterChanged($event)" type="text" class="form-control" placeholder="Dynamic filter..."
+               aria-describedby="basic-addon1" id="quickFilterInput">&nbsp;
+        <button class="btn btn-danger" [disabled]="!showGrid" (click)="showGrid=false">Delete filtering</button>&nbsp;
+        <button class="btn btn-primary" [disabled]="showGrid" (click)="showGrid=true">Reset grid</button>
       </div>
     </div>
   </div>
@@ -21,16 +21,18 @@
   <div style="padding: 4px;">
   </div>
 
-    <div class="form-group">
-      <label for="from">From</label>
-      <input #from type="datetime-local" class="form-control" id="from" placeholder="Yesterday" [value]="getDefaultFromValue()" novalidate="true" step=1>
-    </div>
+  <div class="form-group">
+    <label for="from">From</label>
+    <input #from type="datetime-local" class="form-control" id="from" placeholder="Yesterday"
+           [value]="getDefaultFromValue()" novalidate="true" step=1>
+  </div>
 
-    <div class="form-group">
-      <label for="to">To</label>
-      <input #to type="datetime-local" class="form-control" id="to" placeholder="Now" [value]="getDefaultToValue()" novalidate="true" step=1>
-    </div>
-    <button (click)="addLogsBetweenDates(from.value, to.value)" class="btn btn-default">Search</button>
+  <div class="form-group">
+    <label for="to">To</label>
+    <input #to type="datetime-local" class="form-control" id="to" placeholder="Now" [value]="getDefaultToValue()"
+           novalidate="true" step=1>
+  </div>
+  <button (click)="addLogsBetweenDates(from.value, to.value)" class="btn btn-default">Search</button>
 
   <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
     <ag-grid-angular style="width: 80%;"
@@ -58,7 +60,8 @@
                      (rowSelected)="onRowSelected($event)"
                      (beforeFilterChanged)="onBeforeFilterChanged()"
                      (afterFilterChanged)="onAfterFilterChanged()">
-    </ag-grid-angular><br>
+    </ag-grid-angular>
+    <br>
   </div>
   <button *ngIf="showButton" (click)="loadMore()">Cargar más</button>
   <ng-template #emptyGrid>
