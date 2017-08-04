@@ -4,8 +4,8 @@
       <div style="float: right;">
         <input (keyup)="onQuickFilterChanged($event)" type="text" id="quickFilterInput"
                placeholder="Type text to filter..."/>
-        <button [disabled]="!showGrid" (click)="showGrid=false">Destroy Grid</button>
-        <button [disabled]="showGrid" (click)="showGrid=true">Create Grid</button>
+        <button class="btn btn-danger" [disabled]="!showGrid" (click)="showGrid=false">Delete filtering</button>
+        <button class="btn btn-primary"[disabled]="showGrid" (click)="showGrid=true">Reset grid</button>
       </div>
 
       <div style="float: left;">
