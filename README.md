@@ -35,3 +35,4 @@ For further information about how to prepare ELK in this project, you can read m
 4. http://jupyter.org/ - Getting started guide, kernels and design.
 5. https://developer.mozilla.org/es/ - Date type in TypeScript language and CORS disable for Elasticsearch requests.
 6. https://www.typescriptlang.org/docs/home.html - Looking for TS simple and complex types.
+7. http://getbootstrap.com/css/ - Bootstrap CSS and components guidelines.

@@ -15,56 +15,58 @@
       </div>
     </div>
   </div>
-</div>
-
-<div style="width: 100%">
-  <div style="padding: 4px;">
+  <div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+      <div class="form-inline">
+        <div class="form-group">
+        <span class="input-group-addon" id="basic-addon2">From</span>
+        <input #from type="datetime-local" class="form-control calendar" id="from" placeholder="Yesterday"
+               [value]="getDefaultFromValue()" novalidate="true" step=1>&nbsp;
+        <div class="form-group">
+        <span class="input-group-addon" id="basic-addon3">To</span>
+        <input #to type="datetime-local" class="form-control calendar" id="to" placeholder="Now" [value]="getDefaultToValue()"
+               novalidate="true" step=1>&nbsp;
+        <button class="btn btn-primary" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label for="from">From</label>
-    <input #from type="datetime-local" class="form-control" id="from" placeholder="Yesterday"
-           [value]="getDefaultFromValue()" novalidate="true" step=1>
+  <div style="width: 100%">
+    <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
+      <ag-grid-angular style="width: 80%;"
+                       class="ag-fresh resizable"
+
+                       [rowData]="rowData"
+                       [columnDefs]="columnDefs"
+                       [gridOptions]="gridOptions"
+                       [showToolPanel]="true"
+
+                       [debug]="true"
+                       [enableColResize]="true"
+                       [enableSorting]="true"
+                       [suppressAutoSize]="false"
+                       [minColWidth]="40"
+                       [rowHeight]="22"
+                       [suppressRowClickSelection]="true"
+                       [toolPanelSuppressValues]="true"
+
+                       (gridReady)="onGridReady($event)"
+                       (cellClicked)="onCellClicked($event)"
+                       (cellDoubleClicked)="onCellDoubleClicked($event)"
+                       (cellContextMenu)="onCellContextMenu($event)"
+                       (cellFocused)="onCellFocused($event)"
+                       (rowSelected)="onRowSelected($event)"
+                       (beforeFilterChanged)="onBeforeFilterChanged()"
+                       (afterFilterChanged)="onAfterFilterChanged()">
+      </ag-grid-angular>
+      <br>
+    </div>
+    <button *ngIf="showButton" (click)="loadMore()">Cargar más</button>
+    <ng-template #emptyGrid>
+      <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
+    </ng-template>
   </div>
-
-  <div class="form-group">
-    <label for="to">To</label>
-    <input #to type="datetime-local" class="form-control" id="to" placeholder="Now" [value]="getDefaultToValue()"
-           novalidate="true" step=1>
-  </div>
-  <button (click)="addLogsBetweenDates(from.value, to.value)" class="btn btn-default">Search</button>
-
-  <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
-    <ag-grid-angular style="width: 80%;"
-                     class="ag-fresh resizable"
-
-                     [rowData]="rowData"
-                     [columnDefs]="columnDefs"
-                     [gridOptions]="gridOptions"
-                     [showToolPanel]="true"
-
-                     [debug]="true"
-                     [enableColResize]="true"
-                     [enableSorting]="true"
-                     [suppressAutoSize]="false"
-                     [minColWidth]="40"
-                     [rowHeight]="22"
-                     [suppressRowClickSelection]="true"
-                     [toolPanelSuppressValues]="true"
-
-                     (gridReady)="onGridReady($event)"
-                     (cellClicked)="onCellClicked($event)"
-                     (cellDoubleClicked)="onCellDoubleClicked($event)"
-                     (cellContextMenu)="onCellContextMenu($event)"
-                     (cellFocused)="onCellFocused($event)"
-                     (rowSelected)="onRowSelected($event)"
-                     (beforeFilterChanged)="onBeforeFilterChanged()"
-                     (afterFilterChanged)="onAfterFilterChanged()">
-    </ag-grid-angular>
-    <br>
-  </div>
-  <button *ngIf="showButton" (click)="loadMore()">Cargar más</button>
-  <ng-template #emptyGrid>
-    <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
-  </ng-template>
 </div>
