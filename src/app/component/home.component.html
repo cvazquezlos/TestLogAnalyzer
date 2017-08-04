@@ -21,15 +21,16 @@
     <div class="col-md-6">
       <div class="form-inline">
         <div class="form-group">
-        <span class="input-group-addon" id="basic-addon2">From</span>
-        <input #from type="datetime-local" class="form-control calendar" id="from" placeholder="Yesterday"
-               [value]="getDefaultFromValue()" novalidate="true" step=1>&nbsp;
-        <div class="form-group">
-        <span class="input-group-addon" id="basic-addon3">To</span>
-        <input #to type="datetime-local" class="form-control calendar" id="to" placeholder="Now" [value]="getDefaultToValue()"
-               novalidate="true" step=1>&nbsp;
-        <button class="btn btn-primary" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
+          <span class="input-group-addon" id="basic-addon2">From</span>
+          <input #from type="datetime-local" class="form-control calendar" id="from" placeholder="Yesterday"
+                 [value]="getDefaultFromValue()" novalidate="true" step=1>&nbsp;
         </div>
+        <div class="form-group">
+          <span class="input-group-addon" id="basic-addon3">To</span>
+          <input #to type="datetime-local" class="form-control calendar" id="to" placeholder="Now" [value]="getDefaultToValue()"
+                 novalidate="true" step=1>&nbsp;
+        </div>
+        <button class="btn btn-primary" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
       </div>
     </div>
   </div>
