@@ -1,4 +1,5 @@
 <div class="content">
+  
   <div class="row">
     <div class="col-md-6">
       <b>Showing </b>
@@ -15,22 +16,21 @@
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-6">
     </div>
-    <div class="col-md-6">
-      <div class="form-inline">
-        <div class="form-group">
-          <span class="input-group-addon lineBigger" id="basic-addon2">From</span>
-          <input #from type="datetime-local" class="form-control calendar" id="from" placeholder="Yesterday"
-                 [value]="getDefaultFromValue()" novalidate="true" step=1>&nbsp;
-        </div>
-        <div class="form-group">
-          <span class="input-group-addon lineBigger" id="basic-addon3">To</span>
-          <input #to type="datetime-local" class="form-control calendar last" id="to" placeholder="Now" [value]="getDefaultToValue()"
-                 novalidate="true" step=1>&nbsp;
-          <button class="btn btn-primary lineBigger" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
-        </div>
+    <div class="form-inline">
+      <div class="form-group">
+        <span class="input-group-addon lineBigger" id="basic-addon2">From</span>
+        <input #from type="datetime-local" class="form-control calendar" id="from" placeholder="Yesterday"
+               [value]="getDefaultFromValue()" novalidate="true" step=1>&nbsp;
+      </div>
+      <div class="form-group">
+        <span class="input-group-addon lineBigger" id="basic-addon3">To</span>
+        <input #to type="datetime-local" class="form-control calendar last" id="to" placeholder="Now" [value]="getDefaultToValue()"
+               novalidate="true" step=1>&nbsp;
+        <button class="btn btn-primary lineBigger" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
       </div>
     </div>
   </div>
