@@ -11,6 +11,12 @@
 
 .calendar {
   flex-direction: row;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.titleDate {
+  line-height: 1.55;
 }
 
 /* ---- HEADER ---- */
