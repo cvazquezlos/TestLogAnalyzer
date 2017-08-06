@@ -10,8 +10,8 @@
         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
         <input (keyup)="onQuickFilterChanged($event)" type="text" class="form-control" placeholder="Dynamic filter..."
                aria-describedby="basic-addon1" id="quickFilterInput">&nbsp;
-        <button class="btn btn-danger" [disabled]="!showGrid" (click)="showGrid=false">Delete filtering</button>&nbsp;
-        <button class="btn btn-primary" [disabled]="showGrid" (click)="showGrid=true">Reset grid</button>
+        <button class="btn btn-danger lineBigger" [disabled]="!showGrid" (click)="showGrid=false">Delete filtering</button>&nbsp;
+        <button class="btn btn-primary lineBigger" [disabled]="showGrid" (click)="showGrid=true">Reset grid</button>
       </div>
     </div>
   </div>
@@ -21,16 +21,16 @@
     <div class="col-md-6">
       <div class="form-inline">
         <div class="form-group">
-          <span class="input-group-addon titleDate" id="basic-addon2">From</span>
+          <span class="input-group-addon lineBigger" id="basic-addon2">From</span>
           <input #from type="datetime-local" class="form-control calendar" id="from" placeholder="Yesterday"
                  [value]="getDefaultFromValue()" novalidate="true" step=1>&nbsp;
         </div>
         <div class="form-group">
-          <span class="input-group-addon titleDate" id="basic-addon3">To</span>
-          <input #to type="datetime-local" class="form-control calendar" id="to" placeholder="Now" [value]="getDefaultToValue()"
+          <span class="input-group-addon lineBigger" id="basic-addon3">To</span>
+          <input #to type="datetime-local" class="form-control calendar last" id="to" placeholder="Now" [value]="getDefaultToValue()"
                  novalidate="true" step=1>&nbsp;
+          <button class="btn btn-primary lineBigger" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
         </div>
-        <button class="btn btn-primary" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
       </div>
     </div>
   </div>

@@ -15,8 +15,13 @@
   border-top-left-radius: 0;
 }
 
-.titleDate {
+.lineBigger {
   line-height: 1.55;
+}
+
+.last {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 }
 
 /* ---- HEADER ---- */
