@@ -24,6 +24,15 @@
   border-top-right-radius: 0;
 }
 
+.form-inline {
+  width: 100%;
+}
+
+.showMore {
+  margin: 0 auto;
+  display: block;
+}
+
 /* ---- HEADER ---- */
 header {
   top: 0;

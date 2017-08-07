@@ -1,12 +1,12 @@
 <div class="content">
-  
+
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
       <b>Showing </b>
       {{rowCount}}
       results.
     </div>
-    <div class="col-md-6 float-right">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 float-right">
       <div class="input-group">
         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
         <input (keyup)="onQuickFilterChanged($event)" type="text" class="form-control" placeholder="Dynamic filter..."
@@ -20,24 +20,26 @@
   <div class="row">
     <div class="col-md-6">
     </div>
-    <div class="form-inline">
-      <div class="form-group">
-        <span class="input-group-addon lineBigger" id="basic-addon2">From</span>
-        <input #from type="datetime-local" class="form-control calendar" id="from" placeholder="Yesterday"
-               [value]="getDefaultFromValue()" novalidate="true" step=1>&nbsp;
-      </div>
-      <div class="form-group">
-        <span class="input-group-addon lineBigger" id="basic-addon3">To</span>
-        <input #to type="datetime-local" class="form-control calendar last" id="to" placeholder="Now" [value]="getDefaultToValue()"
-               novalidate="true" step=1>&nbsp;
-        <button class="btn btn-primary lineBigger" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
+    <div class="col-md-6">
+      <div class="form-inline">
+        <div class="form-group">
+          <span class="input-group-addon lineBigger" id="basic-addon2">From</span>
+          <input #from type="datetime-local" class="form-control calendar" id="from" placeholder="Yesterday"
+                 [value]="getDefaultFromValue()" novalidate="true" step=1>&nbsp;
+        </div>
+        <div class="form-group">
+          <span class="input-group-addon lineBigger" id="basic-addon3">To</span>
+          <input #to type="datetime-local" class="form-control calendar last" id="to" placeholder="Now" [value]="getDefaultToValue()"
+                 novalidate="true" step=1>&nbsp;
+          <button class="btn btn-primary lineBigger" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <div style="width: 100%">
-    <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
-      <ag-grid-angular style="width: 80%;"
+  <div class="row">
+    <div class="col-md-12"><div *ngIf="showGrid; else emptyGrid" class="col-md-12">
+      <ag-grid-angular style="width: 100%;"
                        class="ag-fresh resizable"
 
                        [rowData]="rowData"
@@ -65,9 +67,13 @@
       </ag-grid-angular>
       <br>
     </div>
-    <button *ngIf="showButton" (click)="loadMore()">Cargar más</button>
-    <ng-template #emptyGrid>
-      <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
-    </ng-template>
+      <button *ngIf="showButton" (click)="loadMore()" class="btn btn-success showMore">Cargar más</button>
+      <ng-template #emptyGrid>
+        <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
+      </ng-template>
+    </div>
+  </div>
+  <div style="width: 100%">
+
   </div>
 </div>
