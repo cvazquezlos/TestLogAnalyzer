@@ -52,8 +52,14 @@ export class HomeComponent {
           for (const log of this.logs) {
             log.parsedDate = this.parseDate(log.timestamp);
             this.rowData = this.rowData.concat({
-              timestamp: log.parsedDate.toUTCString().replace(' GMT', ''), agent: log.agent, auth: log.auth, bytes: log.bytes,
-              ident: log.ident, request: log.request, response: log.response, verb: log.verb
+              timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
+              agent: log.agent,
+              auth: log.auth,
+              bytes: log.bytes,
+              ident: log.ident,
+              request: log.request,
+              response: log.response,
+              verb: log.verb
             });
             // console.log(log.parsedDate.toUTCString()); Format: Wed, 18 May 2011 19:40:18 GMT
             // console.log(log.parsedDate.toLocaleDateString()); Format: 18/5/2011
@@ -76,7 +82,24 @@ export class HomeComponent {
   addLogsBetweenDates(from: Date, to: Date) {
     console.log(from.toString() + ' ' + to.toString());
     this.elasticsearchService.listAllLogsBetweenDates(from.toString(), to.toString()).subscribe(
-      data => console.log(data),
+      data => {
+        this.logs = this.logs.concat(data);
+        this.rowData = [];
+        for (const log of this.logs) {
+          log.parsedDate = this.parseDate(log.timestamp);
+          this.rowData = this.rowData.concat({
+            timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
+            agent: log.agent,
+            auth: log.auth,
+            bytes: log.bytes,
+            ident: log.ident,
+            request: log.request,
+            response: log.response,
+            verb: log.verb
+          });
+        }
+        this.rowCount = this.rowData.length;
+      },
       error => console.log(error)
     );
   }
@@ -87,10 +110,6 @@ export class HomeComponent {
 
   getDefaultToValue() {
     return this.defaultTo;
-  }
-
-  dirChecked(dir: string) {
-    console.log(dir);
   }
 
   loadMore() {
