@@ -80,7 +80,6 @@ export class HomeComponent {
   }
 
   addLogsBetweenDates(from: Date, to: Date) {
-    console.log(from.toString() + ' ' + to.toString());
     this.elasticsearchService.listAllLogsBetweenDates(from.toString(), to.toString()).subscribe(
       data => {
         this.logs = this.logs.concat(data);
