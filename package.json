@@ -10,8 +10,15 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "author": "cvazquezlos",
+  "author": {
+    "name": "Carlos Vázquez Losada",
+    "email": "c.vazquezlosada@gmail.com",
+    "url": "git://github.com/cvazquezlos/LOGANALYZER.git"
+  },
   "private": true,
+  "bugs": {
+    "url": "https://github.com/cvazquezlos/LOGANALYZER/issues"
+  },
   "dependencies": {
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
