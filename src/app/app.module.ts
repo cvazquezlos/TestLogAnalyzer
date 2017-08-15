@@ -5,6 +5,7 @@ import {NgModule} from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {AppComponent} from './app.component';
+import {ConfigComponent} from './component/config/config.component';
 import {FooterComponent} from './component/footer/footer.component';
 import {HeaderComponent} from './component/header/header.component';
 import {HomeComponent} from './component/home.component';
@@ -16,6 +17,7 @@ import {ElasticsearchService} from './service/elasticsearch.service';
 @NgModule({
   declarations: [
     AppComponent,
+    ConfigComponent,
     FooterComponent,
     HeaderComponent,
     HomeComponent
