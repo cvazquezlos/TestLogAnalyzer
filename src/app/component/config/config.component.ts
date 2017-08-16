@@ -7,4 +7,7 @@ import {Component} from '@angular/core';
 
 export class ConfigComponent {
 
+  saveAllData(port: any, host: any) {
+
+  }
 }

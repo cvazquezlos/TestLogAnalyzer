@@ -70,10 +70,12 @@
         </ag-grid-angular>
         <br>
       </div>
-      <button *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
-      <ng-template #emptyGrid>
-        <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
-      </ng-template>
+        <button *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
+        <div class="text-center">
+          <ng-template #emptyGrid>
+            <img src="../../assets/img/Magnify.svg" style="margin: 0 auto; width: 5%; display: block">
+          </ng-template>
+        </div>
     </div>
   </div>
 </div>

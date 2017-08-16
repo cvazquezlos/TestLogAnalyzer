@@ -7,13 +7,17 @@
       <h2>Elasticsearch instance</h2><br><br>
       <h3>1. elasticsearch.yml</h3><br>
       <div class="input-group">
-        <span class="input-group-addon" id="1">http.port</span>
-        <input type="text" class="form-control" placeholder="9200" aria-describedby="sizing-addon2">
+        <span class="input-group-addon">http.port</span>
+        <input #port type="text" class="form-control" id="1" placeholder="9200" aria-describedby="sizing-addon2">
       </div>
       <br>
       <div class="input-group">
-        <span class="input-group-addon" id="2">network.host</span>
-        <input type="text" class="form-control" placeholder="localhost" aria-describedby="sizing-addon2">
+        <span class="input-group-addon">network.host</span>
+        <input #host type="text" class="form-control" id="2" placeholder="localhost" aria-describedby="sizing-addon2">
+      </div>
+      <br>
+      <div class="text-center">
+        <button class="btn btn-success lineBigger" (click)="saveAllData(port.value, host.value)">Save changes</button>
       </div>
     </div>
   </div>
