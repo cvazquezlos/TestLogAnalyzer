@@ -19,6 +19,7 @@ export class HomeComponent {
   logs: Log[];
   showButton: boolean;
   showGrid: boolean;
+  recentData: Log[];
   rowCount: number;
   rowData: any[];
 
@@ -82,6 +83,8 @@ export class HomeComponent {
   addLogsBetweenDates(from: Date, to: Date) {
     this.elasticsearchService.listAllLogsBetweenDates(from.toString(), to.toString()).subscribe(
       data => {
+        this.recentData = this.logs;
+        this.logs = [];
         this.logs = this.logs.concat(data);
         this.rowData = [];
         for (const log of this.logs) {

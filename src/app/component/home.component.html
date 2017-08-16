@@ -10,7 +10,8 @@
         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
         <input (keyup)="onQuickFilterChanged($event)" type="text" class="form-control" placeholder="Dynamic filter..."
                aria-describedby="basic-addon1" id="quickFilterInput">&nbsp;
-        <button class="btn btn-danger lineBigger" [disabled]="!showGrid" (click)="showGrid=false">Delete filtering</button>&nbsp;
+        <button class="btn btn-danger lineBigger" [disabled]="!showGrid" (click)="showGrid=false">Delete filtering
+        </button>&nbsp;
         <button class="btn btn-primary lineBigger" [disabled]="showGrid" (click)="showGrid=true">Reset grid</button>
       </div>
     </div>
@@ -28,44 +29,47 @@
         </div>
         <div class="form-group">
           <span class="input-group-addon lineBigger" id="basic-addon3">To</span>
-          <input #to type="datetime-local" class="form-control calendar last" id="to" placeholder="Now" [value]="getDefaultToValue()"
+          <input #to type="datetime-local" class="form-control calendar last" id="to" placeholder="Now"
+                 [value]="getDefaultToValue()"
                  novalidate="true" step=1>&nbsp;
           <button class="btn btn-primary lineBigger" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
+          &nbsp;<button class="btn btn-warning lineBigger">Go back</button>
         </div>
       </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-md-12"><div *ngIf="showGrid; else emptyGrid" class="col-md-12">
-      <ag-grid-angular style="width: 100%;"
-                       class="ag-fresh resizable"
+    <div class="col-md-12">
+      <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
+        <ag-grid-angular style="width: 100%;"
+                         class="ag-fresh resizable"
 
-                       [rowData]="rowData"
-                       [columnDefs]="columnDefs"
-                       [gridOptions]="gridOptions"
-                       [showToolPanel]="true"
+                         [rowData]="rowData"
+                         [columnDefs]="columnDefs"
+                         [gridOptions]="gridOptions"
+                         [showToolPanel]="true"
 
-                       [debug]="true"
-                       [enableColResize]="true"
-                       [enableSorting]="true"
-                       [suppressAutoSize]="false"
-                       [minColWidth]="40"
-                       [rowHeight]="22"
-                       [suppressRowClickSelection]="true"
-                       [toolPanelSuppressValues]="true"
+                         [debug]="true"
+                         [enableColResize]="true"
+                         [enableSorting]="true"
+                         [suppressAutoSize]="false"
+                         [minColWidth]="40"
+                         [rowHeight]="22"
+                         [suppressRowClickSelection]="true"
+                         [toolPanelSuppressValues]="true"
 
-                       (gridReady)="onGridReady($event)"
-                       (cellClicked)="onCellClicked($event)"
-                       (cellDoubleClicked)="onCellDoubleClicked($event)"
-                       (cellContextMenu)="onCellContextMenu($event)"
-                       (cellFocused)="onCellFocused($event)"
-                       (rowSelected)="onRowSelected($event)"
-                       (beforeFilterChanged)="onBeforeFilterChanged()"
-                       (afterFilterChanged)="onAfterFilterChanged()">
-      </ag-grid-angular>
-      <br>
-    </div>
+                         (gridReady)="onGridReady($event)"
+                         (cellClicked)="onCellClicked($event)"
+                         (cellDoubleClicked)="onCellDoubleClicked($event)"
+                         (cellContextMenu)="onCellContextMenu($event)"
+                         (cellFocused)="onCellFocused($event)"
+                         (rowSelected)="onRowSelected($event)"
+                         (beforeFilterChanged)="onBeforeFilterChanged()"
+                         (afterFilterChanged)="onAfterFilterChanged()">
+        </ag-grid-angular>
+        <br>
+      </div>
       <button *ngIf="showButton" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
       <ng-template #emptyGrid>
         <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
