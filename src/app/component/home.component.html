@@ -33,7 +33,7 @@
                  [value]="getDefaultToValue()"
                  novalidate="true" step=1>&nbsp;
           <button class="btn btn-primary lineBigger" (click)="addLogsBetweenDates(from.value, to.value)">Search</button>
-          &nbsp;<button class="btn btn-warning lineBigger">Go back</button>
+          &nbsp;<button *ngIf="showBack" class="btn btn-warning lineBigger" (click)="chargeOldData()">Go back</button>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
         </ag-grid-angular>
         <br>
       </div>
-      <button *ngIf="showButton" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
+      <button *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
       <ng-template #emptyGrid>
         <img src="../../assets/img/Magnify.svg" style="margin-left: 45%; width: 5%;">
       </ng-template>

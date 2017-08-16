@@ -17,8 +17,9 @@ export class HomeComponent {
   defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
   gridOptions: GridOptions;
   logs: Log[];
-  showButton: boolean;
+  showBack: boolean;
   showGrid: boolean;
+  showMore: boolean;
   recentData: Log[];
   rowCount: number;
   rowData: any[];
@@ -37,7 +38,8 @@ export class HomeComponent {
       {headerName: 'response', field: 'response', width: 20},
       {headerName: 'verb', field: 'verb', width: 20}
     ];
-    this.showButton = true;
+    this.showBack = false;
+    this.showMore = true;
     this.currentResults = 1;
     this.logs = [];
     this.addLogs(true);
@@ -71,7 +73,7 @@ export class HomeComponent {
           this.showGrid = true;
         } else {
           if (this.rowCount >= data.length) {
-            this.showButton = false;
+            this.showMore = false;
           }
           this.currentResults--;
         }
@@ -100,10 +102,31 @@ export class HomeComponent {
             verb: log.verb
           });
         }
+        this.showBack = true;
         this.rowCount = this.rowData.length;
       },
       error => console.log(error)
     );
+  }
+
+  chargeOldData() {
+    this.logs = this.recentData;
+    this.rowData = [];
+    for (const log of this.logs) {
+      log.parsedDate = this.parseDate(log.timestamp);
+      this.rowData = this.rowData.concat({
+        timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
+        agent: log.agent,
+        auth: log.auth,
+        bytes: log.bytes,
+        ident: log.ident,
+        request: log.request,
+        response: log.response,
+        verb: log.verb
+      });
+    }
+    this.showBack = false;
+    this.rowCount = this.rowData.length;
   }
 
   getDefaultFromValue() {
