@@ -31,7 +31,8 @@ For further information about how to prepare ELK in this project, you can read m
 ## LOGANALYZER
 LOGANALYZER allows you to work with determinate kinds of logs. In this moment, `Beta version`, LOGANALYZER works with Apache logs.
 
-### Apache combined logs format
+### Data format allowed
+#### Apache combined logs format
 LOGANALYZER works with the following format `%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\`. In the table below, you can see, in case that you don't know, what each component means:
 
 Component | What does it mean?
@@ -46,7 +47,8 @@ Component | What does it mean?
 Referer | Referer header of the HTTP request (containing the URL of the page from which this request was initiated) if any is present, and "-" otherwise.
 User-agent | Browser identification string.
 
-### Home
+### Content of pages
+#### Home
 In the home page, you can find the grid which contains paginated data (each page contains 50 logs), some filtering criteria and buttons which allow you to search, hide the table or recreate it and show more logs.
 
 ![Home](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/version0.png)
