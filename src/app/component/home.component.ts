@@ -40,7 +40,7 @@ export class HomeComponent {
     ];
     this.showBack = false;
     this.showMore = true;
-    this.currentResults = 1;
+    this.currentResults = 50;
     this.logs = [];
     this.addLogs(true);
   }
@@ -75,7 +75,7 @@ export class HomeComponent {
           if (this.rowCount >= data.length) {
             this.showMore = false;
           }
-          this.currentResults--;
+          this.currentResults-=50;
         }
       },
       error => console.log(error)
@@ -139,9 +139,9 @@ export class HomeComponent {
 
   loadMore() {
     this.logs = [];
-    this.currentResults++;
+    this.currentResults+=50;
     this.addLogs(true);
-    this.currentResults++;
+    this.currentResults+=50;
     this.addLogs(false);
   }
 

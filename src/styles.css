@@ -1,6 +1,14 @@
 /* ----  BODY  ----*/
+html, body {
+  margin:0;
+  padding:0;
+  height:100%;
+}
+
 .content {
   width: 100%;
+  margin-bottom: 200px;
+  clear: both;
 }
 
 .row {
@@ -118,6 +126,8 @@ header {
 footer {
   position: fixed;
   bottom: 0;
+  width: 100%;
+  padding-top: 2px;
 }
 
 @media (max-height: 800px) {
