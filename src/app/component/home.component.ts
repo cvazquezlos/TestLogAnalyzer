@@ -75,7 +75,7 @@ export class HomeComponent {
           if (this.rowCount >= data.length) {
             this.showMore = false;
           }
-          this.currentResults-=50;
+          this.currentResults -= 50;
         }
       },
       error => console.log(error)
@@ -139,9 +139,9 @@ export class HomeComponent {
 
   loadMore() {
     this.logs = [];
-    this.currentResults+=50;
+    this.currentResults += 50;
     this.addLogs(true);
-    this.currentResults+=50;
+    this.currentResults += 50;
     this.addLogs(false);
   }
 
