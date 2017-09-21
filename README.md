@@ -61,3 +61,5 @@ In the home page, you can find the grid which contains paginated data (each page
 5. https://developer.mozilla.org/es/ - Date type in TypeScript language and CORS disable for Elasticsearch requests.
 6. https://www.typescriptlang.org/docs/home.html - Looking for TS simple and complex types.
 7. http://getbootstrap.com/css/ - Bootstrap CSS and components guidelines.
+8. https://teradata.github.io/covalent - Library Teradata Covalent.
+9. https://github.com/elastest/elastest-torm/tree/master/elastest-torm-gui/src/app/elastest-log-manager - Example of Covalent usage.
