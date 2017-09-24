@@ -64,3 +64,4 @@ In the home page, you can find the grid which contains paginated data (each page
 8. https://teradata.github.io/covalent - Teradata Covalent library.
 9. https://github.com/elastest/elastest-torm/tree/master/elastest-torm-gui/src/app/elastest-log-manager - Example of Covalent usage.
 10. https://github.com/Teradata/covalent-quickstart - Teradata Covalent quickstart.
+11. https://material.angular.io/ - Angular 2 Material Design guidelines.

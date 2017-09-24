@@ -1,4 +1,12 @@
-<div class="content container">
+<td-layout-nav color="primary2">
+  <div td-toolbar-content layout="row" layout-align="start center" flex>
+    <span>Logs</span>
+    <span flex></span>
+    <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
+    <button md-icon-button><md-icon class="md-24">sort</md-icon></button>
+    <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
+    <button md-icon-button><md-icon class="md-24">more_vert</md-icon></button>
+  </div><div class="content container">
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
       <b>Showing </b>
@@ -39,9 +47,9 @@
     </div>
   </div>
   <div flex layout="column" layout-align="center center" class="text-center">
-      <div class="col-md-12">
-        <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
-          <ag-grid-angular class="ag-fresh resizable"
+    <div class="col-md-12">
+      <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
+        <ag-grid-angular class="ag-fresh resizable"
 
                            [rowData]="rowData"
                            [columnDefs]="columnDefs"
@@ -65,15 +73,16 @@
                            (rowSelected)="onRowSelected($event)"
                            (beforeFilterChanged)="onBeforeFilterChanged()"
                            (afterFilterChanged)="onAfterFilterChanged()">
-          </ag-grid-angular>
-          <br>
-        </div>
-          <button md-raised-button color="primary" class="more-logs" *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
-          <div class="text-center">
-            <ng-template #emptyGrid>
-              <img src="../../assets/img/Magnify.svg" style="margin: 0 auto; width: 5%; display: block">
-            </ng-template>
-          </div>
+        </ag-grid-angular>
+        <br>
       </div>
-  </div>
-</div>
+        <button md-raised-button color="primary" class="more-logs" *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
+        <div class="text-center">
+          <ng-template #emptyGrid>
+            <img src="../../assets/img/Magnify.svg" style="margin: 0 auto; width: 5%; display: block">
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div><br>
+</td-layout-nav>
