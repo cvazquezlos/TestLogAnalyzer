@@ -1,3 +1,19 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
+<td-layout-nav>
+  <div td-toolbar-content layout="row" layout-align="center center" flex>
+    <span>LOGANALYZER</span>
+    <span flex></span>
+    <a md-icon-button mdTooltip="Docs" href="https://teradata.github.io/covalent/" target="_blank"><md-icon>chrome_reader_mode</md-icon></a>
+    <a md-icon-button mdTooltip="Github" href="https://github.com/cvazquezlos/LOGANALYZER" target="_blank"><md-icon svgIcon="assets:github"></md-icon></a>
+  </div>
+  <td-layout-nav color="primary2">
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <span>Logs</span>
+      <span flex></span>
+      <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
+      <button md-icon-button><md-icon class="md-24">sort</md-icon></button>
+      <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
+      <button md-icon-button><md-icon class="md-24">more_vert</md-icon></button>
+    </div>
+    <router-outlet></router-outlet><br>
+  </td-layout-nav>
+</td-layout-nav>

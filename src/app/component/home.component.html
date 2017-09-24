@@ -38,44 +38,42 @@
       </div>
     </div>
   </div>
+  <div flex layout="column" layout-align="center center" class="text-center">
+      <div class="col-md-12">
+        <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
+          <ag-grid-angular class="ag-fresh resizable"
 
-  <div class="row">
-    <div class="col-md-12">
-      <div *ngIf="showGrid; else emptyGrid" class="col-md-12">
-        <ag-grid-angular style="width: 100%;"
-                         class="ag-fresh resizable"
+                           [rowData]="rowData"
+                           [columnDefs]="columnDefs"
+                           [gridOptions]="gridOptions"
+                           [showToolPanel]="true"
 
-                         [rowData]="rowData"
-                         [columnDefs]="columnDefs"
-                         [gridOptions]="gridOptions"
-                         [showToolPanel]="true"
+                           [debug]="true"
+                           [enableColResize]="true"
+                           [enableSorting]="true"
+                           [suppressAutoSize]="false"
+                           [minColWidth]="40"
+                           [rowHeight]="22"
+                           [suppressRowClickSelection]="true"
+                           [toolPanelSuppressValues]="true"
 
-                         [debug]="true"
-                         [enableColResize]="true"
-                         [enableSorting]="true"
-                         [suppressAutoSize]="false"
-                         [minColWidth]="40"
-                         [rowHeight]="22"
-                         [suppressRowClickSelection]="true"
-                         [toolPanelSuppressValues]="true"
-
-                         (gridReady)="onGridReady($event)"
-                         (cellClicked)="onCellClicked($event)"
-                         (cellDoubleClicked)="onCellDoubleClicked($event)"
-                         (cellContextMenu)="onCellContextMenu($event)"
-                         (cellFocused)="onCellFocused($event)"
-                         (rowSelected)="onRowSelected($event)"
-                         (beforeFilterChanged)="onBeforeFilterChanged()"
-                         (afterFilterChanged)="onAfterFilterChanged()">
-        </ag-grid-angular>
-        <br>
-      </div>
-        <button *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
-        <div class="text-center">
-          <ng-template #emptyGrid>
-            <img src="../../assets/img/Magnify.svg" style="margin: 0 auto; width: 5%; display: block">
-          </ng-template>
+                           (gridReady)="onGridReady($event)"
+                           (cellClicked)="onCellClicked($event)"
+                           (cellDoubleClicked)="onCellDoubleClicked($event)"
+                           (cellContextMenu)="onCellContextMenu($event)"
+                           (cellFocused)="onCellFocused($event)"
+                           (rowSelected)="onRowSelected($event)"
+                           (beforeFilterChanged)="onBeforeFilterChanged()"
+                           (afterFilterChanged)="onAfterFilterChanged()">
+          </ag-grid-angular>
+          <br>
         </div>
-    </div>
+          <button md-raised-button color="primary" class="more-logs" *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
+          <div class="text-center">
+            <ng-template #emptyGrid>
+              <img src="../../assets/img/Magnify.svg" style="margin: 0 auto; width: 5%; display: block">
+            </ng-template>
+          </div>
+      </div>
   </div>
 </div>
