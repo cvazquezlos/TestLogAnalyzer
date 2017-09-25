@@ -3,8 +3,8 @@
     <span>Logs</span>
     <span flex></span>
     <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
-    <button md-icon-button><md-icon class="md-24">sort</md-icon></button>
-    <button md-icon-button mdTooltip="Settings" (click)="openDialog()"><md-icon class="md-24">settings</md-icon></button>
+    <button md-icon-button mdTooltip="Settings"><md-icon class="md-24">settings</md-icon></button>
+    <button md-icon-button mdTooltip="Filter" (click)="openDialog()"><md-icon class="md-24">filter_list</md-icon></button>
     <button md-icon-button><md-icon class="md-24">more_vert</md-icon></button>
   </div>
 
@@ -75,7 +75,7 @@
         <button md-raised-button color="primary" class="more-logs" *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
         <div class="text-center">
           <ng-template #emptyGrid>
-            <img src="../../assets/img/Magnify.svg" style="margin: 0 auto; width: 5%; display: block">
+            <md-spinner color="warn"></md-spinner>
           </ng-template>
         </div>
       </div><br>

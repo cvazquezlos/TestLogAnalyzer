@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {MdDialog} from "@angular/material";
+import {MdDialog} from '@angular/material';
 import {GridOptions} from 'ag-grid/main';
 
 import {Log} from '../model/source.model';

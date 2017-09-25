@@ -1,21 +1,21 @@
-<h2 md-dialog-title>Settings</h2>
 <md-dialog-content>
-  <h3>Filtering by date range</h3>
-  <span>From </span>
+  <h4>Filtering by date range</h4>
+  <span>From</span>
   <md-input-container>
     <input mdInput [mdDatepicker]="from" placeholder="Choose from date">
     <button mdSuffix [mdDatepickerToggle]="from"></button>
   </md-input-container>
   <md-datepicker #from></md-datepicker>
-  <span> to </span>
+  <span>to</span>
   <md-input-container>
     <input mdInput [mdDatepicker]="to" placeholder="Choose to date">
     <button mdSuffix [mdDatepickerToggle]="to"></button>
   </md-input-container>
   <md-datepicker #to></md-datepicker>
-
 </md-dialog-content>
 <md-dialog-actions>
-  <button md-button tabindex="1">Save changes</button>
-  <button md-button md-dialog-close tabindex="-1">Cancel</button>
+  <div class="dialog-buttons">
+    <button md-raised-button color="primary" tabindex="1">Save changes</button>
+    <button md-raised-button color="warn" md-dialog-close tabindex="-1">Cancel</button>
+  </div>
 </md-dialog-actions>
