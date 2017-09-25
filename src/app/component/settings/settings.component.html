@@ -1,7 +1,12 @@
 <h2 md-dialog-title>Settings</h2>
 <md-dialog-content>
   <h3>Filtering by date range</h3>
-  
+  <md-form-field>
+    <input mdInput [mdDatepicker]="picker" placeholder="Choose a date">
+    <md-datepicker-toggle mdSuffix [for]="picker"></md-datepicker-toggle>
+    <md-datepicker #picker></md-datepicker>
+  </md-form-field>
+
 </md-dialog-content>
 <md-dialog-actions>
   <button md-button tabindex="1">Save changes</button>
