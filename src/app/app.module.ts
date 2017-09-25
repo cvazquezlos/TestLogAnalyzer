@@ -8,8 +8,6 @@ import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule, IHttpInterceptor} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
 import {AgGridModule} from 'ag-grid-angular/main';
 
 import {AppComponent} from './app.component';
@@ -52,7 +50,6 @@ const httpInterceptorProviders: Type<any>[] = [
     HttpModule,
     JsonpModule,
     MdDialogModule,
-    NgbModule,
     routing,
     SharedModule
   ],
