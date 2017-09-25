@@ -182,7 +182,6 @@ export class HomeComponent {
 
   public openDialog() {
     const dialogRef = this.dialog.open(SettingsComponent, {
-      height: '350px'
     });
 
     dialogRef.afterClosed().subscribe(result => {

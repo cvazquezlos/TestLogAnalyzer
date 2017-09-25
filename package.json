@@ -38,7 +38,7 @@
     "@covalent/http": "^1.0.0-beta.7",
     "@covalent/markdown": "^1.0.0-beta.7",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.29",
-    "ag-grid": "^10.1.0",
+    "ag-grid": "^11.0.0",
     "ag-grid-angular": "^11.0.0",
     "ag-grid-enterprise": "10.1.x",
     "bootstrap": "4.0.0-alpha.6",
