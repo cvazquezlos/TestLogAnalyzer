@@ -46,37 +46,25 @@
   </div>-->
 
   <div flex layout="column" layout-align="center center" class="text-center">
-    <div *ngIf="showGrid; else emptyGrid">
-      <ag-grid-angular class="ag-fresh resizable"
-                           [rowData]="rowData"
-                           [columnDefs]="columnDefs"
-                           [gridOptions]="gridOptions"
-                           [showToolPanel]="true"
-
-                           [debug]="true"
-                           [enableColResize]="true"
-                           [enableSorting]="true"
-                           [suppressAutoSize]="false"
-                           [minColWidth]="40"
-                           [rowHeight]="22"
-                           [suppressRowClickSelection]="true"
-                           [toolPanelSuppressValues]="true"
-
-                           (gridReady)="onGridReady($event)"
-                           (cellClicked)="onCellClicked($event)"
-                           (cellDoubleClicked)="onCellDoubleClicked($event)"
-                           (cellContextMenu)="onCellContextMenu($event)"
-                           (cellFocused)="onCellFocused($event)"
-                           (rowSelected)="onRowSelected($event)"
-                           (beforeFilterChanged)="onBeforeFilterChanged()"
-                           (afterFilterChanged)="onAfterFilterChanged()">
-      </ag-grid-angular><br>
+    <table td-data-table>
+      <thead>
+      <tr td-data-table-column-row>
+        <th td-data-table-column *ngFor="let column of columnDefs" [numeric]="column.numeric">{{column.label}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr td-data-table-row *ngFor="let row of rowData">
+        <td td-data-table-cell *ngFor="let column of columnDefs" [numeric]="column.numeric">
+          {{column.format ? column.format(row[column.name]) : row[column.name]}}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <button md-raised-button color="primary" class="more-logs" *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
+    <div class="text-center">
+      <ng-template #emptyGrid>
+        <md-spinner color="warn"></md-spinner>
+      </ng-template>
     </div>
-        <button md-raised-button color="primary" class="more-logs" *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
-        <div class="text-center">
-          <ng-template #emptyGrid>
-            <md-spinner color="warn"></md-spinner>
-          </ng-template>
-        </div>
-      </div><br>
+  </div><br>
 </td-layout-nav>

@@ -1,9 +1,13 @@
 import {Component} from '@angular/core';
 import {MdDialog} from '@angular/material';
+import {ITdDataTableColumn, TdDialogService} from '@covalent/core';
 import {GridOptions} from 'ag-grid/main';
 
 import {Log} from '../model/source.model';
 import {ElasticsearchService} from '../service/elasticsearch.service';
+
+const NUMBER_FORMAT: (v: any) => any = (v: number) => v;
+const DECIMAL_FORMAT: (v: any) => any = (v: number) => v.toFixed(2);
 
 @Component({
   selector: 'app-home',
@@ -11,7 +15,7 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 })
 
 export class HomeComponent {
-  columnDefs: any[];
+  columnDefs: ITdDataTableColumn[];
   currentResults: number;
   defaultFrom = new Date(new Date().valueOf() - (10 * 60 * 60 * 1000));
   defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
@@ -24,18 +28,19 @@ export class HomeComponent {
   rowCount: number;
   rowData: any[];
 
-  constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog) {
+  constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
+              private _dialogService: TdDialogService) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
-      {headerName: 'timestamp', field: 'timestamp', width: 110},
-      {headerName: 'agent', field: 'agent', width: 500},
-      {headerName: 'auth', field: 'auth', width: 20},
-      {headerName: 'bytes', field: 'bytes', width: 20},
-      {headerName: 'ident', field: 'ident', width: 30},
-      {headerName: 'request', field: 'request', width: 80},
-      {headerName: 'response', field: 'response', width: 20},
-      {headerName: 'verb', field: 'verb', width: 20}
+      {name: 'timestamp', label: 'timestamp'},
+      {name: 'agent', label: 'agent'},
+      {name: 'auth', label: 'auth'},
+      {name: 'bytes', label: 'bytes'},
+      {name: 'ident', label: 'ident'},
+      {name: 'request', label: 'request'},
+      {name: 'response', label: 'response'},
+      {name: 'verb', label: 'verb'}
     ];
     this.showBack = false;
     this.showMore = true;
@@ -79,6 +84,17 @@ export class HomeComponent {
       },
       error => console.log(error)
     );
+  }
+
+  openPrompt(row: any, name: string): void {
+    this._dialogService.openPrompt({
+      message: 'Enter comment?',
+      value: row[name],
+    }).afterClosed().subscribe((value: any) => {
+      if (value !== undefined) {
+        row[name] = value;
+      }
+    });
   }
 
   addLogsBetweenDates(from: Date, to: Date) {
