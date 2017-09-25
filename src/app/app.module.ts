@@ -2,6 +2,7 @@ import {NgModule, Type} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpModule, JsonpModule} from '@angular/http';
+import {MdDialogModule} from "@angular/material";
 
 import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule, IHttpInterceptor} from '@covalent/http';
@@ -15,6 +16,7 @@ import {AppComponent} from './app.component';
 import {FooterComponent} from './component/footer/footer.component';
 import {HeaderComponent} from './component/header/header.component';
 import {HomeComponent} from './component/home.component';
+import {SettingsComponent} from "./component/home.component";
 import {SharedModule} from './shared/shared.module';
 
 import {routing} from './app.routing';
@@ -31,7 +33,8 @@ const httpInterceptorProviders: Type<any>[] = [
     AppComponent,
     FooterComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    SettingsComponent
   ],
   imports: [
     AgGridModule.withComponents(
@@ -48,6 +51,7 @@ const httpInterceptorProviders: Type<any>[] = [
     CovalentMarkdownModule,
     HttpModule,
     JsonpModule,
+    MdDialogModule,
     NgbModule,
     routing,
     SharedModule
@@ -55,7 +59,8 @@ const httpInterceptorProviders: Type<any>[] = [
   providers: [
     ElasticsearchService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [SettingsComponent]
 })
 
 export class AppModule {

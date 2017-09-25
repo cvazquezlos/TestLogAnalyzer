@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
+import {MdDialog} from "@angular/material";
 import {GridOptions} from 'ag-grid/main';
 
 import {Log} from '../model/source.model';
-
 import {ElasticsearchService} from '../service/elasticsearch.service';
 
 @Component({
@@ -24,8 +24,7 @@ export class HomeComponent {
   rowCount: number;
   rowData: any[];
 
-
-  constructor(private elasticsearchService: ElasticsearchService) {
+  constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
@@ -181,6 +180,16 @@ export class HomeComponent {
     console.log('onRowSelected: ' + $event.node.data.name);
   }
 
+  public openDialog() {
+    const dialogRef = this.dialog.open(SettingsComponent, {
+      height: '350px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
   private parseDate(date: string) {
     const dayMonth: string[] = date.split('/');
     const yearHourMin: string[] = dayMonth[dayMonth.length - 1].split(':');
@@ -193,3 +202,9 @@ export class HomeComponent {
     this.gridOptions.api.selectAll();
   }
 }
+
+@Component({
+  selector: 'app-settings',
+  templateUrl: './settings/settings.component.html',
+})
+export class SettingsComponent {}
