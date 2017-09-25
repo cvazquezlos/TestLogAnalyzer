@@ -2,7 +2,7 @@ import {NgModule, Type} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpModule, JsonpModule} from '@angular/http';
-import {MdDatepickerModule, MdDialogModule, MdInputModule} from "@angular/material";
+import {MdDatepickerModule, MdDialogModule, MdInputModule, MdNativeDateModule} from "@angular/material";
 
 import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule, IHttpInterceptor} from '@covalent/http';
@@ -52,6 +52,7 @@ const httpInterceptorProviders: Type<any>[] = [
     MdDatepickerModule,
     MdDialogModule,
     MdInputModule,
+    MdNativeDateModule,
     routing,
     SharedModule
   ],
