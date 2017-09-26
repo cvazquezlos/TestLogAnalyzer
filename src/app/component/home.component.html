@@ -44,27 +44,36 @@
       </div>
     </div>
   </div>-->
-
-  <div flex layout="column" layout-align="center center" class="text-center">
-    <table td-data-table>
-      <thead>
-      <tr td-data-table-column-row>
-        <th td-data-table-column *ngFor="let column of columnDefs" [numeric]="column.numeric">{{column.label}}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr td-data-table-row *ngFor="let row of rowData">
-        <td td-data-table-cell *ngFor="let column of columnDefs" [numeric]="column.numeric">
-          {{column.format ? column.format(row[column.name]) : row[column.name]}}
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <button md-raised-button color="primary" class="more-logs" *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
-    <div class="text-center">
-      <ng-template #emptyGrid>
-        <md-spinner color="warn"></md-spinner>
-      </ng-template>
-    </div>
+  <td-data-table
+    #dataTable
+    [data]="rowData"
+    [columns]="columnDefs"
+    [selectable]="selectable"
+    [clickable]="clickable"
+    [multiple]="multiple"
+    [sortable]="true"
+    [sortBy]="sortBy"
+    [(ngModel)]="selectedRows"
+    [sortOrder]="sortOrder"
+    (sortChange)="sort($event)"
+    [style.height.px]="200">
+  </td-data-table>
+  <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="page($event)">
+    <span hide-xs>Rows per page:</span>
+    <md-select [style.width.px]="50" [(ngModel)]="pageSize">
+      <md-option *ngFor="let size of [5,10,15,20]" [value]="size">
+        {{size}}
+      </md-option>
+    </md-select>
+    {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
+  </td-paging-bar>
+  <button md-raised-button color="primary"*ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore" style="width: auto; margin: auto">Load more</button>
+  <div class="text-center">
+    <ng-template #emptyGrid>
+      <md-spinner color="warn"></md-spinner>
+    </ng-template>
   </div><br>
 </td-layout-nav>
