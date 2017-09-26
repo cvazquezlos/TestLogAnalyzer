@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {MdDialog} from '@angular/material';
-import {IPageChangeEvent,
-  ITdDataTableColumn,
+import {ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
   TdDataTableService,
   TdDataTableSortingOrder,
@@ -176,42 +175,6 @@ export class HomeComponent {
     this.addLogs(true);
     this.currentResults += 50;
     this.addLogs(false);
-  }
-
-  onGridReady(params) {
-    params.api.sizeColumnsToFit();
-  }
-
-  onAfterFilterChanged() {
-    console.log('onAfterSortChanged');
-  }
-
-  onBeforeFilterChanged() {
-    console.log('beforeFilterChanged');
-  }
-
-  onCellClicked($event) {
-    console.log('onCellClicked: ' + $event.rowIndex + ' ' + $event.colDef.field);
-  }
-
-  onCellDoubleClicked($event) {
-    console.log('onCellDoubleClicked: ' + $event.rowIndex + ' ' + $event.colDef.field);
-  }
-
-  onCellContextMenu($event) {
-    console.log('onCellContextMenu: ' + $event.rowIndex + ' ' + $event.colDef.field);
-  }
-
-  onCellFocused($event) {
-    console.log('onCellFocused: (' + $event.rowIndex + ')');
-  }
-
-  onQuickFilterChanged($event) {
-    this.gridOptions.api.setQuickFilter($event.target.value);
-  }
-
-  onRowSelected($event) {
-    console.log('onRowSelected: ' + $event.node.data.name);
   }
 
   public openDialog() {
