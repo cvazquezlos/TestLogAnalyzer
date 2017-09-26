@@ -2,6 +2,7 @@
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span>Logs</span>
     <span flex></span>
+    <button md-icon-button><md-icon class="md-24">search</md-icon></button>
     <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
     <button md-icon-button mdTooltip="Settings"><md-icon class="md-24">settings</md-icon></button>
     <button md-icon-button mdTooltip="Filter" (click)="openDialog()"><md-icon class="md-24">filter_list</md-icon></button>
@@ -44,6 +45,7 @@
       </div>
     </div>
   </div>-->
+
   <td-data-table
     #dataTable
     [data]="rowData"
@@ -55,21 +57,11 @@
     [sortBy]="sortBy"
     [(ngModel)]="selectedRows"
     [sortOrder]="sortOrder"
-    (sortChange)="sort($event)"
-    [style.height.px]="200">
+    (sortChange)="sort($event)">
   </td-data-table>
   <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
     <h3>No results to display.</h3>
   </div>
-  <td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="page($event)">
-    <span hide-xs>Rows per page:</span>
-    <md-select [style.width.px]="50" [(ngModel)]="pageSize">
-      <md-option *ngFor="let size of [5,10,15,20]" [value]="size">
-        {{size}}
-      </md-option>
-    </md-select>
-    {{pagingBar.range}} <span hide-xs>of {{pagingBar.total}}</span>
-  </td-paging-bar>
   <button md-raised-button color="primary"*ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore" style="width: auto; margin: auto">Load more</button>
   <div class="text-center">
     <ng-template #emptyGrid>

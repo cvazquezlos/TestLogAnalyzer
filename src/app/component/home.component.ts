@@ -1,6 +1,11 @@
 import {Component} from '@angular/core';
 import {MdDialog} from '@angular/material';
-import {ITdDataTableColumn, TdDialogService} from '@covalent/core';
+import {IPageChangeEvent,
+  ITdDataTableColumn,
+  ITdDataTableSortChangeEvent,
+  TdDataTableService,
+  TdDataTableSortingOrder,
+  TdDialogService} from '@covalent/core';
 import {GridOptions} from 'ag-grid/main';
 
 import {Log} from '../model/source.model';
@@ -28,13 +33,24 @@ export class HomeComponent {
   rowCount: number;
   rowData: any[];
 
+  filteredData: any[];
+  filteredTotal: number;
+
+  searchTerm: string = '';
+  selectable: boolean = true;
+  clickable: boolean = true;
+  multiple: boolean = true;
+  sortBy: string = 'agent';
+  selectedRows: any[] = [];
+  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
-              private _dialogService: TdDialogService) {
+              private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
       {name: 'timestamp', label: 'timestamp'},
-      {name: 'agent', label: 'agent'},
+      {name: 'agent', label: 'agent', sortable: true},
       {name: 'auth', label: 'auth'},
       {name: 'bytes', label: 'bytes'},
       {name: 'ident', label: 'ident'},
@@ -74,6 +90,8 @@ export class HomeComponent {
             // console.log(log.parsedDate.toLocaleTimeString()); Format: 21:40:18
           }
           this.rowCount = this.rowData.length;
+          this.filteredData = this.rowData;
+          this.filteredTotal = this.rowData.length;
           this.showGrid = true;
         } else {
           if (this.rowCount >= data.length) {
@@ -215,6 +233,32 @@ export class HomeComponent {
 
   selectAllRows() {
     this.gridOptions.api.selectAll();
+  }
+
+  sort(sortEvent: ITdDataTableSortChangeEvent): void {
+    this.sortBy = sortEvent.name;
+    this.sortOrder = sortEvent.order;
+    this.filter();
+  }
+
+  search(searchTerm: string): void {
+    this.searchTerm = searchTerm;
+    this.filter();
+  }
+
+  filter(): void {
+    let newData: any[] = this.rowData;
+    let excludedColumns: string[] = this.columnDefs
+      .filter((column: ITdDataTableColumn) => {
+        return ((column.filter === undefined && column.hidden === true) ||
+          (column.filter !== undefined && column.filter === false));
+      }).map((column: ITdDataTableColumn) => {
+        return column.name;
+      });
+    newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
+    this.filteredTotal = newData.length;
+    newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
+    this.filteredData = newData;
   }
 }
 
