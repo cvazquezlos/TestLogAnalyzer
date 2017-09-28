@@ -15,7 +15,7 @@ import {AppComponent} from './app.component';
 import {FooterComponent} from './component/footer/footer.component';
 import {HeaderComponent} from './component/header/header.component';
 import {HomeComponent} from './component/home.component';
-import {SettingsComponent} from "./component/home.component";
+import {SettingsComponent} from './component/home.component';
 import {SharedModule} from './shared/shared.module';
 
 import {routing} from './app.routing';
