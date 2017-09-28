@@ -1,8 +1,11 @@
 <td-layout-nav color="primary2">
   <div td-toolbar-content layout="row" layout-align="start center" flex>
-    <span>Logs</span>
-    <span flex></span>
-    <button md-icon-button><md-icon class="md-24">search</md-icon></button>
+    <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+      <span *ngIf="(selectable && !selectedRows.length) || !selectable" class="md-title">Logs</span>
+      <span *ngIf="selectedRows.length && selectable" class="md-body-1">0 item(s) selected</span>
+    </span>
+    <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here" (searchDebounce)="search($event)" flex style="margin-right: 0px">
+    </td-search-box>
     <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
     <button md-icon-button mdTooltip="Settings"><md-icon class="md-24">settings</md-icon></button>
     <button md-icon-button mdTooltip="Filter" (click)="openDialog()"><md-icon class="md-24">filter_list</md-icon></button>
@@ -10,20 +13,6 @@
   </div>
 
   <!--
-  <div class="content container">
-  <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 float-right">
-      <div class="input-group">
-        <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
-        <input (keyup)="onQuickFilterChanged($event)" type="text" class="form-control" placeholder="Dynamic filter..."
-               aria-describedby="basic-addon1" id="quickFilterInput">&nbsp;
-        <button class="btn btn-danger lineBigger" [disabled]="!showGrid" (click)="showGrid=false">Delete filtering
-        </button>&nbsp;
-        <button class="btn btn-primary lineBigger" [disabled]="showGrid" (click)="showGrid=true">Reset grid</button>
-      </div>
-    </div>
-  </div>
-
   <div class="row">
     <div class="col-md-6">
     </div>
@@ -44,8 +33,10 @@
         </div>
       </div>
     </div>
-  </div>-->
+  </div>
+  -->
 
+  <md-divider></md-divider>
   <td-data-table
     #dataTable
     [data]="rowData"

@@ -35,11 +35,11 @@ export class HomeComponent {
   filteredData: any[];
   filteredTotal: number;
 
-  searchTerm: string = '';
-  selectable: boolean = true;
-  clickable: boolean = true;
-  multiple: boolean = true;
-  sortBy: string = 'agent';
+  searchTerm = '';
+  selectable = true;
+  clickable = true;
+  multiple = true;
+  sortBy = 'agent';
   selectedRows: any[] = [];
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
