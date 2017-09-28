@@ -1,9 +1,17 @@
 import {Component} from '@angular/core';
 import {MdDialog} from '@angular/material';
+import {ITdDataTableColumn,
+  ITdDataTableSortChangeEvent,
+  TdDataTableService,
+  TdDataTableSortingOrder,
+  TdDialogService} from '@covalent/core';
 import {GridOptions} from 'ag-grid/main';
 
 import {Log} from '../model/source.model';
 import {ElasticsearchService} from '../service/elasticsearch.service';
+
+const NUMBER_FORMAT: (v: any) => any = (v: number) => v;
+const DECIMAL_FORMAT: (v: any) => any = (v: number) => v.toFixed(2);
 
 @Component({
   selector: 'app-home',
@@ -11,7 +19,7 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 })
 
 export class HomeComponent {
-  columnDefs: any[];
+  columnDefs: ITdDataTableColumn[];
   currentResults: number;
   defaultFrom = new Date(new Date().valueOf() - (10 * 60 * 60 * 1000));
   defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
@@ -24,18 +32,30 @@ export class HomeComponent {
   rowCount: number;
   rowData: any[];
 
-  constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog) {
+  filteredData: any[];
+  filteredTotal: number;
+
+  searchTerm: string = '';
+  selectable: boolean = true;
+  clickable: boolean = true;
+  multiple: boolean = true;
+  sortBy: string = 'agent';
+  selectedRows: any[] = [];
+  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+
+  constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
+              private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
-      {headerName: 'timestamp', field: 'timestamp', width: 110},
-      {headerName: 'agent', field: 'agent', width: 500},
-      {headerName: 'auth', field: 'auth', width: 20},
-      {headerName: 'bytes', field: 'bytes', width: 20},
-      {headerName: 'ident', field: 'ident', width: 30},
-      {headerName: 'request', field: 'request', width: 80},
-      {headerName: 'response', field: 'response', width: 20},
-      {headerName: 'verb', field: 'verb', width: 20}
+      {name: 'timestamp', label: 'timestamp'},
+      {name: 'agent', label: 'agent', sortable: true},
+      {name: 'auth', label: 'auth'},
+      {name: 'bytes', label: 'bytes'},
+      {name: 'ident', label: 'ident'},
+      {name: 'request', label: 'request'},
+      {name: 'response', label: 'response'},
+      {name: 'verb', label: 'verb'}
     ];
     this.showBack = false;
     this.showMore = true;
@@ -69,6 +89,8 @@ export class HomeComponent {
             // console.log(log.parsedDate.toLocaleTimeString()); Format: 21:40:18
           }
           this.rowCount = this.rowData.length;
+          this.filteredData = this.rowData;
+          this.filteredTotal = this.rowData.length;
           this.showGrid = true;
         } else {
           if (this.rowCount >= data.length) {
@@ -79,6 +101,17 @@ export class HomeComponent {
       },
       error => console.log(error)
     );
+  }
+
+  openPrompt(row: any, name: string): void {
+    this._dialogService.openPrompt({
+      message: 'Enter comment?',
+      value: row[name],
+    }).afterClosed().subscribe((value: any) => {
+      if (value !== undefined) {
+        row[name] = value;
+      }
+    });
   }
 
   addLogsBetweenDates(from: Date, to: Date) {
@@ -144,42 +177,6 @@ export class HomeComponent {
     this.addLogs(false);
   }
 
-  onGridReady(params) {
-    params.api.sizeColumnsToFit();
-  }
-
-  onAfterFilterChanged() {
-    console.log('onAfterSortChanged');
-  }
-
-  onBeforeFilterChanged() {
-    console.log('beforeFilterChanged');
-  }
-
-  onCellClicked($event) {
-    console.log('onCellClicked: ' + $event.rowIndex + ' ' + $event.colDef.field);
-  }
-
-  onCellDoubleClicked($event) {
-    console.log('onCellDoubleClicked: ' + $event.rowIndex + ' ' + $event.colDef.field);
-  }
-
-  onCellContextMenu($event) {
-    console.log('onCellContextMenu: ' + $event.rowIndex + ' ' + $event.colDef.field);
-  }
-
-  onCellFocused($event) {
-    console.log('onCellFocused: (' + $event.rowIndex + ')');
-  }
-
-  onQuickFilterChanged($event) {
-    this.gridOptions.api.setQuickFilter($event.target.value);
-  }
-
-  onRowSelected($event) {
-    console.log('onRowSelected: ' + $event.node.data.name);
-  }
-
   public openDialog() {
     const dialogRef = this.dialog.open(SettingsComponent, {
     });
@@ -199,6 +196,32 @@ export class HomeComponent {
 
   selectAllRows() {
     this.gridOptions.api.selectAll();
+  }
+
+  sort(sortEvent: ITdDataTableSortChangeEvent): void {
+    this.sortBy = sortEvent.name;
+    this.sortOrder = sortEvent.order;
+    this.filter();
+  }
+
+  search(searchTerm: string): void {
+    this.searchTerm = searchTerm;
+    this.filter();
+  }
+
+  filter(): void {
+    let newData: any[] = this.rowData;
+    let excludedColumns: string[] = this.columnDefs
+      .filter((column: ITdDataTableColumn) => {
+        return ((column.filter === undefined && column.hidden === true) ||
+          (column.filter !== undefined && column.filter === false));
+      }).map((column: ITdDataTableColumn) => {
+        return column.name;
+      });
+    newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
+    this.filteredTotal = newData.length;
+    newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
+    this.filteredData = newData;
   }
 }
 

@@ -2,6 +2,7 @@
   <div td-toolbar-content layout="row" layout-align="start center" flex>
     <span>Logs</span>
     <span flex></span>
+    <button md-icon-button><md-icon class="md-24">search</md-icon></button>
     <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
     <button md-icon-button mdTooltip="Settings"><md-icon class="md-24">settings</md-icon></button>
     <button md-icon-button mdTooltip="Filter" (click)="openDialog()"><md-icon class="md-24">filter_list</md-icon></button>
@@ -45,38 +46,26 @@
     </div>
   </div>-->
 
-  <div flex layout="column" layout-align="center center" class="text-center">
-    <div *ngIf="showGrid; else emptyGrid">
-      <ag-grid-angular class="ag-fresh resizable"
-                           [rowData]="rowData"
-                           [columnDefs]="columnDefs"
-                           [gridOptions]="gridOptions"
-                           [showToolPanel]="true"
-
-                           [debug]="true"
-                           [enableColResize]="true"
-                           [enableSorting]="true"
-                           [suppressAutoSize]="false"
-                           [minColWidth]="40"
-                           [rowHeight]="22"
-                           [suppressRowClickSelection]="true"
-                           [toolPanelSuppressValues]="true"
-
-                           (gridReady)="onGridReady($event)"
-                           (cellClicked)="onCellClicked($event)"
-                           (cellDoubleClicked)="onCellDoubleClicked($event)"
-                           (cellContextMenu)="onCellContextMenu($event)"
-                           (cellFocused)="onCellFocused($event)"
-                           (rowSelected)="onRowSelected($event)"
-                           (beforeFilterChanged)="onBeforeFilterChanged()"
-                           (afterFilterChanged)="onAfterFilterChanged()">
-      </ag-grid-angular><br>
-    </div>
-        <button md-raised-button color="primary" class="more-logs" *ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore">Load more</button>
-        <div class="text-center">
-          <ng-template #emptyGrid>
-            <md-spinner color="warn"></md-spinner>
-          </ng-template>
-        </div>
-      </div><br>
+  <td-data-table
+    #dataTable
+    [data]="rowData"
+    [columns]="columnDefs"
+    [selectable]="selectable"
+    [clickable]="clickable"
+    [multiple]="multiple"
+    [sortable]="true"
+    [sortBy]="sortBy"
+    [(ngModel)]="selectedRows"
+    [sortOrder]="sortOrder"
+    (sortChange)="sort($event)">
+  </td-data-table>
+  <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
+    <h3>No results to display.</h3>
+  </div>
+  <button md-raised-button color="primary"*ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore" style="width: auto; margin: auto">Load more</button>
+  <div class="text-center">
+    <ng-template #emptyGrid>
+      <md-spinner color="warn"></md-spinner>
+    </ng-template>
+  </div><br>
 </td-layout-nav>
