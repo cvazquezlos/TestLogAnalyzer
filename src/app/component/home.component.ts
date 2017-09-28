@@ -211,7 +211,7 @@ export class HomeComponent {
 
   filter(): void {
     let newData: any[] = this.rowData;
-    let excludedColumns: string[] = this.columnDefs
+    const excludedColumns: string[] = this.columnDefs
       .filter((column: ITdDataTableColumn) => {
         return ((column.filter === undefined && column.hidden === true) ||
           (column.filter !== undefined && column.filter === false));
