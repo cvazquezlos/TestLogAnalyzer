@@ -41,6 +41,10 @@ md-nav-list {
   }
 }
 
+.mat-input-wrapper {
+  padding-bottom: 0px;
+}
+
 // Custom theme examples
 .white-orange {
   $primary2: mat-palette($mat-grey, 50);
