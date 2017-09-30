@@ -66,3 +66,4 @@ In the home page, you can find the grid which contains paginated data (each page
 10. https://github.com/Teradata/covalent-quickstart - Teradata Covalent quickstart.
 11. https://material.angular.io/ - Angular 2 Material Design guidelines.
 12. http://www.codingpedia.org/ - Logging with SLF4J and Logback.
+13. https://dzone.com/articles/junit-logback-maven-spring-3 - JUnit, Logback, Maven with Spring.
