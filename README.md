@@ -53,17 +53,29 @@ In the home page, you can find the grid which contains paginated data (each page
 
 ![Home](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/version0.png)
 
+## Getting started with Spring Logs Generator
+Ensure `JAVA_HOME` environment variable is se and points to your JDK installation directory. Follo these steps:
+1. Go to Apache Maven Project [download](https://maven.apache.org/download.cgi) page and download the Binary tar.gz archive.
+2. Extract it to the directory you wish to install Maven. The best way to do it is inside Program Files directory.
+3. Set the environment variables: `M2_HOME=C:\Program Files\apache-maven-version`, `M2=%M2_HOME%\bin`.
+4. Append the string `%M2` to the end of the system variable *Path*.
+5. Open Command Console and type `mvn --version`.
+6. Go to Spring Logs Generator project in [Github](https://github.com/cvazquezlos/LOGANALYZER-SpringLogsGenerator) and clone or download it.
+7. Open the Command Console and navigate inside project. Then, execute `mvn clean install --log-file log.txt` to save all the information about the test.
+
 ## Bibliography
-1. https://www.ag-grid.com/javascript-grid-properties
-2. https://qbox.io/blog/parsing-logs-using-logstash
-3. https://www.elastic.co/guide/index.html - Getting started guide, API, Pagination and Kibana requests (filtering, ranges, POST and GET requests).
+1. https://ag-grid.com/javascript-grid-properties - Grid properties.
+2. https://qbox.io/blog/parsing-logs-using-logstash - Parsing logs using Logstash.
+3. https://elastic.co/guide/index.html - Getting started guide, API, Pagination and Kibana requests (filtering, ranges, POST and GET requests).
 4. http://jupyter.org/ - Getting started guide, kernels and design.
 5. https://developer.mozilla.org/es/ - Date type in TypeScript language and CORS disable for Elasticsearch requests.
-6. https://www.typescriptlang.org/docs/home.html - Looking for TS simple and complex types.
+6. https://typescriptlang.org/docs/home.html - Looking for TS simple and complex types.
 7. http://getbootstrap.com/css/ - Bootstrap CSS and components guidelines.
 8. https://teradata.github.io/covalent - Teradata Covalent library.
 9. https://github.com/elastest/elastest-torm/tree/master/elastest-torm-gui/src/app/elastest-log-manager - Example of Covalent usage.
 10. https://github.com/Teradata/covalent-quickstart - Teradata Covalent quickstart.
 11. https://material.angular.io/ - Angular 2 Material Design guidelines.
-12. http://www.codingpedia.org/ - Logging with SLF4J and Logback.
+12. http://codingpedia.org/ - Logging with SLF4J and Logback.
 13. https://dzone.com/articles/junit-logback-maven-spring-3 - JUnit, Logback, Maven with Spring.
+14. https://logback.qos.ch - Logback manual and format guidelines.
+15. https://docs.spring.io/ - Spring Boot features (logging).
