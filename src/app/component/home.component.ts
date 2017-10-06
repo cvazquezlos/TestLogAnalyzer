@@ -69,9 +69,8 @@ export class HomeComponent {
           this.logs = this.logs.concat(data);
           this.rowData = [];
           for (const log of this.logs) {
-            log.parsedDate = this.parseDate(log.timestamp);
             this.rowData = this.rowData.concat({
-              timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
+              timestamp: log.timestamp,
               thread: log.thread,
               level: log.level,
               class: log.class,
@@ -116,9 +115,8 @@ export class HomeComponent {
         this.logs = this.logs.concat(data);
         this.rowData = [];
         for (const log of this.logs) {
-          log.parsedDate = this.parseDate(log.timestamp);
           this.rowData = this.rowData.concat({
-            timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
+            timestamp: log.timestamp,
             thread: log.thread,
             level: log.level,
             class: log.class,
@@ -136,9 +134,8 @@ export class HomeComponent {
     this.logs = this.recentData;
     this.rowData = [];
     for (const log of this.logs) {
-      log.parsedDate = this.parseDate(log.timestamp);
       this.rowData = this.rowData.concat({
-        timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
+        timestamp: log.timestamp,
         thread: log.thread,
         level: log.level,
         class: log.class,
