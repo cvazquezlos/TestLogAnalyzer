@@ -16,8 +16,6 @@ import {CovalentMarkdownModule} from '@covalent/markdown';
 import {AgGridModule} from 'ag-grid-angular/main';
 
 import {AppComponent} from './app.component';
-import {FooterComponent} from './component/footer/footer.component';
-import {HeaderComponent} from './component/header/header.component';
 import {HomeComponent} from './component/home.component';
 import {SettingsComponent} from './component/home.component';
 import {SharedModule} from './shared/shared.module';
@@ -34,8 +32,6 @@ const httpInterceptorProviders: Type<any>[] = [
 @NgModule({
   declarations: [
     AppComponent,
-    FooterComponent,
-    HeaderComponent,
     HomeComponent,
     SettingsComponent
   ],

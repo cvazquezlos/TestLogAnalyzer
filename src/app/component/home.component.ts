@@ -1,5 +1,8 @@
-import {Component} from '@angular/core';
-import {MdDialog} from '@angular/material';
+import {Component,
+  Inject} from '@angular/core';
+import {MdDialog,
+  MdDialogRef,
+  MD_DIALOG_DATA} from '@angular/material';
 import {ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
   TdDataTableService,
@@ -16,10 +19,13 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 })
 
 export class HomeComponent {
+
   columnDefs: ITdDataTableColumn[];
   currentResults: number;
   defaultFrom = new Date(new Date().valueOf() - (10 * 60 * 60 * 1000));
   defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
+  fromDate: Date;
+  toDate: Date;
   gridOptions: GridOptions;
   logs: Log[];
   showBack: boolean;
@@ -89,8 +95,8 @@ export class HomeComponent {
     );
   }
 
-  addLogsBetweenDates(from: Date, to: Date) {
-    this.elasticsearchService.listAllLogsBetweenDates(from.toString(), to.toString()).subscribe(
+  addLogsBetweenDates(from: string, to: string) {
+    this.elasticsearchService.listAllLogsBetweenDates(from, to).subscribe(
       data => {
         this.recentData = this.logs;
         this.logs = [];
@@ -128,6 +134,21 @@ export class HomeComponent {
     this.rowCount = this.rowData.length;
   }
 
+  filter(): void {
+    let newData: any[] = this.rowData;
+    const excludedColumns: string[] = this.columnDefs
+      .filter((column: ITdDataTableColumn) => {
+        return ((column.filter === undefined && column.hidden === true) ||
+          (column.filter !== undefined && column.filter === false));
+      }).map((column: ITdDataTableColumn) => {
+        return column.name;
+      });
+    newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
+    this.filteredTotal = newData.length;
+    newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
+    this.filteredData = newData;
+  }
+
   getDefaultFromValue() {
     return this.defaultFrom;
   }
@@ -146,10 +167,22 @@ export class HomeComponent {
 
   openDialog() {
     const dialogRef = this.dialog.open(SettingsComponent, {
+      data: {fromDate: this.fromDate, toDate: this.toDate}
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      console.log(('0'+result.fromDate.getDate()).slice(-2));
+      console.log(('0'+(result.fromDate.getMonth()+1)).slice(-2));
+      console.log(result.fromDate.getFullYear());
+      console.log('FROM DATE: '+this.parseData(
+        ('0'+result.fromDate.getDate()).slice(-2),
+        ('0'+(result.fromDate.getMonth()+1)).slice(-2),
+        result.fromDate.getFullYear()
+      ));
+      console.log('TO DATE: '+this.parseData(
+        ('0'+result.toDate.getDate()).slice(-2),
+        ('0'+(result.toDate.getMonth()+1)).slice(-2),
+        result.toDate.getFullYear()
+      ));
     });
   }
 
@@ -164,19 +197,8 @@ export class HomeComponent {
     this.filter();
   }
 
-  filter(): void {
-    let newData: any[] = this.rowData;
-    const excludedColumns: string[] = this.columnDefs
-      .filter((column: ITdDataTableColumn) => {
-        return ((column.filter === undefined && column.hidden === true) ||
-          (column.filter !== undefined && column.filter === false));
-      }).map((column: ITdDataTableColumn) => {
-        return column.name;
-      });
-    newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
-    this.filteredTotal = newData.length;
-    newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
-    this.filteredData = newData;
+  private parseData(day: string, month: string, year: string): string {
+    return year + '-' + month + '-' + day + ' 00:00:00.000';
   }
 }
 
@@ -184,4 +206,12 @@ export class HomeComponent {
   selector: 'app-settings',
   templateUrl: './settings/settings.component.html',
 })
-export class SettingsComponent {}
+export class SettingsComponent {
+
+  constructor(public dialogRef: MdDialogRef<SettingsComponent>,
+              @Inject(MD_DIALOG_DATA) public data: any) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
