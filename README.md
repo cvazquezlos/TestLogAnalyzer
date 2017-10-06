@@ -76,6 +76,8 @@ Ensure `JAVA_HOME` environment variable is se and points to your JDK installatio
 10. https://github.com/Teradata/covalent-quickstart - Teradata Covalent quickstart.
 11. https://material.angular.io/ - Angular 2 Material Design guidelines.
 12. http://codingpedia.org/ - Logging with SLF4J and Logback.
-13. https://dzone.com/articles/junit-logback-maven-spring-3 - JUnit, Logback, Maven with Spring.
+13. https://dzone.com/ - JUnit, Logback, Maven with Spring.
 14. https://logback.qos.ch - Logback manual and format guidelines.
 15. https://docs.spring.io/ - Spring Boot features (logging).
+16. https://www.mkyong.com/ - Sping Boot, Spring Data and Elasticsearch.
+17. http://books.sonatype.com - Maven CMD options.

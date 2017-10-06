@@ -39,7 +39,7 @@ export class HomeComponent {
   selectable = true;
   clickable = true;
   multiple = true;
-  sortBy = 'agent';
+  sortBy = 'thread';
   selectedRows: any[] = [];
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
@@ -49,13 +49,10 @@ export class HomeComponent {
     this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
       {name: 'timestamp', label: 'timestamp'},
-      {name: 'agent', label: 'agent', sortable: true},
-      {name: 'auth', label: 'auth'},
-      {name: 'bytes', label: 'bytes'},
-      {name: 'ident', label: 'ident'},
-      {name: 'request', label: 'request'},
-      {name: 'response', label: 'response'},
-      {name: 'verb', label: 'verb'}
+      {name: 'thread', label: 'thread', sortable: true},
+      {name: 'level', label: 'level'},
+      {name: 'class', label: 'class'},
+      {name: 'crudmessage', label: 'crudmessage'},
     ];
     this.showBack = false;
     this.showMore = true;
@@ -75,13 +72,10 @@ export class HomeComponent {
             log.parsedDate = this.parseDate(log.timestamp);
             this.rowData = this.rowData.concat({
               timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
-              agent: log.agent,
-              auth: log.auth,
-              bytes: log.bytes,
-              ident: log.ident,
-              request: log.request,
-              response: log.response,
-              verb: log.verb
+              thread: log.thread,
+              level: log.level,
+              class: log.class,
+              crudmessage: log.crudmessage
             });
             // console.log(log.parsedDate.toUTCString()); Format: Wed, 18 May 2011 19:40:18 GMT
             // console.log(log.parsedDate.toLocaleDateString()); Format: 18/5/2011
@@ -125,13 +119,10 @@ export class HomeComponent {
           log.parsedDate = this.parseDate(log.timestamp);
           this.rowData = this.rowData.concat({
             timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
-            agent: log.agent,
-            auth: log.auth,
-            bytes: log.bytes,
-            ident: log.ident,
-            request: log.request,
-            response: log.response,
-            verb: log.verb
+            thread: log.thread,
+            level: log.level,
+            class: log.class,
+            crudmessage: log.crudmessage
           });
         }
         this.showBack = true;
@@ -148,13 +139,10 @@ export class HomeComponent {
       log.parsedDate = this.parseDate(log.timestamp);
       this.rowData = this.rowData.concat({
         timestamp: log.parsedDate.toUTCString().replace(' GMT', ''),
-        agent: log.agent,
-        auth: log.auth,
-        bytes: log.bytes,
-        ident: log.ident,
-        request: log.request,
-        response: log.response,
-        verb: log.verb
+        thread: log.thread,
+        level: log.level,
+        class: log.class,
+        crudmessage: log.crudmessage
       });
     }
     this.showBack = false;
