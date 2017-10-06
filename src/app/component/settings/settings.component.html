@@ -23,6 +23,6 @@
 <md-dialog-actions>
   <div class="dialog-buttons">
     <button md-raised-button color="primary" tabindex="1" [md-dialog-close]="data">Save changes</button>
-    <button md-raised-button color="warn" tabindex="-1">Cancel</button>
+    <button md-raised-button color="warn" tabindex="-1" (click)="onNoClick()">Cancel</button>
   </div>
 </md-dialog-actions>

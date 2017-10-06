@@ -95,29 +95,6 @@ export class HomeComponent {
     );
   }
 
-  addLogsBetweenDates(from: string, to: string) {
-    this.elasticsearchService.listAllLogsBetweenDates(from, to).subscribe(
-      data => {
-        this.recentData = this.logs;
-        this.logs = [];
-        this.logs = this.logs.concat(data);
-        this.rowData = [];
-        for (const log of this.logs) {
-          this.rowData = this.rowData.concat({
-            timestamp: log.timestamp,
-            thread: log.thread,
-            level: log.level,
-            class: log.class,
-            crudmessage: log.crudmessage
-          });
-        }
-        this.showBack = true;
-        this.rowCount = this.rowData.length;
-      },
-      error => console.log(error)
-    );
-  }
-
   chargeOldData() {
     this.logs = this.recentData;
     this.rowData = [];
@@ -149,14 +126,6 @@ export class HomeComponent {
     this.filteredData = newData;
   }
 
-  getDefaultFromValue() {
-    return this.defaultFrom;
-  }
-
-  getDefaultToValue() {
-    return this.defaultTo;
-  }
-
   loadMore() {
     this.logs = [];
     this.currentResults += 50;
@@ -170,19 +139,16 @@ export class HomeComponent {
       data: {fromDate: this.fromDate, toDate: this.toDate}
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(('0'+result.fromDate.getDate()).slice(-2));
-      console.log(('0'+(result.fromDate.getMonth()+1)).slice(-2));
-      console.log(result.fromDate.getFullYear());
-      console.log('FROM DATE: '+this.parseData(
-        ('0'+result.fromDate.getDate()).slice(-2),
-        ('0'+(result.fromDate.getMonth()+1)).slice(-2),
-        result.fromDate.getFullYear()
-      ));
-      console.log('TO DATE: '+this.parseData(
-        ('0'+result.toDate.getDate()).slice(-2),
-        ('0'+(result.toDate.getMonth()+1)).slice(-2),
-        result.toDate.getFullYear()
-      ));
+      this.addLogsBetweenDates(
+        this.parseData(
+          ('0'+result.fromDate.getDate()).slice(-2),
+          ('0'+(result.fromDate.getMonth()+1)).slice(-2),
+          result.fromDate.getFullYear()
+        ), this.parseData(
+          ('0'+result.toDate.getDate()).slice(-2),
+          ('0'+(result.toDate.getMonth()+1)).slice(-2),
+          result.toDate.getFullYear()
+        ))
     });
   }
 
@@ -197,8 +163,31 @@ export class HomeComponent {
     this.filter();
   }
 
+  private addLogsBetweenDates(from: string, to: string) {
+    this.elasticsearchService.listAllLogsBetweenDates(from, to).subscribe(
+      data => {
+        this.recentData = this.logs;
+        this.logs = [];
+        this.logs = this.logs.concat(data);
+        this.rowData = [];
+        for (const log of this.logs) {
+          this.rowData = this.rowData.concat({
+            timestamp: log.timestamp,
+            thread: log.thread,
+            level: log.level,
+            class: log.class,
+            crudmessage: log.crudmessage
+          });
+        }
+        this.showBack = true;
+        this.rowCount = this.rowData.length;
+      },
+      error => console.log(error)
+    );
+  }
+
   private parseData(day: string, month: string, year: string): string {
-    return year + '-' + month + '-' + day + ' 00:00:00.000';
+    return year + '-' + month + '-' + day;
   }
 }
 
