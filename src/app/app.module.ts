@@ -1,12 +1,16 @@
 import {NgModule, Type} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpModule, JsonpModule} from '@angular/http';
-import {MdDatepickerModule, MdDialogModule, MdInputModule, MdNativeDateModule,
+import {HttpModule,
+  JsonpModule} from '@angular/http';
+import {MdDatepickerModule,
+  MdDialogModule,
+  MdInputModule,
+  MdNativeDateModule,
   MdProgressSpinnerModule} from '@angular/material';
 
 import {CovalentHighlightModule} from '@covalent/highlight';
-import {CovalentHttpModule, IHttpInterceptor} from '@covalent/http';
+import {CovalentHttpModule} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
 
 import {AgGridModule} from 'ag-grid-angular/main';

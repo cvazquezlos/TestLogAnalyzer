@@ -10,9 +10,6 @@ import {GridOptions} from 'ag-grid/main';
 import {Log} from '../model/source.model';
 import {ElasticsearchService} from '../service/elasticsearch.service';
 
-const NUMBER_FORMAT: (v: any) => any = (v: number) => v;
-const DECIMAL_FORMAT: (v: any) => any = (v: number) => v.toFixed(2);
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html'
@@ -76,10 +73,6 @@ export class HomeComponent {
               class: log.class,
               crudmessage: log.crudmessage
             });
-            // console.log(log.parsedDate.toUTCString()); Format: Wed, 18 May 2011 19:40:18 GMT
-            // console.log(log.parsedDate.toLocaleDateString()); Format: 18/5/2011
-            // console.log(log.parsedDate.toLocaleString()); Format: 18/5/2011 21:40:18
-            // console.log(log.parsedDate.toLocaleTimeString()); Format: 21:40:18
           }
           this.rowCount = this.rowData.length;
           this.filteredData = this.rowData;
@@ -94,17 +87,6 @@ export class HomeComponent {
       },
       error => console.log(error)
     );
-  }
-
-  openPrompt(row: any, name: string): void {
-    this._dialogService.openPrompt({
-      message: 'Enter comment?',
-      value: row[name],
-    }).afterClosed().subscribe((value: any) => {
-      if (value !== undefined) {
-        row[name] = value;
-      }
-    });
   }
 
   addLogsBetweenDates(from: Date, to: Date) {
@@ -162,25 +144,13 @@ export class HomeComponent {
     this.addLogs(false);
   }
 
-  public openDialog() {
+  openDialog() {
     const dialogRef = this.dialog.open(SettingsComponent, {
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
-  }
-
-  private parseDate(date: string) {
-    const dayMonth: string[] = date.split('/');
-    const yearHourMin: string[] = dayMonth[dayMonth.length - 1].split(':');
-    const secUTCDif: string[] = yearHourMin[yearHourMin.length - 1].split(' ');
-    return new Date(yearHourMin[0] + '-' + dayMonth[0] + '-' + dayMonth[1] + ':' + yearHourMin[1] + ':' +
-      yearHourMin[2] + ':' + secUTCDif[0] + secUTCDif[1]);
-  }
-
-  selectAllRows() {
-    this.gridOptions.api.selectAll();
   }
 
   sort(sortEvent: ITdDataTableSortChangeEvent): void {

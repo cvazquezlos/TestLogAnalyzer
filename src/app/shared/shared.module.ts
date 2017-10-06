@@ -1,19 +1,36 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule,
+  ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
-  CovalentDataTableModule, CovalentMediaModule, CovalentLoadingModule,
-  CovalentNotificationsModule, CovalentLayoutModule, CovalentMenuModule,
-  CovalentPagingModule, CovalentSearchModule, CovalentStepsModule,
-  CovalentCommonModule, CovalentDialogsModule,
+  CovalentDataTableModule,
+  CovalentMediaModule,
+  CovalentLoadingModule,
+  CovalentNotificationsModule,
+  CovalentLayoutModule,
+  CovalentMenuModule,
+  CovalentPagingModule,
+  CovalentSearchModule,
+  CovalentStepsModule,
+  CovalentCommonModule,
+  CovalentDialogsModule,
 } from '@covalent/core';
 import {
-  MdButtonModule, MdCardModule, MdIconModule,
-  MdListModule, MdMenuModule, MdTooltipModule,
-  MdSlideToggleModule, MdInputModule, MdCheckboxModule,
-  MdToolbarModule, MdSnackBarModule, MdSidenavModule,
-  MdTabsModule, MdSelectModule,
+  MdButtonModule,
+  MdCardModule,
+  MdIconModule,
+  MdListModule,
+  MdMenuModule,
+  MdTooltipModule,
+  MdSlideToggleModule,
+  MdInputModule,
+  MdCheckboxModule,
+  MdToolbarModule,
+  MdSnackBarModule,
+  MdSidenavModule,
+  MdTabsModule,
+  MdSelectModule,
 } from '@angular/material';
 
 const FLEX_LAYOUT_MODULES: any[] = [
