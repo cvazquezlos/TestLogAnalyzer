@@ -32,20 +32,16 @@ For further information about how to prepare ELK in this project, you can read m
 LOGANALYZER allows you to work with determinate kinds of logs. In this moment, `Beta version`, LOGANALYZER works with Apache logs.
 
 ### Data format allowed
-#### Apache combined logs format
+#### Logback format
 LOGANALYZER works with the following format `%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\`. In the table below, you can see, in case that you don't know, what each component means:
 
 Component | What does it mean?
 :--------: | -------------
-%h | Remote host (ie the client IP)
-%l | Identity of the user determined by *identid*
-%u | User name determined by HTTP authentication
-%t | Time the request was received
-%r | Request line from the client (ie "GET / HTTP/1.0.")
-%>s | Status code sent from the server to the client (200, 404...)
-%b | Size of the response to the client (in bytes)
-Referer | Referer header of the HTTP request (containing the URL of the page from which this request was initiated) if any is present, and "-" otherwise.
-User-agent | Browser identification string.
+%d | Timestamp following the format yyyy-MM-dd HH:mm:ss.SSS.
+[%t] | Thread identifier between square brackets.
+%-5level | Level of logging event.
+%logger{36} | Name of the logger at the origin of the logging event (name class and package).
+%m%n | Log message.
 
 ### Content of pages
 #### Home
