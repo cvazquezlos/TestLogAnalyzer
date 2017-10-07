@@ -19,6 +19,7 @@ import {
 import {
   MdButtonModule,
   MdCardModule,
+  MdDatepickerModule,
   MdIconModule,
   MdListModule,
   MdMenuModule,
@@ -42,11 +43,11 @@ const ANGULAR_MODULES: any[] = [
 ];
 
 const MATERIAL_MODULES: any[] = [
-  MdButtonModule, MdCardModule, MdIconModule,
-  MdListModule, MdMenuModule, MdTooltipModule,
-  MdSlideToggleModule, MdInputModule, MdCheckboxModule,
-  MdToolbarModule, MdSnackBarModule, MdSidenavModule,
-  MdTabsModule, MdSelectModule,
+  MdButtonModule, MdCardModule, MdDatepickerModule,
+  MdIconModule, MdListModule, MdMenuModule,
+  MdTooltipModule, MdSlideToggleModule, MdInputModule,
+  MdCheckboxModule, MdToolbarModule, MdSnackBarModule,
+  MdSidenavModule, MdTabsModule, MdSelectModule,
 ];
 
 const COVALENT_MODULES: any[] = [

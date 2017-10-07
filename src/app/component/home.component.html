@@ -54,7 +54,7 @@
   <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center centcer">
     <h3>No results to display.</h3>
   </div>
-  <button md-raised-button color="primary"*ngIf="showMore" (click)="loadMore()" class="btn btn-success showMore" style="width: auto; margin: auto">Load more</button>
+  <button md-raised-button color="primary"*ngIf="showMore && dataTable.hasData" (click)="loadMore()" class="btn btn-success showMore" style="width: auto; margin: auto">Load more</button>
   <div class="text-center">
     <ng-template #emptyGrid>
       <md-spinner color="warn"></md-spinner>
