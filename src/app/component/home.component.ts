@@ -98,10 +98,10 @@ export class HomeComponent {
       this.rowData = this.rowData.concat({
         id: log.id,
         timestamp: log.timestamp,
-        "thread name": log.threadName,
+        'thread name': log.threadName,
         level: log.level,
-        "class name": log.loggerName,
-        "message": log.formattedMessage
+        'class name': log.loggerName,
+        'message': log.formattedMessage
       });
     }
     this.showBack = false;
@@ -138,12 +138,12 @@ export class HomeComponent {
     dialogRef.afterClosed().subscribe(result => {
       this.addLogsBetweenDates(
         this.parseData(
-          ('0'+result.fromDate.getDate()).slice(-2),
-          ('0'+(result.fromDate.getMonth()+1)).slice(-2),
+          ('0' + result.fromDate.getDate()).slice(-2),
+          ('0' + (result.fromDate.getMonth() + 1)).slice(-2),
           result.fromDate.getFullYear()
         ), this.parseData(
-          ('0'+result.toDate.getDate()).slice(-2),
-          ('0'+(result.toDate.getMonth()+1)).slice(-2),
+          ('0' + result.toDate.getDate()).slice(-2),
+          ('0' + (result.toDate.getMonth() + 1)).slice(-2),
           result.toDate.getFullYear()
         ))
     });
@@ -171,10 +171,10 @@ export class HomeComponent {
           this.rowData = this.rowData.concat({
             id: log.id,
             timestamp: log.timestamp,
-            "thread name": log.threadName,
+            'thread name': log.threadName,
             level: log.level,
-            "class name": log.loggerName,
-            "message": log.formattedMessage
+            'class name': log.loggerName,
+            'message': log.formattedMessage
           });
         }
         this.showBack = true;
