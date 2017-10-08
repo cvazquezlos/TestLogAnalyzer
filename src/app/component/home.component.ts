@@ -23,7 +23,6 @@ export class HomeComponent {
   currentResults: number;
   fromDate: Date;
   toDate: Date;
-  gridOptions: GridOptions;
   logs: Log[];
   showBack: boolean;
   showGrid: boolean;
@@ -45,8 +44,6 @@ export class HomeComponent {
 
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
-    this.gridOptions = <GridOptions>{};
-    this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
       {name: 'id', label: 'id', sortable: true},
       {name: 'timestamp', label: 'timestamp'},
