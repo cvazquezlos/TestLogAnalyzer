@@ -47,7 +47,7 @@ Component | What does it mean?
 #### Home
 In the home page, you can find the grid which contains paginated data (each page contains 50 logs), some filtering criteria and buttons which allow you to search, hide the table or recreate it and show more logs.
 
-![Home](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/version0.png)
+![Home](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/version1.png)
 
 ## Getting started with Spring Logs Generator
 Ensure `JAVA_HOME` environment variable is se and points to your JDK installation directory. Follo these steps:
@@ -58,6 +58,13 @@ Ensure `JAVA_HOME` environment variable is se and points to your JDK installatio
 5. Open Command Console and type `mvn --version`.
 6. Go to Spring Logs Generator project in [Github](https://github.com/cvazquezlos/LOGANALYZER-SpringLogsGenerator) and clone or download it.
 7. Open the Command Console and navigate inside project. Then, execute `mvn clean install --log-file log.txt` to save all the information about the test.
+
+## Getting started with Elasticsearch Data Updater
+Ensure you have Elasticsearch installed and an instance of it running.
+1. Go to Elasticsearch Data Updater project in [Github](https://github.com/cvazquezlos/LOGANALYZER-ElasticsearchDataUpdater) and clone or download it.
+2. Make sure that your Elasticsearch version is the same than POM ES version.
+3. Create (you can use Kibana) an index called "loganalyzer" (don't required timestamp field).
+4. Run it.
 
 ## Bibliography
 1. https://ag-grid.com/javascript-grid-properties - Grid properties.
@@ -74,7 +81,6 @@ Ensure `JAVA_HOME` environment variable is se and points to your JDK installatio
 12. http://codingpedia.org/ - Logging with SLF4J and Logback.
 13. https://dzone.com/ - JUnit, Logback, Maven with Spring.
 14. https://logback.qos.ch - Logback manual and format guidelines.
-15. https://docs.spring.io/ - Spring Boot features (logging).
+15. https://docs.spring.io/ - Spring Boot features (logging), Spring Data.
 16. https://www.mkyong.com/ - Sping Boot, Spring Data and Elasticsearch.
 17. http://books.sonatype.com - Maven CMD options.
-18. 

@@ -13,8 +13,6 @@ import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
 
-import {AgGridModule} from 'ag-grid-angular/main';
-
 import {AppComponent} from './app.component';
 import {HomeComponent} from './component/home.component';
 import {SettingsComponent} from './component/home.component';
@@ -36,9 +34,6 @@ const httpInterceptorProviders: Type<any>[] = [
     SettingsComponent
   ],
   imports: [
-    AgGridModule.withComponents(
-      [HomeComponent]
-    ),
     BrowserModule,
     BrowserAnimationsModule,
     CovalentHttpModule.forRoot({
