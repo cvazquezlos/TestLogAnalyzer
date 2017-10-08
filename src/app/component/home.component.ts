@@ -8,7 +8,6 @@ import {ITdDataTableColumn,
   TdDataTableService,
   TdDataTableSortingOrder,
   TdDialogService} from '@covalent/core';
-import {GridOptions} from 'ag-grid/main';
 
 import {Log} from '../model/source.model';
 import {ElasticsearchService} from '../service/elasticsearch.service';

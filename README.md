@@ -33,7 +33,7 @@ LOGANALYZER allows you to work with determinate kinds of logs. In this moment, `
 
 ### Data format allowed
 #### Logback format
-LOGANALYZER works with the following format `%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\`. In the table below, you can see, in case that you don't know, what each component means:
+LOGANALYZER works with the following format `%d{yyyy-MM-dd hh:mm:ss.SSS} [%t] %5-level %logger{36} %m%n`. In the table below, you can see, in case that you don't know, what each component means:
 
 Component | What does it mean?
 :--------: | -------------
@@ -50,7 +50,7 @@ In the home page, you can find the grid which contains paginated data (each page
 ![Home](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/version1.png)
 
 ## Getting started with Spring Logs Generator
-Ensure `JAVA_HOME` environment variable is se and points to your JDK installation directory. Follo these steps:
+Ensure `JAVA_HOME` environment variable is se and points to your JDK installation directory. Follow these steps:
 1. Go to Apache Maven Project [download](https://maven.apache.org/download.cgi) page and download the Binary tar.gz archive.
 2. Extract it to the directory you wish to install Maven. The best way to do it is inside Program Files directory.
 3. Set the environment variables: `M2_HOME=C:\Program Files\apache-maven-version`, `M2=%M2_HOME%\bin`.
