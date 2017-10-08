@@ -1,11 +1,9 @@
 export interface Log {
-  level?: any;
-  crudmessage?: any;
-  version?: any;
-  host: any;
-  thread?: any;
-  message?: any;
-  class?: any;
+  id?: any;
+  entireLog?: any;
   timestamp?: string;
-  parsedDate?: Date;
+  threadName?: any;
+  level?: any;
+  loggerName?: any;
+  formattedMessage?: any;
 }

@@ -6,7 +6,7 @@ import 'rxjs/Rx';
 @Injectable()
 export class ElasticsearchService {
 
-  URL = 'http://localhost:9200/logstash-*/_search';
+  URL = 'http://localhost:9200/loganalyzer/_search';
 
   constructor(private http: Http) {
   }

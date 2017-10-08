@@ -22,8 +22,6 @@ export class HomeComponent {
 
   columnDefs: ITdDataTableColumn[];
   currentResults: number;
-  defaultFrom = new Date(new Date().valueOf() - (10 * 60 * 60 * 1000));
-  defaultTo = new Date(new Date().valueOf() - (1 * 60 * 60 * 1000));
   fromDate: Date;
   toDate: Date;
   gridOptions: GridOptions;
@@ -42,7 +40,7 @@ export class HomeComponent {
   selectable = true;
   clickable = true;
   multiple = true;
-  sortBy = 'thread';
+  sortBy = 'id';
   selectedRows: any[] = [];
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
@@ -51,11 +49,12 @@ export class HomeComponent {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.domLayout = 'autoHeight';
     this.columnDefs = [
+      {name: 'id', label: 'id', sortable: true},
       {name: 'timestamp', label: 'timestamp'},
-      {name: 'thread', label: 'thread', sortable: true},
+      {name: 'thread name', label: 'thread name'},
       {name: 'level', label: 'level'},
-      {name: 'class', label: 'class'},
-      {name: 'crudmessage', label: 'crudmessage'},
+      {name: 'class name', label: 'class'},
+      {name: 'message', label: 'message'},
     ];
     this.showBack = false;
     this.showMore = true;
@@ -73,11 +72,12 @@ export class HomeComponent {
           this.rowData = [];
           for (const log of this.logs) {
             this.rowData = this.rowData.concat({
+              id: log.id,
               timestamp: log.timestamp,
-              thread: log.thread,
+              'thread name': log.threadName,
               level: log.level,
-              class: log.class,
-              crudmessage: log.crudmessage
+              'class name': log.loggerName,
+              message: log.formattedMessage
             });
           }
           this.rowCount = this.rowData.length;
@@ -100,11 +100,12 @@ export class HomeComponent {
     this.rowData = [];
     for (const log of this.logs) {
       this.rowData = this.rowData.concat({
+        id: log.id,
         timestamp: log.timestamp,
-        thread: log.thread,
+        "thread name": log.threadName,
         level: log.level,
-        class: log.class,
-        crudmessage: log.crudmessage
+        "class name": log.loggerName,
+        "message": log.formattedMessage
       });
     }
     this.showBack = false;
@@ -172,11 +173,12 @@ export class HomeComponent {
         this.rowData = [];
         for (const log of this.logs) {
           this.rowData = this.rowData.concat({
+            id: log.id,
             timestamp: log.timestamp,
-            thread: log.thread,
+            "thread name": log.threadName,
             level: log.level,
-            class: log.class,
-            crudmessage: log.crudmessage
+            "class name": log.loggerName,
+            "message": log.formattedMessage
           });
         }
         this.showBack = true;

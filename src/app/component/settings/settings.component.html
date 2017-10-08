@@ -7,7 +7,7 @@
            [mdDatepicker]="from"
            [(ngModel)]="data.fromDate"
            placeholder="Choose from date">
-    <md-datepicker-toggle mdSuffix [for]="from"></md-datepicker-toggle>
+    <button mdSuffix [mdDatepickerToggle]="from"></button>
   </md-input-container>
   <md-datepicker #from></md-datepicker>
   <span>to</span>
@@ -16,7 +16,7 @@
            [mdDatepicker]="to"
            [(ngModel)]="data.toDate"
            placeholder="Choose to date">
-    <md-datepicker-toggle mdSuffix [for]="to"></md-datepicker-toggle>
+    <button mdSuffix [mdDatepickerToggle]="to"></button>
   </md-input-container>
   <md-datepicker #to></md-datepicker>
 </md-dialog-content>
