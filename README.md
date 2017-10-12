@@ -24,7 +24,7 @@ Now you have Elasticsearch running. You have two choices: insert manually the da
 2. **Logstash**: Execute `cd logstash`. At the root directory, create *logstash.conf*, a file which must contain the *input, filter* and *output* declaration. You can find my own declaration [here](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/logstash/logstash.conf) (note that I am using Windows OS while the development of this product, so change properly your path to data according your OS). You need a file which contains data. Right now, this file contains Apache logs and you can find it [here](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/logstash/access.log). Once all is ready, execute `bin/logstash -f logstash.conf`(Linux) or `bin\logstash -f logstash.conf`(Windows).
 3. Navigate to `localhost:5601`, create an index, `logstash-*`, and now, all your data is avaible.
 
-If you want to follow the second way, visit the tool and follow its README steps.
+If you want to follow the second way, visit the [tool](https://github.com/cvazquezlos/LOGANALYZER-ElasticsearchDataUpdater) and follow its README steps.
 
 Once your ES instance contains data and it is running, run the app:
 1. Clone this repository.
