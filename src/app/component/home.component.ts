@@ -19,28 +19,28 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent {
 
+  clickable = true;
   columnDefs: ITdDataTableColumn[];
   currentResults: number;
+  filteredData: any[];
+  filteredTotal: number;
   fromDate: Date;
-  toDate: Date;
   logs: Log[];
-  showBack: boolean;
-  showGrid: boolean;
-  showMore: boolean;
+  mavenMessages: boolean;
+  multiple = true;
   recentData: Log[];
   rowCount: number;
   rowData: any[];
-
-  filteredData: any[];
-  filteredTotal: number;
-
   searchTerm = '';
   selectable = true;
-  clickable = true;
-  multiple = true;
-  sortBy = 'id';
   selectedRows: any[] = [];
+  showBack: boolean;
+  showGrid: boolean;
+  showMore: boolean;
+  sortBy = 'id';
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+  toDate: Date;
+
 
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
@@ -131,7 +131,7 @@ export class HomeComponent {
     this.addLogs(false);
   }
 
-  openDialog() {
+  openFilterDialog() {
     const dialogRef = this.dialog.open(FilterComponent, {
       data: {fromDate: this.fromDate, toDate: this.toDate}
     });
@@ -146,6 +146,15 @@ export class HomeComponent {
           ('0' + (result.toDate.getMonth() + 1)).slice(-2),
           result.toDate.getFullYear()
         ))
+    });
+  }
+
+  openSettingsDialog() {
+    const dialogRef = this.dialog.open(SettingsComponent, {
+      data: {mavenMessages: this.mavenMessages}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.mavenMessages = result.mavenMessages;
     });
   }
 
@@ -209,7 +218,7 @@ export class FilterComponent {
 })
 export class SettingsComponent {
 
-  constructor(public dialogRef: MdDialogRef<FilterComponent>,
+  constructor(public dialogRef: MdDialogRef<SettingsComponent>,
               @Inject(MD_DIALOG_DATA) public data: any) { }
 
   onNoClick(): void {
