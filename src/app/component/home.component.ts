@@ -132,7 +132,7 @@ export class HomeComponent {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(SettingsComponent, {
+    const dialogRef = this.dialog.open(FilterComponent, {
       data: {fromDate: this.fromDate, toDate: this.toDate}
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -190,12 +190,26 @@ export class HomeComponent {
 }
 
 @Component({
+  selector: 'app-filter',
+  templateUrl: './filter/filter.component.html',
+})
+export class FilterComponent {
+
+  constructor(public dialogRef: MdDialogRef<FilterComponent>,
+              @Inject(MD_DIALOG_DATA) public data: any) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
   selector: 'app-settings',
   templateUrl: './settings/settings.component.html',
 })
 export class SettingsComponent {
 
-  constructor(public dialogRef: MdDialogRef<SettingsComponent>,
+  constructor(public dialogRef: MdDialogRef<FilterComponent>,
               @Inject(MD_DIALOG_DATA) public data: any) { }
 
   onNoClick(): void {

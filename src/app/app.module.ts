@@ -15,7 +15,8 @@ import {CovalentMarkdownModule} from '@covalent/markdown';
 
 import {AppComponent} from './app.component';
 import {HomeComponent} from './component/home.component';
-import {SettingsComponent} from './component/home.component';
+import {FilterComponent} from './component/home.component';
+import {SettingsComponent} from "./component/home.component";
 import {SharedModule} from './shared/shared.module';
 
 import {routing} from './app.routing';
@@ -31,6 +32,7 @@ const httpInterceptorProviders: Type<any>[] = [
   declarations: [
     AppComponent,
     HomeComponent,
+    FilterComponent,
     SettingsComponent
   ],
   imports: [
@@ -57,7 +59,7 @@ const httpInterceptorProviders: Type<any>[] = [
     ElasticsearchService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [SettingsComponent]
+  entryComponents: [FilterComponent, SettingsComponent]
 })
 
 export class AppModule {
