@@ -12,7 +12,7 @@ export class ElasticsearchService {
   }
 
   listAllLogs(currentResults: number) {
-    return this.http.get(this.URL + '?pretty&size=' + currentResults)
+    return this.http.get(this.URL + '?pretty&sort=id&size=' + currentResults)
       .map( (responseData) => {
         console.log(responseData.json());
         return responseData.json();

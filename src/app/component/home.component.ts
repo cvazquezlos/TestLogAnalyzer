@@ -108,6 +108,12 @@ export class HomeComponent {
     this.rowCount = this.rowData.length;
   }
 
+  evaluateResult() {
+    if (this.mavenMessages) {
+
+    }
+  }
+
   filter(): void {
     let newData: any[] = this.rowData;
     const excludedColumns: string[] = this.columnDefs
@@ -155,6 +161,7 @@ export class HomeComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       this.mavenMessages = result.mavenMessages;
+      this.evaluateResult();
     });
   }
 
