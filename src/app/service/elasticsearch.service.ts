@@ -24,14 +24,17 @@ export class ElasticsearchService {
         this.post(getURL, from, to);
         break;
     }
-    return this.http.get(this.URL)
+    return this.http.get(getURL)
       .map((responseData) => {
+        console.log('Response data: ' + responseData.json());
         return responseData.json();
       })
       .map((answer) => {
-        let result = [];
+        let result: any[];
+        result = [];
         if (answer) {
           answer.hits.hits.forEach(log => {
+            console.log('Answer: ' + log._source);
             result.push(log._source);
           })
         }

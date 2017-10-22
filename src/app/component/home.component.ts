@@ -58,7 +58,7 @@ export class HomeComponent {
   loadInfo(code: number, from?: string, to?: string) {
     this.elasticsearchService.get(code).subscribe(
       data => {
-        this.logs = [];
+        this.logs = this.logs.concat(data);
         this.rowData = [];
         for (const log of this.logs) {
           this.rowData = this.rowData.concat({
@@ -73,7 +73,7 @@ export class HomeComponent {
         this.rowCount = this.rowData.length;
       },
       error => console.log(error)
-    )
+    );
   }
 
   evaluateResult() {
