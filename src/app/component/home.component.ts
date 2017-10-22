@@ -39,7 +39,6 @@ export class HomeComponent {
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
   toDate: Date;
 
-
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.columnDefs = [
@@ -76,61 +75,6 @@ export class HomeComponent {
       error => console.log(error)
     )
   }
-
-  /*addFullLogs(real: boolean) {
-    this.elasticsearchService.listAllLogs(this.currentResults).subscribe(
-      data => {
-        if (real) {
-          this.showGrid = false;
-          this.logs = this.logs.concat(data);
-          this.rowData = [];
-          for (const log of this.logs) {
-            this.rowData = this.rowData.concat({
-              id: log.id,
-              timestamp: log.timestamp,
-              'thread name': log.threadName,
-              level: log.level,
-              'class name': log.loggerName,
-              message: log.formattedMessage
-            });
-          }
-          this.rowCount = this.rowData.length;
-          this.filteredData = this.rowData;
-          this.filteredTotal = this.rowData.length;
-          this.showGrid = true;
-        } else {
-          if (this.rowCount >= data.length) {
-            this.showMore = false;
-          }
-          this.currentResults -= 50;
-        }
-      },
-      error => console.log(error)
-    );
-  }
-
-  addJustLogs() {
-    this.elasticsearchService.listJustLogs().subscribe(
-      data => {
-        this.logs = [];
-        this.rowData = [];
-        for (const log of this.logs) {
-          this.rowData = this.rowData.concat({
-            id: log.id,
-            timestamp: log.timestamp,
-            'thread name': log.threadName,
-            level: log.level,
-            'class name': log.loggerName,
-            message: log.formattedMessage
-          });
-        }
-        this.rowCount = this.rowData.length;
-        this.filteredData = this.rowData;
-        this.filteredTotal = this.rowData.length;
-      },
-      error => console.log(error)
-    );
-  }*/
 
   evaluateResult() {
     if (this.mavenMessages) {
