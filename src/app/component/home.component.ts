@@ -58,6 +58,7 @@ export class HomeComponent {
   loadInfo(code: number, from?: string, to?: string) {
     this.elasticsearchService.get(code).subscribe(
       data => {
+        this.logs = [];
         this.logs = this.logs.concat(data);
         this.rowData = [];
         for (const log of this.logs) {
@@ -78,6 +79,7 @@ export class HomeComponent {
 
   evaluateResult() {
     if (this.mavenMessages) {
+      console.log(this.mavenMessages);
       this.loadInfo(0);
     } else {
       this.loadInfo(1);
