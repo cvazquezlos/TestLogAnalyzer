@@ -56,10 +56,10 @@ export class HomeComponent {
     this.showMore = true;
     this.currentResults = 50;
     this.logs = [];
-    this.addLogs(true);
+    this.addFullLogs(true);
   }
 
-  addLogs(real: boolean) {
+  addFullLogs(real: boolean) {
     this.elasticsearchService.listAllLogs(this.currentResults).subscribe(
       data => {
         if (real) {
@@ -91,6 +91,29 @@ export class HomeComponent {
     );
   }
 
+  addJustLogs() {
+    this.elasticsearchService.listJustLogs().subscribe(
+      data => {
+          this.logs = [];
+          this.rowData = [];
+          for (const log of this.logs) {
+            this.rowData = this.rowData.concat({
+              id: log.id,
+              timestamp: log.timestamp,
+              'thread name': log.threadName,
+              level: log.level,
+              'class name': log.loggerName,
+              message: log.formattedMessage
+            });
+          }
+          this.rowCount = this.rowData.length;
+          this.filteredData = this.rowData;
+          this.filteredTotal = this.rowData.length;
+      },
+      error => console.log(error)
+    );
+  }
+
   chargeOldData() {
     this.logs = this.recentData;
     this.rowData = [];
@@ -110,7 +133,9 @@ export class HomeComponent {
 
   evaluateResult() {
     if (this.mavenMessages) {
-
+      this.addJustLogs();
+    } else {
+      this.addFullLogs(true);
     }
   }
 
@@ -127,14 +152,6 @@ export class HomeComponent {
     this.filteredTotal = newData.length;
     newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
     this.filteredData = newData;
-  }
-
-  loadMore() {
-    this.logs = [];
-    this.currentResults += 50;
-    this.addLogs(true);
-    this.currentResults += 50;
-    this.addLogs(false);
   }
 
   openFilterDialog() {
@@ -198,6 +215,14 @@ export class HomeComponent {
       },
       error => console.log(error)
     );
+  }
+
+  private loadMore() {
+    this.logs = [];
+    this.currentResults += 50;
+    this.addFullLogs(true);
+    this.currentResults += 50;
+    this.addFullLogs(false);
   }
 
   private parseData(day: string, month: string, year: string): string {
