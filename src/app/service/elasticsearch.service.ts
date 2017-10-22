@@ -2,6 +2,7 @@ import {Headers, Http} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
+import {type} from "os";
 
 @Injectable()
 export class ElasticsearchService {
@@ -11,10 +12,49 @@ export class ElasticsearchService {
   constructor(private http: Http) {
   }
 
-  listAllLogs(currentResults: number) {
-    return this.http.get(this.URL + '?pretty&sort=id&size=' + currentResults)
+  get(type: number, from?: string, to?: string) {
+    let getURL = this.URL + '?pretty&sort=id';
+    switch (type) {
+      case 0:
+        break;
+      case 1:
+        getURL += '&q=threadName:main';
+        break;
+      case 2:
+        this.dates(getURL, from, to);
+        break;
+    }
+    return this.http.get(this.URL)
       .map( (responseData) => {
-        console.log(responseData.json());
+        return responseData.json();
+      })
+      .map((answer) => {
+        let result = [];
+        if (answer) {
+          answer.hits.hits.forEach(log => {
+            result.push(log._source);
+          })
+        }
+        return result;
+      })
+      .catch(error => Observable.throw('Fail trying to get all Elasticsearch logs.'));
+  }
+
+  private dates(getURL: string, from: string, to: string) {
+    const body = {
+      query: {
+        range: {
+          '@timestamp': {
+            gte: from.toString(),
+            lte: to.toString()
+          }
+        }
+      }
+    };
+    const headers: Headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.URL, JSON.stringify(body), { headers: headers })
+      .map( (responseData) => {
         return responseData.json();
       })
       .map((answer) => {
@@ -23,7 +63,24 @@ export class ElasticsearchService {
         if (answer) {
           answer.hits.hits.forEach(log => {
             result.push(log._source);
-            console.log(log._source);
+          })
+        }
+        return result;
+      })
+      .catch(error => Observable.throw('Fail trying to get logs between ' + from.toString() + ' and ' + to.toString()));
+  }
+
+  /*listAllLogs(currentResults: number) {
+    return this.http.get(this.URL + '?pretty&sort=id&size=' + currentResults)
+      .map( (responseData) => {
+        return responseData.json();
+      })
+      .map((answer) => {
+        let result: any[];
+        result = [];
+        if (answer) {
+          answer.hits.hits.forEach(log => {
+            result.push(log._source);
           })
         }
         return result;
@@ -34,7 +91,6 @@ export class ElasticsearchService {
   listJustLogs() {
     return this.http.get(this.URL + '?pretty&sort=id&q=threadName:main')
       .map( (responseData) => {
-        console.log(responseData.json());
         return responseData.json();
       })
       .map((answer) => {
@@ -43,15 +99,12 @@ export class ElasticsearchService {
         if (answer) {
           answer.hits.hits.forEach(log => {
             result.push(log._source);
-            console.log(log._source);
           })
         }
         return result;
       })
       .catch(error => Observable.throw('Fail trying to get all Elasticsearch logs.'));
   }
-
-
 
   listAllLogsBetweenDates(from: string, to: string) {
     const body = {
@@ -68,7 +121,6 @@ export class ElasticsearchService {
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.URL, JSON.stringify(body), { headers: headers })
       .map( (responseData) => {
-        console.log(responseData.json());
         return responseData.json();
       })
       .map((answer) => {
@@ -77,11 +129,10 @@ export class ElasticsearchService {
         if (answer) {
           answer.hits.hits.forEach(log => {
             result.push(log._source);
-            console.log(log._source);
           })
         }
         return result;
       })
       .catch(error => Observable.throw('Fail trying to get logs between ' + from.toString() + ' and ' + to.toString()));
-  }
+  }*/
 }
