@@ -1,4 +1,5 @@
-import {Headers, Http} from '@angular/http';
+import {Headers,
+  Http} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';

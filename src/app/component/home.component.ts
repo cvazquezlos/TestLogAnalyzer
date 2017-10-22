@@ -1,13 +1,14 @@
 import {Component,
   Inject} from '@angular/core';
-import {MdDialog,
-  MdDialogRef,
-  MD_DIALOG_DATA} from '@angular/material';
+import {MD_DIALOG_DATA,
+  MdDialog,
+  MdDialogRef} from '@angular/material';
 import {ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
   TdDataTableService,
   TdDataTableSortingOrder,
-  TdDialogService} from '@covalent/core';
+  TdDialogService
+} from '@covalent/core';
 
 import {Log} from '../model/source.model';
 import {ElasticsearchService} from '../service/elasticsearch.service';
@@ -28,14 +29,11 @@ export class HomeComponent {
   logs: Log[];
   mavenMessages: boolean;
   multiple = true;
-  recentData: Log[];
   rowCount: number;
   rowData: any[];
   searchTerm = '';
   selectable = true;
   selectedRows: any[] = [];
-  showBack: boolean;
-  showGrid: boolean;
   showMore: boolean;
   sortBy = 'id';
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
@@ -52,14 +50,34 @@ export class HomeComponent {
       {name: 'class name', label: 'class'},
       {name: 'message', label: 'message'},
     ];
-    this.showBack = false;
     this.showMore = true;
     this.currentResults = 50;
     this.logs = [];
-    this.addFullLogs(true);
+    this.loadInfo(0);
   }
 
-  addFullLogs(real: boolean) {
+  loadInfo(code: number, from?: string, to?: string) {
+    this.elasticsearchService.get(code).subscribe(
+      data => {
+        this.logs = [];
+        this.rowData = [];
+        for (const log of this.logs) {
+          this.rowData = this.rowData.concat({
+            id: log.id,
+            timestamp: log.timestamp,
+            'thread name': log.threadName,
+            level: log.level,
+            'class name': log.loggerName,
+            message: log.formattedMessage
+          });
+        }
+        this.rowCount = this.rowData.length;
+      },
+      error => console.log(error)
+    )
+  }
+
+  /*addFullLogs(real: boolean) {
     this.elasticsearchService.listAllLogs(this.currentResults).subscribe(
       data => {
         if (real) {
@@ -94,48 +112,31 @@ export class HomeComponent {
   addJustLogs() {
     this.elasticsearchService.listJustLogs().subscribe(
       data => {
-          this.logs = [];
-          this.rowData = [];
-          for (const log of this.logs) {
-            this.rowData = this.rowData.concat({
-              id: log.id,
-              timestamp: log.timestamp,
-              'thread name': log.threadName,
-              level: log.level,
-              'class name': log.loggerName,
-              message: log.formattedMessage
-            });
-          }
-          this.rowCount = this.rowData.length;
-          this.filteredData = this.rowData;
-          this.filteredTotal = this.rowData.length;
+        this.logs = [];
+        this.rowData = [];
+        for (const log of this.logs) {
+          this.rowData = this.rowData.concat({
+            id: log.id,
+            timestamp: log.timestamp,
+            'thread name': log.threadName,
+            level: log.level,
+            'class name': log.loggerName,
+            message: log.formattedMessage
+          });
+        }
+        this.rowCount = this.rowData.length;
+        this.filteredData = this.rowData;
+        this.filteredTotal = this.rowData.length;
       },
       error => console.log(error)
     );
-  }
-
-  chargeOldData() {
-    this.logs = this.recentData;
-    this.rowData = [];
-    for (const log of this.logs) {
-      this.rowData = this.rowData.concat({
-        id: log.id,
-        timestamp: log.timestamp,
-        'thread name': log.threadName,
-        level: log.level,
-        'class name': log.loggerName,
-        'message': log.formattedMessage
-      });
-    }
-    this.showBack = false;
-    this.rowCount = this.rowData.length;
-  }
+  }*/
 
   evaluateResult() {
     if (this.mavenMessages) {
-      this.addJustLogs();
+      this.loadInfo(0);
     } else {
-      this.addFullLogs(true);
+      this.loadInfo(1);
     }
   }
 
@@ -159,7 +160,7 @@ export class HomeComponent {
       data: {fromDate: this.fromDate, toDate: this.toDate}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.addLogsBetweenDates(
+      this.loadInfo(2,
         this.parseData(
           ('0' + result.fromDate.getDate()).slice(-2),
           ('0' + (result.fromDate.getMonth() + 1)).slice(-2),
@@ -193,38 +194,6 @@ export class HomeComponent {
     this.filter();
   }
 
-  private addLogsBetweenDates(from: string, to: string) {
-    this.elasticsearchService.listAllLogsBetweenDates(from, to).subscribe(
-      data => {
-        this.recentData = this.logs;
-        this.logs = [];
-        this.logs = this.logs.concat(data);
-        this.rowData = [];
-        for (const log of this.logs) {
-          this.rowData = this.rowData.concat({
-            id: log.id,
-            timestamp: log.timestamp,
-            'thread name': log.threadName,
-            level: log.level,
-            'class name': log.loggerName,
-            'message': log.formattedMessage
-          });
-        }
-        this.showBack = true;
-        this.rowCount = this.rowData.length;
-      },
-      error => console.log(error)
-    );
-  }
-
-  private loadMore() {
-    this.logs = [];
-    this.currentResults += 50;
-    this.addFullLogs(true);
-    this.currentResults += 50;
-    this.addFullLogs(false);
-  }
-
   private parseData(day: string, month: string, year: string): string {
     return year + '-' + month + '-' + day;
   }
@@ -237,7 +206,8 @@ export class HomeComponent {
 export class FilterComponent {
 
   constructor(public dialogRef: MdDialogRef<FilterComponent>,
-              @Inject(MD_DIALOG_DATA) public data: any) { }
+              @Inject(MD_DIALOG_DATA) public data: any) {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -251,7 +221,8 @@ export class FilterComponent {
 export class SettingsComponent {
 
   constructor(public dialogRef: MdDialogRef<SettingsComponent>,
-              @Inject(MD_DIALOG_DATA) public data: any) { }
+              @Inject(MD_DIALOG_DATA) public data: any) {
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
