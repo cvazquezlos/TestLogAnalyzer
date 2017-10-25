@@ -23,6 +23,7 @@ export class HomeComponent {
 
   clickable = true;
   columnDefs: ITdDataTableColumn[];
+  count: number;
   currentResults: number;
   filteredData: any[];
   filteredTotal: number;
@@ -54,10 +55,20 @@ export class HomeComponent {
       {name: 'class name',  label: 'class'},
       {name: 'message',     label: 'message'},
     ];
+    this.countLogs();
     this.showMore = true;
     this.currentResults = 50;
     this.logs = [];
     this.loadInfo(1);
+  }
+
+  private countLogs(){
+    this.elasticsearchService.count().subscribe(
+      count => {
+        this.count = count;
+        console.log(this.count);
+      }
+    );
   }
 
   loadInfo(code: number, from?: string, to?: string) {
