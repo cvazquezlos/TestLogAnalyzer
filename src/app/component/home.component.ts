@@ -42,12 +42,13 @@ export class HomeComponent {
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.columnDefs = [
-      {name: 'id', label: 'id', sortable: true},
-      {name: 'timestamp', label: 'timestamp'},
+      {name: 'test number', label: 'test number'},
+      {name: 'id',          label: 'id', sortable: true},
+      {name: 'timestamp',   label: 'timestamp'},
       {name: 'thread name', label: 'thread name'},
-      {name: 'level', label: 'level'},
-      {name: 'class name', label: 'class'},
-      {name: 'message', label: 'message'},
+      {name: 'level',       label: 'level'},
+      {name: 'class name',  label: 'class'},
+      {name: 'message',     label: 'message'},
     ];
     this.showMore = true;
     this.currentResults = 50;
@@ -63,6 +64,7 @@ export class HomeComponent {
         this.rowData = [];
         for (const log of this.logs) {
           this.rowData = this.rowData.concat({
+            'test number': log.testNo,
             id: log.id,
             timestamp: log.timestamp,
             'thread name': log.threadName,
