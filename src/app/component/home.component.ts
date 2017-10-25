@@ -52,7 +52,7 @@ export class HomeComponent {
     this.showMore = true;
     this.currentResults = 50;
     this.logs = [];
-    this.loadInfo(0);
+    this.loadInfo(1);
   }
 
   loadInfo(code: number, from?: string, to?: string) {
@@ -79,7 +79,6 @@ export class HomeComponent {
 
   evaluateResult() {
     if (this.mavenMessages) {
-      console.log(this.mavenMessages);
       this.loadInfo(0);
     } else {
       this.loadInfo(1);
