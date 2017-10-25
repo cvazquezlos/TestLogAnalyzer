@@ -3,7 +3,8 @@ import {Component,
 import {MD_DIALOG_DATA,
   MdDialog,
   MdDialogRef} from '@angular/material';
-import {ITdDataTableColumn,
+import {IPageChangeEvent,
+  ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
   TdDataTableService,
   TdDataTableSortingOrder,
@@ -39,6 +40,9 @@ export class HomeComponent {
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
   toDate: Date;
 
+  eventLinks: IPageChangeEvent;
+  pageSize: number = 100;
+
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.columnDefs = [
@@ -57,7 +61,7 @@ export class HomeComponent {
   }
 
   loadInfo(code: number, from?: string, to?: string) {
-    this.elasticsearchService.get(code).subscribe(
+    this.elasticsearchService.get(code, from, to).subscribe(
       data => {
         this.logs = [];
         this.logs = this.logs.concat(data);
@@ -77,6 +81,10 @@ export class HomeComponent {
       },
       error => console.log(error)
     );
+  }
+
+  public changeLinks(event: IPageChangeEvent): void {
+    this.eventLinks = event;
   }
 
   evaluateResult() {
@@ -142,6 +150,7 @@ export class HomeComponent {
   }
 
   private parseData(day: string, month: string, year: string): string {
+    console.log(year + '-' + month + '-' + day);
     return year + '-' + month + '-' + day;
   }
 }
