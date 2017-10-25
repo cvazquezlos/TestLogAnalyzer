@@ -64,8 +64,8 @@ export class HomeComponent {
         this.rowData = [];
         for (const log of this.logs) {
           this.rowData = this.rowData.concat({
-            'test number': log.testNo,
             id: log.id,
+            'test number': log.testNo,
             timestamp: log.timestamp,
             'thread name': log.threadName,
             level: log.level,
