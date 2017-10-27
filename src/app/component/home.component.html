@@ -30,7 +30,13 @@
   <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center centcer">
     <h3>No results to display.</h3>
   </div>
-  <td-paging-bar #pagingBarLinks pageLinkCount="5" [firstLast]="false" [pageSize]="100" [total]="1345" (change)="changeLinks($event)">
+  <td-paging-bar
+    #pagingBarLinks
+    pageLinkCount="5"
+    [firstLast]="false"
+    [pageSize]="pageSize"
+    [total]="totalData"
+    (change)="changeLinks($event)">
     <span hide-xs>{{pagingBarLinks.range}} of {{pagingBarLinks.total}}</span>
   </td-paging-bar>
   <div class="text-center">

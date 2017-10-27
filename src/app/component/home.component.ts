@@ -23,14 +23,15 @@ export class HomeComponent {
 
   clickable = true;
   columnDefs: ITdDataTableColumn[];
-  count: number;
   currentResults: number;
+  eventLinks: IPageChangeEvent;
   filteredData: any[];
   filteredTotal: number;
   fromDate: Date;
   logs: Log[];
   mavenMessages: boolean;
   multiple = true;
+  pageSize: number;
   rowCount: number;
   rowData: any[];
   searchTerm = '';
@@ -40,9 +41,7 @@ export class HomeComponent {
   sortBy = 'id';
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
   toDate: Date;
-
-  eventLinks: IPageChangeEvent;
-  pageSize: number = 100;
+  totalData: number;
 
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
@@ -55,6 +54,7 @@ export class HomeComponent {
       {name: 'class name',  label: 'class'},
       {name: 'message',     label: 'message'},
     ];
+    this.pageSize = 50;
     this.countLogs();
     this.showMore = true;
     this.currentResults = 50;
@@ -64,10 +64,8 @@ export class HomeComponent {
 
   private countLogs(){
     this.elasticsearchService.count().subscribe(
-      count => {
-        this.count = count;
-        console.log(this.count);
-      }
+      count => this.totalData = count,
+      error => console.log(error)
     );
   }
 
