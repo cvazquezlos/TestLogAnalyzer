@@ -14,14 +14,22 @@ export class ElasticsearchService {
   constructor(private http: Http) {
   }
 
-  count() {
-    return this.http.get(this.countURL)
+  count(type: number) {
+    let getURL = this.countURL;
+    switch (type) {
+      case 0:
+        break;
+      case 1:
+        getURL += '?q=threadName:main';
+        break;
+    }
+    return this.http.get(getURL)
       .map(response => response.json().count)
       .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
   }
 
-  get(type: number, page: number, from?: string, to?: string) {
-    let getURL = this.searchURL + '?pretty&sort=id&size=' + page;
+  get(type: number, size: number, page: number, from?: string, to?: string) {
+    let getURL = this.searchURL + '?pretty&sort=id&size=' + size + '&from=' + page;
     switch (type) {
       case 0:
         break;

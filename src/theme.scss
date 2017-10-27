@@ -18,7 +18,7 @@ $accent:  mat-palette($mat-orange, 800, A100, A400);
 $warn:    mat-palette($mat-red, 600);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$theme: mat-light-theme($primary, $accent, $warn);
+$theme: mat-light-theme($primary, $primary, $warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -32,11 +32,11 @@ $theme: mat-light-theme($primary, $accent, $warn);
 md-nav-list {
   [md-list-item].active {
     md-icon[md-list-avatar] {
-      background-color: mat-color($accent);
-      color: mat-color($accent, default-contrast)
+      background-color: mat-color($primary);
+      color: mat-color($primary, default-contrast)
     }
     md-icon[md-list-icon] {
-      color: mat-color($accent);
+      color: mat-color($primary);
     }
   }
 }
@@ -45,13 +45,17 @@ md-nav-list {
   padding-bottom: 0px;
 }
 
+.mat-button.mat-accent, .mat-icon-button.mat-accent {
+  color: mat-color($primary);
+}
+
 // Custom theme examples
 .white-orange {
   $primary2: mat-palette($mat-grey, 50);
   $accent2:  mat-palette($mat-orange, 800);
   $warn2:    mat-palette($mat-red, 600);
 
-  $white-orange: mat-light-theme($primary2, $accent2, $warn2);
+  $white-orange: mat-light-theme($primary2, $primary, $warn2);
 
   @include angular-material-theme($white-orange);
   @include covalent-theme($white-orange);

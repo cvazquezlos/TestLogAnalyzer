@@ -23,7 +23,7 @@ export class HomeComponent {
 
   clickable = true;
   columnDefs: ITdDataTableColumn[];
-  currentResults: number;
+  currentPage: number;
   eventLinks: IPageChangeEvent;
   filteredData: any[];
   filteredTotal: number;
@@ -55,22 +55,27 @@ export class HomeComponent {
       {name: 'message',     label: 'message'},
     ];
     this.pageSize = 50;
-    this.countLogs();
+    this.currentPage = 1;
+    this.countLogs(1);
     this.showMore = true;
-    this.currentResults = 50;
     this.logs = [];
-    this.loadInfo(1, this.pageSize);
+    this.loadInfo(1);
   }
 
   changeLinks(event: IPageChangeEvent): void {
     this.eventLinks = event;
+    this.pageSize = event.pageSize;
+    this.currentPage = event.page;
+    this.evaluateResult();
   }
 
   evaluateResult() {
     if (this.mavenMessages) {
-      this.loadInfo(0, this.pageSize);
+      this.loadInfo(0);
+      this.countLogs(0);
     } else {
-      this.loadInfo(1, this.pageSize);
+      this.loadInfo(1);
+      this.countLogs(1);
     }
   }
 
@@ -94,7 +99,7 @@ export class HomeComponent {
       data: {fromDate: this.fromDate, toDate: this.toDate}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.loadInfo(2, this.pageSize,
+      this.loadInfo(2,
         this.parseData(
           ('0' + result.fromDate.getDate()).slice(-2),
           ('0' + (result.fromDate.getMonth() + 1)).slice(-2),
@@ -128,15 +133,17 @@ export class HomeComponent {
     this.filter();
   }
 
-  private countLogs() {
-    this.elasticsearchService.count().subscribe(
+  private countLogs(code: number) {
+    this.elasticsearchService.count(code).subscribe(
       count => this.totalData = count,
       error => console.log(error)
     );
   }
 
-  private loadInfo(code: number, page:number, from?: string, to?: string) {
-    this.elasticsearchService.get(code, page, from, to).subscribe(
+  private loadInfo(code: number, from?: string, to?: string) {
+    let page = (this.currentPage * this.pageSize) - this.pageSize;
+    if (page < 0) page = 0;
+    this.elasticsearchService.get(code, this.pageSize, page, from, to).subscribe(
       data => {
         this.logs = [];
         this.logs = this.logs.concat(data);
