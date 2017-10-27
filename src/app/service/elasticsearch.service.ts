@@ -7,8 +7,9 @@ import 'rxjs/Rx';
 @Injectable()
 export class ElasticsearchService {
 
-  searchURL = 'http://localhost:9200/loganalyzer/_search';
-  countURL  = 'http://localhost:9200/loganalyzer/_count';
+  baseURL = 'http://localhost:9200/loganalyzer/';
+  searchURL = this.baseURL + '_search';
+  countURL  = this.baseURL + '_count';
 
   constructor(private http: Http) {
   }
@@ -19,8 +20,8 @@ export class ElasticsearchService {
       .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
   }
 
-  get(type: number, from?: string, to?: string) {
-    let getURL = this.searchURL + '?pretty&sort=id';
+  get(type: number, page: number, from?: string, to?: string) {
+    let getURL = this.searchURL + '?pretty&sort=id&size=' + page;
     switch (type) {
       case 0:
         break;

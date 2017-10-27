@@ -59,48 +59,18 @@ export class HomeComponent {
     this.showMore = true;
     this.currentResults = 50;
     this.logs = [];
-    this.loadInfo(1);
+    this.loadInfo(1, this.pageSize);
   }
 
-  private countLogs(){
-    this.elasticsearchService.count().subscribe(
-      count => this.totalData = count,
-      error => console.log(error)
-    );
-  }
-
-  loadInfo(code: number, from?: string, to?: string) {
-    this.elasticsearchService.get(code, from, to).subscribe(
-      data => {
-        this.logs = [];
-        this.logs = this.logs.concat(data);
-        this.rowData = [];
-        for (const log of this.logs) {
-          this.rowData = this.rowData.concat({
-            id: log.id,
-            'test number': log.testNo,
-            timestamp: log.timestamp,
-            'thread name': log.threadName,
-            level: log.level,
-            'class name': log.loggerName,
-            message: log.formattedMessage
-          });
-        }
-        this.rowCount = this.rowData.length;
-      },
-      error => console.log(error)
-    );
-  }
-
-  public changeLinks(event: IPageChangeEvent): void {
+  changeLinks(event: IPageChangeEvent): void {
     this.eventLinks = event;
   }
 
   evaluateResult() {
     if (this.mavenMessages) {
-      this.loadInfo(0);
+      this.loadInfo(0, this.pageSize);
     } else {
-      this.loadInfo(1);
+      this.loadInfo(1, this.pageSize);
     }
   }
 
@@ -124,7 +94,7 @@ export class HomeComponent {
       data: {fromDate: this.fromDate, toDate: this.toDate}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.loadInfo(2,
+      this.loadInfo(2, this.pageSize,
         this.parseData(
           ('0' + result.fromDate.getDate()).slice(-2),
           ('0' + (result.fromDate.getMonth() + 1)).slice(-2),
@@ -156,6 +126,36 @@ export class HomeComponent {
   search(searchTerm: string): void {
     this.searchTerm = searchTerm;
     this.filter();
+  }
+
+  private countLogs() {
+    this.elasticsearchService.count().subscribe(
+      count => this.totalData = count,
+      error => console.log(error)
+    );
+  }
+
+  private loadInfo(code: number, page:number, from?: string, to?: string) {
+    this.elasticsearchService.get(code, page, from, to).subscribe(
+      data => {
+        this.logs = [];
+        this.logs = this.logs.concat(data);
+        this.rowData = [];
+        for (const log of this.logs) {
+          this.rowData = this.rowData.concat({
+            id: log.id,
+            'test number': log.testNo,
+            timestamp: log.timestamp,
+            'thread name': log.threadName,
+            level: log.level,
+            'class name': log.loggerName,
+            message: log.formattedMessage
+          });
+        }
+        this.rowCount = this.rowData.length;
+      },
+      error => console.log(error)
+    );
   }
 
   private parseData(day: string, month: string, year: string): string {
