@@ -49,6 +49,13 @@ md-nav-list {
   color: mat-color($primary);
 }
 
+md-divider {
+  display: block;
+  border-top-style: solid;
+  border-top-width: 1px;
+  margin: 0;
+}
+
 // Custom theme examples
 .white-orange {
   $primary2: mat-palette($mat-grey, 50);

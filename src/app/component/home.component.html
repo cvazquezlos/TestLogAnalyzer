@@ -1,47 +1,45 @@
-<td-layout-nav color="primary2">
-  <div td-toolbar-content layout="row" layout-align="start center" flex>
-    <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+  <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
       <span *ngIf="(selectable && !selectedRows.length) || !selectable" class="md-title">Logs</span>
-      <span *ngIf="selectedRows.length && selectable" class="md-body-1">0 item(s) selected</span>
-    </span>
-    <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here"
-                   (searchDebounce)="search($event)" flex style="margin-right: 0px">
-    </td-search-box>
-    <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
-    <button md-icon-button mdTooltip="Settings" (click)="openSettingsDialog()"><md-icon class="md-24">settings</md-icon></button>
-    <button md-icon-button mdTooltip="Filter" (click)="openFilterDialog()"><md-icon class="md-24">filter_list</md-icon></button>
-    <button md-icon-button><md-icon class="md-24">more_vert</md-icon></button>
-  </div>
-
-  <md-divider></md-divider>
-  <td-data-table
-    #dataTable
-    [data]="rowData"
-    [columns]="columnDefs"
-    [selectable]="selectable"
-    [clickable]="clickable"
-    [multiple]="multiple"
-    [sortable]="true"
-    [sortBy]="sortBy"
-    [(ngModel)]="selectedRows"
-    [sortOrder]="sortOrder"
-    (sortChange)="sort($event)">
-  </td-data-table>
-  <div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
-    <h3>No results to display.</h3>
-  </div>
-  <td-paging-bar
-    #pagingBarLinks
-    pageLinkCount="5"
-    [firstLast]="false"
-    [pageSize]="pageSize"
-    [total]="totalData"
-    (change)="changeLinks($event)">
-    <span hide-xs>{{pagingBarLinks.range}} of {{pagingBarLinks.total}}</span>
-  </td-paging-bar>
-  <div class="text-center">
-    <ng-template #emptyGrid>
-      <md-spinner color="warn"></md-spinner>
-    </ng-template>
-  </div><br>
-</td-layout-nav>
+      <span *ngIf="selectedRows.length && selectable" class="md-body-1">{{selectedRows.length}} item(s) selected</span>
+  </span>
+  <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here"
+                 (searchDebounce)="search($event)" flex style="margin-right: 0px">
+  </td-search-box>
+  <button md-icon-button><md-icon class="md-24">view_module</md-icon></button>
+  <button md-icon-button mdTooltip="Settings" (click)="openSettingsDialog()"><md-icon class="md-24">settings</md-icon></button>
+  <button md-icon-button mdTooltip="Filter" (click)="openFilterDialog()"><md-icon class="md-24">filter_list</md-icon></button>
+  <button md-icon-button><md-icon class="md-24">more_vert</md-icon></button>
+</div>
+<md-divider></md-divider>
+<td-data-table
+  #dataTable
+  [data]="rowData"
+  [columns]="columnDefs"
+  [selectable]="selectable"
+  [clickable]="clickable"
+  [multiple]="multiple"
+  [sortable]="true"
+  [sortBy]="sortBy"
+  [(ngModel)]="selectedRows"
+  [sortOrder]="sortOrder"
+  (sortChange)="sort($event)">
+</td-data-table>
+<div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
+  <h3>No results to display.</h3>
+</div>
+<md-divider></md-divider>
+<td-paging-bar
+  #pagingBarLinks
+  pageLinkCount="5"
+  [firstLast]="false"
+  [pageSize]="pageSize"
+  [total]="totalData"
+  (change)="changeLinks($event)">
+  <span hide-xs>{{pagingBarLinks.range}} of {{pagingBarLinks.total}}</span>
+</td-paging-bar>
+<div class="text-center">
+  <ng-template #emptyGrid>
+    <md-spinner color="warn"></md-spinner>
+  </ng-template>
+</div><br>
