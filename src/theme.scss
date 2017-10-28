@@ -56,31 +56,6 @@ mat-divider {
   margin: 0;
 }
 
-.header-results, .data-results, .paging-results {
-  position: absolute;
-  left: 0;
-  width: 100%;
-}
-
-.header-results, .paging-results {
-  overflow: hidden;
-  height: 70px;
-}
-
-.header-results {
-  top: 0;
-}
-
-.data-results {
-  top: 70px;
-  bottom: 70px;
-  overflow: auto;
-}
-
-.paging-results {
-  bottom: 0;
-}
-
 // Custom theme examples
 .white-orange {
   $primary2: mat-palette($mat-grey, 50);

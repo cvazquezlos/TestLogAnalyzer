@@ -51,8 +51,8 @@ export class HomeComponent {
       {name: 'timestamp',   label: 'timestamp', width: 250},
       {name: 'thread name', label: 'thread name', width: 180},
       {name: 'level',       label: 'level', width: 180},
-      {name: 'class name',  label: 'class'},
-      {name: 'message',     label: 'message'},
+      {name: 'class name',  label: 'class', width: 430},
+      {name: 'message',     label: 'message'}
     ];
     this.pageSize = 50;
     this.currentPage = 1;
