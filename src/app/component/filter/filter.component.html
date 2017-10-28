@@ -1,4 +1,4 @@
-<h1 md-dialog-title>Filter results</h1>
+<h1 mat-dialog-title>Filter results</h1>
 <td-dialog-content>
   <h4>Filtering by date range</h4>
   <span>From</span>
@@ -12,8 +12,8 @@
   <mat-datepicker #from></mat-datepicker>
   <span>to</span>
   <mat-input-container>
-    <input mdInput
-           [mdDatepicker]="to"
+    <input matInput
+           [matDatepicker]="to"
            [(ngModel)]="data.toDate"
            placeholder="Choose to date">
     <mat-datepicker-toggle [for]="to"></mat-datepicker-toggle>

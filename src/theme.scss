@@ -29,13 +29,13 @@ $theme: mat-light-theme($primary, $primary, $warn);
 @include covalent-highlight-theme();
 
 // Active icon color in list nav
-md-nav-list {
-  [md-list-item].active {
-    md-icon[md-list-avatar] {
+mat-nav-list {
+  [mat-list-item].active {
+    mat-icon[mat-list-avatar] {
       background-color: mat-color($primary);
       color: mat-color($primary, default-contrast)
     }
-    md-icon[md-list-icon] {
+    mat-icon[mat-list-icon] {
       color: mat-color($primary);
     }
   }
@@ -54,6 +54,31 @@ mat-divider {
   border-top-style: solid;
   border-top-width: 1px;
   margin: 0;
+}
+
+.header-results, .data-results, .paging-results {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+.header-results, .paging-results {
+  overflow: hidden;
+  height: 70px;
+}
+
+.header-results {
+  top: 0;
+}
+
+.data-results {
+  top: 70px;
+  bottom: 70px;
+  overflow: auto;
+}
+
+.paging-results {
+  bottom: 0;
 }
 
 // Custom theme examples
