@@ -142,7 +142,9 @@ export class HomeComponent {
 
   private loadInfo(code: number, from?: string, to?: string) {
     let page = (this.currentPage * this.pageSize) - this.pageSize;
-    if (page < 0) page = 0;
+    if (page < 0) {
+      page = 0;
+    }
     this.elasticsearchService.get(code, this.pageSize, page, from, to).subscribe(
       data => {
         this.logs = [];
