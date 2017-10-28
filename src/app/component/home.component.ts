@@ -1,8 +1,8 @@
 import {Component,
   Inject} from '@angular/core';
-import {MD_DIALOG_DATA,
-  MdDialog,
-  MdDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef} from '@angular/material';
 import {IPageChangeEvent,
   ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
@@ -43,14 +43,14 @@ export class HomeComponent {
   toDate: Date;
   totalData: number;
 
-  constructor(private elasticsearchService: ElasticsearchService, public dialog: MdDialog,
+  constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.columnDefs = [
-      {name: 'test number', label: 'test number'},
-      {name: 'id',          label: 'id', sortable: true},
-      {name: 'timestamp',   label: 'timestamp'},
-      {name: 'thread name', label: 'thread name'},
-      {name: 'level',       label: 'level'},
+      {name: 'test number', label: 'test number', width: 100},
+      {name: 'id',          label: 'id', sortable: true, width: 60},
+      {name: 'timestamp',   label: 'timestamp', width: 250},
+      {name: 'thread name', label: 'thread name', width: 180},
+      {name: 'level',       label: 'level', width: 180},
       {name: 'class name',  label: 'class'},
       {name: 'message',     label: 'message'},
     ];
@@ -177,8 +177,8 @@ export class HomeComponent {
 })
 export class FilterComponent {
 
-  constructor(public dialogRef: MdDialogRef<FilterComponent>,
-              @Inject(MD_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<FilterComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   onNoClick(): void {
@@ -192,8 +192,8 @@ export class FilterComponent {
 })
 export class SettingsComponent {
 
-  constructor(public dialogRef: MdDialogRef<SettingsComponent>,
-              @Inject(MD_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<SettingsComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
   onNoClick(): void {

@@ -3,11 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpModule,
   JsonpModule} from '@angular/http';
-import {MdDatepickerModule,
-  MdDialogModule,
-  MdInputModule,
-  MdNativeDateModule,
-  MdProgressSpinnerModule} from '@angular/material';
 
 import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule} from '@covalent/http';
@@ -47,11 +42,6 @@ const httpInterceptorProviders: Type<any>[] = [
     CovalentMarkdownModule,
     HttpModule,
     JsonpModule,
-    MdDatepickerModule,
-    MdDialogModule,
-    MdInputModule,
-    MdNativeDateModule,
-    MdProgressSpinnerModule,
     routing,
     SharedModule
   ],

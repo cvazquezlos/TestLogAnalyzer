@@ -1,12 +1,12 @@
-<h1 md-dialog-title>Settings</h1>
-<md-dialog-content>
+<td-dialog-title>Settings</td-dialog-title>
+<td-dialog-content>
   <br>
-  <md-checkbox [(ngModel)]="data.mavenMessages" color="primary">Show generated Maven messages.</md-checkbox>
+  <mat-checkbox [(ngModel)]="data.mavenMessages" color="primary">Show generated Maven messages.</mat-checkbox>
   <br><br>
-</md-dialog-content>
-<md-dialog-actions>
+</td-dialog-content>
+<td-dialog-actions>
   <div class="dialog-buttons">
-    <button md-raised-button color="primary" tabindex="1" [md-dialog-close]="data">Save changes</button>
-    <button md-raised-button color="warn" tabindex="-1" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button color="primary" tabindex="1" [mat-dialog-close]="data">Save changes</button>
+    <button mat-raised-button color="warn" tabindex="-1" (click)="onNoClick()">Cancel</button>
   </div>
-</md-dialog-actions>
+</td-dialog-actions>

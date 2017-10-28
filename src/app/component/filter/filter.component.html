@@ -1,28 +1,28 @@
 <h1 md-dialog-title>Filter results</h1>
-<md-dialog-content>
+<td-dialog-content>
   <h4>Filtering by date range</h4>
   <span>From</span>
-  <md-input-container>
-    <input mdInput
-           [mdDatepicker]="from"
+  <mat-input-container>
+    <input matInput
+           [matDatepicker]="from"
            [(ngModel)]="data.fromDate"
            placeholder="Choose from date">
-    <button mdSuffix [mdDatepickerToggle]="from"></button>
-  </md-input-container>
-  <md-datepicker #from></md-datepicker>
+    <mat-datepicker-toggle [for]="from"></mat-datepicker-toggle>
+  </mat-input-container>
+  <mat-datepicker #from></mat-datepicker>
   <span>to</span>
-  <md-input-container>
+  <mat-input-container>
     <input mdInput
            [mdDatepicker]="to"
            [(ngModel)]="data.toDate"
            placeholder="Choose to date">
-    <button mdSuffix [mdDatepickerToggle]="to"></button>
-  </md-input-container>
-  <md-datepicker #to></md-datepicker>
-</md-dialog-content>
-<md-dialog-actions>
+    <mat-datepicker-toggle [for]="to"></mat-datepicker-toggle>
+  </mat-input-container>
+  <mat-datepicker #to></mat-datepicker>
+</td-dialog-content>
+<td-dialog-actions>
   <div class="dialog-buttons">
-    <button md-raised-button color="primary" tabindex="1" [md-dialog-close]="data">Save changes</button>
-    <button md-raised-button color="warn" tabindex="-1" (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button color="primary" tabindex="1" mat-dialog-close="data">Save changes</button>
+    <button mat-raised-button color="warn" tabindex="-1" (click)="onNoClick()">Cancel</button>
   </div>
-</md-dialog-actions>
+</td-dialog-actions>
