@@ -6,7 +6,8 @@
     <input
       matInput
       [matDatepicker]="from"
-      [(ngModel)]="data.fromDate">
+      [(ngModel)]="data.fromDate"
+      placeholder="Choose from date">
     <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
     <mat-datepicker #from></mat-datepicker>
   </mat-form-field>
@@ -15,14 +16,15 @@
     <input
       matInput
       [matDatepicker]="to"
-      [(ngModel)]="data.toDate">
+      [(ngModel)]="data.toDate"
+      placeholder="Choose to date">
     <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
     <mat-datepicker #to></mat-datepicker>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
   <div class="dialog-buttons">
-    <button mat-raised-button color="primary" tabindex="1" mat-dialog-close="data">Save changes</button>
+    <button mat-raised-button color="primary" tabindex="1" [mat-dialog-close]="data">Save changes</button>
     <button mat-raised-button color="warn" tabindex="-1" (click)="onNoClick()">Cancel</button>
   </div>
 </mat-dialog-actions>

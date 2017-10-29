@@ -99,6 +99,7 @@ export class HomeComponent {
       data: {fromDate: this.fromDate, toDate: this.toDate}
     });
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result.fromDate);
       this.loadInfo(2,
         this.parseData(
           ('0' + result.fromDate.getDate()).slice(-2),
@@ -176,6 +177,7 @@ export class HomeComponent {
 @Component({
   selector: 'app-filter',
   templateUrl: './filter/filter.component.html',
+  styleUrls: ['./filter/filter.component.css']
 })
 export class FilterComponent {
 
