@@ -1,4 +1,4 @@
-<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm" [style.height.px]="70">
 <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
     <span *ngIf="(selectable && !selectedRows.length) || !selectable" class="mat-title">Logs</span>
     <span *ngIf="selectedRows.length && selectable" class="mat-body-1">{{selectedRows.length}} item(s) selected</span>
@@ -6,10 +6,10 @@
 <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here"
                (searchDebounce)="search($event)" flex style="margin-right: 0px">
 </td-search-box>
-<button mat-icon-button><mat-icon class="mat-24">view_module</mat-icon></button>
-<button mat-icon-button matTooltip="Settings" (click)="openSettingsDialog()"><mat-icon class="mat-24">settings</mat-icon></button>
-<button mat-icon-button matTooltip="Filter" (click)="openFilterDialog()"><mat-icon class="mat-24">filter_list</mat-icon></button>
-<button mat-icon-button><mat-icon class="mat-24">more_vert</mat-icon></button>
+<button mat-icon-button><mat-icon>view_module</mat-icon></button>
+<button mat-icon-button matTooltip="Settings" (click)="openSettingsDialog()"><mat-icon>settings</mat-icon></button>
+<button mat-icon-button matTooltip="Filter" (click)="openFilterDialog()"><mat-icon>filter_list</mat-icon></button>
+<button mat-icon-button><mat-icon>more_vert</mat-icon></button>
 </div>
 <mat-divider></mat-divider>
 <td-data-table
@@ -24,7 +24,9 @@
   [sortBy]="sortBy"
   [(ngModel)]="selectedRows"
   [sortOrder]="sortOrder"
-  (sortChange)="sort($event)">
+  (sortChange)="sort($event)"
+  [style.height.px]="600"
+  [style.width.%]="100">
 </td-data-table>
 <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
   <h3>No results to display.</h3>
