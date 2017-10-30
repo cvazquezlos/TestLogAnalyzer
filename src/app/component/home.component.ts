@@ -16,8 +16,7 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './home.component.html'
 })
 
 export class HomeComponent {
@@ -168,10 +167,9 @@ export class HomeComponent {
         this.logs = this.logs.concat(data);
         this.rowData = [];
         for (const log of this.logs) {
-          log = this.parseLog(log);
           this.rowData = this.rowData.concat({
-            id          : log.id,
-            'test'      : log.testNo,
+            id          : (+log.id),
+            'test'      : (+log.testNo),
             timestamp   : log.timestamp,
             'thread'    : log.threadName,
             level       : log.level,
@@ -188,17 +186,6 @@ export class HomeComponent {
   private parseData(day: string, month: string, year: string): string {
     console.log(year + '-' + month + '-' + day);
     return year + '-' + month + '-' + day;
-  }
-  
-  private parseLog(old: Log): Log {
-    let new = old;
-    new.id = +old.id;
-    new.testNo = +old.testNo;
-    let value = old.timestamp.split(' ');
-    new.timestamp = value[1];
-    value = old.loggerName.split('.');
-    new.loggerName = value[3];
-    return new;
   }
 }
 
