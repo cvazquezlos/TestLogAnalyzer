@@ -16,7 +16,8 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 
 export class HomeComponent {
@@ -36,23 +37,24 @@ export class HomeComponent {
   rowData: any[];
   searchTerm = '';
   selectable = true;
-  selectedRows: any[] = [];
+  selectedRows: Log[] = [];
   showMore: boolean;
   sortBy = 'id';
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+  subtitle = '';
   toDate: Date;
   totalData: number;
 
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.columnDefs = [
-      {name: 'test number', label: 'test number', width: 100},
-      {name: 'id',          label: 'id', sortable: true, width: 60},
-      {name: 'timestamp',   label: 'timestamp', width: 250},
-      {name: 'thread name', label: 'thread name', width: 180},
-      {name: 'level',       label: 'level', width: 180},
-      {name: 'class name',  label: 'class', width: 420},
-      {name: 'message',     label: 'message'}
+      {name: 'test',       label: 'test',               width: 40},
+      {name: 'id',         label: 'id', sortable: true, width: 60},
+      {name: 'timestamp',  label: 'timestamp',          width: 220},
+      {name: 'thread',     label: 'thread',             width: 65},
+      {name: 'level',      label: 'level',              width: 70},
+      {name: 'class name', label: 'class',              width: 420},
+      {name: 'message',    label: 'message',            width: 500}
     ];
     this.pageSize = 50;
     this.currentPage = 1;
@@ -134,11 +136,25 @@ export class HomeComponent {
     this.filter();
   }
 
+  tostring(id: number): void {
+    let log = this.findById(id);
+    this.subtitle = log.entireLog;
+  }
+
   private countLogs(code: number) {
     this.elasticsearchService.count(code).subscribe(
       count => this.totalData = count,
       error => console.log(error)
     );
+  }
+
+  private findById(id: number): any {
+    for (let log of this.logs) {
+      if (id == log.id) {
+        return log;
+      }
+    }
+    return -1;
   }
 
   private loadInfo(code: number, from?: string, to?: string) {
@@ -152,14 +168,15 @@ export class HomeComponent {
         this.logs = this.logs.concat(data);
         this.rowData = [];
         for (const log of this.logs) {
+          log = this.parseLog(log);
           this.rowData = this.rowData.concat({
-            id: log.id,
-            'test number': log.testNo,
-            timestamp: log.timestamp,
-            'thread name': log.threadName,
-            level: log.level,
+            id          : log.id,
+            'test'      : log.testNo,
+            timestamp   : log.timestamp,
+            'thread'    : log.threadName,
+            level       : log.level,
             'class name': log.loggerName,
-            message: log.formattedMessage
+            message     : log.formattedMessage
           });
         }
         this.rowCount = this.rowData.length;
@@ -171,6 +188,17 @@ export class HomeComponent {
   private parseData(day: string, month: string, year: string): string {
     console.log(year + '-' + month + '-' + day);
     return year + '-' + month + '-' + day;
+  }
+  
+  private parseLog(old: Log): Log {
+    let new = old;
+    new.id = +old.id;
+    new.testNo = +old.testNo;
+    let value = old.timestamp.split(' ');
+    new.timestamp = value[1];
+    value = old.loggerName.split('.');
+    new.loggerName = value[3];
+    return new;
   }
 }
 
