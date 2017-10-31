@@ -47,13 +47,13 @@ export class HomeComponent {
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.columnDefs = [
-      {name: 'test',       label: 'test',               width: 40},
-      {name: 'id',         label: 'id', sortable: true, width: 60},
-      {name: 'timestamp',  label: 'timestamp',          width: 220},
-      {name: 'thread',     label: 'thread',             width: 65},
-      {name: 'level',      label: 'level',              width: 70},
-      {name: 'class name', label: 'class',              width: 420},
-      {name: 'message',    label: 'message',            width: 500}
+      {name: 'test',       label: 'test'},
+      {name: 'id',         label: 'id', sortable: true},
+      {name: 'timestamp',  label: 'timestamp'},
+      {name: 'thread',     label: 'thread'},
+      {name: 'level',      label: 'level'},
+      {name: 'class name', label: 'class', width: 500},
+      {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
     ];
     this.pageSize = 50;
     this.currentPage = 1;
@@ -136,7 +136,7 @@ export class HomeComponent {
   }
 
   tostring(id: number): void {
-    let log = this.findById(id);
+    const log = this.findById(id);
     this.subtitle = log.entireLog;
   }
 
@@ -148,8 +148,8 @@ export class HomeComponent {
   }
 
   private findById(id: number): any {
-    for (let log of this.logs) {
-      if (id == log.id) {
+    for (const log of this.logs) {
+      if (id === log.id) {
         return log;
       }
     }
@@ -170,7 +170,7 @@ export class HomeComponent {
           this.rowData = this.rowData.concat({
             id          : (+log.id),
             'test'      : (+log.testNo),
-            timestamp   : log.timestamp,
+            timestamp   : (log.timestamp.split(' '))[0],
             'thread'    : log.threadName,
             level       : log.level,
             'class name': log.loggerName,
