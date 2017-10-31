@@ -24,10 +24,11 @@
       [sortable]="true"
       [sortBy]="sortBy"
       [(ngModel)]="selectedRows"
-      (ngModelChange)="tostring(selectedRows[0].id)"
+      (ngModelChange)="selectLog(selectedRows[0].id)"
+      (rowClick)="rowClick($event)"
       [sortOrder]="sortOrder"
       (sortChange)="sort($event)"
-      [style.height.em]="20"
+      [style.height.em]="30"
       [style.width.%]="100">
     </td-data-table>
     <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
@@ -59,5 +60,36 @@
   </mat-card-title>
   <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
   <mat-divider></mat-divider>
-  <mat-card-content></mat-card-content>
+  <mat-card-content>
+    You can compare the selected log just clicking other entry or you can compare it with the same logs in different
+    tests clicking it again.
+    <mat-table #comparationTable [dataSource]="dataSourceComp">
+      <ng-container matColumnDef="logID">
+        <mat-header-cell *matHeaderCellDef>id</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="logTimestamp">
+        <mat-header-cell *matHeaderCellDef>timestamp</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.timestamp}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="logThread">
+        <mat-header-cell *matHeaderCellDef>thread</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.thread}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="logLevel">
+        <mat-header-cell *matHeaderCellDef>level</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.level}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="logClass">
+        <mat-header-cell *matHeaderCellDef>class</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.class}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="logMessage">
+        <mat-header-cell *matHeaderCellDef>message</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.message}}</mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="comparationCols"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: comparationCols;"></mat-row>
+    </mat-table>
+  </mat-card-content>
 </mat-card>

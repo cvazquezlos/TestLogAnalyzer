@@ -1,3 +1,4 @@
+import {DataSource} from '@angular/cdk/collections';
 import {Component,
   Inject} from '@angular/core';
 import {MAT_DIALOG_DATA,
@@ -10,6 +11,8 @@ import {IPageChangeEvent,
   TdDataTableSortingOrder,
   TdDialogService
 } from '@covalent/core';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 import {Log} from '../model/source.model';
 import {ElasticsearchService} from '../service/elasticsearch.service';
@@ -23,7 +26,10 @@ export class HomeComponent {
 
   clickable = true;
   columnDefs: ITdDataTableColumn[];
+  comparationCols: any[];
+  comparationData: any[];
   currentPage: number;
+  dataSourceComp: DataSourceComp;
   eventLinks: IPageChangeEvent;
   filteredData: any[];
   filteredTotal: number;
@@ -34,8 +40,10 @@ export class HomeComponent {
   pageSize: number;
   rowCount: number;
   rowData: any[];
+  rowClicked: Log;
   searchTerm = '';
   selectable = true;
+  selectedLog: Log;
   selectedRows: Log[] = [];
   showMore: boolean;
   sortBy = 'id';
@@ -124,6 +132,11 @@ export class HomeComponent {
     });
   }
 
+  rowClick(event: any): void {
+    this.rowClicked = this.findById(event.row.id);
+    this.updatingCard();
+  }
+
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
     this.sortBy = sortEvent.name;
     this.sortOrder = sortEvent.order;
@@ -135,9 +148,15 @@ export class HomeComponent {
     this.filter();
   }
 
-  tostring(id: number): void {
-    const log = this.findById(id);
-    this.subtitle = log.entireLog;
+  selectLog(id: number): void {
+    this.selectedLog = this.findById(id);
+    this.subtitle = this.selectedLog.entireLog;
+  }
+
+  updatingCard(): void {
+    this.comparationCols = ['logID', 'logTimestamp', 'logThread', 'logLevel', 'logClass', 'logMessage'];
+    this.comparationData = [this.selectedLog, this.rowClicked];
+    this.dataSourceComp = new DataSourceComp(this.comparationData);
   }
 
   private countLogs(code: number) {
@@ -149,7 +168,7 @@ export class HomeComponent {
 
   private findById(id: number): any {
     for (const log of this.logs) {
-      if (id === log.id) {
+      if (id == log.id) {
         return log;
       }
     }
@@ -218,4 +237,20 @@ export class SettingsComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+}
+
+export class DataSourceComp extends DataSource<any> {
+
+  data: any[];
+
+  constructor(data: any[]) {
+    super();
+    this.data = data;
+  }
+  /** Connect function called by the table to retrieve one stream containing the data to render. */
+  connect(): Observable<Element[]> {
+    return Observable.of(this.data);
+  }
+
+  disconnect() {}
 }
