@@ -168,7 +168,7 @@ export class HomeComponent {
 
   private findById(id: number): any {
     for (const log of this.logs) {
-      if (id == log.id) {
+      if (id == (+log.id)) {
         return log;
       }
     }

@@ -74,7 +74,7 @@
       </ng-container>
       <ng-container matColumnDef="logThread">
         <mat-header-cell *matHeaderCellDef>thread</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.thread}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.threadName}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="logLevel">
         <mat-header-cell *matHeaderCellDef>level</mat-header-cell>
@@ -82,11 +82,11 @@
       </ng-container>
       <ng-container matColumnDef="logClass">
         <mat-header-cell *matHeaderCellDef>class</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.class}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.loggerName}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="logMessage">
         <mat-header-cell *matHeaderCellDef>message</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.message}}</mat-cell>
+        <mat-cell *matCellDef="let element">{{element.formattedMessage}}</mat-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="comparationCols"></mat-header-row>
       <mat-row *matRowDef="let row; columns: comparationCols;"></mat-row>
