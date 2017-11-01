@@ -64,10 +64,8 @@
     You can compare the selected log just clicking other entry or you can compare it with the same logs in different
     tests clicking it again.
     <td-data-table
-      #comparisionTable
       [data]="comparisonRowData"
-      [columns]="comparisonColumnDefs"
-      *ngIf="comparisonShow">
+      [columns]="comparisonColumnDefs">
     </td-data-table>
   </mat-card-content>
 </mat-card>

@@ -21,7 +21,7 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent {
 
-  comparisonColumnDefs: any[];
+  comparisonColumnDefs: ITdDataTableColumn[];
   comparisonRowData   : any[];
   comparisonShow      : boolean;
 
@@ -32,7 +32,7 @@ export class HomeComponent {
   dataPageSize        : number;
   dataRowData         : any[];
   dataSelectable      : boolean;
-  dataSelectedRows    : Log[];
+  dataSelectedRows    : Log[] = [];
   dataSortBy          : string;
   dataSortOrder       : TdDataTableSortingOrder;
   dataTotalData       : number;
@@ -63,12 +63,10 @@ export class HomeComponent {
     ];
     this.comparisonShow   = false;
     this.comparisonRowData = [];
-
     this.dataClickable = true;
     this.dataCurrentPage = 1;
     this.dataMultiple = true;
     this.dataPageSize = 50;
-    this.dataSelectedRows = [];
     this.dataSelectable = true;
     this.dataSortBy = 'id';
     this.dataSortOrder = TdDataTableSortingOrder.Descending;
@@ -172,15 +170,16 @@ export class HomeComponent {
       {name: 'class name', label: 'class', width: 500},
       {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
     ];
+    this.comparisonRowData = [];
     const logs = [this.selectedLog, this.rowClicked];
-    for (let log of logs) {
-      this.comparisonRowData.concat({
-        id          : (+log.id),
-        timestamp   : log.timestamp,
+    for (const log of logs) {
+      this.comparisonRowData = this.comparisonRowData.concat({
+        'id'        : log.id,
+        'timestamp' : log.timestamp,
         'thread'    : log.threadName,
-        level       : log.level,
+        'level'     : log.level,
         'class name': log.loggerName,
-        message     : log.formattedMessage
+        'message'   : log.formattedMessage
       });
     }
     this.comparisonShow = true;
