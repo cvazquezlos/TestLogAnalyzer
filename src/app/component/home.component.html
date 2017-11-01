@@ -15,18 +15,18 @@
   <mat-card-content>
     <td-data-table
       #dataTable
-      [data]="rowData"
-      [columns]="columnDefs"
-      [selectable]="selectable"
+      [data]="dataRowData"
+      [columns]="dataColumnDefs"
+      [selectable]="dataSelectable"
       [multiple]="false"
-      [clickable]="clickable"
-      [multiple]="multiple"
+      [clickable]="dataClickable"
+      [multiple]="dataMultiple"
       [sortable]="true"
-      [sortBy]="sortBy"
-      [(ngModel)]="selectedRows"
-      (ngModelChange)="selectLog(selectedRows[0].id)"
+      [sortBy]="dataSortBy"
+      [(ngModel)]="dataSelectedRows"
+      (ngModelChange)="selectLog(dataSelectedRows[0].id)"
       (rowClick)="rowClick($event)"
-      [sortOrder]="sortOrder"
+      [sortOrder]="dataSortOrder"
       (sortChange)="sort($event)"
       [style.height.em]="30"
       [style.width.%]="100">
@@ -39,11 +39,11 @@
         #pagingBarLinks
         pageLinkCount="5"
         [firstLast]="false"
-        [pageSize]="pageSize"
-        [total]="totalData"
+        [pageSize]="dataPageSize"
+        [total]="dataTotalData"
         (change)="changeLinks($event)">
         <span hide-xs>Rows per page:</span>
-        <mat-select [style.width.px]="50" [(ngModel)]="pageSize">
+        <mat-select [style.width.px]="50" [(ngModel)]="dataPageSize">
           <mat-option *ngFor="let size of [50,100,200,500]" [value]="size">
             {{size}}
           </mat-option>
@@ -52,7 +52,7 @@
       </td-paging-bar>
   </mat-card-content>
 </mat-card>
-<mat-card *ngIf="selectedRows.length && selectable">
+<mat-card *ngIf="dataSelectedRows.length && dataSelectable">
   <mat-card-title>
     <div layout="row" layout-align="start center" class="pad-left-xxs pad-right-xxs" [style.height.em]="1">
       <span *ngIf="true" class="push-left-xxs">Log selected</span>
@@ -63,33 +63,11 @@
   <mat-card-content>
     You can compare the selected log just clicking other entry or you can compare it with the same logs in different
     tests clicking it again.
-    <mat-table #comparationTable [dataSource]="dataSourceComp">
-      <ng-container matColumnDef="logID">
-        <mat-header-cell *matHeaderCellDef>id</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="logTimestamp">
-        <mat-header-cell *matHeaderCellDef>timestamp</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.timestamp}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="logThread">
-        <mat-header-cell *matHeaderCellDef>thread</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.threadName}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="logLevel">
-        <mat-header-cell *matHeaderCellDef>level</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.level}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="logClass">
-        <mat-header-cell *matHeaderCellDef>class</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.loggerName}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="logMessage">
-        <mat-header-cell *matHeaderCellDef>message</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.formattedMessage}}</mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="comparationCols"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: comparationCols;"></mat-row>
-    </mat-table>
+    <td-data-table
+      #comparisionTable
+      [data]="comparisonRowData"
+      [columns]="comparisonColumnDefs"
+      *ngIf="comparisonShow">
+    </td-data-table>
   </mat-card-content>
 </mat-card>

@@ -1,4 +1,3 @@
-import {DataSource} from '@angular/cdk/collections';
 import {Component,
   Inject} from '@angular/core';
 import {MAT_DIALOG_DATA,
@@ -11,8 +10,6 @@ import {IPageChangeEvent,
   TdDataTableSortingOrder,
   TdDialogService
 } from '@covalent/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 
 import {Log} from '../model/source.model';
 import {ElasticsearchService} from '../service/elasticsearch.service';
@@ -24,37 +21,38 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent {
 
-  clickable = true;
-  columnDefs: ITdDataTableColumn[];
-  comparationCols: any[];
-  comparationData: any[];
-  currentPage: number;
-  dataSourceComp: DataSourceComp;
-  eventLinks: IPageChangeEvent;
-  filteredData: any[];
-  filteredTotal: number;
-  fromDate: Date;
-  logs: Log[];
-  mavenMessages: boolean;
-  multiple = true;
-  pageSize: number;
-  rowCount: number;
-  rowData: any[];
-  rowClicked: Log;
-  searchTerm = '';
-  selectable = true;
-  selectedLog: Log;
-  selectedRows: Log[] = [];
-  showMore: boolean;
-  sortBy = 'id';
-  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
-  subtitle = '';
-  toDate: Date;
-  totalData: number;
+  comparisonColumnDefs: any[];
+  comparisonRowData   : any[];
+  comparisonShow      : boolean;
+
+  dataClickable       : boolean;
+  dataColumnDefs      : ITdDataTableColumn[];
+  dataCurrentPage     : number;
+  dataMultiple        : boolean;
+  dataPageSize        : number;
+  dataRowData         : any[];
+  dataSelectable      : boolean;
+  dataSelectedRows    : Log[];
+  dataSortBy          : string;
+  dataSortOrder       : TdDataTableSortingOrder;
+  dataTotalData       : number;
+
+  eventLinks          : IPageChangeEvent;
+  filteredData        : any[];
+  filteredTotal       : number;
+  fromDate            : Date;
+  logs                : Log[];
+  mavenMessages       : boolean;
+  rowCount            : number;
+  rowClicked          : Log;
+  searchTerm          : string;
+  selectedLog         : Log;
+  subtitle            : string;
+  toDate              : Date;
 
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
-    this.columnDefs = [
+    this.dataColumnDefs = [
       {name: 'test',       label: 'test'},
       {name: 'id',         label: 'id', sortable: true},
       {name: 'timestamp',  label: 'timestamp'},
@@ -63,18 +61,30 @@ export class HomeComponent {
       {name: 'class name', label: 'class', width: 500},
       {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
     ];
-    this.pageSize = 50;
-    this.currentPage = 1;
+    this.comparisonShow   = false;
+    this.comparisonRowData = [];
+
+    this.dataClickable = true;
+    this.dataCurrentPage = 1;
+    this.dataMultiple = true;
+    this.dataPageSize = 50;
+    this.dataSelectedRows = [];
+    this.dataSelectable = true;
+    this.dataSortBy = 'id';
+    this.dataSortOrder = TdDataTableSortingOrder.Descending;
+
+    this.searchTerm = '';
+    this.subtitle = '';
+
     this.countLogs(1);
-    this.showMore = true;
     this.logs = [];
     this.loadInfo(1);
   }
 
   changeLinks(event: IPageChangeEvent): void {
     this.eventLinks = event;
-    this.pageSize = event.pageSize;
-    this.currentPage = event.page;
+    this.dataPageSize = event.pageSize;
+    this.dataCurrentPage = event.page;
     this.evaluateResult();
   }
 
@@ -89,8 +99,8 @@ export class HomeComponent {
   }
 
   filter(): void {
-    let newData: any[] = this.rowData;
-    const excludedColumns: string[] = this.columnDefs
+    let newData: any[] = this.dataRowData;
+    const excludedColumns: string[] = this.dataColumnDefs
       .filter((column: ITdDataTableColumn) => {
         return ((column.filter === undefined && column.hidden === true) ||
           (column.filter !== undefined && column.filter === false));
@@ -99,7 +109,7 @@ export class HomeComponent {
       });
     newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
     this.filteredTotal = newData.length;
-    newData = this._dataTableService.sortData(newData, this.sortBy, this.sortOrder);
+    newData = this._dataTableService.sortData(newData, this.dataSortBy, this.dataSortOrder);
     this.filteredData = newData;
   }
 
@@ -138,8 +148,8 @@ export class HomeComponent {
   }
 
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
-    this.sortBy = sortEvent.name;
-    this.sortOrder = sortEvent.order;
+    this.dataSortBy = sortEvent.name;
+    this.dataSortOrder = sortEvent.order;
     this.filter();
   }
 
@@ -154,21 +164,38 @@ export class HomeComponent {
   }
 
   updatingCard(): void {
-    this.comparationCols = ['logID', 'logTimestamp', 'logThread', 'logLevel', 'logClass', 'logMessage'];
-    this.comparationData = [this.selectedLog, this.rowClicked];
-    this.dataSourceComp = new DataSourceComp(this.comparationData);
+    this.comparisonColumnDefs = [
+      {name: 'id',         label: 'id'},
+      {name: 'timestamp',  label: 'timestamp'},
+      {name: 'thread',     label: 'thread'},
+      {name: 'level',      label: 'level'},
+      {name: 'class name', label: 'class', width: 500},
+      {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
+    ];
+    const logs = [this.selectedLog, this.rowClicked];
+    for (let log of logs) {
+      this.comparisonRowData.concat({
+        id          : (+log.id),
+        timestamp   : log.timestamp,
+        'thread'    : log.threadName,
+        level       : log.level,
+        'class name': log.loggerName,
+        message     : log.formattedMessage
+      });
+    }
+    this.comparisonShow = true;
   }
 
   private countLogs(code: number) {
     this.elasticsearchService.count(code).subscribe(
-      count => this.totalData = count,
+      count => this.dataTotalData = count,
       error => console.log(error)
     );
   }
 
   private findById(id: number): any {
     for (const log of this.logs) {
-      if (id == (+log.id)) {
+      if (+id == +log.id) {
         return log;
       }
     }
@@ -176,17 +203,17 @@ export class HomeComponent {
   }
 
   private loadInfo(code: number, from?: string, to?: string) {
-    let page = (this.currentPage * this.pageSize) - this.pageSize;
+    let page = (this.dataCurrentPage * this.dataPageSize) - this.dataPageSize;
     if (page < 0) {
       page = 0;
     }
-    this.elasticsearchService.get(code, this.pageSize, page, from, to).subscribe(
+    this.elasticsearchService.get(code, this.dataPageSize, page, from, to).subscribe(
       data => {
         this.logs = [];
         this.logs = this.logs.concat(data);
-        this.rowData = [];
+        this.dataRowData = [];
         for (const log of this.logs) {
-          this.rowData = this.rowData.concat({
+          this.dataRowData = this.dataRowData.concat({
             id          : (+log.id),
             'test'      : (+log.testNo),
             timestamp   : (log.timestamp.split(' '))[0],
@@ -196,7 +223,7 @@ export class HomeComponent {
             message     : log.formattedMessage
           });
         }
-        this.rowCount = this.rowData.length;
+        this.rowCount = this.dataRowData.length;
       },
       error => console.log(error)
     );
@@ -237,20 +264,4 @@ export class SettingsComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
-}
-
-export class DataSourceComp extends DataSource<any> {
-
-  data: any[];
-
-  constructor(data: any[]) {
-    super();
-    this.data = data;
-  }
-  /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<Element[]> {
-    return Observable.of(this.data);
-  }
-
-  disconnect() {}
 }
