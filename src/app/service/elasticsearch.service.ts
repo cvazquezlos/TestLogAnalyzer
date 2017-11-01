@@ -28,18 +28,23 @@ export class ElasticsearchService {
       .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
   }
 
-  get(type: number, size: number, page: number, from?: string, to?: string) {
-    let getURL = this.searchURL + '?pretty&sort=id&size=' + size + '&from=' + page;
+  submit(type: number, size: number, page: number, from?: string, to?: string) {
+    let getURL = this.searchURL + '?pretty&sort=id';
+    const values = '&size=' + size + '&from=' + page;
     switch (type) {
       case 0:
-        break;
+        return this.get(getURL + values);
       case 1:
-        getURL += '&q=threadName:main';
-        break;
+        getURL += values + '&q=threadName:main';
+        return this.get(getURL);
       case 2:
-        this.post(getURL, from, to);
+        return this.post(this.searchURL, from, to);
+      case 3:
         break;
     }
+  }
+
+  private get(getURL: string) {
     return this.http.get(getURL)
       .map((responseData) => {
         console.log('Response data: ' + responseData.json());
@@ -56,24 +61,26 @@ export class ElasticsearchService {
         }
         return result;
       })
-      .catch(error => Observable.throw('Fail trying to get all Elasticsearch logs.'));
+      .catch(error => Observable.throw('Fail trying to submit all Elasticsearch logs.'));
   }
 
-  post(getURL: string, from: string, to: string) {
+  private post(getURL: string, from: string, to: string) {
     const body = {
       query: {
         range: {
-          '@timestamp': {
-            gte: from.toString(),
-            lte: to.toString()
+          'timestamp': {
+            gte: "2017-10-20 19:27:03.027",
+            lte: "2017-10-23 19:27:03.027"
           }
         }
       }
     };
     const headers: Headers = new Headers();
+    console.log(JSON.stringify(body));
     headers.append('Content-Type', 'application/json');
     return this.http.post(this.searchURL, JSON.stringify(body), {headers: headers})
       .map((responseData) => {
+      console.log(responseData.json());
         return responseData.json();
       })
       .map((answer) => {
@@ -86,6 +93,6 @@ export class ElasticsearchService {
         }
         return result;
       })
-      .catch(error => Observable.throw('Fail trying to get logs between ' + from.toString() + ' and ' + to.toString()));
+      .catch(error => Observable.throw('Fail trying to submit logs between ' + from.toString() + ' and ' + to.toString()));
   }
 }

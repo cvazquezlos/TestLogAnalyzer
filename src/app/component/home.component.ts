@@ -171,7 +171,13 @@ export class HomeComponent {
       {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
     ];
     this.comparisonRowData = [];
-    const logs = [this.selectedLog, this.rowClicked];
+    let logs: any[];
+    if (this.selectedLog !== this.rowClicked) {
+      logs = [this.selectedLog, this.rowClicked];
+    } else {
+      console.log('Equals');
+      logs = [this.selectedLog, this.rowClicked];
+    }
     for (const log of logs) {
       this.comparisonRowData = this.comparisonRowData.concat({
         'id'        : log.id,
@@ -194,7 +200,7 @@ export class HomeComponent {
 
   private findById(id: number): any {
     for (const log of this.logs) {
-      if (+id == +log.id) {
+      if (+id === +log.id) {
         return log;
       }
     }
@@ -206,7 +212,7 @@ export class HomeComponent {
     if (page < 0) {
       page = 0;
     }
-    this.elasticsearchService.get(code, this.dataPageSize, page, from, to).subscribe(
+    this.elasticsearchService.submit(code, this.dataPageSize, page, from, to).subscribe(
       data => {
         this.logs = [];
         this.logs = this.logs.concat(data);
@@ -229,8 +235,7 @@ export class HomeComponent {
   }
 
   private parseData(day: string, month: string, year: string): string {
-    console.log(year + '-' + month + '-' + day);
-    return year + '-' + month + '-' + day;
+    return year + '-' + month + '-' + day + ' 00:00:00.000';
   }
 }
 
