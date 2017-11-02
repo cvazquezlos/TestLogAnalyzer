@@ -30,17 +30,19 @@ export class ElasticsearchService {
 
   submit(type: number, size: number, page: number, value1?: string, value2?: string) {
     let getURL = this.searchURL + '?pretty&sort=id';
-    const values = '&size=' + size + '&from=' + page;
+    const values1 = '&size=' + size;
+    const values2 = '&from=' + page;
     switch (type) {
       case 0:
-        return this.get(getURL + values);
+        return this.get(getURL + values1 + values2);
       case 1:
-        getURL += values + '&q=threadName:main';
-        return this.get(getURL);
+        return this.get(getURL + values1 + values2 + '&q=threadName:main');
       case 2:
         return this.post(0, getURL, value1, value2);
       case 3:
         return this.post(1, getURL, value1);
+      case 4:
+        return this.get(getURL + values1);
     }
   }
 
@@ -67,8 +69,13 @@ export class ElasticsearchService {
     switch (code) {
       case 0:
         body = {
-          query : {
-            match_all : {}
+          "query": {
+            "range": {
+              "timestamp": {
+                "gte": value1.toString(),
+                "lte": value2.toString()
+              }
+            }
           }
         };
         break;
