@@ -28,7 +28,7 @@ export class ElasticsearchService {
       .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
   }
 
-  submit(type: number, size: number, page: number, from?: string, to?: string) {
+  submit(type: number, size: number, page: number, value1?: string, value2?: string) {
     let getURL = this.searchURL + '?pretty&sort=id';
     const values = '&size=' + size + '&from=' + page;
     switch (type) {
@@ -38,16 +38,15 @@ export class ElasticsearchService {
         getURL += values + '&q=threadName:main';
         return this.get(getURL);
       case 2:
-        return this.post(this.searchURL, from, to);
+        return this.post(0, getURL, value1, value2);
       case 3:
-        break;
+        return this.post(1, getURL, value1);
     }
   }
 
   private get(getURL: string) {
     return this.http.get(getURL)
       .map((responseData) => {
-        console.log('Response data: ' + responseData.json());
         return responseData.json();
       })
       .map((answer) => {
@@ -55,32 +54,38 @@ export class ElasticsearchService {
         result = [];
         if (answer) {
           answer.hits.hits.forEach(log => {
-            console.log('Answer: ' + log._source);
             result.push(log._source);
           })
         }
         return result;
       })
-      .catch(error => Observable.throw('Fail trying to submit all Elasticsearch logs.'));
+      .catch(error => Observable.throw('Fail trying to submit logs.'));
   }
 
-  private post(getURL: string, from: string, to: string) {
-    const body = {
-      query: {
-        range: {
-          'timestamp': {
-            gte: "2017-10-20 19:27:03.027",
-            lte: "2017-10-23 19:27:03.027"
+  private post(code: number, getURL: string, value1?: string, value2?: string) {
+    let body;
+    switch (code) {
+      case 0:
+        body = {
+          query : {
+            match_all : {}
           }
-        }
-      }
-    };
+        };
+        break;
+      case 1:
+        body = {
+          query : {
+            match_phrase : {
+              formattedMessage : value1
+            }
+          }
+        };
+        break;
+    }
     const headers: Headers = new Headers();
-    console.log(JSON.stringify(body));
     headers.append('Content-Type', 'application/json');
-    return this.http.post(this.searchURL, JSON.stringify(body), {headers: headers})
+    return this.http.post(getURL, JSON.stringify(body), {headers: headers})
       .map((responseData) => {
-      console.log(responseData.json());
         return responseData.json();
       })
       .map((answer) => {
@@ -93,6 +98,6 @@ export class ElasticsearchService {
         }
         return result;
       })
-      .catch(error => Observable.throw('Fail trying to submit logs between ' + from.toString() + ' and ' + to.toString()));
+      .catch(error => Observable.throw('Fail trying to submit logs. Code ' + code + '.'));
   }
 }
