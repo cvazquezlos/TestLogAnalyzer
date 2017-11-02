@@ -21,6 +21,7 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent {
 
+  comparisonAux       : any[];
   comparisonColumnDefs: ITdDataTableColumn[];
   comparisonRowData   : any[];
   comparisonShow      : boolean;
@@ -55,13 +56,13 @@ export class HomeComponent {
     this.dataColumnDefs = [
       {name: 'test',       label: 'test'},
       {name: 'id',         label: 'id', sortable: true},
-      {name: 'timestamp',  label: 'timestamp'},
+      {name: 'timestamp',  label: 'timestamp', width: 130},
       {name: 'thread',     label: 'thread'},
       {name: 'level',      label: 'level'},
       {name: 'class name', label: 'class', width: 500},
       {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
     ];
-    this.comparisonShow   = false;
+    this.comparisonShow = false;
     this.comparisonRowData = [];
     this.dataClickable = true;
     this.dataCurrentPage = 1;
@@ -164,7 +165,7 @@ export class HomeComponent {
   updatingCard(): void {
     this.comparisonColumnDefs = [
       {name: 'id',         label: 'id'},
-      {name: 'timestamp',  label: 'timestamp'},
+      {name: 'timestamp',  label: 'timestamp', width: 220},
       {name: 'thread',     label: 'thread'},
       {name: 'level',      label: 'level'},
       {name: 'class name', label: 'class', width: 500},
@@ -174,19 +175,18 @@ export class HomeComponent {
     let logs: any[];
     if (this.selectedLog !== this.rowClicked) {
       logs = [this.selectedLog, this.rowClicked];
+      for (const log of logs) {
+        this.comparisonRowData = this.comparisonRowData.concat({
+          'id'        : log.id,
+          'timestamp' : log.timestamp,
+          'thread'    : log.threadName,
+          'level'     : log.level,
+          'class name': log.loggerName,
+          'message'   : log.formattedMessage
+        });
+      }
     } else {
-      console.log('Equals');
-      logs = [this.selectedLog, this.rowClicked];
-    }
-    for (const log of logs) {
-      this.comparisonRowData = this.comparisonRowData.concat({
-        'id'        : log.id,
-        'timestamp' : log.timestamp,
-        'thread'    : log.threadName,
-        'level'     : log.level,
-        'class name': log.loggerName,
-        'message'   : log.formattedMessage
-      });
+      this.loadInfo(3, this.selectedLog.formattedMessage);
     }
     this.comparisonShow = true;
   }
@@ -214,21 +214,37 @@ export class HomeComponent {
     }
     this.elasticsearchService.submit(code, this.dataPageSize, page, from, to).subscribe(
       data => {
-        this.logs = [];
-        this.logs = this.logs.concat(data);
-        this.dataRowData = [];
-        for (const log of this.logs) {
-          this.dataRowData = this.dataRowData.concat({
-            id          : (+log.id),
-            'test'      : (+log.testNo),
-            timestamp   : (log.timestamp.split(' '))[0],
-            'thread'    : log.threadName,
-            level       : log.level,
-            'class name': log.loggerName,
-            message     : log.formattedMessage
-          });
+        if (code === 3) {
+          this.comparisonAux = [];
+          this.comparisonAux = this.comparisonAux.concat(data);
+          this.comparisonRowData = [];
+          for (const log of this.comparisonAux) {
+            this.comparisonRowData = this.comparisonRowData.concat({
+              'id'        : log.id,
+              'timestamp' : log.timestamp,
+              'thread'    : log.threadName,
+              'level'     : log.level,
+              'class name': log.loggerName,
+              'message'   : log.formattedMessage
+            });
+          }
+        } else {
+          this.logs = [];
+          this.logs = this.logs.concat(data);
+          this.dataRowData = [];
+          for (const log of this.logs) {
+            this.dataRowData = this.dataRowData.concat({
+              id: (+log.id),
+              'test': (+log.testNo),
+              timestamp: (log.timestamp.split(' '))[0],
+              'thread': log.threadName,
+              level: log.level,
+              'class name': log.loggerName,
+              message: log.formattedMessage
+            });
+          }
+          this.rowCount = this.dataRowData.length;
         }
-        this.rowCount = this.dataRowData.length;
       },
       error => console.log(error)
     );
