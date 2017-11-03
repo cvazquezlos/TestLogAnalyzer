@@ -88,3 +88,4 @@ Ensure you have Elasticsearch installed and an instance of it running.
 15. https://docs.spring.io/ - Spring Boot features (logging), Spring Data.
 16. https://www.mkyong.com/ - Sping Boot, Spring Data and Elasticsearch.
 17. http://books.sonatype.com - Maven CMD options.
+18. https://beginnersbook.com/ - String to Date, Date to String Java 8 documentation.
