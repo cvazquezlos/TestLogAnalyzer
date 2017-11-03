@@ -89,3 +89,24 @@ Ensure you have Elasticsearch installed and an instance of it running.
 16. https://www.mkyong.com/ - Sping Boot, Spring Data and Elasticsearch.
 17. http://books.sonatype.com - Maven CMD options.
 18. https://beginnersbook.com/ - String to Date, Date to String Java 8 documentation.
+
+## Used technologies
+1. [Elasticsearch](https://www.elastic.co/products/elasticsearch).
+2. [Kibana](https://www.elastic.co/products/kibana).
+3. [Logstash](https://www.elastic.co/products/logstash).
+4. [Angular 4](https://angular.io/).
+5. [Spring](https://spring.io/).
+6. [Postman](https://www.getpostman.com/).
+7. [Maven](https://maven.apache.org/).
+8. [Angular-CLI](https://cli.angular.io/).
+9. [Node.js](https://nodejs.org/es/).
+10. [Java](https://www.java.com/en/).
+11. [Github](github.com).
+12. [Travis CI](https://travis-ci.org/).
+13. [CircleCI](https://circleci.com/).
+15. [NPM](https://www.npmjs.com/).
+16. [Spring Tool Suite](https://spring.io/tools).
+17. [Netbeans](https://netbeans.org/features/java/).
+18. [Webstorm](https://www.jetbrains.com/webstorm/).
+19. [Angular Material](https://material.angular.io/).
+20. [Teradata Covalent](https://teradata.github.io/covalent/).
