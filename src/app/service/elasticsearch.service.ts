@@ -84,7 +84,7 @@ export class ElasticsearchService {
         body = {
           query : {
             match_phrase : {
-              formattedMessage : value1
+              formatted_message : value1
             }
           }
         };
