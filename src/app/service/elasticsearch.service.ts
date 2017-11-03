@@ -29,7 +29,7 @@ export class ElasticsearchService {
   }
 
   submit(type: number, size: number, page: number, value1?: string, value2?: string) {
-    let getURL = this.searchURL + '?pretty&sort=id';
+    const getURL = this.searchURL + '?pretty&sort=id';
     const values1 = '&size=' + size;
     const values2 = '&from=' + page;
     switch (type) {
@@ -69,11 +69,11 @@ export class ElasticsearchService {
     switch (code) {
       case 0:
         body = {
-          "query": {
-            "range": {
-              "timestamp": {
-                "gte": value1.toString(),
-                "lte": value2.toString()
+          query: {
+            range: {
+              timestamp: {
+                gte: value1.toString(),
+                lte: value2.toString()
               }
             }
           }
