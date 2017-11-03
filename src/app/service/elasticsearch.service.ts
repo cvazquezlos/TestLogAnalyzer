@@ -20,7 +20,7 @@ export class ElasticsearchService {
       case 0:
         break;
       case 1:
-        getURL += '?q=threadName:main';
+        getURL += '?q=thread_name:main';
         break;
     }
     return this.http.get(getURL)
@@ -36,7 +36,7 @@ export class ElasticsearchService {
       case 0:
         return this.get(getURL + values1 + values2);
       case 1:
-        return this.get(getURL + values1 + values2 + '&q=threadName:main');
+        return this.get(getURL + values1 + values2 + '&q=thread_name:main');
       case 2:
         return this.post(0, getURL, value1, value2);
       case 3:
@@ -56,6 +56,7 @@ export class ElasticsearchService {
         result = [];
         if (answer) {
           answer.hits.hits.forEach(log => {
+            console.log(log._source);
             result.push(log._source);
           })
         }

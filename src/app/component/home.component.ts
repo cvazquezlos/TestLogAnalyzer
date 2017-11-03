@@ -51,8 +51,6 @@ export class HomeComponent {
   subtitle: string;
   toDate: Date;
 
-  wholeData: any[];
-
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
               private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
     this.dataColumnDefs = [
@@ -88,9 +86,6 @@ export class HomeComponent {
     this.countLogs(1);
     this.logs = [];
     this.loadInfo(1);
-
-    this.wholeData = [];
-    this.loadInfo(4);
   }
 
   changeLinks(event: IPageChangeEvent): void {
@@ -111,7 +106,7 @@ export class HomeComponent {
   }
 
   filter(): void {
-    let newData: any[] = this.wholeData;
+    let newData: any[] = this.dataRowData;
     const excludedColumns: string[] = this.dataColumnDefs
       .filter((column: ITdDataTableColumn) => {
         return ((column.filter === undefined && column.hidden === true) ||
@@ -172,7 +167,7 @@ export class HomeComponent {
 
   selectLog(id: number): void {
     this.selectedLog = this.findById(id);
-    this.subtitle = this.selectedLog.entireLog;
+    this.subtitle = this.selectedLog.entire_log;
   }
 
   updatingCard(): void {
@@ -184,14 +179,14 @@ export class HomeComponent {
         this.comparisonRowData = this.comparisonRowData.concat({
           'id'        : log.id,
           'timestamp' : log.timestamp,
-          'thread'    : log.threadName,
+          'thread'    : log.thread_name,
           'level'     : log.level,
-          'class name': log.loggerName,
-          'message'   : log.formattedMessage
+          'class name': log.logger_name,
+          'message'   : log.formatted_message
         });
       }
     } else {
-      this.loadInfo(3, this.selectedLog.formattedMessage);
+      this.loadInfo(3, this.selectedLog.formatted_message);
     }
     this.comparisonShow = true;
   }
@@ -227,32 +222,28 @@ export class HomeComponent {
             this.comparisonRowData = this.comparisonRowData.concat({
               'id'        : (+log.id),
               'timestamp' : log.timestamp,
-              'thread'    : log.threadName,
+              'thread'    : log.thread_name,
               'level'     : log.level,
-              'class name': log.loggerName,
-              'message'   : log.formattedMessage
+              'class name': log.logger_name,
+              'message'   : log.formatted_message
             });
           }
         } else {
-          if (code === 4) {
-            this.wholeData = this.wholeData.concat(data);
-          } else {
-            this.logs = [];
-            this.logs = this.logs.concat(data);
-            this.dataRowData = [];
-            for (const log of this.logs) {
-              this.dataRowData = this.dataRowData.concat({
-                id: (+log.id),
-                'test': (+log.testNo),
-                timestamp: (log.timestamp.split(' '))[0],
-                'thread': log.threadName,
-                level: log.level,
-                'class name': log.loggerName,
-                message: log.formattedMessage
-              });
-            }
-            this.rowCount = this.dataRowData.length;
+          this.logs = [];
+          this.logs = this.logs.concat(data);
+          this.dataRowData = [];
+          for (const log of this.logs) {
+            this.dataRowData = this.dataRowData.concat({
+              id: (+log.id),
+              'test': (+log.test_no),
+              timestamp: (log.timestamp.split(' '))[0],
+              'thread': log.thread_name,
+              level: log.level,
+              'class name': log.logger_name,
+              message: log.formatted_message
+            });
           }
+          this.rowCount = this.dataRowData.length;
         }
       },
       error => console.log(error)
