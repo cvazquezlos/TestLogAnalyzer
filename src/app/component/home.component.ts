@@ -170,6 +170,9 @@ export class HomeComponent {
   selectLog(id: number): void {
     this.selectedLog = this.findById(id);
     this.subtitle = this.selectedLog.entire_log;
+    if (this.rowClicked != undefined) {
+      this.updatingCard();
+    }
   }
 
   updatingCard(): void {
