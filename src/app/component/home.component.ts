@@ -1,4 +1,5 @@
-import {Component,
+import {ChangeDetectorRef,
+  Component,
   Inject} from '@angular/core';
 import {MAT_DIALOG_DATA,
   MatDialog,
@@ -7,8 +8,7 @@ import {IPageChangeEvent,
   ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
   TdDataTableService,
-  TdDataTableSortingOrder,
-  TdDialogService
+  TdDataTableSortingOrder
 } from '@covalent/core';
 
 import {Log} from '../model/source.model';
@@ -21,70 +21,57 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent {
 
-  comparisonColumnDefs: ITdDataTableColumn[];
-  comparisonRowData: any[];
-  comparisonShow: boolean;
+  comparisonColumnDefs: ITdDataTableColumn[] = [
+    {name: 'id',         label: 'id'},
+    {name: 'timestamp',  label: 'timestamp', width: 220},
+    {name: 'thread',     label: 'thread'},
+    {name: 'level',      label: 'level'},
+    {name: 'class',      label: 'class', width: 500},
+    {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
+  ];
+  comparisonRowData: any[] = [];
+  comparisonShow: boolean = false;
 
-  dataClickable: boolean;
-  dataColumnDefs: ITdDataTableColumn[];
-  dataCurrentPage: number;
-  dataMultiple: boolean;
-  dataPageSize: number;
-  dataRowData: any[];
-  dataSelectable: boolean;
+  dataClickable: boolean = true;
+  dataColumnDefs: ITdDataTableColumn[] = [
+    {name: 'test',       label: 'test'},
+    {name: 'id',         label: 'id', sortable: true},
+    {name: 'timestamp',  label: 'timestamp', width: 130},
+    {name: 'thread',     label: 'thread'},
+    {name: 'level',      label: 'level'},
+    {name: 'class',      label: 'class', width: 500},
+    {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
+  ];
+  dataCurrentPage: number = 1;
+  dataMultiple: boolean = true;
+  dataPageSize: number = 50;
+  dataRowData: any[] = [];
+  dataSelectable: boolean = true;
   dataSelectedRows: Log[] = [];
-  dataSortBy: string;
-  dataSortOrder: TdDataTableSortingOrder;
-  dataTotalData: number;
+  dataSortBy: string = 'id';
+  dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+  dataTotalData: number = 0;
 
   eventLinks: IPageChangeEvent;
-  filteredData: any[];
-  filteredTotal: number;
+  filteredTotal: number = 0;
   fromDate: Date;
-  logs: Log[];
-  mavenMessages: boolean;
-  rowCount: number;
+  logs: Log[] = [];
+  mavenMessages: boolean = false;
+  rowCount: number = 0;
   rowClicked: Log;
-  searchTerm: string;
+  searchTerm: string = '';
   selectedLog: Log;
-  subtitle: string;
+  subtitle: string = '';
   toDate: Date;
 
+  wholeData: any[] = [];
+  wholeCount: number = 0;
+
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
-              private _dialogService: TdDialogService, private _dataTableService: TdDataTableService) {
-    this.dataColumnDefs = [
-      {name: 'test',       label: 'test'},
-      {name: 'id',         label: 'id', sortable: true},
-      {name: 'timestamp',  label: 'timestamp', width: 130},
-      {name: 'thread',     label: 'thread'},
-      {name: 'level',      label: 'level'},
-      {name: 'class name', label: 'class', width: 500},
-      {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
-    ];
-    this.comparisonColumnDefs = [
-      {name: 'id',         label: 'id'},
-      {name: 'timestamp',  label: 'timestamp', width: 220},
-      {name: 'thread',     label: 'thread'},
-      {name: 'level',      label: 'level'},
-      {name: 'class name', label: 'class', width: 500},
-      {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
-    ];
-    this.comparisonShow = false;
-    this.dataClickable = true;
-    this.dataCurrentPage = 1;
-    this.dataMultiple = true;
-    this.dataPageSize = 50;
-    this.dataSelectable = true;
-    this.dataSortBy = 'id';
-    this.dataSortOrder = TdDataTableSortingOrder.Descending;
-
-    this.mavenMessages = false;
-    this.searchTerm = '';
-    this.subtitle = '';
-
+              private _dataTableService: TdDataTableService, private ref: ChangeDetectorRef) {
     this.countLogs(1);
-    this.logs = [];
     this.loadInfo(1);
+    this.loadWholeInfo(4);
   }
 
   changeLinks(event: IPageChangeEvent): void {
@@ -102,21 +89,6 @@ export class HomeComponent {
       this.loadInfo(1);
       this.countLogs(1);
     }
-  }
-
-  filter(): void {
-    let newData: any[] = this.dataRowData;
-    const excludedColumns: string[] = this.dataColumnDefs
-      .filter((column: ITdDataTableColumn) => {
-        return ((column.filter === undefined && column.hidden === true) ||
-          (column.filter !== undefined && column.filter === false));
-      }).map((column: ITdDataTableColumn) => {
-        return column.name;
-      });
-    newData = this._dataTableService.filterData(newData, this.searchTerm, true, excludedColumns);
-    this.filteredTotal = newData.length;
-    newData = this._dataTableService.sortData(newData, this.dataSortBy, this.dataSortOrder);
-    this.filteredData = newData;
   }
 
   openFilterDialog() {
@@ -143,7 +115,7 @@ export class HomeComponent {
       data: {mavenMessages: this.mavenMessages}
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result != undefined) {
+      if (result !== undefined) {
         this.mavenMessages = result.mavenMessages;
         this.dataCurrentPage = 1;
       }
@@ -170,7 +142,7 @@ export class HomeComponent {
   selectLog(id: number): void {
     this.selectedLog = this.findById(id);
     this.subtitle = this.selectedLog.entire_log;
-    if (this.rowClicked != undefined) {
+    if (this.rowClicked !== undefined) {
       this.updatingCard();
     }
   }
@@ -200,6 +172,18 @@ export class HomeComponent {
     );
   }
 
+  private filter(): void {
+    let newData: any[] = this.dataRowData;
+    this.dataRowData = [];
+    newData = this._dataTableService.filterData(newData, this.searchTerm, true);
+    this.filteredTotal = newData.length;
+    newData = this._dataTableService.sortData(newData, this.dataSortBy, this.dataSortOrder);
+    for (const log of newData) {
+      this.dataRowData = this.dataRowData.concat(log);
+    }
+    this.ref.detectChanges();
+  }
+
   private findById(id: number): any {
     for (const log of this.logs) {
       if (+id === +log.id) {
@@ -217,7 +201,7 @@ export class HomeComponent {
         'timestamp' : log.timestamp,
         'thread'    : log.thread_name,
         'level'     : log.level,
-        'class name': log.logger_name,
+        'class'     : log.logger_name,
         'message'   : log.formatted_message
       });
     }
@@ -235,18 +219,45 @@ export class HomeComponent {
         this.dataRowData = [];
         for (const log of this.logs) {
           this.dataRowData = this.dataRowData.concat({
-            id: (+log.id),
+            'id': (+log.id),
             'test': (+log.test_no),
-            timestamp: (log.timestamp.split(' '))[0],
+            'timestamp': (log.timestamp.split(' '))[0],
             'thread': log.thread_name,
-            level: log.level,
-            'class name': log.logger_name,
-            message: log.formatted_message
+            'level': log.level,
+            'class': log.logger_name,
+            'message': log.formatted_message
           });
         }
         this.rowCount = this.dataRowData.length;
       },
       error => console.log(error)
+    );
+  }
+
+  private loadWholeInfo(code: number) {
+    this.elasticsearchService.count(0).subscribe(
+      data => {
+        this.wholeCount = data;
+        this.elasticsearchService.submit(code, this.wholeCount, -1, '', '').subscribe(
+          data => {
+            let logsAux = [];
+            logsAux = logsAux.concat(data);
+            this.wholeData = [];
+            for (const log of logsAux) {
+              this.wholeData = this.wholeData.concat({
+                'id': (+log.id),
+                'test': (+log.test_no),
+                'timestamp': (log.timestamp.split(' '))[0],
+                'thread': log.thread_name,
+                'level': log.level,
+                'class': log.logger_name,
+                'message': log.formatted_message
+              });
+            }
+          },
+          error => console.log(error)
+        );
+      }
     );
   }
 
