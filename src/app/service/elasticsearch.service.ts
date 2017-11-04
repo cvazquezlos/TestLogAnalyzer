@@ -28,7 +28,7 @@ export class ElasticsearchService {
       .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
   }
 
-  submit(type: number, size: number, page: number, value1?: string, value2?: string) {
+  submit(type: number, size?: number, page?: number, value1?: string, value2?: string) {
     const getURL = this.searchURL + '?pretty&sort=id';
     const values1 = '&size=' + size;
     const values2 = '&from=' + page;
@@ -56,7 +56,6 @@ export class ElasticsearchService {
         result = [];
         if (answer) {
           answer.hits.hits.forEach(log => {
-            console.log(log._source);
             result.push(log._source);
           })
         }
