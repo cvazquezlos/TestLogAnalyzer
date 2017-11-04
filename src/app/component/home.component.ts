@@ -78,6 +78,7 @@ export class HomeComponent {
     this.dataSortBy = 'id';
     this.dataSortOrder = TdDataTableSortingOrder.Descending;
 
+    this.mavenMessages = false;
     this.searchTerm = '';
     this.subtitle = '';
 
@@ -142,7 +143,10 @@ export class HomeComponent {
       data: {mavenMessages: this.mavenMessages}
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.mavenMessages = result.mavenMessages;
+      if (result != undefined) {
+        this.mavenMessages = result.mavenMessages;
+        this.dataCurrentPage = 1;
+      }
       this.evaluateResult();
     });
   }
