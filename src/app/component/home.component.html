@@ -1,4 +1,4 @@
-<mat-card>
+<!--<mat-card>
   <mat-card-title>
     <div layout="row" layout-align="start center" class="pad-left-xxs pad-right-xxs" [style.height.em]="1">
       <span *ngIf="!searchBox.searchVisible" class="push-left-xxs">Logs</span>
@@ -69,3 +69,66 @@
     </td-data-table>
   </mat-card-content>
 </mat-card>
+-->
+<td-layout-nav-list logo="assets:teradata" toolbarTitle="Covalent" navigationRoute="/" opened="true" mode="side">
+  <div td-sidenav-content>
+    Sidenav content here
+  </div>
+  Content goes here
+</td-layout-nav-list>
+<td-layout>
+  <td-layout-nav-list #navList
+                      color="accent"
+                      opened="true"
+                      mode="side">
+    <div td-sidenav-toolbar-content layout="row" layout-align="start center">
+      <button mat-icon-button tdLayoutToggle>
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-icon [routerLink]="['/']" class="mat-icon-logo cursor-pointer" svgIcon="assets:teradata"></mat-icon>
+      <span [routerLink]="['/']" class="cursor-pointer">Covalent</span>
+    </div>
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <button mat-icon-button tdLayoutNavListOpen [hideWhenOpened]="true">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span>Logs</span>
+      <span flex></span>
+      <a mat-icon-button matTooltip="Github" href="https://github.com/teradata/covalent" target="_blank"><mat-icon svgIcon="assets:github"></mat-icon></a>
+    </div>
+    <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')">
+      <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
+        <a mat-list-item>
+          <mat-icon matListAvatar>{{item.icon}}</mat-icon>
+          <h3 matLine> {{item.title}} </h3>
+          <p matLine> {{item.description}} </p>
+        </a>
+        <mat-divider matInset *ngIf="!last"></mat-divider>
+      </ng-template>
+    </mat-nav-list>
+    <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+      <mat-card>
+        <mat-card-title>Main Content</mat-card-title>
+        <mat-card-subtitle>content area</mat-card-subtitle>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          card content
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+          <a mat-button color="accent" class="text-upper" [routerLink]="['/']">
+            <span>View More</span>
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <td-layout-footer-inner>
+      Optional inner footer
+    </td-layout-footer-inner>
+    <td-layout-footer>
+      <div layout="row" layout-align="start center">
+        <span class="md-caption">Copyright &copy; 2017 Teradata. All rights reserved</span>
+      </div>
+    </td-layout-footer>
+  </td-layout-nav-list>
+</td-layout>

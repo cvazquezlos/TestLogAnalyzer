@@ -1,4 +1,5 @@
-import {ChangeDetectorRef,
+import {AfterViewInit,
+  ChangeDetectorRef,
   Component,
   Inject} from '@angular/core';
 import {MAT_DIALOG_DATA,
@@ -7,6 +8,7 @@ import {MAT_DIALOG_DATA,
 import {IPageChangeEvent,
   ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
+  TdMediaService,
   TdDataTableService,
   TdDataTableSortingOrder
 } from '@covalent/core';
@@ -19,7 +21,7 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
   templateUrl: './home.component.html'
 })
 
-export class HomeComponent {
+export class HomeComponent implements AfterViewInit {
 
   comparisonColumnDefs: ITdDataTableColumn[] = [
     {name: 'id',         label: 'id'},
@@ -67,11 +69,84 @@ export class HomeComponent {
   wholeData: any[] = [];
   wholeCount = 0;
 
+  routes: Object[] = [{
+    icon: 'home',
+    route: '.',
+    title: 'Home',
+  }, {
+    icon: 'library_books',
+    route: '.',
+    title: 'Documentation',
+  }, {
+    icon: 'color_lens',
+    route: '.',
+    title: 'Style Guide',
+  }, {
+    icon: 'view_quilt',
+    route: '.',
+    title: 'Layouts',
+  }, {
+    icon: 'picture_in_picture',
+    route: '.',
+    title: 'Components & Addons',
+  },
+  ];
+  usermenu: Object[] = [{
+    icon: 'swap_horiz',
+    route: '.',
+    title: 'Switch account',
+  }, {
+    icon: 'tune',
+    route: '.',
+    title: 'Account settings',
+  }, {
+    icon: 'exit_to_app',
+    route: '.',
+    title: 'Sign out',
+  },
+  ];
+  navmenu: Object[] = [{
+    icon: 'looks_one',
+    route: '.',
+    title: 'First item',
+    description: 'Item description',
+  }, {
+    icon: 'looks_two',
+    route: '.',
+    title: 'Second item',
+    description: 'Item description',
+  }, {
+    icon: 'looks_3',
+    route: '.',
+    title: 'Third item',
+    description: 'Item description',
+  }, {
+    icon: 'looks_4',
+    route: '.',
+    title: 'Fourth item',
+    description: 'Item description',
+  }, {
+    icon: 'looks_5',
+    route: '.',
+    title: 'Fifth item',
+    description: 'Item description',
+  },
+  ];
+
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
-              private _dataTableService: TdDataTableService, private ref: ChangeDetectorRef) {
+              private _dataTableService: TdDataTableService, private ref: ChangeDetectorRef,
+              public media: TdMediaService) {
     this.countLogs(1);
     this.loadInfo(1);
     this.loadWholeInfo(4);
+  }
+
+  ngAfterViewInit(): void {
+    // broadcast to all listener observables when loading the page
+    setTimeout(() => { // workaround since MatSidenav has issues redrawing at the beggining
+      this.media.broadcast();
+      this.ref.detectChanges();
+    });
   }
 
   changeLinks(event: IPageChangeEvent): void {
