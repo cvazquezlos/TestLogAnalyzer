@@ -30,9 +30,9 @@ export class HomeComponent {
     {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
   ];
   comparisonRowData: any[] = [];
-  comparisonShow: boolean = false;
+  comparisonShow = false;
 
-  dataClickable: boolean = true;
+  dataClickable = true;
   dataColumnDefs: ITdDataTableColumn[] = [
     {name: 'test',       label: 'test'},
     {name: 'id',         label: 'id', sortable: true},
@@ -42,26 +42,26 @@ export class HomeComponent {
     {name: 'class',      label: 'class', width: 500},
     {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
   ];
-  dataCurrentPage: number = 1;
-  dataMultiple: boolean = true;
-  dataPageSize: number = 50;
+  dataCurrentPage = 1;
+  dataMultiple = true;
+  dataPageSize = 50;
   dataRowData: any[] = [];
-  dataSelectable: boolean = true;
+  dataSelectable = true;
   dataSelectedRows: Log[] = [];
-  dataSortBy: string = 'id';
+  dataSortBy = 'id';
   dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
-  dataTotalData: number = 0;
+  dataTotalData = 0;
 
   eventLinks: IPageChangeEvent;
-  filteredTotal: number = 0;
+  filteredTotal = 0;
   fromDate: Date;
   logs: Log[] = [];
-  mavenMessages: boolean = false;
-  rowCount: number = 0;
+  mavenMessages = false;
+  rowCount = 0;
   rowClicked: Log;
-  searchTerm: string = '';
+  searchTerm = '';
   selectedLog: Log;
-  subtitle: string = '';
+  subtitle = '';
   toDate: Date;
 
   wholeData: any[] = [];
@@ -239,9 +239,9 @@ export class HomeComponent {
       data => {
         this.wholeCount = data;
         this.elasticsearchService.submit(code, this.wholeCount, -1, '', '').subscribe(
-          data => {
+          values => {
             let logsAux = [];
-            logsAux = logsAux.concat(data);
+            logsAux = logsAux.concat(values);
             this.wholeData = [];
             for (const log of logsAux) {
               this.wholeData = this.wholeData.concat({
