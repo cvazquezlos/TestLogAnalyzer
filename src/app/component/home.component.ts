@@ -65,7 +65,7 @@ export class HomeComponent {
   toDate: Date;
 
   wholeData: any[] = [];
-  wholeCount: number = 0;
+  wholeCount = 0;
 
   constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
               private _dataTableService: TdDataTableService, private ref: ChangeDetectorRef) {
