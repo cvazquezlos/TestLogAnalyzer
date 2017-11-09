@@ -46,22 +46,10 @@ export class HomeComponent implements AfterViewInit {
     this.countExecs(0);
   }
 
-  private countExecs(index: number) {
-    this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
-      count => {
-        if (count !== 0) {
-          this.countExecs(index+1);
-        } else {
-          this.createNav(index);
-        }
-      },
-      error => console.log(error)
-    );
-  }
-
   maven(): void {
     this.mavenMessages = !this.mavenMessages;
     console.log("Show Maven messages: " + this.mavenMessages);
+    console.log("Updating data...");
   }
 
   ngAfterViewInit(): void {
@@ -78,10 +66,14 @@ export class HomeComponent implements AfterViewInit {
     this.filter();
   }
 
-  private count(code: number, value: string) {
-    this.elasticsearchService.count(code, value).subscribe(
+  private countExecs(index: number) {
+    this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
       count => {
-        console.log(count);
+        if (count !== 0) {
+          this.countExecs(index+1);
+        } else {
+          this.createNav(index);
+        }
       },
       error => console.log(error)
     );
@@ -112,8 +104,10 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private loadInfo(code: number, value?: string) {
-    this.elasticsearchService.submit(code, 73, value).subscribe(
+    console.log("Sending request to your Elasticsearch instance...");
+    this.elasticsearchService.get(code, 73, value, this.mavenMessages).subscribe(
       data => {
+        console.log("Response received. Parsing data...")
         this.logs = [];
         this.logs = this.logs.concat(data);
         this.dataRowData = [];
@@ -127,6 +121,7 @@ export class HomeComponent implements AfterViewInit {
             'message': log.formatted_message
           });
         }
+        console.log("Data parsed and displayed.")
       },
       error => console.log(error)
     );

@@ -110,3 +110,4 @@ Ensure you have Elasticsearch installed and an instance of it running.
 18. [Webstorm](https://www.jetbrains.com/webstorm/).
 19. [Angular Material](https://material.angular.io/).
 20. [Teradata Covalent](https://teradata.github.io/covalent/).
+21. [Font Mfizz](https://github.com/fizzed/font-mfizz).

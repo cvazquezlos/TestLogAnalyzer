@@ -34,25 +34,34 @@ export class ElasticsearchService {
       .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
   }
 
-  submit(type: number, size: number, value: string) {
-    const getURL = this.searchURL + '?pretty&sort=id';
+  get(type: number, size: number, value: string, maven: boolean) {
     const values1 = '&size=' + size;
     const values2 = '&from=0';
-    switch (type) {
-      case 0:
-        return this.get(getURL + values1 + values2);
-      case 1:
-        return this.get(getURL + values1 + values2 + '&q=thread_name:main');
-      case 2:
-        if (+value < 10) {
-          value = '0' + value;
-        }
-        return this.get(getURL + values1 + values2 + '&q=test_no:' + value)
+    const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
+    if (+value < 10) {
+      value = '0' + value;
     }
-  }
-
-  private get(getURL: string) {
-    return this.http.get(getURL)
+    let body;
+    if (maven) {
+      body = {
+        query: {
+          query_string: {
+            query: '(test_no:' + value + ')'
+          }
+        }
+      }
+    } else {
+      body = {
+        query: {
+          query_string: {
+            query: '(thread_name:main) AND (test_no:' + value + ')'
+          }
+        }
+      }
+    }
+    const headers: Headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(getURL, JSON.stringify(body), {headers: headers})
       .map((responseData) => {
         return responseData.json();
       })
@@ -66,6 +75,6 @@ export class ElasticsearchService {
         }
         return result;
       })
-      .catch(error => Observable.throw('Fail trying to submit logs.'));
+      .catch(error => Observable.throw('Fail trying to get some logs from your Elasticsearch instance.'))
   }
 }

@@ -16,7 +16,7 @@
     </div>
     <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
-        <a mat-list-item (click)="loadInfo(2, item.id)">
+        <a mat-list-item (click)="loadInfo(0, item.id)">
           <mat-icon matListAvatar>{{item.icon}}</mat-icon>
           <h3 matLine> {{item.title}} </h3>
         </a>
