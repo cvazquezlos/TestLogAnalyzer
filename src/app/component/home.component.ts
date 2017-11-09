@@ -30,13 +30,10 @@ export class HomeComponent implements AfterViewInit {
     {name: 'class', label: 'class', width: 200},
     {name: 'message', label: 'message', width: 800}
   ];
-  dataCurrentPage = 1;
-  dataPageSize = 50;
   dataRowData: any[] = [];
   dataSortBy = 'id';
   dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
-  eventLinks: IPageChangeEvent;
   filteredTotal = 0;
   logs: Log[] = [];
   mavenMessages = false;
@@ -62,16 +59,9 @@ export class HomeComponent implements AfterViewInit {
     );
   }
 
-  private createNav(index: number) {
-    let id;
-    for (let i = 0; i < index; i++) {
-      id = i + 1;
-      this.navmenu = this.navmenu.concat({
-        'id': id,
-        'icon': 'looks_one',
-        'title': 'Exec ' + id.toString()
-      });
-    }
+  maven(): void {
+    this.mavenMessages = !this.mavenMessages;
+    console.log("Show Maven messages: " + this.mavenMessages);
   }
 
   ngAfterViewInit(): void {
@@ -80,23 +70,6 @@ export class HomeComponent implements AfterViewInit {
       this.media.broadcast();
       this.ref.detectChanges();
     });
-  }
-
-  changeLinks(event: IPageChangeEvent): void {
-    this.eventLinks = event;
-    this.dataPageSize = event.pageSize;
-    this.dataCurrentPage = event.page;
-    this.evaluateResult();
-  }
-
-  evaluateResult() {
-    if (this.mavenMessages) {
-      this.loadInfo(0);
-      this.count(0, '');
-    } else {
-      this.loadInfo(1);
-      this.count(1, '');
-    }
   }
 
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
@@ -114,6 +87,18 @@ export class HomeComponent implements AfterViewInit {
     );
   }
 
+  private createNav(index: number) {
+    let id;
+    for (let i = 0; i < index; i++) {
+      id = i + 1;
+      this.navmenu = this.navmenu.concat({
+        'id': id,
+        'icon': 'looks_one',
+        'title': 'Exec ' + id.toString()
+      });
+    }
+  }
+
   private filter(): void {
     let newData: any[] = this.dataRowData;
     this.dataRowData = [];
@@ -127,11 +112,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private loadInfo(code: number, value?: string) {
-    let page = (this.dataCurrentPage * this.dataPageSize) - this.dataPageSize;
-    if (page < 0) {
-      page = 0;
-    }
-    this.elasticsearchService.submit(code, this.dataPageSize, page, value).subscribe(
+    this.elasticsearchService.submit(code, 73, value).subscribe(
       data => {
         this.logs = [];
         this.logs = this.logs.concat(data);

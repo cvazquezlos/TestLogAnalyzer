@@ -34,10 +34,10 @@ export class ElasticsearchService {
       .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
   }
 
-  submit(type: number, size?: number, page?: number, value?: string) {
+  submit(type: number, size: number, value: string) {
     const getURL = this.searchURL + '?pretty&sort=id';
     const values1 = '&size=' + size;
-    const values2 = '&from=' + page;
+    const values2 = '&from=0';
     switch (type) {
       case 0:
         return this.get(getURL + values1 + values2);
