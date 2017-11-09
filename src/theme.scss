@@ -27,10 +27,10 @@ mat-nav-list {
     [mat-list-item].active {
         mat-icon[mat-list-avatar] {
             background-color: mat-color($primary);
-            color: mat-color($primary, default-contrast)
+            color: mat-color($accent, default-contrast)
         }
         mat-icon[mat-list-icon] {
-            color: mat-color($primary);
+            color: mat-color($accent);
         }
     }
 }

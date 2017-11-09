@@ -22,6 +22,8 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent implements AfterViewInit {
 
+  active = false;
+
   dataColumnDefs: ITdDataTableColumn[] = [
     {name: 'id', label: 'id', sortable: true, width: 100},
     {name: 'timestamp', label: 'timestamp', width: 230},
