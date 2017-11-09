@@ -1,98 +1,16 @@
-<!--<mat-card>
-  <mat-card-title>
-    <div layout="row" layout-align="start center" class="pad-left-xxs pad-right-xxs" [style.height.em]="1">
-      <span *ngIf="!searchBox.searchVisible" class="push-left-xxs">Logs</span>
-      <td-search-box #searchBox backIcon="arrow_back" class="push-right-xxs" placeholder="Search here"
-                     (searchDebounce)="search($event)" flex>
-      </td-search-box>
-      <button mat-icon-button><mat-icon>view_module</mat-icon></button>
-      <button mat-icon-button matTooltip="Settings" (click)="openSettingsDialog()"><mat-icon>settings</mat-icon></button>
-      <button mat-icon-button matTooltip="Filter" (click)="openFilterDialog()"><mat-icon>filter_list</mat-icon></button>
-      <button mat-icon-button><mat-icon>more_vert</mat-icon></button>
-    </div>
-  </mat-card-title>
-  <mat-divider></mat-divider>
-  <mat-card-content>
-    <td-data-table
-      #dataTable
-      [data]="dataRowData"
-      [columns]="dataColumnDefs"
-      [selectable]="dataSelectable"
-      [multiple]="false"
-      [clickable]="dataClickable"
-      [multiple]="dataMultiple"
-      [sortable]="true"
-      [sortBy]="dataSortBy"
-      [(ngModel)]="dataSelectedRows"
-      (ngModelChange)="selectLog(dataSelectedRows[0].id)"
-      (rowClick)="rowClick($event)"
-      [sortOrder]="dataSortOrder"
-      (sortChange)="sort($event)"
-      [style.height.em]="30"
-      [style.width.%]="100">
-    </td-data-table>
-    <div class="mat-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
-      <h3>No results to display. </h3>
-    </div>
-    <mat-divider></mat-divider>
-    <td-paging-bar
-      #pagingBarLinks
-      pageLinkCount="5"
-      [firstLast]="false"
-      [pageSize]="dataPageSize"
-      [total]="dataTotalData"
-      (change)="changeLinks($event)">
-      <span hide-xs>Rows per page:</span>
-      <mat-select [style.width.px]="50" [(ngModel)]="dataPageSize">
-        <mat-option *ngFor="let size of [50,100,200,500]" [value]="size">
-          {{size}}
-        </mat-option>
-      </mat-select>
-      <span hide-xs>{{pagingBarLinks.range}} of {{pagingBarLinks.total}}</span>
-    </td-paging-bar>
-  </mat-card-content>
-</mat-card>
-<mat-card *ngIf="dataSelectedRows.length && dataSelectable">
-  <mat-card-title>
-    <div layout="row" layout-align="start center" class="pad-left-xxs pad-right-xxs" [style.height.em]="1">
-      <span *ngIf="true" class="push-left-xxs">Log selected</span>
-    </div>
-  </mat-card-title>
-  <mat-card-subtitle>{{subtitle}}</mat-card-subtitle>
-  <mat-divider></mat-divider>
-  <mat-card-content>
-    You can compare the selected log just clicking other entry or you can compare it with the same logs in different
-    tests clicking it again.
-    <td-data-table
-      [data]="comparisonRowData"
-      [columns]="comparisonColumnDefs">
-    </td-data-table>
-  </mat-card-content>
-</mat-card>
--->
-<td-layout-nav-list logo="assets:teradata" toolbarTitle="Covalent" navigationRoute="/" opened="true" mode="side">
-  <div td-sidenav-content>
-    Sidenav content here
-  </div>
-  Content goes here
-</td-layout-nav-list>
 <td-layout>
   <td-layout-nav-list #navList
                       color="accent"
                       opened="true"
                       mode="side">
     <div td-sidenav-toolbar-content layout="row" layout-align="start center">
-      <button mat-icon-button tdLayoutToggle>
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-icon [routerLink]="['/']" class="mat-icon-logo cursor-pointer" svgIcon="assets:teradata"></mat-icon>
-      <span [routerLink]="['/']" class="cursor-pointer">Covalent</span>
+      <span [routerLink]="['/']" class="cursor-pointer">Executions</span>
     </div>
     <div td-toolbar-content layout="row" layout-align="start center" flex>
       <button mat-icon-button tdLayoutNavListOpen [hideWhenOpened]="true">
         <mat-icon>arrow_back</mat-icon>
       </button>
-      <span>Logs</span>
+      <span>Log</span>
       <span flex></span>
       <a mat-icon-button matTooltip="Github" href="https://github.com/teradata/covalent" target="_blank"><mat-icon svgIcon="assets:github"></mat-icon></a>
     </div>
@@ -108,23 +26,26 @@
     </mat-nav-list>
     <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
       <mat-card>
-        <mat-card-title>Main Content</mat-card-title>
-        <mat-card-subtitle>content area</mat-card-subtitle>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-          card content
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <mat-card-actions>
-          <a mat-button color="accent" class="text-upper" [routerLink]="['/']">
-            <span>View More</span>
-          </a>
-        </mat-card-actions>
+        <td-data-table
+          #dataTable
+          [data]="dataRowData"
+          [columns]="dataColumnDefs"
+          [selectable]="dataSelectable"
+          [multiple]="false"
+          [clickable]="dataClickable"
+          [multiple]="dataMultiple"
+          [sortable]="true"
+          [sortBy]="dataSortBy"
+          [(ngModel)]="dataSelectedRows"
+          (ngModelChange)="selectLog(dataSelectedRows[0].id)"
+          (rowClick)="rowClick($event)"
+          [sortOrder]="dataSortOrder"
+          (sortChange)="sort($event)"
+          [style.height.%]="100"
+          [style.width.%]="100">
+        </td-data-table>
       </mat-card>
     </div>
-    <td-layout-footer-inner>
-      Optional inner footer
-    </td-layout-footer-inner>
     <td-layout-footer>
       <div layout="row" layout-align="start center">
         <span class="md-caption">Copyright &copy; 2017 Teradata. All rights reserved</span>

@@ -1,16 +1,15 @@
-import {AfterViewInit,
+import {
+  AfterViewInit,
   ChangeDetectorRef,
-  Component,
-  Inject} from '@angular/core';
-import {MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef} from '@angular/material';
-import {IPageChangeEvent,
+  Component
+} from '@angular/core';
+import {
+  IPageChangeEvent,
   ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
-  TdMediaService,
   TdDataTableService,
-  TdDataTableSortingOrder
+  TdDataTableSortingOrder,
+  TdMediaService
 } from '@covalent/core';
 
 import {Log} from '../model/source.model';
@@ -23,26 +22,14 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent implements AfterViewInit {
 
-  comparisonColumnDefs: ITdDataTableColumn[] = [
-    {name: 'id',         label: 'id'},
-    {name: 'timestamp',  label: 'timestamp', width: 220},
-    {name: 'thread',     label: 'thread'},
-    {name: 'level',      label: 'level'},
-    {name: 'class',      label: 'class', width: 500},
-    {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
-  ];
-  comparisonRowData: any[] = [];
-  comparisonShow = false;
-
   dataClickable = true;
   dataColumnDefs: ITdDataTableColumn[] = [
-    {name: 'test',       label: 'test'},
-    {name: 'id',         label: 'id', sortable: true},
-    {name: 'timestamp',  label: 'timestamp', width: 130},
-    {name: 'thread',     label: 'thread'},
-    {name: 'level',      label: 'level'},
-    {name: 'class',      label: 'class', width: 500},
-    {name: 'message',    label: 'message', width: { min: 500, max: 700 }}
+    {name: 'id', label: 'id', sortable: true},
+    {name: 'timestamp', label: 'timestamp', width: 130},
+    {name: 'thread', label: 'thread'},
+    {name: 'level', label: 'level'},
+    {name: 'class', label: 'class', width: 500},
+    {name: 'message', label: 'message', width: {min: 500, max: 700}}
   ];
   dataCurrentPage = 1;
   dataMultiple = true;
@@ -57,88 +44,42 @@ export class HomeComponent implements AfterViewInit {
   eventLinks: IPageChangeEvent;
   filteredTotal = 0;
   fromDate: Date;
+  index: number;
   logs: Log[] = [];
   mavenMessages = false;
   rowCount = 0;
-  rowClicked: Log;
   searchTerm = '';
-  selectedLog: Log;
-  subtitle = '';
   toDate: Date;
 
-  wholeData: any[] = [];
-  wholeCount = 0;
+  navmenu: Object[] = [];
 
-  routes: Object[] = [{
-    icon: 'home',
-    route: '.',
-    title: 'Home',
-  }, {
-    icon: 'library_books',
-    route: '.',
-    title: 'Documentation',
-  }, {
-    icon: 'color_lens',
-    route: '.',
-    title: 'Style Guide',
-  }, {
-    icon: 'view_quilt',
-    route: '.',
-    title: 'Layouts',
-  }, {
-    icon: 'picture_in_picture',
-    route: '.',
-    title: 'Components & Addons',
-  },
-  ];
-  usermenu: Object[] = [{
-    icon: 'swap_horiz',
-    route: '.',
-    title: 'Switch account',
-  }, {
-    icon: 'tune',
-    route: '.',
-    title: 'Account settings',
-  }, {
-    icon: 'exit_to_app',
-    route: '.',
-    title: 'Sign out',
-  },
-  ];
-  navmenu: Object[] = [{
-    icon: 'looks_one',
-    route: '.',
-    title: 'First item',
-    description: 'Item description',
-  }, {
-    icon: 'looks_two',
-    route: '.',
-    title: 'Second item',
-    description: 'Item description',
-  }, {
-    icon: 'looks_3',
-    route: '.',
-    title: 'Third item',
-    description: 'Item description',
-  }, {
-    icon: 'looks_4',
-    route: '.',
-    title: 'Fourth item',
-    description: 'Item description',
-  }, {
-    icon: 'looks_5',
-    route: '.',
-    title: 'Fifth item',
-    description: 'Item description',
-  },
-  ];
+  constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
+              private ref: ChangeDetectorRef, public media: TdMediaService) {
+    this.countExecs(0);
+  }
 
-  constructor(private elasticsearchService: ElasticsearchService, public dialog: MatDialog,
-              private _dataTableService: TdDataTableService, private ref: ChangeDetectorRef,
-              public media: TdMediaService) {
-    this.countLogs(1);
-    this.loadInfo(1);
-    this.loadWholeInfo(4);
+  private countExecs(index: number) {
+    this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
+      count => {
+        if (count !== 0) {
+          this.countExecs(index+1);
+        } else {
+          this.createNav(index);
+        }
+      },
+      error => console.log(error)
+    );
+  }
+
+  private createNav(index: number) {
+    for (let i = 0; i < index; i++) {
+      this.navmenu = this.navmenu.concat({
+        'icon': 'looks_one',
+        'route': '.',
+        'title': 'First item',
+        'description': 'Item description'
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -159,48 +100,11 @@ export class HomeComponent implements AfterViewInit {
   evaluateResult() {
     if (this.mavenMessages) {
       this.loadInfo(0);
-      this.countLogs(0);
+      this.count(0, '');
     } else {
       this.loadInfo(1);
-      this.countLogs(1);
+      this.count(1, '');
     }
-  }
-
-  openFilterDialog() {
-    const dialogRef = this.dialog.open(FilterComponent, {
-      data: {fromDate: this.fromDate, toDate: this.toDate}
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result.fromDate);
-      this.loadInfo(2,
-        this.parseData(
-          ('0' + result.fromDate.getDate()).slice(-2),
-          ('0' + (result.fromDate.getMonth() + 1)).slice(-2),
-          result.fromDate.getFullYear()
-        ), this.parseData(
-          ('0' + result.toDate.getDate()).slice(-2),
-          ('0' + (result.toDate.getMonth() + 1)).slice(-2),
-          result.toDate.getFullYear()
-        ))
-    });
-  }
-
-  openSettingsDialog() {
-    const dialogRef = this.dialog.open(SettingsComponent, {
-      data: {mavenMessages: this.mavenMessages}
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) {
-        this.mavenMessages = result.mavenMessages;
-        this.dataCurrentPage = 1;
-      }
-      this.evaluateResult();
-    });
-  }
-
-  rowClick(event: any): void {
-    this.rowClicked = this.findById(event.row.id);
-    this.updatingCard();
   }
 
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
@@ -209,40 +113,11 @@ export class HomeComponent implements AfterViewInit {
     this.filter();
   }
 
-  search(searchTerm: string): void {
-    this.searchTerm = searchTerm;
-    this.filter();
-  }
-
-  selectLog(id: number): void {
-    this.selectedLog = this.findById(id);
-    this.subtitle = this.selectedLog.entire_log;
-    if (this.rowClicked !== undefined) {
-      this.updatingCard();
-    }
-  }
-
-  updatingCard(): void {
-    let logs: any[];
-    logs = [];
-    if (this.selectedLog !== this.rowClicked) {
-      logs = [this.selectedLog, this.rowClicked];
-      this.loadComparisonInfo(logs);
-    } else {
-      this.elasticsearchService.submit(3, -1, -1, this.selectedLog.formatted_message).subscribe(
-      data => {
-        logs = logs.concat(data);
-        this.loadComparisonInfo(logs);
+  private count(code: number, value: string) {
+    this.elasticsearchService.count(code, value).subscribe(
+      count => {
+        console.log(count);
       },
-      error => console.log(error)
-      );
-    }
-    this.comparisonShow = true;
-  }
-
-  private countLogs(code: number) {
-    this.elasticsearchService.count(code).subscribe(
-      count => this.dataTotalData = count,
       error => console.log(error)
     );
   }
@@ -259,35 +134,12 @@ export class HomeComponent implements AfterViewInit {
     this.ref.detectChanges();
   }
 
-  private findById(id: number): any {
-    for (const log of this.logs) {
-      if (+id === +log.id) {
-        return log;
-      }
-    }
-    return -1;
-  }
-
-  private loadComparisonInfo(logs: any[]) {
-    this.comparisonRowData = [];
-    for (const log of logs) {
-      this.comparisonRowData = this.comparisonRowData.concat({
-        'id'        : (+log.id),
-        'timestamp' : log.timestamp,
-        'thread'    : log.thread_name,
-        'level'     : log.level,
-        'class'     : log.logger_name,
-        'message'   : log.formatted_message
-      });
-    }
-  }
-
-  private loadInfo(code: number, value1?: string, value2?: string) {
+  private loadInfo(code: number) {
     let page = (this.dataCurrentPage * this.dataPageSize) - this.dataPageSize;
     if (page < 0) {
       page = 0;
     }
-    this.elasticsearchService.submit(code, this.dataPageSize, page, value1, value2).subscribe(
+    this.elasticsearchService.submit(code, this.dataPageSize, page).subscribe(
       data => {
         this.logs = [];
         this.logs = this.logs.concat(data);
@@ -295,8 +147,7 @@ export class HomeComponent implements AfterViewInit {
         for (const log of this.logs) {
           this.dataRowData = this.dataRowData.concat({
             'id': (+log.id),
-            'test': (+log.test_no),
-            'timestamp': (log.timestamp.split(' '))[0],
+            'timestamp': log.timestamp,
             'thread': log.thread_name,
             'level': log.level,
             'class': log.logger_name,
@@ -307,67 +158,5 @@ export class HomeComponent implements AfterViewInit {
       },
       error => console.log(error)
     );
-  }
-
-  private loadWholeInfo(code: number) {
-    this.elasticsearchService.count(0).subscribe(
-      data => {
-        this.wholeCount = data;
-        this.elasticsearchService.submit(code, this.wholeCount, -1, '', '').subscribe(
-          values => {
-            let logsAux = [];
-            logsAux = logsAux.concat(values);
-            this.wholeData = [];
-            for (const log of logsAux) {
-              this.wholeData = this.wholeData.concat({
-                'id': (+log.id),
-                'test': (+log.test_no),
-                'timestamp': (log.timestamp.split(' '))[0],
-                'thread': log.thread_name,
-                'level': log.level,
-                'class': log.logger_name,
-                'message': log.formatted_message
-              });
-            }
-          },
-          error => console.log(error)
-        );
-      }
-    );
-  }
-
-  private parseData(day: string, month: string, year: string): string {
-    return year + '-' + month + '-' + day ;
-  }
-}
-
-@Component({
-  selector: 'app-filter',
-  templateUrl: './filter/filter.component.html',
-  styleUrls: ['./filter/filter.component.css']
-})
-export class FilterComponent {
-
-  constructor(public dialogRef: MatDialogRef<FilterComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'app-settings',
-  templateUrl: './settings/settings.component.html',
-})
-export class SettingsComponent {
-
-  constructor(public dialogRef: MatDialogRef<SettingsComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }
