@@ -16,10 +16,9 @@
     </div>
     <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
-        <a mat-list-item>
+        <a mat-list-item (click)="loadInfo(2, item.id)">
           <mat-icon matListAvatar>{{item.icon}}</mat-icon>
           <h3 matLine> {{item.title}} </h3>
-          <p matLine> {{item.description}} </p>
         </a>
         <mat-divider matInset *ngIf="!last"></mat-divider>
       </ng-template>
@@ -30,15 +29,11 @@
           #dataTable
           [data]="dataRowData"
           [columns]="dataColumnDefs"
-          [selectable]="dataSelectable"
+          [selectable]="false"
           [multiple]="false"
-          [clickable]="dataClickable"
-          [multiple]="dataMultiple"
+          [clickable]="false"
           [sortable]="true"
           [sortBy]="dataSortBy"
-          [(ngModel)]="dataSelectedRows"
-          (ngModelChange)="selectLog(dataSelectedRows[0].id)"
-          (rowClick)="rowClick($event)"
           [sortOrder]="dataSortOrder"
           (sortChange)="sort($event)"
           [style.height.%]="100"
@@ -46,10 +41,5 @@
         </td-data-table>
       </mat-card>
     </div>
-    <td-layout-footer>
-      <div layout="row" layout-align="start center">
-        <span class="md-caption">Copyright &copy; 2017 Teradata. All rights reserved</span>
-      </div>
-    </td-layout-footer>
   </td-layout-nav-list>
 </td-layout>

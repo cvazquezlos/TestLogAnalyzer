@@ -22,7 +22,6 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent implements AfterViewInit {
 
-  dataClickable = true;
   dataColumnDefs: ITdDataTableColumn[] = [
     {name: 'id', label: 'id', sortable: true},
     {name: 'timestamp', label: 'timestamp', width: 130},
@@ -32,24 +31,16 @@ export class HomeComponent implements AfterViewInit {
     {name: 'message', label: 'message', width: {min: 500, max: 700}}
   ];
   dataCurrentPage = 1;
-  dataMultiple = true;
   dataPageSize = 50;
   dataRowData: any[] = [];
-  dataSelectable = true;
-  dataSelectedRows: Log[] = [];
   dataSortBy = 'id';
   dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
-  dataTotalData = 0;
 
   eventLinks: IPageChangeEvent;
   filteredTotal = 0;
-  fromDate: Date;
-  index: number;
   logs: Log[] = [];
   mavenMessages = false;
-  rowCount = 0;
   searchTerm = '';
-  toDate: Date;
 
   navmenu: Object[] = [];
 
@@ -72,12 +63,13 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private createNav(index: number) {
+    let id;
     for (let i = 0; i < index; i++) {
+      id = i + 1;
       this.navmenu = this.navmenu.concat({
+        'id': id,
         'icon': 'looks_one',
-        'route': '.',
-        'title': 'First item',
-        'description': 'Item description'
+        'title': 'Exec ' + id.toString()
       });
     }
   }
@@ -134,12 +126,12 @@ export class HomeComponent implements AfterViewInit {
     this.ref.detectChanges();
   }
 
-  private loadInfo(code: number) {
+  private loadInfo(code: number, value?: string) {
     let page = (this.dataCurrentPage * this.dataPageSize) - this.dataPageSize;
     if (page < 0) {
       page = 0;
     }
-    this.elasticsearchService.submit(code, this.dataPageSize, page).subscribe(
+    this.elasticsearchService.submit(code, this.dataPageSize, page, value).subscribe(
       data => {
         this.logs = [];
         this.logs = this.logs.concat(data);
@@ -154,7 +146,6 @@ export class HomeComponent implements AfterViewInit {
             'message': log.formatted_message
           });
         }
-        this.rowCount = this.dataRowData.length;
       },
       error => console.log(error)
     );
