@@ -23,12 +23,12 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 export class HomeComponent implements AfterViewInit {
 
   dataColumnDefs: ITdDataTableColumn[] = [
-    {name: 'id', label: 'id', sortable: true},
-    {name: 'timestamp', label: 'timestamp', width: 130},
-    {name: 'thread', label: 'thread'},
-    {name: 'level', label: 'level'},
-    {name: 'class', label: 'class', width: 500},
-    {name: 'message', label: 'message', width: {min: 500, max: 700}}
+    {name: 'id', label: 'id', sortable: true, width: 100},
+    {name: 'timestamp', label: 'timestamp', width: 230},
+    {name: 'thread', label: 'thread', width: 100},
+    {name: 'level', label: 'level', width: 100},
+    {name: 'class', label: 'class', width: 200},
+    {name: 'message', label: 'message', width: 800}
   ];
   dataCurrentPage = 1;
   dataPageSize = 50;
@@ -142,7 +142,7 @@ export class HomeComponent implements AfterViewInit {
             'timestamp': log.timestamp,
             'thread': log.thread_name,
             'level': log.level,
-            'class': log.logger_name,
+            'class': (log.logger_name.split('.')[3]),
             'message': log.formatted_message
           });
         }
