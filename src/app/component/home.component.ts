@@ -36,6 +36,7 @@ export class HomeComponent implements AfterViewInit {
   dataRowData: any[] = [];
   dataSortBy = 'id';
   dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+  idSelected: number;
 
   filteredTotal = 0;
   logs: Log[] = [];
@@ -53,6 +54,7 @@ export class HomeComponent implements AfterViewInit {
     this.mavenMessages = !this.mavenMessages;
     console.log('Show Maven messages: ' + this.mavenMessages);
     console.log('Updating data...');
+    this.loadInfo(0);
   }
 
   ngAfterViewInit(): void {
@@ -89,7 +91,8 @@ export class HomeComponent implements AfterViewInit {
       this.navmenu = this.navmenu.concat({
         'id': id,
         'icon': 'looks_one',
-        'title': 'Exec ' + id.toString()
+        'title': 'Exec ' + id.toString(),
+        'tip': 'Display all logs of execution number ' + id.toString()
       });
     }
   }
@@ -108,7 +111,11 @@ export class HomeComponent implements AfterViewInit {
 
   private loadInfo(code: number, value?: string) {
     console.log('Sending request to your Elasticsearch instance...');
-    this.elasticsearchService.get(code, 73, value, this.mavenMessages).subscribe(
+    if (value) {
+      this.idSelected = +value;
+    }
+    console.log(this.idSelected);
+    this.elasticsearchService.get(code, 73, this.idSelected.toString(), this.mavenMessages).subscribe(
       data => {
         console.log('Response received. Parsing data...');
         this.logs = [];
