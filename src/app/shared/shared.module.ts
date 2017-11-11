@@ -15,7 +15,8 @@ import {
   CovalentPagingModule,
   CovalentSearchModule,
   CovalentStepsModule,
-  CovalentVirtualScrollModule
+  CovalentVirtualScrollModule,
+  CovalentExpansionPanelModule
 } from '@covalent/core';
 import {
   MatAutocompleteModule,
@@ -112,7 +113,8 @@ const COVALENT_MODULES: any[] = [
   CovalentPagingModule,
   CovalentSearchModule,
   CovalentStepsModule,
-  CovalentVirtualScrollModule
+  CovalentVirtualScrollModule,
+  CovalentExpansionPanelModule
 ];
 
 @NgModule({

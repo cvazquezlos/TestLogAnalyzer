@@ -35,6 +35,7 @@ export class HomeComponent implements AfterViewInit {
   dataRowData: any[] = [];
   dataSortBy = 'id';
   dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+  exec: boolean;
   filteredTotal = 0;
   idSelected: number;
   logs: Log[] = [];
@@ -89,7 +90,7 @@ export class HomeComponent implements AfterViewInit {
         'id': id,
         'icon': 'looks_one',
         'title': 'Exec ' + id.toString(),
-        'tip': 'Display all logs of execution number ' + id.toString()
+        'tip': 'Display exec no ' + id.toString()
       });
     }
   }
