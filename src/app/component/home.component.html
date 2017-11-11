@@ -12,7 +12,7 @@
       </button>
       <span>Log</span>
       <span flex></span>
-      <a mat-icon-button matTooltip="Maven?" (click)="maven()"><mat-icon class="icon-maven"></mat-icon></a>
+      <a mat-icon-button matTooltip="Show Maven?" (click)="maven()"><mat-icon class="icon-maven"></mat-icon></a>
     </div>
     <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
@@ -24,7 +24,7 @@
       </ng-template>
     </mat-nav-list>
     <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
-      <mat-card>
+      <mat-card *ngIf="active; else default">
         <td-data-table
           #dataTable
           [data]="dataRowData"
@@ -40,6 +40,13 @@
           [style.width.%]="100">
         </td-data-table>
       </mat-card>
+      <ng-template #default>
+        <mat-card>
+          <mat-card-content>
+            <p>Select any execution or test displayed on the left list to see its logs.</p>
+          </mat-card-content>
+        </mat-card>
+      </ng-template>
     </div>
   </td-layout-nav-list>
 </td-layout>

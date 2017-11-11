@@ -23,7 +23,6 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 export class HomeComponent implements AfterViewInit {
 
   active = false;
-
   dataColumnDefs: ITdDataTableColumn[] = [
     {name: 'id', label: 'id', sortable: true, width: 100},
     {name: 'timestamp', label: 'timestamp', width: 230},
@@ -36,14 +35,12 @@ export class HomeComponent implements AfterViewInit {
   dataRowData: any[] = [];
   dataSortBy = 'id';
   dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
-  idSelected: number;
-
   filteredTotal = 0;
+  idSelected: number;
   logs: Log[] = [];
   mavenMessages = false;
-  searchTerm = '';
-
   navmenu: Object[] = [];
+  searchTerm = '';
 
   constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
               private ref: ChangeDetectorRef, public media: TdMediaService) {
@@ -132,6 +129,7 @@ export class HomeComponent implements AfterViewInit {
             'message': log.formatted_message
           });
         }
+        this.active = true;
         console.log('Data parsed and displayed.');
       },
       error => console.log(error)
