@@ -16,32 +16,10 @@
     </div>
     <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')" class="no_padding">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
-        <td-expansion-panel mat-list-item label={{item.title}} sublabel={{item.tip}}>
-          <mat-list>
-            <mat-list-item>
-              <mat-checkbox [(ngModel)]="exec" (ngChangeModel)="loadInfo(0, item.id)">All</mat-checkbox>
-            </mat-list-item>
-          </mat-list>
-          <div class="md-padding">
-            <h3 class="md-subhead">md-padding class</h3>
-            <div>Demo 1</div>
-            <div>Demo 2</div>
-            <div>Demo 3</div>
-            <div>Demo 4</div>
-          </div>
-        </td-expansion-panel>
-
-          <!--<mat-expansion-panel>
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                {{item.title}}
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-          </mat-expansion-panel>
-        <!--<a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
+        <a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
           <mat-icon matListAvatar>{{item.icon}}</mat-icon>
-          <h3 matLine> {{item.title}} </h3>-->
-        <!--</a>-->
+          <h3 matLine> {{item.title}} </h3>
+        </a>
         <mat-divider matInset *ngIf="!last"></mat-divider>
       </ng-template>
     </mat-nav-list>

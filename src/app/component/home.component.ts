@@ -35,7 +35,6 @@ export class HomeComponent implements AfterViewInit {
   dataRowData: any[] = [];
   dataSortBy = 'id';
   dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
-  exec: boolean;
   filteredTotal = 0;
   idSelected: number;
   logs: Log[] = [];
@@ -112,7 +111,6 @@ export class HomeComponent implements AfterViewInit {
     if (value) {
       this.idSelected = +value;
     }
-    console.log(this.idSelected);
     this.elasticsearchService.get(code, 73, this.idSelected.toString(), this.mavenMessages).subscribe(
       data => {
         console.log('Response received. Parsing data...');
