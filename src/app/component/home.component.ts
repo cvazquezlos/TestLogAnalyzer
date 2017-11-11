@@ -29,7 +29,8 @@ export class HomeComponent implements AfterViewInit {
     {name: 'timestamp', label: 'timestamp', width: 230},
     {name: 'thread', label: 'thread', width: 100},
     {name: 'level', label: 'level', width: 100},
-    {name: 'class', label: 'class', width: 200},
+    {name: 'class', label: 'class', width: 220},
+    {name: 'method', label: 'method', width: 150},
     {name: 'message', label: 'message', width: 800}
   ];
   dataRowData: any[] = [];
@@ -119,7 +120,8 @@ export class HomeComponent implements AfterViewInit {
             'timestamp': log.timestamp,
             'thread': log.thread_name,
             'level': log.level,
-            'class': (log.logger_name.split('.')[3]),
+            'class': (log.logger_name.split('.')[log.logger_name.split('.').length-1]),
+            'method': log.method,
             'message': log.formatted_message
           });
         }
