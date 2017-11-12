@@ -163,12 +163,15 @@ export class HomeComponent implements AfterViewInit {
     );
   }
 
-  private loadInfo(code: number, value?: string) {
+  private loadInfo(code: number, value?: string, method?: string) {
     console.log('Sending request to your Elasticsearch instance...');
     if (value) {
       this.idSelected = +value;
     }
-    this.elasticsearchService.get(code, 73, this.idSelected.toString(), this.mavenMessages).subscribe(
+    if (method) {
+      method = method.replace('(', '').replace(')', '');
+    }
+    this.elasticsearchService.get(code, 73, this.idSelected.toString(), this.mavenMessages, method).subscribe(
       data => {
         console.log('Response received. Parsing data...');
         this.logs = [];

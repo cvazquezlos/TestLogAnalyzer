@@ -20,7 +20,7 @@
         <ng-template let-elem ngFor [ngForOf]="item.classes">
           <h3 matSubheader style="font-size: 0.75em;">{{elem.name}}</h3>
           <ng-template let-method ngFor [ngForOf]="elem.methods">
-            <h3 matSubheader>{{method}}</h3>
+            <a (click)="loadInfo(2, item.id, method)">{{method}}</a>
           </ng-template>
         </ng-template>
         <a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
