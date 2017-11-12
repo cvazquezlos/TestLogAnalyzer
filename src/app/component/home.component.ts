@@ -141,11 +141,11 @@ export class HomeComponent implements AfterViewInit {
         this.aux = this.aux.concat(data);
         let id = 0;
         for (const classInd of this.aux) {
-          if (classInd.formatted_message.split(" ").length !== 2) {
+          if (classInd.formatted_message.split(' ').length !== 2) {
             continue;
           }
           this.navmenu[index].classes = this.navmenu[index].classes.concat({
-            'name': classInd.formatted_message.split(" ")[1],
+            'name': classInd.formatted_message.split(' ')[1],
             'methods': []
           });
           id += 1;
@@ -159,7 +159,7 @@ export class HomeComponent implements AfterViewInit {
             logs = logs.concat(data1);
             for (const log of logs) {
               const args = log.formatted_message.split(' ');
-              if ((this.methods.indexOf(args[1]) == -1) && (args[2] == 'method')) {
+              if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
                 this.methods = this.methods.concat(args[1]);
               }
             }

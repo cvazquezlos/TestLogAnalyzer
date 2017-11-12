@@ -32,7 +32,7 @@ export class ElasticsearchService {
         if (+value < 10) {
           value = '0' + value;
         }
-        let body = {
+        const body = {
           query: {
             query_string: {
               query: '(method:' + method + '*) AND (test_no:' + value + ') AND (logger_name:' + logger + ')'
