@@ -21,6 +21,9 @@
           <mat-icon matListAvatar>{{item.icon}}</mat-icon>
           <h3 matLine> {{item.title}} </h3>
         </a>
+        <ng-template let-elem ngFor [ngForOf]="item.classes">
+          <h3 matSubheader>{{elem.name}}</h3>
+        </ng-template>
         <mat-divider matInset *ngIf="!last"></mat-divider>
       </ng-template>
     </mat-nav-list>

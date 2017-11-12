@@ -125,6 +125,7 @@ export class HomeComponent implements AfterViewInit {
           });
           id += 1;
         }
+        console.log('Classes displayed.');
       },
       error => console.log(error)
     );
