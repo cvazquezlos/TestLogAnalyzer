@@ -23,6 +23,8 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 export class HomeComponent implements AfterViewInit {
 
   active = false;
+  aux: Log[] = [];
+  classes: any[] = [];
   dataColumnDefs: ITdDataTableColumn[] = [
     {name: 'id', label: 'id', sortable: true, width: 100},
     {name: 'timestamp', label: 'timestamp', width: 230},
@@ -39,7 +41,7 @@ export class HomeComponent implements AfterViewInit {
   idSelected: number;
   logs: Log[] = [];
   mavenMessages = false;
-  navmenu: Object[] = [];
+  navmenu: any[] = [];
   searchTerm = '';
 
   constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
@@ -89,8 +91,10 @@ export class HomeComponent implements AfterViewInit {
         'id': id,
         'icon': 'looks_one',
         'title': 'Exec ' + id.toString(),
-        'tip': 'Display exec no ' + id.toString()
+        'tip': 'Display exec no ' + id.toString(),
+        'classes': []
       });
+      this.loadClasses(id, i);
     }
   }
 
@@ -104,6 +108,26 @@ export class HomeComponent implements AfterViewInit {
       this.dataRowData = this.dataRowData.concat(log);
     }
     this.ref.detectChanges();
+  }
+
+  private loadClasses(value: string, index: number) {
+    this.elasticsearchService.get(-1, 73, value, false).subscribe(
+      data => {
+        console.log('Loading execution number ' + value + ' classes...');
+        this.aux = [];
+        this.aux = this.aux.concat(data);
+        console.log(this.aux);
+        let id = 0;
+        for (const classInd of this.aux) {
+          this.navmenu[index].classes = this.navmenu[index].classes.concat({
+            'name': classInd.formatted_message.split(" ")[1],
+            'id': id.toString()
+          });
+          id += 1;
+        }
+      },
+      error => console.log(error)
+    );
   }
 
   private loadInfo(code: number, value?: string) {

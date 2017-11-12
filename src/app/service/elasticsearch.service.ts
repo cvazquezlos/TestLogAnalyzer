@@ -51,12 +51,25 @@ export class ElasticsearchService {
         }
       }
     } else {
-      body = {
-        query: {
-          query_string: {
-            query: '(thread_name:main) AND (test_no:' + value + ')'
-          }
-        }
+      switch (type) {
+        case (0):
+          body = {
+            query: {
+              query_string: {
+                query: '(thread_name:main) AND (test_no:' + value + ')'
+              }
+            }
+          };
+          break;
+        default:
+          body = {
+            query: {
+              query_string: {
+                query: '(formatted_message:Running) AND (test_no:' + value + ')'
+              }
+            }
+          };
+          break;
       }
     }
     const headers: Headers = new Headers();
