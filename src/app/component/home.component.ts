@@ -54,7 +54,9 @@ export class HomeComponent implements AfterViewInit {
     this.mavenMessages = !this.mavenMessages;
     console.log('Show Maven messages: ' + this.mavenMessages);
     console.log('Updating data...');
-    this.loadInfo(0);
+    if (this.isSelected()) {
+      this.loadInfo(0, undefined);
+    }
   }
 
   ngAfterViewInit(): void {
@@ -69,6 +71,17 @@ export class HomeComponent implements AfterViewInit {
     this.dataSortBy = sortEvent.name;
     this.dataSortOrder = sortEvent.order;
     this.filter();
+  }
+
+  private cleanWholeNav() {
+    for (const options of this.navmenu) {
+      options.icon = 'check_box_outline_blank';
+      for (const classI of options.classes) {
+        for (const method of classI.methods) {
+          method.icon = 'check_box_outline_blank';
+        }
+      }
+    }
   }
 
   private countExecs(index: number) {
@@ -111,13 +124,21 @@ export class HomeComponent implements AfterViewInit {
     this.ref.detectChanges();
   }
 
+  private isSelected(): boolean {
+    for (const option of this.navmenu) {
+      if (option.icon === 'check_box') {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private loadNavbarInfo(value: string, index: number) {
     this.elasticsearchService.get(3, 73, value, false).subscribe(
       data => {
         console.log('Loading execution number ' + value + ' classes...');
         this.aux = [];
         this.aux = this.aux.concat(data);
-        console.log(this.aux);
         let id = 0;
         for (const classInd of this.aux) {
           if (classInd.formatted_message.split(" ").length !== 2) {
@@ -168,15 +189,16 @@ export class HomeComponent implements AfterViewInit {
 
   private loadInfo(code: number, value?: string, method?: string) {
     console.log('Sending request to your Elasticsearch instance...');
+    let meth = method;
     if (value) {
       this.idSelected = +value;
-    }
-    let meth = method;
-    if (method) {
-      this.updateIcon(value, method);
-      meth = method.replace('(', '').replace(')', '');
-    } else {
-      this.updateIcon(value);
+      if (method) {
+        this.updateIcon(value, method);
+        meth = method.replace('(', '').replace(')', '');
+      } else {
+        this.updateIcon(value);
+      }
+      this.active = true;
     }
     this.elasticsearchService.get(code, 1000, this.idSelected.toString(), this.mavenMessages, meth).subscribe(
       data => {
@@ -195,7 +217,6 @@ export class HomeComponent implements AfterViewInit {
             'message': log.formatted_message
           });
         }
-        this.active = true;
         console.log('Data parsed and displayed.');
       },
       error => console.log(error)
@@ -203,34 +224,21 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private updateIcon(id: string, method?: string) {
+    this.cleanWholeNav();
     for (const option of this.navmenu) {
-      if (option.id == id) {
-        if (method != undefined) {
-          option.icon = 'check_box_outline_blank';
+      if (option.id === id) {
+        if (method !== undefined) {
           for (const classI of option.classes) {
             for (const meth of classI.methods) {
-              if (meth.name == method) {
+              if (meth.name === method) {
                 meth.icon = 'check_box';
-              } else {
-                meth.icon = 'check_box_outline_blank';
               }
             }
           }
         } else {
-          for (const classI of option.classes) {
-            this.cleanMethods(classI.methods);
-          }
           option.icon = 'check_box';
         }
-      } else {
-        option.icon = 'check_box_outline_blank';
       }
-    }
-  }
-
-  private cleanMethods(methods: any[]) {
-    for (const method of methods) {
-      method.icon = 'check_box_outline_blank';
     }
   }
 }
