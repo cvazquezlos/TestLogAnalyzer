@@ -1,6 +1,6 @@
 <td-layout>
   <td-layout-nav-list #navList
-                      color="accent"
+                      color="dark"
                       opened="true"
                       mode="side">
     <div td-sidenav-toolbar-content layout="row" layout-align="start center" >
@@ -12,21 +12,31 @@
       </button>
       <span>Log</span>
       <span flex></span>
-      <a mat-icon-button matTooltip="Show Maven?" (click)="maven()"><mat-icon class="icon-maven"></mat-icon></a>
+      <a *ngIf="mavenMessages; else defMaven" mat-icon-button matTooltip="Show Maven?" (click)="maven()">
+        <mat-icon color="accent" class="icon-maven"></mat-icon>
+      </a>
+      <ng-template #defMaven>
+        <a mat-icon-button matTooltip="Show Maven?" (click)="maven()">
+          <mat-icon style="color: lightgray" class="icon-maven"></mat-icon>
+        </a>
+      </ng-template>
     </div>
     <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')" class="no_padding">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
         <h3 matSubheader style="font-size: 1em;">{{item.title}}</h3>
+        <a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
+          <mat-icon>{{item.icon}}</mat-icon>
+          <h3 matLine style="font-size: 0.9em">&nbsp;&nbsp;&nbsp;&nbsp;All</h3>
+        </a>
         <ng-template let-elem ngFor [ngForOf]="item.classes">
           <h3 matSubheader style="font-size: 0.75em;">{{elem.name}}</h3>
           <ng-template let-method ngFor [ngForOf]="elem.methods">
-            <a (click)="loadInfo(2, item.id, method)">{{method}}</a>
+            <a matTooltip="Show concrete test {{method.name}}" mat-list-item (click)="loadInfo(2, item.id, method.name)">
+              <mat-icon>{{method.icon}}</mat-icon>
+              <h3 matLine style="font-size: 0.9em">&nbsp;&nbsp;&nbsp;&nbsp;{{method.name}}</h3>
+            </a>
           </ng-template>
         </ng-template>
-        <a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
-          <mat-icon matListAvatar>{{item.icon}}</mat-icon>
-          <h3 matLine> {{item.title}} </h3>
-        </a>
         <mat-divider matInset *ngIf="!last"></mat-divider>
       </ng-template>
     </mat-nav-list>

@@ -58,7 +58,7 @@ export class ElasticsearchService {
       value = '0' + value;
     }
     let body;
-    if (maven) {
+    if (maven && !method) {
       body = {
         query: {
           query_string: {

@@ -32,7 +32,7 @@ export class HomeComponent implements AfterViewInit {
     {name: 'level', label: 'level', width: 100},
     {name: 'class', label: 'class', width: 220},
     {name: 'method', label: 'method', width: 150},
-    {name: 'message', label: 'message', width: 800}
+    {name: 'message', label: 'message', width: 600}
   ];
   dataRowData: any[] = [];
   dataSortBy = 'id';
@@ -90,7 +90,7 @@ export class HomeComponent implements AfterViewInit {
       id = i + 1;
       this.navmenu = this.navmenu.concat({
         'id': id,
-        'icon': 'looks_one',
+        'icon': 'check_box_outline_blank',
         'title': 'Exec ' + id.toString(),
         'tip': 'Display exec no ' + id.toString(),
         'classes': []
@@ -130,7 +130,7 @@ export class HomeComponent implements AfterViewInit {
           id += 1;
         }
         console.log('Classes of execution ' + value + ' displayed.');
-        this.elasticsearchService.get(1, 73, value, false).subscribe(
+        this.elasticsearchService.get(1, 1000, value, false).subscribe(
           data1 => {
             console.log('Loading test names of each execution ' + value + ' class...');
             this.methods = [];
@@ -148,7 +148,10 @@ export class HomeComponent implements AfterViewInit {
                 this.elasticsearchService.count(3, value, method.replace('(', '').replace(')', ''), logger.name).subscribe(
                   data2 => {
                     if (data2 !== 0) {
-                      logger.methods = logger.methods.concat(method);
+                      logger.methods = logger.methods.concat({
+                        'name': method,
+                        'icon': 'check_box_outline_blank'
+                      });
                     }
                   }
                 );
@@ -168,10 +171,14 @@ export class HomeComponent implements AfterViewInit {
     if (value) {
       this.idSelected = +value;
     }
+    let meth = method;
     if (method) {
-      method = method.replace('(', '').replace(')', '');
+      this.updateIcon(value, method);
+      meth = method.replace('(', '').replace(')', '');
+    } else {
+      this.updateIcon(value);
     }
-    this.elasticsearchService.get(code, 73, this.idSelected.toString(), this.mavenMessages, method).subscribe(
+    this.elasticsearchService.get(code, 1000, this.idSelected.toString(), this.mavenMessages, meth).subscribe(
       data => {
         console.log('Response received. Parsing data...');
         this.logs = [];
@@ -193,5 +200,37 @@ export class HomeComponent implements AfterViewInit {
       },
       error => console.log(error)
     );
+  }
+
+  private updateIcon(id: string, method?: string) {
+    for (const option of this.navmenu) {
+      if (option.id == id) {
+        if (method != undefined) {
+          option.icon = 'check_box_outline_blank';
+          for (const classI of option.classes) {
+            for (const meth of classI.methods) {
+              if (meth.name == method) {
+                meth.icon = 'check_box';
+              } else {
+                meth.icon = 'check_box_outline_blank';
+              }
+            }
+          }
+        } else {
+          for (const classI of option.classes) {
+            this.cleanMethods(classI.methods);
+          }
+          option.icon = 'check_box';
+        }
+      } else {
+        option.icon = 'check_box_outline_blank';
+      }
+    }
+  }
+
+  private cleanMethods(methods: any[]) {
+    for (const method of methods) {
+      method.icon = 'check_box_outline_blank';
+    }
   }
 }
