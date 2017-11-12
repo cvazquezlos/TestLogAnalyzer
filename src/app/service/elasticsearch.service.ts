@@ -14,7 +14,7 @@ export class ElasticsearchService {
   constructor(private http: Http) {
   }
 
-  count(type: number, value?: string) {
+  count(type: number, value?: string, method?: string, logger?: string) {
     let getURL = this.countURL;
     switch (type) {
       case 0:
@@ -28,6 +28,22 @@ export class ElasticsearchService {
         }
         getURL += '?q=test_no:' + value;
         break;
+      case 3:
+        if (+value < 10) {
+          value = '0' + value;
+        }
+        let body = {
+          query: {
+            query_string: {
+              query: '(method:' + method + '*) AND (test_no:' + value + ') AND (logger_name:*' + logger + ')'
+            }
+          }
+        };
+        const headers: Headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        return this.http.post(getURL, JSON.stringify(body), {headers: headers})
+          .map(response => response.json().count)
+          .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
     }
     return this.http.get(getURL)
       .map(response => response.json().count)

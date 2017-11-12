@@ -129,10 +129,10 @@ export class HomeComponent implements AfterViewInit {
           });
           id += 1;
         }
-        console.log('Classes displayed.');
+        console.log('Classes of execution ' + value + ' displayed.');
         this.elasticsearchService.get(1, 73, value, false).subscribe(
           data1 => {
-            console.log('Loading test names...');
+            console.log('Loading test names of each execution ' + value + ' class...');
             this.methods = [];
             let logs: Log[] = [];
             logs = logs.concat(data1);
@@ -143,6 +143,19 @@ export class HomeComponent implements AfterViewInit {
               }
             }
             console.log('Names loaded. Adding each method to its class...');
+            for (const logger of this.navmenu[index].classes) {
+              for (const method of this.methods) {
+                this.elasticsearchService.count(3, value, method.replace('(', '').replace(')', ''), logger.name).subscribe(
+                  data2 => {
+                    console.log(data2);
+                    if (data2 !== 0) {
+                      logger.methods = logger.methods.concat(method);
+                      console.log(logger.methods + '\n');
+                    }
+                  }
+                );
+              }
+            }
           },
           error => console.log(error)
         );
