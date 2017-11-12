@@ -3,8 +3,11 @@
                       color="dark"
                       opened="true"
                       mode="side">
-    <div td-sidenav-toolbar-content layout="row" layout-align="start center" >
-      <span [routerLink]="['/']" class="cursor-pointer">Executions</span>
+    <div td-sidenav-toolbar-content layout="row" layout-align="start center" style="width: 100%">
+      <span class="cursor-pointer" style="float: left;">Executions</span>
+      <a mat-icon-button matTooltip="Go to comparisons" style="position: absolute; right: 0px;" [routerLink]="['/comparison']">
+        <mat-icon>web</mat-icon>
+      </a>
     </div>
     <div td-toolbar-content layout="row" layout-align="start center" flex>
       <button mat-icon-button tdLayoutNavListOpen [hideWhenOpened]="true">
