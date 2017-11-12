@@ -35,7 +35,7 @@ export class ElasticsearchService {
         let body = {
           query: {
             query_string: {
-              query: '(method:' + method + '*) AND (test_no:' + value + ') AND (logger_name:*' + logger + ')'
+              query: '(method:' + method + '*) AND (test_no:' + value + ') AND (logger_name:' + logger + ')'
             }
           }
         };

@@ -95,7 +95,7 @@ export class HomeComponent implements AfterViewInit {
         'tip': 'Display exec no ' + id.toString(),
         'classes': []
       });
-      this.loadClasses(id, i);
+      this.loadNavbarInfo(id, i);
     }
   }
 
@@ -111,7 +111,7 @@ export class HomeComponent implements AfterViewInit {
     this.ref.detectChanges();
   }
 
-  private loadClasses(value: string, index: number) {
+  private loadNavbarInfo(value: string, index: number) {
     this.elasticsearchService.get(3, 73, value, false).subscribe(
       data => {
         console.log('Loading execution number ' + value + ' classes...');
@@ -147,15 +147,14 @@ export class HomeComponent implements AfterViewInit {
               for (const method of this.methods) {
                 this.elasticsearchService.count(3, value, method.replace('(', '').replace(')', ''), logger.name).subscribe(
                   data2 => {
-                    console.log(data2);
                     if (data2 !== 0) {
                       logger.methods = logger.methods.concat(method);
-                      console.log(logger.methods + '\n');
                     }
                   }
                 );
               }
             }
+            console.log('Test names added.')
           },
           error => console.log(error)
         );
@@ -191,8 +190,5 @@ export class HomeComponent implements AfterViewInit {
       },
       error => console.log(error)
     );
-  }
-
-  private loadMethods(value: string) {
   }
 }
