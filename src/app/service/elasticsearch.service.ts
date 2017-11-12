@@ -34,7 +34,7 @@ export class ElasticsearchService {
       .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
   }
 
-  get(type: number, size: number, value: string, maven: boolean) {
+  get(type: number, size: number, value: string, maven: boolean, method?: string, logger?: string) {
     const values1 = '&size=' + size;
     const values2 = '&from=0';
     const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
@@ -52,7 +52,7 @@ export class ElasticsearchService {
       }
     } else {
       switch (type) {
-        case (0):
+        case 0:
           body = {
             query: {
               query_string: {
@@ -61,7 +61,25 @@ export class ElasticsearchService {
             }
           };
           break;
-        default:
+        case 1:
+          body = {
+            query: {
+              query_string: {
+                query: '(formatted_message:Starting) AND (test_no:' + value + ')'
+              }
+            }
+          };
+          break;
+        case 2:
+          body = {
+            query: {
+              query_string: {
+                query: '(method:' + method + '*) AND (test_no:' + value + ') AND (logger_name:*' + logger + ')'
+              }
+            }
+          };
+          break;
+        case 3:
           body = {
             query: {
               query_string: {

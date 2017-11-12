@@ -41,6 +41,7 @@ export class HomeComponent implements AfterViewInit {
   idSelected: number;
   logs: Log[] = [];
   mavenMessages = false;
+  methods: any[] = [];
   navmenu: any[] = [];
   searchTerm = '';
 
@@ -111,7 +112,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private loadClasses(value: string, index: number) {
-    this.elasticsearchService.get(-1, 73, value, false).subscribe(
+    this.elasticsearchService.get(3, 73, value, false).subscribe(
       data => {
         console.log('Loading execution number ' + value + ' classes...');
         this.aux = [];
@@ -119,13 +120,32 @@ export class HomeComponent implements AfterViewInit {
         console.log(this.aux);
         let id = 0;
         for (const classInd of this.aux) {
+          if (classInd.formatted_message.split(" ").length !== 2) {
+            continue;
+          }
           this.navmenu[index].classes = this.navmenu[index].classes.concat({
             'name': classInd.formatted_message.split(" ")[1],
-            'id': id.toString()
+            'methods': []
           });
           id += 1;
         }
         console.log('Classes displayed.');
+        this.elasticsearchService.get(1, 73, value, false).subscribe(
+          data1 => {
+            console.log('Loading test names...');
+            this.methods = [];
+            let logs: Log[] = [];
+            logs = logs.concat(data1);
+            for (const log of logs) {
+              const args = log.formatted_message.split(' ');
+              if ((this.methods.indexOf(args[1]) == -1) && (args[2] == 'method')) {
+                this.methods = this.methods.concat(args[1]);
+              }
+            }
+            console.log('Names loaded. Adding each method to its class...');
+          },
+          error => console.log(error)
+        );
       },
       error => console.log(error)
     );
@@ -158,5 +178,8 @@ export class HomeComponent implements AfterViewInit {
       },
       error => console.log(error)
     );
+  }
+
+  private loadMethods(value: string) {
   }
 }

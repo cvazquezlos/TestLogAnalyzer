@@ -16,14 +16,14 @@
     </div>
     <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')" class="no_padding">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
-        <h3 matSubheader style="font-size: 16px;">{{item.title}}</h3>
+        <h3 matSubheader style="font-size: 1em;">{{item.title}}</h3>
+        <ng-template let-elem ngFor [ngForOf]="item.classes">
+          <h3 matSubheader style="font-size: 0.75em;">{{elem.name}}</h3>
+        </ng-template>
         <a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
           <mat-icon matListAvatar>{{item.icon}}</mat-icon>
           <h3 matLine> {{item.title}} </h3>
         </a>
-        <ng-template let-elem ngFor [ngForOf]="item.classes">
-          <h3 matSubheader>{{elem.name}}</h3>
-        </ng-template>
         <mat-divider matInset *ngIf="!last"></mat-divider>
       </ng-template>
     </mat-nav-list>
