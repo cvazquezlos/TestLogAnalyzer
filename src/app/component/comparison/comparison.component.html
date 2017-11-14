@@ -1,23 +1,27 @@
-<td-layout-card-over>
-  <mat-card-title>Target test</mat-card-title>
-  <mat-card-subtitle>Select a test to start comparing with others</mat-card-subtitle>
-  <mat-divider></mat-divider>
-  <mat-card-content>
-    <div layout-gt-xs="row" layout-wrap>
-      <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
-        <div flex-sm="50" flex-md="50" flex-gt-md="25">
-          <mat-card href [routerLink]="[item.route]" class="mat-card-colored" flex>
-            <mat-toolbar class="bgc-{{item.color}} " layout="column" layout-align="center center" layout-padding>
-              <mat-icon class="mat-icon-font-xl tc-white">{{item.icon}}</mat-icon>
-            </mat-toolbar>
-            <mat-card-content>
-              <div layout="column" layout-padding>
-                <div class="md-subhead">{{item.title}}</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </ng-template>
-    </div>
-  </mat-card-content>
-</td-layout-card-over>
+<td-layout *ngIf="selected; else dont">
+</td-layout>
+<ng-template #dont>
+  <td-layout-card-over>
+    <mat-card-title>Target test</mat-card-title>
+    <mat-card-subtitle>Select a test to start comparing with others</mat-card-subtitle>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <div layout-gt-xs="row" layout-wrap>
+        <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
+          <div flex-sm="50" flex-md="50" flex-gt-md="25">
+            <mat-card (click)="update()" class="mat-card-colored" flex>
+              <mat-toolbar class="bgc-{{item.color}} " layout="column" layout-align="center center" layout-padding>
+                <mat-icon class="mat-icon-font-xl tc-white">{{item.icon}}</mat-icon>
+              </mat-toolbar>
+              <mat-card-content>
+                <div layout="column" layout-padding>
+                  <div class="md-subhead">{{item.title}}</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </ng-template>
+      </div>
+    </mat-card-content>
+  </td-layout-card-over>
+</ng-template>
