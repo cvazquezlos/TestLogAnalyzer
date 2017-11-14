@@ -1,7 +1,7 @@
 import {RouterModule} from '@angular/router';
 
 import {HomeComponent} from './component/home.component';
-import {ComparisonComponent} from "./component/comparison/comparison.component";
+import {ComparisonComponent} from './component/comparison/comparison.component';
 
 const appRoutes = [
   {path: '', component: HomeComponent},

@@ -9,7 +9,7 @@ import {CovalentHttpModule} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
 
 import {AppComponent} from './app.component';
-import {ComparisonComponent} from "./component/comparison/comparison.component";
+import {ComparisonComponent} from './component/comparison/comparison.component';
 import {HomeComponent} from './component/home.component';
 import {SharedModule} from './shared/shared.module';
 
