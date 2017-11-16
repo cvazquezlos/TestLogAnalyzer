@@ -25,11 +25,15 @@ export class ComparisonComponent {
   }
 
   comparator(exec: any) {
+    this.addExecs(1, exec.id);
+    this.addExecs(2, exec.id);
     exec.class = 'active';
     this.deleteExec(this.execsCompared, exec);
   }
 
   compared(exec: any) {
+    this.addExecs(1, exec.id);
+    this.addExecs(2, exec.id);
     exec.class= 'active';
     this.deleteExec(this.execsComparator, exec);
   }
@@ -41,6 +45,38 @@ export class ComparisonComponent {
     this.execsCompared = [];
     this.countExecs(0);
     this.active = true;
+  }
+
+  private addExecs(type: number, exec: number) {
+    let classN = 'execs';
+    switch (type) {
+      case 1:
+        this.execsComparator = [];
+        for (let i = 0; i < this.execsNumber; i++) {
+          if (i + 1 === exec) {
+            classN = 'active';
+          }
+          this.execsComparator = this.execsComparator.concat({
+            'id': i + 1,
+            'class': classN
+          });
+          classN = 'execs';
+        }
+        break;
+      case 2:
+        this.execsCompared = [];
+        for (let i = 0; i < this.execsNumber; i++) {
+          if (i + 1 === exec) {
+            classN = 'active';
+          }
+          this.execsCompared = this.execsCompared.concat({
+            'id': i + 1,
+            'class': classN
+          });
+          classN = 'execs';
+        }
+        break;
+    }
   }
 
   private countExecs(index: number) {
