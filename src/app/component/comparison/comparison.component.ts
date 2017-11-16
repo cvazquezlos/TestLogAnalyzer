@@ -25,17 +25,27 @@ export class ComparisonComponent {
   }
 
   comparator(exec: any) {
-    this.addExecs(1, exec.id);
-    this.addExecs(2, exec.id);
-    exec.class = 'active';
-    this.deleteExec(this.execsCompared, exec);
+    if (!this.isSelectedAnyElement(this.execsCompared)) {
+      this.addExecs(1, exec.id);
+      this.addExecs(2, exec.id);
+      exec.class = 'active';
+      this.deleteExec(this.execsCompared, exec);
+    } else {
+      exec.class = 'active';
+      this.deleteExec(this.execsCompared, exec);
+    }
   }
 
   compared(exec: any) {
-    this.addExecs(1, exec.id);
-    this.addExecs(2, exec.id);
-    exec.class= 'active';
-    this.deleteExec(this.execsComparator, exec);
+    if (!this.isSelectedAnyElement(this.execsComparator)) {
+      this.addExecs(1, exec.id);
+      this.addExecs(2, exec.id);
+      exec.class= 'active';
+      this.deleteExec(this.execsComparator, exec);
+    } else {
+      exec.class = 'active';
+      this.deleteExec(this.execsComparator, exec);
+    }
   }
 
   methodSelected(method: string) {
@@ -133,5 +143,14 @@ export class ComparisonComponent {
       },
       error => console.log(error)
     );
+  }
+
+  private isSelectedAnyElement(execs: any[]) {
+    for (let exec of execs) {
+      if (exec.class === 'active') {
+        return true;
+      }
+    }
+    return false;
   }
 }
