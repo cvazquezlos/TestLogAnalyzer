@@ -40,7 +40,7 @@ export class ComparisonComponent {
     if (!this.isSelectedAnyElement(this.execsComparator)) {
       this.addExecs(1, exec.id);
       this.addExecs(2, exec.id);
-      exec.class= 'active';
+      exec.class = 'active';
       this.deleteExec(this.execsComparator, exec);
     } else {
       exec.class = 'active';
@@ -146,7 +146,7 @@ export class ComparisonComponent {
   }
 
   private isSelectedAnyElement(execs: any[]) {
-    for (let exec of execs) {
+    for (const exec of execs) {
       if (exec.class === 'active') {
         return true;
       }
