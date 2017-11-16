@@ -1,0 +1,21 @@
+.execs {
+  background-color: rgb(195, 195, 195); /* Green */
+  border: none;
+  color: #0e0e0e;
+  padding: 3px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.3em;
+}
+
+.active {
+  background-color: rgb(25, 118, 210); /* Green */
+  border: none;
+  color: white;
+  padding: 3px 8px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.3em;
+}

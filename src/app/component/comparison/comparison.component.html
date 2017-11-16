@@ -1,75 +1,83 @@
-<div *ngIf="selected; else dont">
-  <td-layout>
-    <td-layout-nav-list #navList
-                        color="accent"
-                        [opened]="true"
-                        mode="side">
-      <div td-sidenav-toolbar-content layout="row" layout-align="start center" style="width: 100%">
-        <span class="cursor-pointer" style="float: left;">Comparisons</span>
-        <a mat-icon-button matTooltip="Return home" style="position: absolute; right: 0px;" [routerLink]="['/']">
-          <mat-icon>home</mat-icon>
+<td-layout>
+  <td-layout-manage-list #manageList
+                         opened="true"
+                         mode="side">
+    <mat-toolbar td-sidenav-content color="accent">
+      <span class="cursor-pointer" style="float: left; color: white">Comparisons</span>
+      <a mat-icon-button matTooltip="Return home" style="position: absolute; right: 0px;" [routerLink]="['/']">
+        <mat-icon style="color: white">home</mat-icon>
+      </a>
+    </mat-toolbar>
+    <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
+      <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
+        <a mat-list-item (click)="methodSelected(item.title)">
+          <mat-icon matListIcon>{{item.icon}}</mat-icon> {{item.title}}
         </a>
-      </div>
-      <div td-toolbar-content layout="row" layout-align="start center" flex>
-        <button mat-icon-button tdLayoutNavListOpen [hideWhenOpened]="true">
+      </ng-template>
+    </mat-nav-list>
+    <mat-toolbar color="accent">
+      <div layout="row" layout-align="start center" flex>
+        <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true">
           <mat-icon>arrow_back</mat-icon>
         </button>
-        <span>Page Title</span>
+        <span style="color: white">Content Title</span>
         <span flex></span>
       </div>
-      <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')">
-        <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
-          <a mat-list-item>
-            <mat-icon matListAvatar>{{item.icon}}</mat-icon>
-            <h3 matLine> {{item.title}} </h3>
-            <p matLine> {{item.description}} </p>
-          </a>
-          <mat-divider matInset *ngIf="!last"></mat-divider>
-        </ng-template>
-      </mat-nav-list>
+    </mat-toolbar>
+    <div *ngIf="active; else default">
+    <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+        <div flex-gt-sm="50">
+          <mat-card>
+            <mat-card-title>
+              Comparator execution
+            </mat-card-title>
+            <mat-card-subtitle>
+              <ng-template let-exec ngFor [ngForOf]="execsComparator">
+                <button (click)="comparator(exec)" [class]="exec.class">{{exec.id}}</button>
+              </ng-template>
+            </mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              card content
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="accent" class="text-upper" [routerLink]="['/']">
+                <span>View More</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div flex-gt-sm="50">
+          <mat-card>
+            <mat-card-title>Comparated execution</mat-card-title>
+            <mat-card-subtitle>
+              <ng-template let-exec ngFor [ngForOf]="execsCompared">
+                <button (click)="compared(exec)" [class]="exec.class">{{exec.id}}</button>
+              </ng-template>
+            </mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              card content
+            </mat-card-content>
+            <mat-divider></mat-divider>
+            <mat-card-actions>
+              <a mat-button color="accent" class="text-upper" [routerLink]="['/']">
+                <span>View More</span>
+              </a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <ng-template #default>
       <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <mat-card>
-          <mat-card-title>Main Content</mat-card-title>
-          <mat-card-subtitle>content area</mat-card-subtitle>
-          <mat-divider></mat-divider>
           <mat-card-content>
-            card content
+            <p>Select a test to start comparing executions.</p>
           </mat-card-content>
-          <mat-divider></mat-divider>
-          <mat-card-actions>
-            <a mat-button color="accent" class="text-upper" [routerLink]="['/']">
-              <span>View More</span>
-            </a>
-          </mat-card-actions>
         </mat-card>
       </div>
-    </td-layout-nav-list>
-  </td-layout>
-</div>
-<ng-template #dont>
-  <td-layout-card-over>
-    <mat-card-title>Target test</mat-card-title>
-    <mat-card-subtitle>Select a test to start comparing with others</mat-card-subtitle>
-    <mat-divider></mat-divider>
-    <mat-card-content>
-      <div layout-gt-xs="row" layout-wrap>
-        <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
-          <div flex-sm="50" flex-md="50" flex-gt-md="25">
-            <a (click)="update()">
-              <mat-card class="mat-card-colored" flex>
-                <mat-toolbar class="bgc-{{item.color}} " layout="column" layout-align="center center" layout-padding>
-                  <mat-icon class="mat-icon-font-xl tc-white">{{item.icon}}</mat-icon>
-                </mat-toolbar>
-                <mat-card-content>
-                  <div layout="column" layout-padding>
-                    <div class="md-subhead">{{item.title}}</div>
-                  </div>
-                </mat-card-content>
-              </mat-card>
-            </a>
-          </div>
-        </ng-template>
-      </div>
-    </mat-card-content>
-  </td-layout-card-over>
-</ng-template>
+    </ng-template>
+  </td-layout-manage-list>
+</td-layout>

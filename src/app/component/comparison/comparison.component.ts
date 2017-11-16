@@ -8,78 +8,73 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
   selector: 'app-comparison',
-  templateUrl: './comparison.component.html'
+  templateUrl: './comparison.component.html',
+  styleUrls: ['./comparison.component.css']
 })
 
 export class ComparisonComponent {
-  routes: Object[] = [{
-    icon: 'home',
-    route: '.',
-    title: 'Home',
-  }, {
-    icon: 'library_books',
-    route: '.',
-    title: 'Documentation',
-  }, {
-    icon: 'color_lens',
-    route: '.',
-    title: 'Style Guide',
-  }, {
-    icon: 'view_quilt',
-    route: '.',
-    title: 'Layouts',
-  }, {
-    icon: 'picture_in_picture',
-    route: '.',
-    title: 'Components & Addons',
-  },
-  ];
-  usermenu: Object[] = [{
-    icon: 'swap_horiz',
-    route: '.',
-    title: 'Switch account',
-  }, {
-    icon: 'tune',
-    route: '.',
-    title: 'Account settings',
-  }, {
-    icon: 'exit_to_app',
-    route: '.',
-    title: 'Sign out',
-  },
-  ];
-  navmenu: Object[] = [{
-    icon: 'looks_one',
-    route: '.',
-    title: 'First item',
-    description: 'Item description',
-  }, {
-    icon: 'looks_two',
-    route: '.',
-    title: 'Second item',
-    description: 'Item description',
-  }, {
-    icon: 'looks_3',
-    route: '.',
-    title: 'Third item',
-    description: 'Item description',
-  }, {
-    icon: 'looks_4',
-    route: '.',
-    title: 'Fourth item',
-    description: 'Item description',
-  }, {
-    icon: 'looks_5',
-    route: '.',
-    title: 'Fifth item',
-    description: 'Item description',
-  },
-  ];
+
+  active = false;
+  execsComparator: any[] = [];
+  execsCompared: any[] = [];
+  execsNumber = 0;
   methods: Object[] = [];
-  selected = false;
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.initInfo('1');
+  }
+
+  comparator(exec: any) {
+    exec.class = 'active';
+    this.deleteExec(this.execsCompared, exec);
+  }
+
+  compared(exec: any) {
+    exec.class= 'active';
+    this.deleteExec(this.execsComparator, exec);
+  }
+
+  methodSelected(method: string) {
+    console.log('Method selected: ' + method);
+    console.log('Loading executions...');
+    this.execsComparator = [];
+    this.execsCompared = [];
+    this.countExecs(0);
+    this.active = true;
+  }
+
+  private countExecs(index: number) {
+    this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
+      count => {
+        if (count !== 0) {
+          this.countExecs(index + 1);
+          this.execsComparator = this.execsComparator.concat({
+            'id': index + 1,
+            'class': 'execs'
+          });
+          this.execsCompared = this.execsCompared.concat({
+            'id': index + 1,
+            'class': 'execs'
+          });
+        } else {
+          this.execsNumber = index;
+          console.log('Success. Avaible executions: ' + this.execsNumber);
+        }
+      },
+      error => console.log(error)
+    );
+  }
+
+  private deleteExec(execs: any[], exec: any) {
+    let index = 0;
+    for (const execution of execs) {
+      if (execution.id === exec.id) {
+        execs.splice(index, 1);
+        break;
+      }
+      index += 1;
+    }
+    console.log(this.execsCompared);
   }
 
   private initInfo(value: string) {
@@ -93,22 +88,14 @@ export class ComparisonComponent {
           const args = log.formatted_message.split(' ');
           if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
             this.methods = this.methods.concat({
-              'color': 'orange-700',
               'icon': 'event_note',
-              'route': args[1],
               'title': args[1]
             })
           }
         }
-        console.log(this.methods);
         console.log('Test names added.');
       },
       error => console.log(error)
     );
   }
-
-  private update() {
-    this.selected = true;
-  }
-
 }
