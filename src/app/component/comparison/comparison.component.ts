@@ -25,39 +25,7 @@ export class ComparisonComponent {
     lineWrapping : true,
     mode: 'xml' };
   methods: Object[] = [];
-  comparatorText = `// ... some code !
-package main
-
-import "fmt"
-
-// Send the sequence 2, 3, 4, ... to channel 'ch'.
-func generate(ch chan<- int) {
-	for i := 2; ; i++ {
-		ch <- i  // Send 'i' to channel 'ch'
-	}
-	sasasa
-	sasa
-	sasa
-	sa
-	
-	sa
-	sa
-	sa
-	sa
-	as
-	sa
-	sa
-	sa
-	sasasasa
-	as
-	sa
-	sa
-	sa
-	sa
-	sa
-	s
-	asasasasa
-}`;
+  comparatorText: string;
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.initInfo('1');
@@ -68,6 +36,7 @@ func generate(ch chan<- int) {
       this.addExecs(1, exec.id);
       this.addExecs(2, exec.id);
       exec.class = 'active';
+      this.loadInfo(exec.id, 0);
       this.deleteExec(this.execsCompared, exec);
     } else {
       exec.class = 'active';
@@ -145,6 +114,7 @@ func generate(ch chan<- int) {
           this.execsNumber = index;
           console.log('Success. Avaible executions: ' + this.execsNumber);
         }
+        this.comparatorText = JSON.stringify(this.methods[0]) + '\n' + JSON.stringify(this.methods[1]);
       },
       error => console.log(error)
     );
@@ -191,5 +161,25 @@ func generate(ch chan<- int) {
       }
     }
     return false;
+  }
+
+  private loadInfo(exec: string, type: number) {
+    this.elasticsearchService.get(0, 1000, exec, true, undefined).subscribe(
+      data => {
+        let aux = [];
+        aux = aux.concat(data);
+        switch (type) {
+          case 0:
+            this.comparatorText = '';
+            for (let dat of aux) {
+              this.comparatorText += dat.entire_log + '\n';
+            }
+            break;
+          case 1:
+            break;
+        }
+      },
+      error => console.log(error)
+    );
   }
 }
