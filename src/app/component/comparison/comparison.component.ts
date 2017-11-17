@@ -18,7 +18,13 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
-  config = {
+  comparatorConfig = {
+    lineNumbers: true,
+    theme:'twilight',
+    readOnly: 'nocursor',
+    lineWrapping : true,
+    mode: 'xml' };
+  comparedConfig = {
     lineNumbers: true,
     theme:'twilight',
     readOnly: 'nocursor',
@@ -26,6 +32,7 @@ export class ComparisonComponent {
     mode: 'xml' };
   methods: Object[] = [];
   comparatorText: string;
+  comparedText: string;
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.initInfo('1');
@@ -49,6 +56,7 @@ export class ComparisonComponent {
       this.addExecs(1, exec.id);
       this.addExecs(2, exec.id);
       exec.class = 'active';
+      this.loadInfo(exec.id, 1);
       this.deleteExec(this.execsComparator, exec);
     } else {
       exec.class = 'active';
@@ -114,7 +122,6 @@ export class ComparisonComponent {
           this.execsNumber = index;
           console.log('Success. Avaible executions: ' + this.execsNumber);
         }
-        this.comparatorText = JSON.stringify(this.methods[0]) + '\n' + JSON.stringify(this.methods[1]);
       },
       error => console.log(error)
     );
@@ -176,6 +183,10 @@ export class ComparisonComponent {
             }
             break;
           case 1:
+            this.comparedText = '';
+            for (let dat of aux) {
+              this.comparedText += dat.entire_log + '\n';
+            }
             break;
         }
       },

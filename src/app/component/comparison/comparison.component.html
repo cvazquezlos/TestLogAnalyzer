@@ -11,7 +11,8 @@
     <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
       <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
         <a mat-list-item (click)="methodSelected(item.title)">
-          <mat-icon matListIcon>{{item.icon}}</mat-icon> {{item.title}}
+          <mat-icon matListIcon>{{item.icon}}</mat-icon>
+          {{item.title}}
         </a>
       </ng-template>
     </mat-nav-list>
@@ -25,7 +26,7 @@
       </div>
     </mat-toolbar>
     <div *ngIf="active; else default">
-    <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+      <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <div flex-gt-sm="50">
           <mat-card>
             <mat-card-title>
@@ -38,7 +39,7 @@
             </mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-card-content>
-              <codemirror [(ngModel)]="comparatorText" [config]="config"></codemirror>
+              <codemirror [(ngModel)]="comparatorText" [config]="comparatorConfig"></codemirror>
             </mat-card-content>
           </mat-card>
         </div>
@@ -52,14 +53,8 @@
             </mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-card-content>
-              card content
+              <codemirror [(ngModel)]="comparedText" [config]="comparedConfig"></codemirror>
             </mat-card-content>
-            <mat-divider></mat-divider>
-            <mat-card-actions>
-              <a mat-button color="accent" class="text-upper" [routerLink]="['/']">
-                <span>View More</span>
-              </a>
-            </mat-card-actions>
           </mat-card>
         </div>
       </div>
