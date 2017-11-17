@@ -69,7 +69,7 @@ export class ComparisonComponent {
     console.log('Loading executions...');
     this.execsComparator = [];
     this.execsCompared = [];
-    this.countExecs(0);
+    this.countExecs(0, method.replace('(', '').replace('(',''));
     this.active = true;
   }
 
@@ -105,18 +105,20 @@ export class ComparisonComponent {
     }
   }
 
-  private countExecs(index: number) {
+  private countExecs(index: number, method) {
     this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
       count => {
         if (count !== 0) {
-          this.countExecs(index + 1);
+          this.countExecs(index + 1, method);
           this.execsComparator = this.execsComparator.concat({
             'id': index + 1,
-            'class': 'execs'
+            'class': 'execs',
+            'method': method,
           });
           this.execsCompared = this.execsCompared.concat({
             'id': index + 1,
-            'class': 'execs'
+            'class': 'execs',
+            'method': method,
           });
         } else {
           this.execsNumber = index;
