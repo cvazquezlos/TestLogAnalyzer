@@ -1,5 +1,5 @@
 .execs {
-  background-color: rgb(195, 195, 195); /* Green */
+  background-color: rgb(195, 195, 195);
   border: none;
   color: #0e0e0e;
   padding: 3px 8px;
@@ -10,7 +10,7 @@
 }
 
 .active {
-  background-color: rgb(25, 118, 210); /* Green */
+  background-color: rgb(25, 118, 210);
   border: none;
   color: white;
   padding: 3px 8px;
@@ -18,4 +18,14 @@
   text-decoration: none;
   display: inline-block;
   font-size: 1.3em;
+}
+
+.find {
+  background-color: rgb(251, 140, 0); /* Green */
+  font-size: 21px;
+  border: none;
+  color: white;
+  padding: 0.5em 0.8em;
+  border-radius: 0.2em;
+  margin: 0.5em auto;
 }

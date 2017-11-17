@@ -25,7 +25,7 @@
         <span flex></span>
       </div>
     </mat-toolbar>
-    <div *ngIf="active; else default" style="height: 100%">
+    <div *ngIf="active; else default">
       <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <div flex-gt-sm="50">
           <mat-card>
@@ -58,6 +58,7 @@
           </mat-card>
         </div>
       </div>
+      <button class="find">Find difference</button>
     </div>
     <ng-template #default>
       <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
