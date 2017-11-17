@@ -18,13 +18,7 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
-  comparatorConfig = {
-    lineNumbers: true,
-    theme:'twilight',
-    readOnly: 'nocursor',
-    lineWrapping : true,
-    mode: 'xml' };
-  comparedConfig = {
+  config = {
     lineNumbers: true,
     theme:'twilight',
     readOnly: 'nocursor',
@@ -36,6 +30,8 @@ export class ComparisonComponent {
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.initInfo('1');
+    this.comparatorText = '';
+    this.comparedText = '';
   }
 
   comparator(exec: any) {
@@ -43,9 +39,11 @@ export class ComparisonComponent {
       this.addExecs(1, exec.id);
       this.addExecs(2, exec.id);
       exec.class = 'active';
+      console.log(exec.id);
       this.loadInfo(exec.id, 0);
       this.deleteExec(this.execsCompared, exec);
     } else {
+      this.loadInfo(exec.id, 0);
       exec.class = 'active';
       this.deleteExec(this.execsCompared, exec);
     }
@@ -56,9 +54,11 @@ export class ComparisonComponent {
       this.addExecs(1, exec.id);
       this.addExecs(2, exec.id);
       exec.class = 'active';
+      console.log(exec.id);
       this.loadInfo(exec.id, 1);
       this.deleteExec(this.execsComparator, exec);
     } else {
+      this.loadInfo(exec.id, 1);
       exec.class = 'active';
       this.deleteExec(this.execsComparator, exec);
     }
@@ -136,7 +136,6 @@ export class ComparisonComponent {
       }
       index += 1;
     }
-    console.log(this.execsCompared);
   }
 
   private initInfo(value: string) {

@@ -25,7 +25,7 @@
         <span flex></span>
       </div>
     </mat-toolbar>
-    <div *ngIf="active; else default">
+    <div *ngIf="active; else default" style="height: 100%">
       <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <div flex-gt-sm="50">
           <mat-card>
@@ -33,13 +33,13 @@
               Comparator execution
             </mat-card-title>
             <mat-card-subtitle>
-              <ng-template let-exec ngFor [ngForOf]="execsComparator">
-                <button (click)="comparator(exec)" [class]="exec.class">{{exec.id}}</button>
+              <ng-template let-execC ngFor [ngForOf]="execsComparator">
+                <button (click)="comparator(execC)" [class]="execC.class">{{execC.id}}</button>
               </ng-template>
             </mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-card-content>
-              <codemirror [(ngModel)]="comparatorText" [config]="comparatorConfig"></codemirror>
+              <codemirror [(ngModel)]="comparatorText" [config]="config"></codemirror>
             </mat-card-content>
           </mat-card>
         </div>
@@ -47,13 +47,13 @@
           <mat-card>
             <mat-card-title>Comparated execution</mat-card-title>
             <mat-card-subtitle>
-              <ng-template let-exec ngFor [ngForOf]="execsCompared">
-                <button (click)="compared(exec)" [class]="exec.class">{{exec.id}}</button>
+              <ng-template let-execc ngFor [ngForOf]="execsCompared">
+                <button (click)="compared(execc)" [class]="execc.class">{{execc.id}}</button>
               </ng-template>
             </mat-card-subtitle>
             <mat-divider></mat-divider>
             <mat-card-content>
-              <codemirror [(ngModel)]="comparedText" [config]="comparedConfig"></codemirror>
+              <codemirror [(ngModel)]="comparedText" [config]="config"></codemirror>
             </mat-card-content>
           </mat-card>
         </div>
