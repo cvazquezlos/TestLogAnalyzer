@@ -3,6 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpModule,
   JsonpModule} from '@angular/http';
+import {CodemirrorModule} from 'ng2-codemirror';
 
 import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule} from '@covalent/http';
@@ -31,6 +32,7 @@ const httpInterceptorProviders: Type<any>[] = [
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    CodemirrorModule,
     CovalentHttpModule.forRoot({
       interceptors: [{
         interceptor: RequestInterceptor, paths: ['**'],

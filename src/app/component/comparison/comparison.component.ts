@@ -18,7 +18,46 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
+  config = {
+    lineNumbers: true,
+    theme:'twilight',
+    readOnly: 'nocursor',
+    lineWrapping : true,
+    mode: 'xml' };
   methods: Object[] = [];
+  comparatorText = `// ... some code !
+package main
+
+import "fmt"
+
+// Send the sequence 2, 3, 4, ... to channel 'ch'.
+func generate(ch chan<- int) {
+	for i := 2; ; i++ {
+		ch <- i  // Send 'i' to channel 'ch'
+	}
+	sasasa
+	sasa
+	sasa
+	sa
+	
+	sa
+	sa
+	sa
+	sa
+	as
+	sa
+	sa
+	sa
+	sasasasa
+	as
+	sa
+	sa
+	sa
+	sa
+	sa
+	s
+	asasasasa
+}`;
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.initInfo('1');
