@@ -10,7 +10,7 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue.
 $primary: mat-palette($mat-blue, 700);
-$accent: mat-palette($mat-orange, 800, A100, A400);
+$accent: mat-palette($mat-orange, 600, A100, A400);
 // The warn palette is optional (defaults to red).
 $warn: mat-palette($mat-red, 600);
 $gray: mat-palette($mat-grey, 400);
@@ -55,6 +55,16 @@ mat-divider {
 app-home {
   background-color: #e0e0e0;
   height: 100%;
+}
+
+ins {
+  color: black;
+  background: #bbffbb;
+}
+
+del {
+  color: black;
+  background: #ffbbbb;
 }
 
 // Custom theme examples

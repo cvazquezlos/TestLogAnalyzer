@@ -3,12 +3,15 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpModule,
   JsonpModule} from '@angular/http';
+import {CodemirrorModule} from 'ng2-codemirror';
+import {DiffMatchPatchModule} from 'ng-diff-match-patch';
 
 import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
 
 import {AppComponent} from './app.component';
+import {ComparisonComponent} from './component/comparison/comparison.component';
 import {HomeComponent} from './component/home.component';
 import {SharedModule} from './shared/shared.module';
 
@@ -24,11 +27,13 @@ const httpInterceptorProviders: Type<any>[] = [
 @NgModule({
   declarations: [
     AppComponent,
+    ComparisonComponent,
     HomeComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    CodemirrorModule,
     CovalentHttpModule.forRoot({
       interceptors: [{
         interceptor: RequestInterceptor, paths: ['**'],
@@ -36,6 +41,7 @@ const httpInterceptorProviders: Type<any>[] = [
     }),
     CovalentHighlightModule,
     CovalentMarkdownModule,
+    DiffMatchPatchModule,
     HttpModule,
     JsonpModule,
     routing,

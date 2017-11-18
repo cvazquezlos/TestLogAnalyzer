@@ -1,27 +1,15 @@
 <td-layout>
-  <td-layout-nav-list #navList
-                      color="dark"
+  <td-layout-manage-list #manageList
+                      color="accent"
                       opened="true"
                       mode="side">
-    <div td-sidenav-toolbar-content layout="row" layout-align="start center" >
-      <span [routerLink]="['/']" class="cursor-pointer">Executions</span>
-    </div>
-    <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <button mat-icon-button tdLayoutNavListOpen [hideWhenOpened]="true">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-      <span>Log</span>
-      <span flex></span>
-      <a *ngIf="mavenMessages; else defMaven" mat-icon-button matTooltip="Show Maven?" (click)="maven()">
-        <mat-icon color="accent" class="icon-maven"></mat-icon>
+    <mat-toolbar td-sidenav-content color="accent">
+      <span class="cursor-pointer" style="float: left; color: white">Executions</span>
+      <a mat-icon-button matTooltip="Go to comparisons" style="position: absolute; right: 0px;" [routerLink]="['/comparison']">
+        <mat-icon style="color: white">web</mat-icon>
       </a>
-      <ng-template #defMaven>
-        <a mat-icon-button matTooltip="Show Maven?" (click)="maven()">
-          <mat-icon style="color: lightgray" class="icon-maven"></mat-icon>
-        </a>
-      </ng-template>
-    </div>
-    <mat-nav-list td-sidenav-content [tdLayoutNavListClose]="!media.query('gt-sm')" class="no_padding">
+    </mat-toolbar>
+    <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')" class="no_padding">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
         <h3 matSubheader style="font-size: 1em;">{{item.title}}</h3>
         <a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
@@ -40,29 +28,48 @@
         <mat-divider matInset *ngIf="!last"></mat-divider>
       </ng-template>
     </mat-nav-list>
-    <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
-      <mat-card *ngIf="active; else default">
-        <td-data-table
-          #dataTable
-          [data]="dataRowData"
-          [columns]="dataColumnDefs"
-          [selectable]="false"
-          [multiple]="false"
-          [clickable]="false"
-          [sortable]="true"
-          [sortBy]="dataSortBy"
-          [sortOrder]="dataSortOrder"
-          (sortChange)="sort($event)"
-          [style.width.%]="100">
-        </td-data-table>
-      </mat-card>
-      <ng-template #default>
-        <mat-card>
-          <mat-card-content>
-            <p>Select any execution or test displayed on the left list to see its logs.</p>
-          </mat-card-content>
+    <mat-toolbar color="accent">
+      <div layout="row" layout-align="start center" flex>
+        <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span style="color: white">Log</span>
+        <span flex></span>
+        <a *ngIf="mavenMessages; else defMaven" mat-icon-button matTooltip="Show Maven?" (click)="maven()">
+          <mat-icon style="color: #BF360C" class="icon-maven"></mat-icon>
+        </a>
+        <ng-template #defMaven>
+          <a mat-icon-button matTooltip="Show Maven?" (click)="maven()">
+            <mat-icon style="color: white" class="icon-maven"></mat-icon>
+          </a>
+        </ng-template>
+      </div>
+    </mat-toolbar>
+    <div *ngIf="active; else default">
+      <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+        <mat-card *ngIf="active; else default">
+          <td-data-table
+            #dataTable
+            [data]="dataRowData"
+            [columns]="dataColumnDefs"
+            [selectable]="false"
+            [multiple]="false"
+            [clickable]="false"
+            [sortable]="true"
+            [sortBy]="dataSortBy"
+            [sortOrder]="dataSortOrder"
+            (sortChange)="sort($event)"
+            [style.width.%]="100">
+          </td-data-table>
         </mat-card>
-      </ng-template>
+      </div>
     </div>
-  </td-layout-nav-list>
+    <ng-template #default>
+      <mat-card>
+        <mat-card-content>
+          <p>Select any execution or test displayed on the left list to see its logs.</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </td-layout-manage-list>
 </td-layout>

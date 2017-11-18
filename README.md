@@ -89,6 +89,8 @@ Ensure you have Elasticsearch installed and an instance of it running.
 16. https://www.mkyong.com/ - Sping Boot, Spring Data and Elasticsearch.
 17. http://books.sonatype.com - Maven CMD options.
 18. https://beginnersbook.com/ - String to Date, Date to String Java 8 documentation.
+19. http://codemirror.net/ - Requirements.
+20. http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.4.6927 - An O(ND) Difference Algorithm and Its Variations (1986).
 
 ## Used technologies
 1. [Elasticsearch](https://www.elastic.co/products/elasticsearch).
@@ -111,3 +113,4 @@ Ensure you have Elasticsearch installed and an instance of it running.
 19. [Angular Material](https://material.angular.io/).
 20. [Teradata Covalent](https://teradata.github.io/covalent/).
 21. [Font Mfizz](https://github.com/fizzed/font-mfizz).
+22. [CodeMirror](http://codemirror.net/).

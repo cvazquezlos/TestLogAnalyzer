@@ -1,0 +1,82 @@
+<td-layout>
+  <td-layout-manage-list #manageList
+                         opened="true"
+                         mode="side">
+    <mat-toolbar td-sidenav-content color="accent">
+      <span class="cursor-pointer" style="float: left; color: white">Comparisons</span>
+      <a mat-icon-button matTooltip="Return home" style="position: absolute; right: 0px;" [routerLink]="['/']">
+        <mat-icon style="color: white">home</mat-icon>
+      </a>
+    </mat-toolbar>
+    <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
+      <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
+        <a mat-list-item (click)="methodSelected(item.title)">
+          <mat-icon matListIcon>{{item.icon}}</mat-icon>
+          {{item.title}}
+        </a>
+      </ng-template>
+    </mat-nav-list>
+    <mat-toolbar color="accent">
+      <div layout="row" layout-align="start center" flex>
+        <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <span style="color: white">Content Title</span>
+        <span flex></span>
+      </div>
+    </mat-toolbar>
+    <div *ngIf="active; else default">
+      <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+        <div flex-gt-sm="50">
+          <mat-card>
+            <mat-card-title>
+              Comparator execution
+            </mat-card-title>
+            <mat-card-subtitle>
+              <ng-template let-execC ngFor [ngForOf]="execsComparator">
+                <button (click)="comparator(execC)" [class]="execC.class">{{execC.id}}</button>
+              </ng-template>
+            </mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <codemirror [(ngModel)]="comparatorText" [config]="config"></codemirror>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div flex-gt-sm="50">
+          <mat-card>
+            <mat-card-title>Comparated execution</mat-card-title>
+            <mat-card-subtitle>
+              <ng-template let-execc ngFor [ngForOf]="execsCompared">
+                <button (click)="compared(execc)" [class]="execc.class">{{execc.id}}</button>
+              </ng-template>
+            </mat-card-subtitle>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <codemirror [(ngModel)]="comparedText" [config]="config"></codemirror>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div style="width: 100%">
+        <button class="find">Find difference</button>
+      </div>
+      <pre diff [left]="comparatorText" [right]="comparedText"></pre>
+
+      <pre lineDiff [left]="comparatorText" [right]="comparedText"></pre>
+
+      <pre semanticDiff [left]="comparatorText" [right]="comparedText"></pre>
+
+      <pre processingDiff [left]="comparatorText" [right]="comparedText"></pre>
+    </div>
+    <ng-template #default>
+      <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+        <mat-card>
+          <mat-card-content>
+            <p>Select a test to start comparing executions.</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>
+  </td-layout-manage-list>
+</td-layout>
