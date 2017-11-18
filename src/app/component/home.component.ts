@@ -17,7 +17,8 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 
 export class HomeComponent implements AfterViewInit {
@@ -146,6 +147,7 @@ export class HomeComponent implements AfterViewInit {
           }
           this.navmenu[index].classes = this.navmenu[index].classes.concat({
             'name': classInd.formatted_message.split(' ')[1],
+            'shortname': classInd.formatted_message.split(' ')[1].split('.')[classInd.formatted_message.split(' ')[1].split('.').length - 1],
             'methods': []
           });
           id += 1;

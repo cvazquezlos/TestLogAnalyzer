@@ -1,27 +1,26 @@
 <td-layout>
   <td-layout-manage-list #manageList
-                      color="accent"
-                      opened="true"
-                      mode="side">
+                         opened="true"
+                         mode="side">
     <mat-toolbar td-sidenav-content color="accent">
-      <span class="cursor-pointer" style="float: left; color: white">Executions</span>
-      <a mat-icon-button matTooltip="Go to comparisons" style="position: absolute; right: 0px;" [routerLink]="['/comparison']">
-        <mat-icon style="color: white">web</mat-icon>
+      <span class="cursor-pointer title left">Comparisons</span>
+      <a mat-icon-button matTooltip="Go to comparisons" class="no-margin icon" [routerLink]="['/comparison']">
+        <mat-icon class="title">web</mat-icon>
       </a>
     </mat-toolbar>
-    <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')" class="no_padding">
+    <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
         <h3 matSubheader class="exec-name">{{item.title}}</h3>
         <a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
           <mat-icon>{{item.icon}}</mat-icon>
-          <h3 matLine style="font-size: 0.9em">&nbsp;&nbsp;&nbsp;&nbsp;All</h3>
+          <h3 matLine class="clickable">&nbsp;&nbsp;&nbsp;&nbsp;All</h3>
         </a>
         <ng-template let-elem ngFor [ngForOf]="item.classes">
-          <h3 matSubheader style="font-size: 0.75em;">{{elem.shortname}}</h3>
+          <h3 matSubheader class="classname">{{elem.shortname}}</h3>
           <ng-template let-method ngFor [ngForOf]="elem.methods">
             <a matTooltip="Show concrete test {{method.name}}" mat-list-item (click)="loadInfo(2, item.id, method.name)">
               <mat-icon>{{method.icon}}</mat-icon>
-              <h3 matLine style="font-size: 0.9em">&nbsp;&nbsp;&nbsp;&nbsp;{{method.name}}</h3>
+              <h3 matLine class="clickable">&nbsp;&nbsp;&nbsp;&nbsp;{{method.name}}</h3>
             </a>
           </ng-template>
         </ng-template>
@@ -33,14 +32,14 @@
         <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true">
           <mat-icon>arrow_back</mat-icon>
         </button>
-        <span style="color: white">Log</span>
+        <span class="title">Log</span>
         <span flex></span>
         <a *ngIf="mavenMessages; else defMaven" mat-icon-button matTooltip="Show Maven?" (click)="maven()">
-          <mat-icon style="color: #BF360C" class="icon-maven"></mat-icon>
+          <mat-icon class="icon-maven active"></mat-icon>
         </a>
         <ng-template #defMaven>
           <a mat-icon-button matTooltip="Show Maven?" (click)="maven()">
-            <mat-icon style="color: white" class="icon-maven"></mat-icon>
+            <mat-icon class="icon-maven title"></mat-icon>
           </a>
         </ng-template>
       </div>
