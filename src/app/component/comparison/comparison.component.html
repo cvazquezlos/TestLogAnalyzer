@@ -10,7 +10,7 @@
     </mat-toolbar>
     <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
       <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
-        <a mat-list-item (click)="methodSelected(item.title)">
+        <a mat-list-item [class]="item.class" (click)="methodSelected(item)">
           <mat-icon matListIcon>{{item.icon}}</mat-icon>
           {{item.title}}
         </a>
@@ -58,7 +58,7 @@
           </mat-card>
         </div>
       </div>
-      <div style="width: 100%">
+      <div class="full-width">
         <button class="find">Find difference</button>
       </div>
       <pre diff [left]="comparatorText" [right]="comparedText"></pre>

@@ -1,5 +1,4 @@
-import {ChangeDetectionStrategy,
-  Component} from '@angular/core';
+import {Component} from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 
 import {Log} from '../../model/source.model';
@@ -24,7 +23,7 @@ export class ComparisonComponent {
     readOnly: 'nocursor',
     lineWrapping : true,
     mode: 'xml' };
-  methods: Object[] = [];
+  methods: any[] = [];
   comparatorText: string;
   comparedText: string;
 
@@ -64,12 +63,14 @@ export class ComparisonComponent {
     }
   }
 
-  methodSelected(method: string) {
-    console.log('Method selected: ' + method);
+  methodSelected(method: any) {
+    this.deselect();
+    console.log('Method selected: ' + method.title);
     console.log('Loading executions...');
     this.execsComparator = [];
     this.execsCompared = [];
-    this.countExecs(0, method.replace('(', '').replace(')', ''));
+    this.countExecs(0, method.title.replace('(', '').replace(')', ''));
+    method.class = 'meth-active';
     this.active = true;
   }
 
@@ -154,7 +155,8 @@ export class ComparisonComponent {
           if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
             this.methods = this.methods.concat({
               'icon': 'event_note',
-              'title': args[1]
+              'title': args[1],
+              'class': 'no-active'
             })
           }
         }
@@ -195,5 +197,11 @@ export class ComparisonComponent {
       },
       error => console.log(error)
     );
+  }
+
+  private deselect() {
+    for (let method of this.methods) {
+      method.class = 'no-active';
+    }
   }
 }
