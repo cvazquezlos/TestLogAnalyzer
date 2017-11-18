@@ -20,7 +20,7 @@ export class ComparisonComponent {
   execsNumber = 0;
   config = {
     lineNumbers: true,
-    theme:'twilight',
+    theme: 'twilight',
     readOnly: 'nocursor',
     lineWrapping : true,
     mode: 'xml' };
@@ -69,7 +69,7 @@ export class ComparisonComponent {
     console.log('Loading executions...');
     this.execsComparator = [];
     this.execsCompared = [];
-    this.countExecs(0, method.replace('(', '').replace(')',''));
+    this.countExecs(0, method.replace('(', '').replace(')', ''));
     this.active = true;
   }
 
@@ -181,13 +181,13 @@ export class ComparisonComponent {
         switch (type) {
           case 0:
             this.comparatorText = '';
-            for (let dat of aux) {
+            for (const dat of aux) {
               this.comparatorText += dat.entire_log + '\n';
             }
             break;
           case 1:
             this.comparedText = '';
-            for (let dat of aux) {
+            for (const dat of aux) {
               this.comparedText += dat.entire_log + '\n';
             }
             break;
