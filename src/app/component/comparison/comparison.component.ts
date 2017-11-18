@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 
 import {Log} from '../../model/source.model';
@@ -13,19 +13,24 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 export class ComparisonComponent {
 
+  @ViewChild('process') process: ElementRef;
+
   active = false;
-  execsComparator: any[] = [];
-  execsCompared: any[] = [];
-  execsNumber = 0;
+  comparatorText: string;
+  comparedText: string;
   config = {
     lineNumbers: true,
     theme: 'twilight',
     readOnly: 'nocursor',
     lineWrapping : true,
     mode: 'xml' };
+  execsComparator: any[] = [];
+  execsCompared: any[] = [];
+  execsNumber = 0;
+  hide = true;
   methods: any[] = [];
-  comparatorText: string;
-  comparedText: string;
+  resultComparator = [];
+  resultCompared = [];
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.initInfo('1');
@@ -60,6 +65,56 @@ export class ComparisonComponent {
       this.loadInfo(exec.id, 1, exec.method);
       exec.class = 'active';
       this.deleteExec(this.execsComparator, exec);
+    }
+  }
+
+  generateComparison() {
+    this.hide = false;
+    let comparison = this.process.nativeElement.outerText.toString();
+    /* Example of comparison output.
+    *
+    * <div>
+    *     2017-11-12
+    *     <del>15:17:32.956</del>
+    *     <ins>20:27:14.377</ins>
+    *     [main] INFO  com.example.bookstore.basic.BasicUnitTest - Database must contain target value.
+    *     <br>
+    *     2017-11-12
+    *     <del>15:17:32.96</del>
+    *     <ins>20:27:14.38</ins>
+    *     3 [main] INFO  com.example.bookstore.basic.BasicUnitTest - After deleting info, database size have to be 19.
+    *     <br>
+    *      2017-11-12
+    *     <del>15:17:32.964</del>
+    *     <ins>20:27:14.383</ins>
+    *     [main] INFO  com.example.bookstore.basic.BasicUnitTest - Database can't contain target value.
+    *     <br>
+    * </div>
+    *
+    * */
+    let data = comparison.split(' ');
+    let comparatorData = this.comparatorText.split(' ');
+    let comparedData = this.comparedText.split(' ');
+    for (let i = 0; i < ((data.length) - 1); i++) {
+      if (data[i] == comparatorData[i] && data[i] == comparedData[i]) {
+        this.resultComparator = this.resultComparator.concat({
+          'content': comparatorData[i] + ' ',
+          'class': 'normal'
+        });
+        this.resultCompared = this.resultCompared.concat({
+          'content': comparatorData[i] + ' ',
+          'class': 'normal'
+        });
+      } else {
+        this.resultComparator = this.resultComparator.concat({
+          'content': comparatorData[i] + ' ',
+          'class': 'del'
+        });
+        this.resultCompared = this.resultCompared.concat({
+          'content': comparatorData[i] + ' ',
+          'class': 'ins'
+        });
+      }
     }
   }
 
