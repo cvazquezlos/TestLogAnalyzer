@@ -11,13 +11,13 @@
     </mat-toolbar>
     <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')" class="no_padding">
       <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
-        <h3 matSubheader style="font-size: 1em;">{{item.title}}</h3>
+        <h3 matSubheader class="exec-name">{{item.title}}</h3>
         <a matTooltip={{item.tip}} mat-list-item (click)="loadInfo(0, item.id)">
           <mat-icon>{{item.icon}}</mat-icon>
           <h3 matLine style="font-size: 0.9em">&nbsp;&nbsp;&nbsp;&nbsp;All</h3>
         </a>
         <ng-template let-elem ngFor [ngForOf]="item.classes">
-          <h3 matSubheader style="font-size: 0.75em;">{{elem.name}}</h3>
+          <h3 matSubheader style="font-size: 0.75em;">{{elem.shortname}}</h3>
           <ng-template let-method ngFor [ngForOf]="elem.methods">
             <a matTooltip="Show concrete test {{method.name}}" mat-list-item (click)="loadInfo(2, item.id, method.name)">
               <mat-icon>{{method.icon}}</mat-icon>
