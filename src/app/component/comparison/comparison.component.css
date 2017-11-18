@@ -29,3 +29,32 @@
   border-radius: 0.2em;
   width: auto;
 }
+
+.title {
+  color: white;
+}
+
+.active {
+  color: #BF360C;
+}
+
+.left {
+  float: left;
+}
+
+.clickable {
+  font-size: 0.9em;
+}
+
+.classname {
+  font-size: 0.75em;
+}
+
+.icon {
+  position: absolute;
+  right: 0px;
+}
+
+.no-margin {
+  margin: 0 0px;
+}

@@ -145,9 +145,10 @@ export class HomeComponent implements AfterViewInit {
           if (classInd.formatted_message.split(' ').length !== 2) {
             continue;
           }
+          let msg = classInd.formatted_message;
           this.navmenu[index].classes = this.navmenu[index].classes.concat({
-            'name': classInd.formatted_message.split(' ')[1],
-            'shortname': classInd.formatted_message.split(' ')[1].split('.')[classInd.formatted_message.split(' ')[1].split('.').length - 1],
+            'name': msg.split(' ')[1],
+            'shortname': msg.split(' ')[1].split('.')[msg.split(' ')[1].split('.').length - 1],
             'methods': []
           });
           id += 1;
