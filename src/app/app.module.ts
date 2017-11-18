@@ -4,6 +4,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpModule,
   JsonpModule} from '@angular/http';
 import {CodemirrorModule} from 'ng2-codemirror';
+import {DiffMatchPatchModule} from 'ng-diff-match-patch';
 
 import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule} from '@covalent/http';
@@ -40,6 +41,7 @@ const httpInterceptorProviders: Type<any>[] = [
     }),
     CovalentHighlightModule,
     CovalentMarkdownModule,
+    DiffMatchPatchModule,
     HttpModule,
     JsonpModule,
     routing,

@@ -57,6 +57,16 @@ app-home {
   height: 100%;
 }
 
+ins {
+  color: black;
+  background: #bbffbb;
+}
+
+del {
+  color: black;
+  background: #ffbbbb;
+}
+
 // Custom theme examples
 .white-orange {
     $primary2: mat-palette($mat-grey, 50);
