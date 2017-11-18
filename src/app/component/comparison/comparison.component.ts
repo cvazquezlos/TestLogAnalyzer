@@ -200,7 +200,7 @@ export class ComparisonComponent {
   }
 
   private deselect() {
-    for (let method of this.methods) {
+    for (const method of this.methods) {
       method.class = 'no-active';
     }
   }
