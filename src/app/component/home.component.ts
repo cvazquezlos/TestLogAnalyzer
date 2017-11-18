@@ -40,6 +40,8 @@ export class HomeComponent implements AfterViewInit {
   dataSortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
   filteredTotal = 0;
   idSelected: number;
+  loadingData = false;
+  loadingNavbar = false;
   logs: Log[] = [];
   mavenMessages = false;
   methods: any[] = [];
@@ -145,7 +147,7 @@ export class HomeComponent implements AfterViewInit {
           if (classInd.formatted_message.split(' ').length !== 2) {
             continue;
           }
-          let msg = classInd.formatted_message;
+          const msg = classInd.formatted_message;
           this.navmenu[index].classes = this.navmenu[index].classes.concat({
             'name': msg.split(' ')[1],
             'shortname': msg.split(' ')[1].split('.')[msg.split(' ')[1].split('.').length - 1],
@@ -181,7 +183,8 @@ export class HomeComponent implements AfterViewInit {
                 );
               }
             }
-            console.log('Test names added.')
+            console.log('Test names added.');
+            this.loadingNavbar = true;
           },
           error => console.log(error)
         );
@@ -221,6 +224,7 @@ export class HomeComponent implements AfterViewInit {
           });
         }
         console.log('Data parsed and displayed.');
+        this.loadingData = true;
       },
       error => console.log(error)
     );
