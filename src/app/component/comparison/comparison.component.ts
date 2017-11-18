@@ -70,52 +70,77 @@ export class ComparisonComponent {
 
   generateComparison() {
     this.hide = false;
-    let comparison = this.process.nativeElement.outerText.toString();
-    /* Example of comparison output.
-    *
-    * <div>
-    *     2017-11-12
-    *     <del>15:17:32.956</del>
-    *     <ins>20:27:14.377</ins>
-    *     [main] INFO  com.example.bookstore.basic.BasicUnitTest - Database must contain target value.
-    *     <br>
-    *     2017-11-12
-    *     <del>15:17:32.96</del>
-    *     <ins>20:27:14.38</ins>
-    *     3 [main] INFO  com.example.bookstore.basic.BasicUnitTest - After deleting info, database size have to be 19.
-    *     <br>
-    *      2017-11-12
-    *     <del>15:17:32.964</del>
-    *     <ins>20:27:14.383</ins>
-    *     [main] INFO  com.example.bookstore.basic.BasicUnitTest - Database can't contain target value.
-    *     <br>
-    * </div>
-    *
-    * */
-    let data = comparison.split(' ');
-    let comparatorData = this.comparatorText.split(' ');
-    let comparedData = this.comparedText.split(' ');
+    console.log(this.process.nativeElement);
+    const comparison = this.process.nativeElement.outerText.toString();
+    const lines = comparison.split('\n');
+    const comparedLines = this.comparatorText.split('\n');
+    const comparatorLines = this.comparedText.split('\n');
+    let data;
+    let comparatorData;
+    let comparedData;
+    for (let i = 0; i < lines.length; i++) {
+      data = lines[i].split(' ');
+      comparatorData = comparedLines[i].split(' ');
+      comparedData = comparatorLines[i].split(' ');
+      console.log(data);
+      console.log(comparatorData);
+      console.log(comparedData);
+      for (let j = 0; j < data.length; j++) {
+        console.log(data[j] === comparatorData[j]);
+        console.log(data[j] === comparedData[j]);
+        if ((data[j] === comparatorData[j]) && (data[j] === comparedData[j])) {
+          this.resultComparator = this.resultComparator.concat({
+            'content': comparatorData[j] + ' ',
+            'class': 'normal'
+          });
+          this.resultCompared = this.resultCompared.concat({
+            'content': comparedData[j] + ' ',
+            'class': 'normal'
+          });
+        } else {
+          this.resultComparator = this.resultComparator.concat({
+            'content': comparatorData[j] + ' ',
+            'class': 'del'
+          });
+          this.resultCompared = this.resultCompared.concat({
+            'content': comparedData[j] + ' ',
+            'class': 'ins'
+          });
+        }
+      }
+      this.resultComparator = this.resultComparator.concat({
+        'content': ' ',
+        'class': 'display'
+      });
+      this.resultCompared = this.resultCompared.concat({
+        'content': '',
+        'class': 'display'
+      });
+    }
+    /*const data = comparison.split(' ');
+    const comparatorData = this.comparatorText.split(' ');
+    const comparedData = this.comparedText.split(' ');
     for (let i = 0; i < ((data.length) - 1); i++) {
-      if (data[i] == comparatorData[i] && data[i] == comparedData[i]) {
+      if (data[i] === comparatorData[i] && data[i] === comparedData[i]) {
         this.resultComparator = this.resultComparator.concat({
-          'content': comparatorData[i] + ' ',
+          'content': (comparatorData[i] + ' ').replace('&amp;', '<br>'),
           'class': 'normal'
         });
         this.resultCompared = this.resultCompared.concat({
-          'content': comparatorData[i] + ' ',
+          'content': (comparatorData[i] + ' ').replace('&amp;', '<br>'),
           'class': 'normal'
         });
       } else {
         this.resultComparator = this.resultComparator.concat({
-          'content': comparatorData[i] + ' ',
+          'content': (comparatorData[i] + ' ').replace('&amp#13;', '<br>'),
           'class': 'del'
         });
         this.resultCompared = this.resultCompared.concat({
-          'content': comparatorData[i] + ' ',
+          'content': (comparatorData[i] + ' ').replace('&amp#13;', '<br>'),
           'class': 'ins'
         });
       }
-    }
+    }*/
   }
 
   methodSelected(method: any) {

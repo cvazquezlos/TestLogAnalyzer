@@ -87,3 +87,7 @@
 .not-displayed {
   display: none;
 }
+
+.display {
+  display: block;
+}
