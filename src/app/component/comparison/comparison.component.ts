@@ -32,6 +32,7 @@ export class ComparisonComponent {
   execsNumber = 0;
   methods: any[] = [];
   results = [];
+  showResults = false;
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.initInfo('1');
@@ -112,19 +113,23 @@ export class ComparisonComponent {
       });
     }
     this.results = [];
-    for (let i = 0; i < comparatorData.length; i++) {
+    for (let i = 0; i < resultComparator.length; i++) {
       this.results = this.results.concat({
         'index': (i + 1).toString() + '.',
         'com_p': resultComparator[i],
         'comp': resultCompared[i]
       });
     }
+    this.showResults = true;
   }
 
   methodSelected(method: any) {
     this.deselect();
     console.log('Method selected: ' + method.title);
     console.log('Loading executions...');
+    this.showResults = false;
+    this.comparatorText = '';
+    this.comparedText = '';
     this.execsComparator = [];
     this.execsCompared = [];
     this.countExecs(0, method.title.replace('(', '').replace(')', ''));
@@ -184,6 +189,7 @@ export class ComparisonComponent {
         } else {
           this.execsNumber = index;
           console.log('Success. Avaible executions: ' + this.execsNumber);
+          console.log(this.execsComparator);
         }
       },
       error => console.log(error)

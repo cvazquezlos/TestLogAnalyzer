@@ -25,7 +25,7 @@
         <span flex></span>
       </div>
     </mat-toolbar>
-    <div *ngIf="active; else default">
+    <div *ngIf="showResults">
       <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <mat-card>
           <mat-card-title>Comparison results</mat-card-title>
@@ -34,9 +34,9 @@
             <table class="diff-table">
               <tbody>
                 <tr *ngFor="let result of results">
-                  <td [innerHTML]="result.index"></td>
+                  <td [innerHTML]="result.index" class="index"></td>
                   <td [innerHTML]="result.com_p.content" [class]="result.com_p.class"></td>
-                  <td [innerHTML]="result.index"></td>
+                  <td [innerHTML]="result.index" class="index"></td>
                   <td [innerHTML]="result.comp.content" [class]="result.comp.class"></td>
                 </tr>
               </tbody>
@@ -44,6 +44,8 @@
           </mat-card-content>
         </mat-card>
       </div>
+    </div>
+    <div *ngIf="active; else default">
       <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <div flex-gt-sm="50">
           <mat-card>
