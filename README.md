@@ -49,9 +49,12 @@ Component | What does it mean?
 
 ### Content of pages
 #### Home
-In the home page, you can find the grid which contains paginated data (each page contains 50 logs), some filtering criteria and buttons which allow you to search, hide the table or recreate it and show more logs.
+In this page, you can select a test of an execution (or see the whole execution) and it will be displayed. In addition to the above mentioned, you can filtering the displayed results by Maven messages or not.
+![Home](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/release1page1.png)
 
-![Home](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/version1.png)
+#### Comparison
+In this page, you can select a test and compare executions of it.
+![Comparison](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/release1page2.png)
 
 ## Getting started with Spring Logs Generator
 Ensure `JAVA_HOME` environment variable is se and points to your JDK installation directory. Follow these steps:
@@ -94,25 +97,24 @@ Ensure you have Elasticsearch installed and an instance of it running.
 21. https://github.com/GerHobbelt/google-diff-match-patch - Google Diff Match Patch: Universal Algorithm.
 22. https://code.google.com/archive/p/google-diff-match-patch/ - Google Diff Match Patch by Neil Fraser.
 
-## Used technologies
-1. [Elasticsearch](https://www.elastic.co/products/elasticsearch).
-2. [Kibana](https://www.elastic.co/products/kibana).
-3. [Logstash](https://www.elastic.co/products/logstash).
-4. [Angular 4](https://angular.io/).
-5. [Spring](https://spring.io/).
-6. [Postman](https://www.getpostman.com/).
-7. [Maven](https://maven.apache.org/).
-8. [Angular-CLI](https://cli.angular.io/).
-9. [Node.js](https://nodejs.org/es/).
-10. [Java](https://www.java.com/en/).
-11. [Github](github.com).
-12. [Travis CI](https://travis-ci.org/).
-13. [CircleCI](https://circleci.com/).
-15. [NPM](https://www.npmjs.com/).
-16. [Spring Tool Suite](https://spring.io/tools).
-17. [Netbeans](https://netbeans.org/features/java/).
-18. [Webstorm](https://www.jetbrains.com/webstorm/).
-19. [Angular Material](https://material.angular.io/).
-20. [Teradata Covalent](https://teradata.github.io/covalent/).
-21. [Font Mfizz](https://github.com/fizzed/font-mfizz).
-22. [CodeMirror](http://codemirror.net/).
+## Involved technologies
+Element           | LOGANALYZER needs it because...                    | Official site
+------------------|----------------------------------------------------|-----------------------------
+Angular 4         | App development framework                          | https://angular.io/
+Angular Material  | Material Design components for Angular             | https://material.angular.io/
+Angular-CLI       | Command line interface for Angular                 | https://cli.angular.io/
+CircleCI          | Continuous Integration and Delivery                | https://circleci.com/
+CodeMirror        | Text editor for the browser                        | https://codemirror.net/
+Elasticsearch     | Search, indexing and analytics data engine         | https://www.elastic.co/products/elasticsearch
+Github            | Software development platform                      | https://github.com/
+Java              | Programming language (ES client and log generator) | https://www.java.com
+Kibana            | ES Data visualization and ES Stack navigation      | https://www.elastic.co/products/kibana
+Maven             | Software project management and comprehension tool | https://maven.apache.org/
+Node.js           | JavaScript run-time Environment                    | https://nodejs.org/es/
+NPM               | Package manager for JavaScript                     | https://www.npmjs.com/
+Postman           | API Development Environment                        | https://www.getpostman.com/
+Spring            | Application development Framework                  | https://spring.io/
+Spring Tool Suite | Eclipse-based development environment              | https://spring.io/tools
+Teradata Covalent | Teradata UI Platform for Angular                   | https://teradata.github.io/covalent/
+Travis CI         | Code testing and deploying tool                    | https://travis-ci.org/
+Webstorm          | JavaScript IDE                                     | https://www.jetbrains.com/webstorm/
