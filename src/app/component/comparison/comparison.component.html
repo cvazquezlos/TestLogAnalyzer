@@ -61,12 +61,12 @@
       <div class="full-width">
         <button class="find" (click)="generateComparison()">Find difference</button>
       </div>
-      <pre class="not-displayed" #process processingDiff [left]="comparatorText" [right]="comparedText"></pre>
+      <pre class="" #process processingDiff [left]="comparatorText" [right]="comparedText"></pre>
       <ng-template let-data ngFor [ngForOf]="resultComparator">
-        <span [class]="data.class">{{data.content}}</span>
+        <div [innerHTML]="data.content" [class]="data.class"></div>
       </ng-template>
       <ng-template let-data ngFor [ngForOf]="resultCompared">
-        <span [class]="data.class">{{data.content}}</span>
+        <div [innerHTML]="data.content" [class]="data.class"></div>
       </ng-template>
     </div>
     <ng-template #default>

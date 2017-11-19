@@ -75,13 +75,11 @@
 .del {
   color: black;
   background: rgb(255, 136, 136);
-  text-decoration: line-through;
 }
 
 .ins {
   color: black;
   background: rgb(153, 255, 153);
-  text-decoration: underline;
 }
 
 .not-displayed {
@@ -90,4 +88,12 @@
 
 .display {
   display: block;
+}
+
+.classC {
+
+}
+
+.classc {
+
 }

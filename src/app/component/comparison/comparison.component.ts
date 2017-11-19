@@ -27,7 +27,6 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
-  hide = true;
   methods: any[] = [];
   resultComparator = [];
   resultCompared = [];
@@ -69,9 +68,50 @@ export class ComparisonComponent {
   }
 
   generateComparison() {
-    this.hide = false;
-    console.log(this.process.nativeElement);
+    const comparisonResult = this.process.nativeElement.innerHTML.toString();
+    const lines = comparisonResult.split('<br>');
+    this.resultComparator = [];
+    let comparatorData;
+    let comparatorAct = false;
+    this.resultCompared = [];
+    let comparedData;
+    let comparedAct = false;
+    for (let i = 0; i < lines.length; i++) {
+      comparatorData = lines[i];
+      let uselessData;
+      while (comparatorData.indexOf('<ins>') > -1) {
+        uselessData = this.cleanString(comparatorData, '<ins>', '</ins>');
+        comparatorData = comparatorData.replace('<ins>' + uselessData + '</ins>', '');
+        comparatorAct = true;
+      }
+      let classC = 'normal';
+      if (comparatorAct) {
+        classC = 'delC'
+      }
+      this.resultComparator = this.resultComparator.concat({
+        'content': comparatorData.replace('<div>','').replace('</div>',''),
+        'class': classC
+      });
+      comparedData = lines[i];
+      while (comparedData.indexOf('<del>') > -1) {
+        uselessData = this.cleanString(comparedData, '<del>', '</del>');
+        comparedData = comparedData.replace('<del>' + uselessData + '</del>', '');
+        comparedAct = true;
+      }
+      let classc = 'normal';
+      if (comparedAct) {
+        classc = 'insC'
+      }
+      this.resultCompared = this.resultCompared.concat({
+        'content': comparedData.replace('<div>','').replace('</div>',''),
+        'class': classc
+      });
+    }
+    console.log(this.resultCompared);
+    /*this.resultComparator = [];
+    this.resultCompared = [];
     const comparison = this.process.nativeElement.outerText.toString();
+    console.log(comparison);
     const lines = comparison.split('\n');
     const comparedLines = this.comparatorText.split('\n');
     const comparatorLines = this.comparedText.split('\n');
@@ -86,24 +126,27 @@ export class ComparisonComponent {
       console.log(comparatorData);
       console.log(comparedData);
       for (let j = 0; j < data.length; j++) {
-        console.log(data[j] === comparatorData[j]);
-        console.log(data[j] === comparedData[j]);
-        if ((data[j] === comparatorData[j]) && (data[j] === comparedData[j])) {
+        console.log(data[j]);
+        console.log(comparatorData[j]);
+        console.log(comparedData[j]);
+        console.log(data[j] == comparatorData[j]);
+        console.log(data[j] == comparedData[j]);
+        if ((data[j] == comparatorData[j]) && (data[j] == comparedData[j])) {
           this.resultComparator = this.resultComparator.concat({
-            'content': comparatorData[j] + ' ',
+            'content': ' ' + comparatorData[j] + ' ',
             'class': 'normal'
           });
           this.resultCompared = this.resultCompared.concat({
-            'content': comparedData[j] + ' ',
+            'content': ' ' + comparedData[j] + ' ',
             'class': 'normal'
           });
         } else {
           this.resultComparator = this.resultComparator.concat({
-            'content': comparatorData[j] + ' ',
+            'content': comparatorData[j],
             'class': 'del'
           });
           this.resultCompared = this.resultCompared.concat({
-            'content': comparedData[j] + ' ',
+            'content': comparedData[j],
             'class': 'ins'
           });
         }
@@ -116,30 +159,6 @@ export class ComparisonComponent {
         'content': '',
         'class': 'display'
       });
-    }
-    /*const data = comparison.split(' ');
-    const comparatorData = this.comparatorText.split(' ');
-    const comparedData = this.comparedText.split(' ');
-    for (let i = 0; i < ((data.length) - 1); i++) {
-      if (data[i] === comparatorData[i] && data[i] === comparedData[i]) {
-        this.resultComparator = this.resultComparator.concat({
-          'content': (comparatorData[i] + ' ').replace('&amp;', '<br>'),
-          'class': 'normal'
-        });
-        this.resultCompared = this.resultCompared.concat({
-          'content': (comparatorData[i] + ' ').replace('&amp;', '<br>'),
-          'class': 'normal'
-        });
-      } else {
-        this.resultComparator = this.resultComparator.concat({
-          'content': (comparatorData[i] + ' ').replace('&amp#13;', '<br>'),
-          'class': 'del'
-        });
-        this.resultCompared = this.resultCompared.concat({
-          'content': (comparatorData[i] + ' ').replace('&amp#13;', '<br>'),
-          'class': 'ins'
-        });
-      }
     }*/
   }
 
@@ -220,6 +239,17 @@ export class ComparisonComponent {
         break;
       }
       index += 1;
+    }
+  }
+
+  private cleanString(line: string, init: string, end: string) {
+    if (line.indexOf(init) !== -1 && line.indexOf(end) !== -1) {
+      const SP = line.indexOf(init) + init.length;
+      const string1 = line.substr(0, SP);
+      const string2 = line.substr(SP);
+      const TP = string1.length + string2.indexOf(end);
+      console.log(line.substring(SP, TP));
+      return line.substring(SP, TP);
     }
   }
 
