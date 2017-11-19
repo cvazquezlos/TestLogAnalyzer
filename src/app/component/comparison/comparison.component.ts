@@ -1,8 +1,11 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import { TdMediaService } from '@covalent/core';
+import {
+  Component,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
+import {TdMediaService} from '@covalent/core';
 
 import {Log} from '../../model/source.model';
-
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
@@ -28,8 +31,7 @@ export class ComparisonComponent {
   execsCompared: any[] = [];
   execsNumber = 0;
   methods: any[] = [];
-  resultComparator = [];
-  resultCompared = [];
+  results = [];
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.initInfo('1');
@@ -70,13 +72,14 @@ export class ComparisonComponent {
   generateComparison() {
     const comparisonResult = this.process.nativeElement.innerHTML.toString();
     const lines = comparisonResult.split('<br>');
-    this.resultComparator = [];
+    let resultComparator = [];
     let comparatorData;
     let comparatorAct = false;
-    this.resultCompared = [];
+    let resultCompared = [];
     let comparedData;
     let comparedAct = false;
     for (let i = 0; i < lines.length; i++) {
+      comparatorAct = false;
       comparatorData = lines[i];
       let uselessData;
       while (comparatorData.indexOf('<ins>') > -1) {
@@ -88,10 +91,11 @@ export class ComparisonComponent {
       if (comparatorAct) {
         classC = 'delC'
       }
-      this.resultComparator = this.resultComparator.concat({
+      resultComparator = resultComparator.concat({
         'content': comparatorData.replace('<div>', '').replace('</div>', ''),
         'class': classC
       });
+      comparedAct = false;
       comparedData = lines[i];
       while (comparedData.indexOf('<del>') > -1) {
         uselessData = this.cleanString(comparedData, '<del>', '</del>');
@@ -102,12 +106,19 @@ export class ComparisonComponent {
       if (comparedAct) {
         classc = 'insC'
       }
-      this.resultCompared = this.resultCompared.concat({
+      resultCompared = resultCompared.concat({
         'content': comparedData.replace('<div>', '').replace('</div>', ''),
         'class': classc
       });
     }
-    console.log(this.resultCompared);
+    this.results = [];
+    for (let i = 0; i < comparatorData.length; i++) {
+      this.results = this.results.concat({
+        'index': (i + 1).toString() + '.',
+        'com_p': resultComparator[i],
+        'comp': resultCompared[i]
+      });
+    }
   }
 
   methodSelected(method: any) {

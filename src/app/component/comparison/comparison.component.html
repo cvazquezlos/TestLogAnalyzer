@@ -27,6 +27,24 @@
     </mat-toolbar>
     <div *ngIf="active; else default">
       <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+        <mat-card>
+          <mat-card-title>Comparison results</mat-card-title>
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <table class="diff-table">
+              <tbody>
+                <tr *ngFor="let result of results">
+                  <td [innerHTML]="result.index"></td>
+                  <td [innerHTML]="result.com_p.content" [class]="result.com_p.class"></td>
+                  <td [innerHTML]="result.index"></td>
+                  <td [innerHTML]="result.comp.content" [class]="result.comp.class"></td>
+                </tr>
+              </tbody>
+            </table>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <div flex-gt-sm="50">
           <mat-card>
             <mat-card-title>
@@ -61,13 +79,7 @@
       <div class="full-width">
         <button class="find" (click)="generateComparison()">Find difference</button>
       </div>
-      <pre class="" #process processingDiff [left]="comparatorText" [right]="comparedText"></pre>
-      <ng-template let-data ngFor [ngForOf]="resultComparator">
-        <div [innerHTML]="data.content" [class]="data.class"></div>
-      </ng-template>
-      <ng-template let-data ngFor [ngForOf]="resultCompared">
-        <div [innerHTML]="data.content" [class]="data.class"></div>
-      </ng-template>
+      <pre class="not-displayed" #process processingDiff [left]="comparatorText" [right]="comparedText"></pre>
     </div>
     <ng-template #default>
       <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">

@@ -91,6 +91,8 @@ Ensure you have Elasticsearch installed and an instance of it running.
 18. https://beginnersbook.com/ - String to Date, Date to String Java 8 documentation.
 19. http://codemirror.net/ - Requirements.
 20. http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.4.6927 - An O(ND) Difference Algorithm and Its Variations (1986).
+21. https://github.com/GerHobbelt/google-diff-match-patch - Google Diff Match Patch: Universal Algorithm.
+22. https://code.google.com/archive/p/google-diff-match-patch/ - Google Diff Match Patch by Neil Fraser.
 
 ## Used technologies
 1. [Elasticsearch](https://www.elastic.co/products/elasticsearch).
