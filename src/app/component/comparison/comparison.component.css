@@ -90,10 +90,10 @@
   display: block;
 }
 
-.classC {
-
+.delC {
+  background: rgb(252, 216, 217);
 }
 
-.classc {
-
+.insC {
+  background: rgb(224, 252, 208);
 }

@@ -89,7 +89,7 @@ export class ComparisonComponent {
         classC = 'delC'
       }
       this.resultComparator = this.resultComparator.concat({
-        'content': comparatorData.replace('<div>','').replace('</div>',''),
+        'content': comparatorData.replace('<div>', '').replace('</div>', ''),
         'class': classC
       });
       comparedData = lines[i];
@@ -103,63 +103,11 @@ export class ComparisonComponent {
         classc = 'insC'
       }
       this.resultCompared = this.resultCompared.concat({
-        'content': comparedData.replace('<div>','').replace('</div>',''),
+        'content': comparedData.replace('<div>', '').replace('</div>', ''),
         'class': classc
       });
     }
     console.log(this.resultCompared);
-    /*this.resultComparator = [];
-    this.resultCompared = [];
-    const comparison = this.process.nativeElement.outerText.toString();
-    console.log(comparison);
-    const lines = comparison.split('\n');
-    const comparedLines = this.comparatorText.split('\n');
-    const comparatorLines = this.comparedText.split('\n');
-    let data;
-    let comparatorData;
-    let comparedData;
-    for (let i = 0; i < lines.length; i++) {
-      data = lines[i].split(' ');
-      comparatorData = comparedLines[i].split(' ');
-      comparedData = comparatorLines[i].split(' ');
-      console.log(data);
-      console.log(comparatorData);
-      console.log(comparedData);
-      for (let j = 0; j < data.length; j++) {
-        console.log(data[j]);
-        console.log(comparatorData[j]);
-        console.log(comparedData[j]);
-        console.log(data[j] == comparatorData[j]);
-        console.log(data[j] == comparedData[j]);
-        if ((data[j] == comparatorData[j]) && (data[j] == comparedData[j])) {
-          this.resultComparator = this.resultComparator.concat({
-            'content': ' ' + comparatorData[j] + ' ',
-            'class': 'normal'
-          });
-          this.resultCompared = this.resultCompared.concat({
-            'content': ' ' + comparedData[j] + ' ',
-            'class': 'normal'
-          });
-        } else {
-          this.resultComparator = this.resultComparator.concat({
-            'content': comparatorData[j],
-            'class': 'del'
-          });
-          this.resultCompared = this.resultCompared.concat({
-            'content': comparedData[j],
-            'class': 'ins'
-          });
-        }
-      }
-      this.resultComparator = this.resultComparator.concat({
-        'content': ' ',
-        'class': 'display'
-      });
-      this.resultCompared = this.resultCompared.concat({
-        'content': '',
-        'class': 'display'
-      });
-    }*/
   }
 
   methodSelected(method: any) {
