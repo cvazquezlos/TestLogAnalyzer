@@ -96,6 +96,9 @@ Ensure you have Elasticsearch installed and an instance of it running.
 20. http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.4.6927 - An O(ND) Difference Algorithm and Its Variations (1986).
 21. https://github.com/GerHobbelt/google-diff-match-patch - Google Diff Match Patch: Universal Algorithm.
 22. https://code.google.com/archive/p/google-diff-match-patch/ - Google Diff Match Patch by Neil Fraser.
+23. https://scotch.io/ - Dockerize Angular 4 app.
+24. https://docs.docker.com/ - Dockerizing apps, update tags and images to Docker Hub.
+25. https://dpopescu.me/ - Dockerfile content in Angular 4 app.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site
@@ -105,6 +108,7 @@ Angular Material  | Material Design components for Angular             | https:/
 Angular-CLI       | Command line interface for Angular                 | https://cli.angular.io/
 CircleCI          | Continuous Integration and Delivery                | https://circleci.com/
 CodeMirror        | Text editor for the browser                        | https://codemirror.net/
+Docker            | Project packaging and virtualization               | https://www.docker.com/
 Elasticsearch     | Search, indexing and analytics data engine         | https://www.elastic.co/products/elasticsearch
 Github            | Software development platform                      | https://github.com/
 Java              | Programming language (ES client and log generator) | https://www.java.com
