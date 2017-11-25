@@ -81,8 +81,11 @@ Ensure you have Elasticsearch installed and an instance of it running.
 21. https://github.com/GerHobbelt/google-diff-match-patch - Google Diff Match Patch: Universal Algorithm.
 22. https://code.google.com/archive/p/google-diff-match-patch/ - Google Diff Match Patch by Neil Fraser.
 23. https://scotch.io/ - Dockerize Angular 4 app.
-24. https://docs.docker.com/ - Dockerizing apps, update tags and images to Docker Hub.
+24. https://docs.docker.com/ - Dockerizing apps, update tags and images to Docker Hub, Docker Compose.
 25. https://dpopescu.me/ - Dockerfile content in Angular 4 app.
+26. https://github.com/taskrabbit/elasticsearch-dump - ElasticDump (moving and saving indices).
+27. https://khanhicetea.com/ - Backup, add and restore Elasticsearch with Docker.
+28. https://elk-docker.readthedocs.io/ - Dockerized ELK Stack.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site

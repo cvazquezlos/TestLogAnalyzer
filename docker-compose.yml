@@ -1,15 +1,22 @@
 version: "2.2"
 
 services:
-  elasticsearch:
-    image: cvazquezlos/elasticsearch:2.4.6
+  elk-stack:
+    image: cvazquezlos/elk:2.4.6
     ports:
+      - 5601:5601
       - 9200:9200
       - 9300:9300
+      - 5044:5044
+    volumes:
+      - elk-data:/var/lib/elasticsearch
 
   loganalyzer:
     image: cvazquezlos/loganalyzer:latest
     depends_on:
-      - elasticsearch
+      - elk-stack
     ports:
       - 4200:4200
+
+volumes:
+  elk-data:
