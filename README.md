@@ -92,8 +92,10 @@ Angular Material  | Material Design components for Angular             | https:/
 Angular-CLI       | Command line interface for Angular                 | https://cli.angular.io/
 CircleCI          | Continuous Integration and Delivery                | https://circleci.com/
 CodeMirror        | Text editor for the browser                        | https://codemirror.net/
+Code Climate      | Code quality test                                  | https://codeclimate.com/
+Dependency CI     | Automatic compilance testing for dependencies      | https://dependencyci.com/
 Docker            | Project packaging and virtualization               | https://www.docker.com/
-Docker Compose    | Tool for running multi-container Docker apps.      | https://docs.docker.com/compose/
+Docker Compose    | Tool for running multi-container Docker apps       | https://docs.docker.com/compose/
 Elasticsearch     | Search, indexing and analytics data engine         | https://www.elastic.co/products/elasticsearch
 Github            | Software development platform                      | https://github.com/
 Java              | Programming language (ES client and log generator) | https://www.java.com
