@@ -1,0 +1,15 @@
+version: "2.2"
+
+services:
+  elasticsearch:
+    image: cvazquezlos/elasticsearch:2.4.6
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  loganalyzer:
+    image: cvazquezlos/loganalyzer:latest
+    depends_on:
+      - elasticsearch
+    ports:
+      - 4200:4200

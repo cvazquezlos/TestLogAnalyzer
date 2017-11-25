@@ -1,0 +1,20 @@
+# common settings
+network:
+  host: 0.0.0.0
+
+cluster:
+  name: elasticsearch
+
+path:
+  logs: /var/log/elasticsearch
+  data: /var/lib/elasticsearch
+  conf: /etc/elasticsearch
+
+http.cors:
+  enabled: true
+  allow-origin: "*"
+
+transport:
+  tcp:
+    port: 9300
+    compress: false

@@ -109,6 +109,7 @@ Angular-CLI       | Command line interface for Angular                 | https:/
 CircleCI          | Continuous Integration and Delivery                | https://circleci.com/
 CodeMirror        | Text editor for the browser                        | https://codemirror.net/
 Docker            | Project packaging and virtualization               | https://www.docker.com/
+Docker Compose    | Tool for running multi-container Docker apps.      | https://docs.docker.com/compose/
 Elasticsearch     | Search, indexing and analytics data engine         | https://www.elastic.co/products/elasticsearch
 Github            | Software development platform                      | https://github.com/
 Java              | Programming language (ES client and log generator) | https://www.java.com
@@ -121,4 +122,5 @@ Spring            | Application development Framework                  | https:/
 Spring Tool Suite | Eclipse-based development environment              | https://spring.io/tools
 Teradata Covalent | Teradata UI Platform for Angular                   | https://teradata.github.io/covalent/
 Travis CI         | Code testing and deploying tool                    | https://travis-ci.org/
+TypeScript        | Programming language (Angular app)                 | https://www.typescriptlang.org/
 Webstorm          | JavaScript IDE                                     | https://www.jetbrains.com/webstorm/
