@@ -1,7 +1,7 @@
 version: "2.2"
 
 services:
-  elk-stack:
+  elasticsearch:
     image: cvazquezlos/elk:2.4.6
     ports:
       - 5601:5601
@@ -14,7 +14,7 @@ services:
   loganalyzer:
     image: cvazquezlos/loganalyzer:latest
     depends_on:
-      - elk-stack
+      - elasticsearch
     ports:
       - 4200:4200
 

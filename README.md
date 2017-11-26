@@ -13,7 +13,7 @@
 ## Getting started
 1. Clone this repository.
 2. Open your comand prompt and navigate to the root project.
-3. Execute "docker-compose up"
+3. Execute `docker-compose up` and navigate to **http://localhost:4200** on your favourite browser.
 4. Enjoy!
 
 ## LOGANALYZER
@@ -86,6 +86,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 26. https://github.com/taskrabbit/elasticsearch-dump - ElasticDump (moving and saving indices).
 27. https://khanhicetea.com/ - Backup, add and restore Elasticsearch with Docker.
 28. https://elk-docker.readthedocs.io/ - Dockerized ELK Stack.
+29. https://jaxenter.com/ - Sharing Docker volumes across the Internet.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site
