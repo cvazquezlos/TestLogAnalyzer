@@ -3,7 +3,7 @@
                          opened="true"
                          mode="side">
     <mat-toolbar td-sidenav-content color="accent">
-      <span class="cursor-pointer title left">Comparisons</span>
+      <span class="cursor-pointer title left">Tests</span>
       <a mat-icon-button matTooltip="Return home" class="no-margin icon" [routerLink]="['/']">
         <mat-icon class="title">home</mat-icon>
       </a>
@@ -21,14 +21,14 @@
         <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true">
           <mat-icon>arrow_back</mat-icon>
         </button>
-        <span class="title">Content Title</span>
+        <span class="title">Comparisons</span>
         <span flex></span>
       </div>
     </mat-toolbar>
     <div *ngIf="showResults">
       <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <mat-card>
-          <mat-card-title>Comparison results</mat-card-title>
+          <mat-card-title>Comparison between executions</mat-card-title>
           <mat-divider></mat-divider>
           <mat-card-content>
             <table class="diff-table">
