@@ -20,9 +20,9 @@ export class ComparisonComponent {
   @ViewChild('process') process: ElementRef;
 
   active = false;
-  comparatorSelected = false;
+  comparatorClass: string;
   comparatorText: string;
-  comparedSelected = false;
+  comparedClass: string;
   comparedText: string;
   config = {
     lineNumbers: true,
@@ -33,6 +33,8 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
+  isComparatorEmpty = false;
+  isComparedEmpty = false;
   methods: any[] = [];
   results = [];
   showResults = false;
@@ -71,20 +73,37 @@ export class ComparisonComponent {
     }
   }
 
+  private deleteUselessData(line: string, t1: string, t2: string, id: number) {
+    let uselessData;
+    while (line.indexOf(t1) != -1) {
+      uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
+      line = line.replace(t1 + uselessData + t2, '');
+      (id==1)? (this.comparatorClass = 'delC'):(this.comparedClass = 'insC');
+    }
+    return line;
+  }
+
   generateComparison() {
     const comparisonResult = this.process.nativeElement.innerHTML.toString();
-    console.log(comparisonResult);
     let lines = this.correctMistakes(comparisonResult.split('<br>'), '<ins>', '</ins>');
     lines = this.correctMistakes(lines, '<del>', '</del>');
+    let originalSize;
+    let modifiedComparatorSize;
+    let modifiedComparedSize;
     for (let i = 0; i < lines.length; i++) {
+      originalSize = lines[i].length;
+      console.log(originalSize);
+      this.comparatorClass = 'normal';
+      this.comparedClass = 'normal';
       let comparatorLine = lines[i];
       let comparedLine = lines[i];
-      let changeComparatorClass = false;
-      let changeComparedClass = false;
-      comparatorLine = this.deleteUselessData(comparatorLine, '<ins>', '</ins>');
-      comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>');
-
-
+      comparatorLine = this.deleteUselessData(comparatorLine, '<ins>', '</ins>', 1);
+      comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>', 0);
+      modifiedComparatorSize = comparatorLine.length;
+      (modifiedComparatorSize < (originalSize*0.2))? (this.comparatorClass = 'addedC'):('');
+      modifiedComparedSize = comparedLine.length;
+      (modifiedComparedSize < (originalSize*0.2))? (this.comparedClass = 'addedc'):('');
+    }
     /*
     console.log(comparisonResult);
     const lines = comparisonResult.split('<br>');

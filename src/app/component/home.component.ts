@@ -55,8 +55,6 @@ export class HomeComponent implements AfterViewInit {
 
   maven(): void {
     this.mavenMessages = !this.mavenMessages;
-    console.log('Show Maven messages: ' + this.mavenMessages);
-    console.log('Updating data...');
     if (this.isSelected()) {
       this.loadInfo(0, undefined);
     }
@@ -139,7 +137,6 @@ export class HomeComponent implements AfterViewInit {
   private loadNavbarInfo(value: string, index: number) {
     this.elasticsearchService.get(3, 73, value, false).subscribe(
       data => {
-        console.log('Loading execution number ' + value + ' classes...');
         this.aux = [];
         this.aux = this.aux.concat(data);
         let id = 0;
@@ -155,10 +152,8 @@ export class HomeComponent implements AfterViewInit {
           });
           id += 1;
         }
-        console.log('Classes of execution ' + value + ' displayed.');
         this.elasticsearchService.get(1, 1000, value, false).subscribe(
           data1 => {
-            console.log('Loading test names of each execution ' + value + ' class...');
             this.methods = [];
             let logs: Log[] = [];
             logs = logs.concat(data1);
@@ -168,7 +163,6 @@ export class HomeComponent implements AfterViewInit {
                 this.methods = this.methods.concat(args[1]);
               }
             }
-            console.log('Names loaded. Adding each method to its class...');
             for (const logger of this.navmenu[index].classes) {
               for (const method of this.methods) {
                 this.elasticsearchService.count(3, value, method.replace('(', '').replace(')', ''), logger.name).subscribe(
@@ -183,7 +177,6 @@ export class HomeComponent implements AfterViewInit {
                 );
               }
             }
-            console.log('Test names added.');
             this.loadingNavbar = true;
           },
           error => console.log(error)
@@ -194,7 +187,6 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private loadInfo(code: number, value?: string, method?: string) {
-    console.log('Sending request to your Elasticsearch instance...');
     let meth = method;
     if (value) {
       this.idSelected = +value;
@@ -208,7 +200,6 @@ export class HomeComponent implements AfterViewInit {
     }
     this.elasticsearchService.get(code, 1000, this.idSelected.toString(), this.mavenMessages, meth).subscribe(
       data => {
-        console.log('Response received. Parsing data...');
         this.logs = [];
         this.logs = this.logs.concat(data);
         this.dataRowData = [];
@@ -223,7 +214,6 @@ export class HomeComponent implements AfterViewInit {
             'message': log.formatted_message
           });
         }
-        console.log('Data parsed and displayed.');
         this.loadingData = true;
       },
       error => console.log(error)
