@@ -7,7 +7,6 @@ import {TdMediaService} from '@covalent/core';
 
 import {Log} from '../../model/source.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
-import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-comparison',
@@ -78,6 +77,8 @@ export class ComparisonComponent {
     let lines = this.correctMistakes(comparisonResult.split('<br>'), '<ins>', '</ins>');
     lines = this.correctMistakes(lines, '<del>', '</del>');
     let originalSize, modifiedComparatorSize: number, modifiedComparedSize, j, k: number;
+    let acum1 = '';
+    let acum2 = '';
     j = 0;
     k = 0;
     this.results = [];
@@ -89,11 +90,27 @@ export class ComparisonComponent {
       let comparatorLine = lines[i];
       let comparedLine = lines[i];
       comparatorLine = this.deleteUselessData(comparatorLine, '<ins>', '</ins>', 1);
-      comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>', 0);
+      comparatorLine = acum1 + comparatorLine;
       modifiedComparatorSize = comparatorLine.length;
-      (modifiedComparatorSize < (originalSize*0.2))? (this.comparatorClass = 'added'):(j++);
+      comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>', 0);
+      comparedLine = acum2 + comparedLine;
       modifiedComparedSize = comparedLine.length;
-      (modifiedComparedSize < (originalSize*0.2))? (this.comparedClass = 'added'):(k++);
+      if (modifiedComparatorSize < (originalSize * 0.2)) {
+        this.comparatorClass = 'added';
+        acum1 = comparatorLine;
+        comparatorLine = '';
+        k++;
+      } else if (modifiedComparedSize < (originalSize * 0.2)){
+        this.comparedClass = 'added';
+        acum2 = comparedLine;
+        comparedLine = '';
+        j++;
+      } else {
+        k++;
+        j++;
+        acum1 = '';
+        acum2 = '';
+      }
       this.results = this.results.concat({
         'index_p': j.toString() + '.',
         'com_p': {
@@ -108,109 +125,6 @@ export class ComparisonComponent {
       });
     }
     this.showResults = true;
-    /*
-    resultCompared = resultCompared.concat({
-        'content': comparedLine.replace('<div>', '').replace('</div>', ''),
-        'class': classCompared
-      });
-      this.results = [];
-      for (let i = 0; i < resultComparator.length; i++) {
-        this.results = this.results.concat({
-          'index': (i + 1).toString() + '.',
-          'com_p': resultComparator[i],
-          'comp': resultCompared[i]
-        });
-      }
-      this.showResults = true;
-
-
-
-    console.log(comparisonResult);
-    const lines = comparisonResult.split('<br>');
-    let resultComparator = [];
-    let bleedComparator;
-    let resultCompared = [];
-    let bleedCompared;
-    for (let i = 0; i < lines.length; i++) {
-      let comparatorLine = lines[i];
-      bleedComparator = false;
-      let uselessData;
-      while (comparatorLine.indexOf('<ins>') != -1) {
-        uselessData = comparatorLine.substring(comparatorLine.indexOf('<ins>') + 5, comparatorLine.indexOf('</ins>'));
-        comparatorLine = comparatorLine.replace('<ins>' + uselessData + '</ins>', '');
-        bleedComparator = true;
-      }
-      let classComparator = 'normal';
-      if (bleedComparator) {
-        classComparator = 'delC';
-      }
-      resultComparator = resultComparator.concat({
-        'content': comparatorLine.replace('<div>', '').replace('</div>', ''),
-        'class': classComparator
-      });
-      let comparedLine = lines[i];
-      bleedCompared = false;
-      while (comparedLine.indexOf('<del>') != -1) {
-        uselessData = comparedLine.substring(comparedLine.indexOf('<del>') + 5, comparedLine.indexOf('</del>'));
-        comparedLine = comparedLine.replace('<del>' + uselessData + '</del>', '');
-        bleedCompared = true;
-      }
-      let classCompared = 'normal';
-      if (bleedCompared) {
-        classCompared = 'insC'
-      }
-
-    }
-    /*
-    let resultComparator = [];
-    let comparatorData;
-    let comparatorAct = false;
-    let resultCompared = [];
-    let comparedData;
-    let comparedAct = false;
-    for (let i = 0; i < lines.length; i++) {
-      comparatorAct = false;
-      comparatorData = lines[i];
-      let uselessData;
-      while (comparatorData.indexOf('<ins>') > -1) {
-        uselessData = this.cleanString(comparatorData, '<ins>', '</ins>');
-        comparatorData = comparatorData.replace('<ins>' + uselessData + '</ins>', '');
-        comparatorAct= true;
-      }
-      let classC = 'normal';
-      if (comparatorAct) {
-        classC = 'delC'
-      }
-      resultComparator = resultComparator.concat({
-        'content': comparatorData.replace('<div>', '').replace('</div>', ''),
-        'class': classC
-      });
-      comparedAct = false;
-      comparedData = lines[i];
-      while (comparedData.indexOf('<del>') > -1) {
-        uselessData = this.cleanString(comparedData, '<del>', '</del>');
-        comparedData = comparedData.replace('<del>' + uselessData + '</del>', '');
-        comparedAct = true;
-      }
-      let classc = 'normal';
-      if (comparedAct) {
-        classc = 'insC'
-      }
-      resultCompared = resultCompared.concat({
-        'content': comparedData.replace('<div>', '').replace('</div>', ''),
-        'class': classc
-      });
-    }
-    this.results = [];
-    for (let i = 0; i < resultComparator.length; i++) {
-      this.results = this.results.concat({
-        'index': (i + 1).toString() + '.',
-        'com_p': resultComparator[i],
-        'comp': resultCompared[i]
-      });
-    }
-    this.showResults = true;
-    */
   }
 
   methodSelected(method: any) {
