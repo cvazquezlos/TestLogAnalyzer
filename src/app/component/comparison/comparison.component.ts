@@ -44,8 +44,8 @@ export class ComparisonComponent {
 
   comparator(exec: any) {
     if (!this.isSelectedAnyElement(this.execsCompared)) {
-      this.addExecs(1, exec.id, exec.method);
-      this.addExecs(2, exec.id, exec.method);
+      this.addExecs(this.execsComparator, exec.id, exec.method);
+      this.addExecs(this.execsCompared, exec.id, exec.method);
       exec.class = 'active';
       this.loadInfo(exec.id, 0, exec.method);
       this.deleteExec(this.execsCompared, exec);
@@ -58,8 +58,8 @@ export class ComparisonComponent {
 
   compared(exec: any) {
     if (!this.isSelectedAnyElement(this.execsComparator)) {
-      this.addExecs(1, exec.id, exec.method);
-      this.addExecs(2, exec.id, exec.method);
+      this.addExecs(this.execsComparator, exec.id, exec.method);
+      this.addExecs(this.execsCompared, exec.id, exec.method);
       exec.class = 'active';
       this.loadInfo(exec.id, 1, exec.method);
       this.deleteExec(this.execsComparator, exec);
@@ -141,39 +141,30 @@ export class ComparisonComponent {
     this.active = true;
   }
 
-  private addExecs(type: number, exec: number, method: string) {
+  private addExecs(execs: any[], exec: number, method: string) {
     let classN = 'execs';
-    switch (type) {
-      case 1:
-        this.execsComparator = [];
-        for (let i = 0; i < this.execsNumber; i++) {
-          if (i + 1 === exec) {
-            classN = 'active';
-          }
           this.execsComparator = this.execsComparator.concat({
-            'id': i + 1,
-            'class': classN,
-            'method': method
-          });
-          classN = 'execs';
-        }
-        break;
-      case 2:
-        this.execsCompared = [];
-        for (let i = 0; i < this.execsNumber; i++) {
-          if (i + 1 === exec) {
-            classN = 'active';
-          }
-          this.execsCompared = this.execsCompared.concat({
-            'id': i + 1,
-            'class': classN,
-            'method': method
-          });
-          classN = 'execs';
-        }
-        break;
+    execs = [];
+    for (let i = 0; i < this.execsNumber; i++) {
+      if (i + 1 === exec) {
+        classN = 'active';
+      }
+      execs = execs.concat({
+        'id': i + 1,
+        'class': classN,
+        'method': method
+      });
+      classN = 'execs';
     }
   }
+
+  private concatData(data: any[]) {
+    let exec = '';
+    for (const dat of data) {
+      exec += dat.entire_log + '\n';
+    }
+    return exec;
+  } 
 
   private correctMistakes(lines: any[], t1: string, t2: string) {
     for (let i = 0; i < lines.length; i++) {
@@ -267,16 +258,10 @@ export class ComparisonComponent {
         aux = aux.concat(data);
         switch (type) {
           case 0:
-            this.comparatorText = '';
-            for (const dat of aux) {
-              this.comparatorText += dat.entire_log + '\n';
-            }
+            this.comparatorText = this.concatData(aux);
             break;
           case 1:
-            this.comparedText = '';
-            for (const dat of aux) {
-              this.comparedText += dat.entire_log + '\n';
-            }
+            this.comparedText = this.concatData(aux);
             break;
         }
       },
