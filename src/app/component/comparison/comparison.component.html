@@ -3,7 +3,7 @@
                          opened="true"
                          mode="side">
     <mat-toolbar td-sidenav-content color="accent">
-      <span class="cursor-pointer title left">Comparisons</span>
+      <span class="cursor-pointer title left">Tests</span>
       <a mat-icon-button matTooltip="Return home" class="no-margin icon" [routerLink]="['/']">
         <mat-icon class="title">home</mat-icon>
       </a>
@@ -21,22 +21,22 @@
         <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true">
           <mat-icon>arrow_back</mat-icon>
         </button>
-        <span class="title">Content Title</span>
+        <span class="title">Comparisons</span>
         <span flex></span>
       </div>
     </mat-toolbar>
     <div *ngIf="showResults">
       <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
         <mat-card>
-          <mat-card-title>Comparison results</mat-card-title>
+          <mat-card-title>Comparison between executions</mat-card-title>
           <mat-divider></mat-divider>
           <mat-card-content>
             <table class="diff-table">
               <tbody>
                 <tr *ngFor="let result of results">
-                  <td [innerHTML]="result.index" class="index"></td>
+                  <td [innerHTML]="result.index_p" class="index"></td>
                   <td [innerHTML]="result.com_p.content" [class]="result.com_p.class"></td>
-                  <td [innerHTML]="result.index" class="index"></td>
+                  <td [innerHTML]="result.indexp" class="index"></td>
                   <td [innerHTML]="result.comp.content" [class]="result.comp.class"></td>
                 </tr>
               </tbody>
@@ -81,7 +81,7 @@
       <div class="full-width">
         <button class="find" (click)="generateComparison()">Find difference</button>
       </div>
-      <pre class="not-displayed" #process processingDiff [left]="comparatorText" [right]="comparedText"></pre>
+      <pre class="not-displayed" #process diff [left]="comparatorText" [right]="comparedText"></pre>
     </div>
     <ng-template #default>
       <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">

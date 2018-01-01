@@ -73,7 +73,7 @@
 }
 
 .not-displayed {
-  display: none;
+  /*display: none;*/
 }
 
 .display {
@@ -88,6 +88,11 @@
 .insC {
   background: rgb(224, 252, 208);
   border: 1px solid rgb(26, 152, 31);
+}
+
+.added {
+  background: rgb(204, 204, 204);
+  border: 1px solid rgb(166, 166, 166);
 }
 
 .diff-table {
