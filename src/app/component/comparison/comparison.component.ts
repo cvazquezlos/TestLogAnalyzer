@@ -73,23 +73,14 @@ export class ComparisonComponent {
     }
   }
 
-  private deleteUselessData(line: string, t1: string, t2: string, id: number) {
-    let uselessData;
-    while (line.indexOf(t1) != -1) {
-      uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
-      line = line.replace(t1 + uselessData + t2, '');
-      (id==1)? (this.comparatorClass = 'delC'):(this.comparedClass = 'insC');
-    }
-    return line;
-  }
-
   generateComparison() {
     const comparisonResult = this.process.nativeElement.innerHTML.toString();
     let lines = this.correctMistakes(comparisonResult.split('<br>'), '<ins>', '</ins>');
     lines = this.correctMistakes(lines, '<del>', '</del>');
-    let originalSize;
-    let modifiedComparatorSize;
-    let modifiedComparedSize;
+    let originalSize, modifiedComparatorSize: number, modifiedComparedSize, j, k: number;
+    j = 0;
+    k = 0;
+    this.results = [];
     for (let i = 0; i < lines.length; i++) {
       originalSize = lines[i].length;
       console.log(originalSize);
@@ -100,11 +91,40 @@ export class ComparisonComponent {
       comparatorLine = this.deleteUselessData(comparatorLine, '<ins>', '</ins>', 1);
       comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>', 0);
       modifiedComparatorSize = comparatorLine.length;
-      (modifiedComparatorSize < (originalSize*0.2))? (this.comparatorClass = 'addedC'):('');
+      (modifiedComparatorSize < (originalSize*0.2))? (this.comparatorClass = 'added'):(j++);
       modifiedComparedSize = comparedLine.length;
-      (modifiedComparedSize < (originalSize*0.2))? (this.comparedClass = 'addedc'):('');
+      (modifiedComparedSize < (originalSize*0.2))? (this.comparedClass = 'added'):(k++);
+      this.results = this.results.concat({
+        'index_p': j.toString() + '.',
+        'com_p': {
+          'content': comparatorLine.replace('<div>', '').replace('</div>', ''),
+          'class': this.comparatorClass
+        },
+        'indexp': k.toString() + '.',
+        'comp': {
+          'content': comparedLine.replace('<div>', '').replace('</div>', ''),
+          'class': this.comparedClass
+        }
+      });
     }
+    this.showResults = true;
     /*
+    resultCompared = resultCompared.concat({
+        'content': comparedLine.replace('<div>', '').replace('</div>', ''),
+        'class': classCompared
+      });
+      this.results = [];
+      for (let i = 0; i < resultComparator.length; i++) {
+        this.results = this.results.concat({
+          'index': (i + 1).toString() + '.',
+          'com_p': resultComparator[i],
+          'comp': resultCompared[i]
+        });
+      }
+      this.showResults = true;
+
+
+
     console.log(comparisonResult);
     const lines = comparisonResult.split('<br>');
     let resultComparator = [];
@@ -139,19 +159,7 @@ export class ComparisonComponent {
       if (bleedCompared) {
         classCompared = 'insC'
       }
-      resultCompared = resultCompared.concat({
-        'content': comparedLine.replace('<div>', '').replace('</div>', ''),
-        'class': classCompared
-      });
-      this.results = [];
-      for (let i = 0; i < resultComparator.length; i++) {
-        this.results = this.results.concat({
-          'index': (i + 1).toString() + '.',
-          'com_p': resultComparator[i],
-          'comp': resultCompared[i]
-        });
-      }
-      this.showResults = true;
+
     }
     /*
     let resultComparator = [];
@@ -294,6 +302,16 @@ export class ComparisonComponent {
       }
       index += 1;
     }
+  }
+
+  private deleteUselessData(line: string, t1: string, t2: string, id: number) {
+    let uselessData;
+    while (line.indexOf(t1) != -1) {
+      uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
+      line = line.replace(t1 + uselessData + t2, '');
+      (id==1)? (this.comparatorClass = 'delC'):(this.comparedClass = 'insC');
+    }
+    return line;
   }
 
   private cleanString(line: string, init: string, end: string) {

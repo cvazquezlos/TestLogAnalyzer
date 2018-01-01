@@ -34,9 +34,9 @@
             <table class="diff-table">
               <tbody>
                 <tr *ngFor="let result of results">
-                  <td [innerHTML]="result.index" class="index"></td>
+                  <td [innerHTML]="result.index_p" class="index"></td>
                   <td [innerHTML]="result.com_p.content" [class]="result.com_p.class"></td>
-                  <td [innerHTML]="result.index" class="index"></td>
+                  <td [innerHTML]="result.indexp" class="index"></td>
                   <td [innerHTML]="result.comp.content" [class]="result.comp.class"></td>
                 </tr>
               </tbody>
