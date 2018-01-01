@@ -7,6 +7,7 @@ import {TdMediaService} from '@covalent/core';
 
 import {Log} from '../../model/source.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-comparison',
@@ -19,7 +20,9 @@ export class ComparisonComponent {
   @ViewChild('process') process: ElementRef;
 
   active = false;
+  comparatorSelected = false;
   comparatorText: string;
+  comparedSelected = false;
   comparedText: string;
   config = {
     lineNumbers: true,
@@ -45,7 +48,6 @@ export class ComparisonComponent {
       this.addExecs(1, exec.id, exec.method);
       this.addExecs(2, exec.id, exec.method);
       exec.class = 'active';
-      console.log(exec.id);
       this.loadInfo(exec.id, 0, exec.method);
       this.deleteExec(this.execsCompared, exec);
     } else {
@@ -60,19 +62,79 @@ export class ComparisonComponent {
       this.addExecs(1, exec.id, exec.method);
       this.addExecs(2, exec.id, exec.method);
       exec.class = 'active';
-      console.log(exec.id);
       this.loadInfo(exec.id, 1, exec.method);
       this.deleteExec(this.execsComparator, exec);
     } else {
-      this.loadInfo(exec.id, 1, exec.method);
       exec.class = 'active';
+      this.loadInfo(exec.id, 1, exec.method);
       this.deleteExec(this.execsComparator, exec);
     }
   }
 
   generateComparison() {
     const comparisonResult = this.process.nativeElement.innerHTML.toString();
+    console.log(comparisonResult);
+    let lines = this.correctMistakes(comparisonResult.split('<br>'), '<ins>', '</ins>');
+    lines = this.correctMistakes(lines, '<del>', '</del>');
+    for (let i = 0; i < lines.length; i++) {
+      let comparatorLine = lines[i];
+      let comparedLine = lines[i];
+      let changeComparatorClass = false;
+      let changeComparedClass = false;
+      comparatorLine = this.deleteUselessData(comparatorLine, '<ins>', '</ins>');
+      comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>');
+
+
+    /*
+    console.log(comparisonResult);
     const lines = comparisonResult.split('<br>');
+    let resultComparator = [];
+    let bleedComparator;
+    let resultCompared = [];
+    let bleedCompared;
+    for (let i = 0; i < lines.length; i++) {
+      let comparatorLine = lines[i];
+      bleedComparator = false;
+      let uselessData;
+      while (comparatorLine.indexOf('<ins>') != -1) {
+        uselessData = comparatorLine.substring(comparatorLine.indexOf('<ins>') + 5, comparatorLine.indexOf('</ins>'));
+        comparatorLine = comparatorLine.replace('<ins>' + uselessData + '</ins>', '');
+        bleedComparator = true;
+      }
+      let classComparator = 'normal';
+      if (bleedComparator) {
+        classComparator = 'delC';
+      }
+      resultComparator = resultComparator.concat({
+        'content': comparatorLine.replace('<div>', '').replace('</div>', ''),
+        'class': classComparator
+      });
+      let comparedLine = lines[i];
+      bleedCompared = false;
+      while (comparedLine.indexOf('<del>') != -1) {
+        uselessData = comparedLine.substring(comparedLine.indexOf('<del>') + 5, comparedLine.indexOf('</del>'));
+        comparedLine = comparedLine.replace('<del>' + uselessData + '</del>', '');
+        bleedCompared = true;
+      }
+      let classCompared = 'normal';
+      if (bleedCompared) {
+        classCompared = 'insC'
+      }
+      resultCompared = resultCompared.concat({
+        'content': comparedLine.replace('<div>', '').replace('</div>', ''),
+        'class': classCompared
+      });
+      this.results = [];
+      for (let i = 0; i < resultComparator.length; i++) {
+        this.results = this.results.concat({
+          'index': (i + 1).toString() + '.',
+          'com_p': resultComparator[i],
+          'comp': resultCompared[i]
+        });
+      }
+      this.showResults = true;
+    }
+    /*
     let resultComparator = [];
     let comparatorData;
     let comparatorAct = false;
@@ -86,7 +148,7 @@ export class ComparisonComponent {
       while (comparatorData.indexOf('<ins>') > -1) {
         uselessData = this.cleanString(comparatorData, '<ins>', '</ins>');
         comparatorData = comparatorData.replace('<ins>' + uselessData + '</ins>', '');
-        comparatorAct = true;
+        comparatorAct= true;
       }
       let classC = 'normal';
       if (comparatorAct) {
@@ -121,12 +183,11 @@ export class ComparisonComponent {
       });
     }
     this.showResults = true;
+    */
   }
 
   methodSelected(method: any) {
     this.deselect();
-    console.log('Method selected: ' + method.title);
-    console.log('Loading executions...');
     this.showResults = false;
     this.comparatorText = '';
     this.comparedText = '';
@@ -171,6 +232,17 @@ export class ComparisonComponent {
     }
   }
 
+  private correctMistakes(lines: any[], t1: string, t2: string) {
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].lastIndexOf(t1) > lines[i].lastIndexOf(t2)) {
+        lines[i] = lines[i] + t2;
+      } else if (lines[i].indexOf(t2) < lines[i].indexOf(t1)) {
+        lines[i] = t1 + lines[i];
+      }
+    }
+    return lines;
+  }
+
   private countExecs(index: number, method) {
     this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
       count => {
@@ -188,8 +260,6 @@ export class ComparisonComponent {
           this.countExecs(index + 1, method);
         } else {
           this.execsNumber = index;
-          console.log('Success. Avaible executions: ' + this.execsNumber);
-          console.log(this.execsComparator);
         }
       },
       error => console.log(error)
@@ -213,7 +283,6 @@ export class ComparisonComponent {
       const string1 = line.substr(0, SP);
       const string2 = line.substr(SP);
       const TP = string1.length + string2.indexOf(end);
-      console.log(line.substring(SP, TP));
       return line.substring(SP, TP);
     }
   }
@@ -221,7 +290,6 @@ export class ComparisonComponent {
   private initInfo(value: string) {
     this.elasticsearchService.get(1, 1000, '1', false).subscribe(
       data1 => {
-        console.log('Loading test names...');
         this.methods = [];
         let logs: Log[] = [];
         logs = logs.concat(data1);
@@ -235,7 +303,6 @@ export class ComparisonComponent {
             })
           }
         }
-        console.log('Test names added.');
       },
       error => console.log(error)
     );
