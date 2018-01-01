@@ -4,7 +4,6 @@ import {
   Component
 } from '@angular/core';
 import {
-  IPageChangeEvent,
   ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
   TdDataTableService,
@@ -205,8 +204,7 @@ export class HomeComponent implements AfterViewInit {
         this.dataRowData = [];
         for (const log of this.logs) {
           this.dataRowData = this.dataRowData.concat({
-            'id': (+log.id),
-            'timestamp': log.timestamp,
+            'id': (+log.id), 'timestamp': log.timestamp,
             'thread': log.thread_name,
             'level': log.level,
             'class': (log.logger_name.split('.')[log.logger_name.split('.').length - 1]),
@@ -216,7 +214,6 @@ export class HomeComponent implements AfterViewInit {
         }
         this.loadingData = true;
       },
-      error => console.log(error)
     );
   }
 

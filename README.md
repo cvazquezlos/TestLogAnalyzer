@@ -87,6 +87,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 27. https://khanhicetea.com/ - Backup, add and restore Elasticsearch with Docker.
 28. https://elk-docker.readthedocs.io/ - Dockerized ELK Stack.
 29. https://jaxenter.com/ - Sharing Docker volumes across the Internet.
+30. https://martinfowler.com/ - Refactoring with loops and collection pipelines.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site

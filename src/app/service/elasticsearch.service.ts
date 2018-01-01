@@ -1,7 +1,6 @@
 import {Headers,
   Http} from '@angular/http';
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
 
 @Injectable()
@@ -17,98 +16,36 @@ export class ElasticsearchService {
   count(type: number, value?: string, method?: string, logger?: string) {
     let getURL = this.countURL;
     switch (type) {
-      case 0:
-        break;
       case 1:
         getURL += '?q=thread_name:main';
         break;
       case 2:
-        if (+value < 10) {
-          value = '0' + value;
-        }
+        (+value < 10) ? (value = '0' + value):(value);
         getURL += '?q=test_no:' + value;
         break;
       case 3:
-        if (+value < 10) {
-          value = '0' + value;
-        }
-        const body = {
-          query: {
-            query_string: {
-              query: '(method:' + method + '*) AND (test_no:' + value + ') AND (logger_name:' + logger + ')'
-            }
-          }
-        };
+        (+value < 10) ? (value = '0' + value):(value);
+        const body = {query:{query_string:{query: '(method:' + method + '*) AND (test_no:' + value + ') AND ' +
+              '(logger_name:' + logger + ')'}}};
         const headers: Headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this.http.post(getURL, JSON.stringify(body), {headers: headers})
-          .map(response => response.json().count)
-          .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
+          .map(response => response.json().count);
+      case 0:
     }
     return this.http.get(getURL)
-      .map(response => response.json().count)
-      .catch(error => Observable.throw('Fail trying to count all Elasticsearch logs.'));
+      .map(response => response.json().count);
   }
 
   get(type: number, size: number, value: string, maven: boolean, method?: string) {
     const values1 = '&size=' + size;
     const values2 = '&from=0';
     const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
-    if (+value < 10) {
-      value = '0' + value;
-    }
+    (+value < 10) ? (value = '0' + value):(value);
     let body;
-    if (maven && !method) {
-      body = {
-        query: {
-          query_string: {
-            query: '(test_no:' + value + ')'
-          }
-        }
-      }
-    } else {
-      switch (type) {
-        case 0:
-          body = {
-            query: {
-              query_string: {
-                query: '(thread_name:main) AND (test_no:' + value + ')'
-              }
-            }
-          };
-          break;
-        case 1:
-          body = {
-            query: {
-              query_string: {
-                query: '(formatted_message:Starting) AND (test_no:' + value + ')'
-              }
-            }
-          };
-          break;
-        case 2:
-          body = {
-            query: {
-              query_string: {
-                query: '(method:' + method + '*) AND (test_no:' + value + ')'
-              }
-            }
-          };
-          break;
-        case 3:
-          body = {
-            query: {
-              query_string: {
-                query: '(formatted_message:Running) AND (test_no:' + value + ')'
-              }
-            }
-          };
-          break;
-      }
-    }
     const headers: Headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(getURL, JSON.stringify(body), {headers: headers})
+    return this.http.post(getURL, JSON.stringify(this.getBody(type, value, maven, method)), {headers: headers})
       .map((responseData) => {
         return responseData.json();
       })
@@ -121,7 +58,29 @@ export class ElasticsearchService {
           })
         }
         return result;
-      })
-      .catch(error => Observable.throw('Fail trying to get some logs from your Elasticsearch instance.'))
+      });
+  }
+
+  private getBody(id: number, value: string, maven: boolean, method?: string) {
+    let body;
+    if (maven && !method) {
+      body = {query: {query_string: {query: '(test_no:' + value + ')'}}}
+    } else {
+      switch (id) {
+        case 0:
+          body = {query: {query_string: {query: '(thread_name:main) AND (test_no:' + value + ')'}}};
+          break;
+        case 1:
+          body = {query: {query_string: {query: '(formatted_message:Starting) AND (test_no:' + value + ')'}}};
+          break;
+        case 2:
+          body = {query: {query_string: {query: '(method:' + method + '*) AND (test_no:' + value + ')'}}};
+          break;
+        case 3:
+          body = {query: {query_string: {query: '(formatted_message:Running) AND (test_no:' + value + ')'}}};
+          break;
+      }
+    }
+    return body;
   }
 }
