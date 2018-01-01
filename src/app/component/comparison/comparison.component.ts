@@ -226,7 +226,7 @@ export class ComparisonComponent {
     while (line.indexOf(t1) !== -1) {
       uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
       line = line.replace(t1 + uselessData + t2, '');
-      (id === 1)? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
+      (id === 1) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
     }
     return line;
   }
