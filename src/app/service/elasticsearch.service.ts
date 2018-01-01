@@ -20,12 +20,12 @@ export class ElasticsearchService {
         getURL += '?q=thread_name:main';
         break;
       case 2:
-        (+value < 10) ? (value = '0' + value):(value);
+        (+value < 10) ? (value = '0' + value) : (value = value);
         getURL += '?q=test_no:' + value;
         break;
       case 3:
-        (+value < 10) ? (value = '0' + value):(value);
-        const body = {query:{query_string:{query: '(method:' + method + '*) AND (test_no:' + value + ') AND ' +
+        (+value < 10) ? (value = '0' + value) : (value = value);
+        const body = {query: {query_string: {query: '(method:' + method + '*) AND (test_no:' + value + ') AND ' +
               '(logger_name:' + logger + ')'}}};
         const headers: Headers = new Headers();
         headers.append('Content-Type', 'application/json');
@@ -41,7 +41,7 @@ export class ElasticsearchService {
     const values1 = '&size=' + size;
     const values2 = '&from=0';
     const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
-    (+value < 10) ? (value = '0' + value):(value);
+    (+value < 10) ? (value = '0' + value) : (value = value);
     let body;
     const headers: Headers = new Headers();
     headers.append('Content-Type', 'application/json');
