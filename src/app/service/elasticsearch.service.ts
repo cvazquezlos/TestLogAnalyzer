@@ -42,7 +42,6 @@ export class ElasticsearchService {
     const values2 = '&from=0';
     const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
     (+value < 10) ? (value = '0' + value) : (value = value);
-    let body;
     const headers: Headers = new Headers();
     headers.append('Content-Type', 'application/json');
     return this.http.post(getURL, JSON.stringify(this.getBody(type, value, maven, method)), {headers: headers})
