@@ -89,6 +89,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 29. https://jaxenter.com/ - Sharing Docker volumes across the Internet.
 30. https://martinfowler.com/ - Refactoring with loops and collection pipelines.
 31. https://forum.freecodecamp.org/ - NPM behind a proxy server.
+32. https://www.quora.com/ - Reducing code complexity.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site

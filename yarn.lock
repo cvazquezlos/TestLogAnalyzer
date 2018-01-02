@@ -3551,20 +3551,12 @@ postcss-load-config@^1.2.0:
     cosmiconfig "^2.1.0"
     object-assign "^4.1.0"
     postcss-load-options "^1.2.0"
-    postcss-load-plugins "^2.3.0"
 
 postcss-load-options@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/postcss-load-options/-/postcss-load-options-1.2.0.tgz#b098b1559ddac2df04bc0bb375f99a5cfe2b6d8c"
   dependencies:
     cosmiconfig "^2.1.0"
-    object-assign "^4.1.0"
-
-postcss-load-plugins@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/postcss-load-plugins/-/postcss-load-plugins-2.3.0.tgz#745768116599aca2f009fad426b00175049d8d92"
-  dependencies:
-    cosmiconfig "^2.1.1"
     object-assign "^4.1.0"
 
 postcss-loader@^1.3.3:
