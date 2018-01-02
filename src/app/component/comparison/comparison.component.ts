@@ -43,30 +43,24 @@ export class ComparisonComponent {
   }
 
   comparator(exec: any) {
-    if (!this.isSelectedAnyElement(this.execsCompared)) {
-      this.addExecs(this.execsComparator, exec.id, exec.method);
-      this.addExecs(this.execsCompared, exec.id, exec.method);
-      exec.class = 'active';
-      this.loadInfo(exec.id, 0, exec.method);
-      this.deleteExec(this.execsCompared, exec);
-    } else {
-      this.loadInfo(exec.id, 0, exec.method);
-      exec.class = 'active';
-      this.deleteExec(this.execsCompared, exec);
-    }
+    this.prepareContent(exec, this.execsCompared, 0);
   }
 
   compared(exec: any) {
-    if (!this.isSelectedAnyElement(this.execsComparator)) {
+    this.prepareContent(exec, this.execsComparator, 1);
+  }
+
+  private prepareContent(exec: any, execs: any[], type: number) {
+    if (!this.isSelectedAnyElement(execs)) {
       this.addExecs(this.execsComparator, exec.id, exec.method);
       this.addExecs(this.execsCompared, exec.id, exec.method);
       exec.class = 'active';
-      this.loadInfo(exec.id, 1, exec.method);
-      this.deleteExec(this.execsComparator, exec);
+      this.loadInfo(exec.id, type, exec.method);
+      this.deleteExec(execs, exec);
     } else {
       exec.class = 'active';
-      this.loadInfo(exec.id, 1, exec.method);
-      this.deleteExec(this.execsComparator, exec);
+      this.loadInfo(exec.id, type, exec.method);
+      this.deleteExec(execs, exec);
     }
   }
 
@@ -116,18 +110,7 @@ export class ComparisonComponent {
         j++;
         k++;
       }
-      this.results = this.results.concat({
-        'index_p': index1,
-        'com_p': {
-          'content': comparatorLine.replace('<div>', '').replace('</div>', ''),
-          'class': this.comparatorClass
-        },
-        'indexp': index2,
-        'comp': {
-          'content': comparedLine.replace('<div>', '').replace('</div>', ''),
-          'class': this.comparedClass
-        }
-      });
+      this.concatResults(index1, index2, comparatorLine, comparedLine);
     }
     this.showResults = true;
   }
@@ -162,10 +145,19 @@ export class ComparisonComponent {
 
   private concatData(data: any[]) {
     let exec = '';
-    for (const dat of data) {
-      exec += dat.entire_log + '\n';
-    }
+    data.forEach(dat => exec += dat.entire_log + '\n');
     return exec;
+  }
+
+  private concatResults(index1: any, index2: any, comparatorLine: any, comparedLine: any) {
+    this.results = this.results.concat({
+      'index_p': index1,
+      'com_p': {'content': comparatorLine.replace('<div>', '').replace('</div>', ''),
+        'class': this.comparatorClass},
+      'indexp': index2,
+      'comp': {'content': comparedLine.replace('<div>', '').replace('</div>', ''),
+        'class': this.comparedClass}
+    });
   }
 
   private correctMistakes(lines: any[], t1: string, t2: string) {
@@ -197,8 +189,7 @@ export class ComparisonComponent {
         } else {
           this.execsNumber = index;
         }
-      },
-      error => console.log(error)
+      }
     );
   }
 
@@ -239,8 +230,7 @@ export class ComparisonComponent {
             })
           }
         }
-      },
-      error => console.log(error)
+      }
     );
   }
 
@@ -266,14 +256,11 @@ export class ComparisonComponent {
             this.comparedText = this.concatData(aux);
             break;
         }
-      },
-      error => console.log(error)
+      }
     );
   }
 
   private deselect() {
-    for (const method of this.methods) {
-      method.class = 'no-active';
-    }
+    this.methods.forEach(method => method.class = 'no-active');
   }
 }
