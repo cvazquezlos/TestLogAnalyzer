@@ -99,6 +99,7 @@ Angular 4         | App development framework                          | https:/
 Angular Material  | Material Design components for Angular             | https://material.angular.io/
 Angular-CLI       | Command line interface for Angular                 | https://cli.angular.io/
 CircleCI          | Continuous Integration and Delivery                | https://circleci.com/
+CODEBEAT          | Automated code review for the browser              | https://codebeat.co
 CodeMirror        | Text editor for the browser                        | https://codemirror.net/
 Code Climate      | Code quality test                                  | https://codeclimate.com/
 Dependency CI     | Automatic compilance testing for dependencies      | https://dependencyci.com/
