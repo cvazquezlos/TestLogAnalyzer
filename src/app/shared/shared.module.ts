@@ -49,8 +49,7 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatStepperModule,
-  NoConflictStyleCompatibilityMode
+  MatStepperModule
 } from '@angular/material';
 import {
   MatNativeDateModule,
