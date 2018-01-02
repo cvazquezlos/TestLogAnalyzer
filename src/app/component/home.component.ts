@@ -74,14 +74,10 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private cleanWholeNav() {
-    for (const options of this.navmenu) {
+    this.navmenu.forEach(options => {
       options.icon = 'check_box_outline_blank';
-      for (const classI of options.classes) {
-        for (const method of classI.methods) {
-          method.icon = 'check_box_outline_blank';
-        }
-      }
-    }
+      options.classes.forEach(classI => classI.methods.forEach(method => method.icon = 'check_box_outline_blank'));
+    });
   }
 
   private countExecs(index: number) {
@@ -189,12 +185,8 @@ export class HomeComponent implements AfterViewInit {
     let meth = method;
     if (value) {
       this.idSelected = +value;
-      if (method) {
-        this.updateIcon(value, method);
-        meth = method.replace('(', '').replace(')', '');
-      } else {
-        this.updateIcon(value);
-      }
+      (method) ? (this.updateIcon(value, method)) : (this.updateIcon(value));
+      (method) ? (meth = method.replace('(', '').replace(')', '')) : (meth = method);
       this.active = true;
     }
     this.elasticsearchService.get(code, 1000, this.idSelected.toString(), this.mavenMessages, meth).subscribe(
@@ -204,12 +196,9 @@ export class HomeComponent implements AfterViewInit {
         this.dataRowData = [];
         for (const log of this.logs) {
           this.dataRowData = this.dataRowData.concat({
-            'id': (+log.id), 'timestamp': log.timestamp,
-            'thread': log.thread_name,
-            'level': log.level,
+            'id': (+log.id), 'timestamp': log.timestamp, 'thread': log.thread_name, 'level': log.level,
             'class': (log.logger_name.split('.')[log.logger_name.split('.').length - 1]),
-            'method': log.method,
-            'message': log.formatted_message
+            'method': log.method, 'message': log.formatted_message
           });
         }
         this.loadingData = true;
@@ -219,7 +208,7 @@ export class HomeComponent implements AfterViewInit {
 
   private updateIcon(id: string, method?: string) {
     this.cleanWholeNav();
-    let option = this.navmenu.filter(option => option.id === id);
+    const option = this.navmenu.filter(op => op.id === id);
     if (option[0]) {
       if (method !== undefined) {
         option[0].classes.forEach(classI => classI.methods.forEach(meth => (meth.name === method) ?
