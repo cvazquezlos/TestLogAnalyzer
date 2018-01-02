@@ -49,8 +49,7 @@ import {
   MatTabsModule,
   MatToolbarModule,
   MatTooltipModule,
-  MatStepperModule,
-  NoConflictStyleCompatibilityMode
+  MatStepperModule
 } from '@angular/material';
 import {
   MatNativeDateModule,
@@ -97,8 +96,7 @@ const MATERIAL_MODULES: any[] = [
   MatTooltipModule,
   MatStepperModule,
   MatNativeDateModule,
-  MatRippleModule,
-  NoConflictStyleCompatibilityMode
+  MatRippleModule
 ];
 
 const COVALENT_MODULES: any[] = [

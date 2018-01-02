@@ -32,6 +32,7 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
+  iteratorContent: any;
   methods: any[] = [];
   results = [];
   showResults = false;
@@ -43,90 +44,50 @@ export class ComparisonComponent {
   }
 
   comparator(exec: any) {
-    if (!this.isSelectedAnyElement(this.execsCompared)) {
-      this.addExecs(1, exec.id, exec.method);
-      this.addExecs(2, exec.id, exec.method);
-      exec.class = 'active';
-      this.loadInfo(exec.id, 0, exec.method);
-      this.deleteExec(this.execsCompared, exec);
-    } else {
-      this.loadInfo(exec.id, 0, exec.method);
-      exec.class = 'active';
-      this.deleteExec(this.execsCompared, exec);
-    }
+    this.prepareContent(exec, this.execsCompared, 0);
   }
 
   compared(exec: any) {
-    if (!this.isSelectedAnyElement(this.execsComparator)) {
-      this.addExecs(1, exec.id, exec.method);
-      this.addExecs(2, exec.id, exec.method);
+    this.prepareContent(exec, this.execsComparator, 1);
+  }
+
+  private prepareContent(exec: any, execs: any[], type: number) {
+    if (!this.isSelectedAnyElement(execs)) {
+      this.addExecs(this.execsComparator, exec.id, exec.method);
+      this.addExecs(this.execsCompared, exec.id, exec.method);
       exec.class = 'active';
-      this.loadInfo(exec.id, 1, exec.method);
-      this.deleteExec(this.execsComparator, exec);
+      this.loadInfo(exec.id, type, exec.method);
+      this.deleteExec(execs, exec);
     } else {
       exec.class = 'active';
-      this.loadInfo(exec.id, 1, exec.method);
-      this.deleteExec(this.execsComparator, exec);
+      this.loadInfo(exec.id, type, exec.method);
+      this.deleteExec(execs, exec);
     }
   }
 
   generateComparison() {
-    const comparisonResult = this.process.nativeElement.innerHTML.toString();
-    let lines = this.correctMistakes(comparisonResult.split('<br>'), '<ins>', '</ins>');
+    let lines = this.correctMistakes(this.process.nativeElement.innerHTML.toString().split('<br>'), '<ins>', '</ins>');
     lines = this.correctMistakes(lines, '<del>', '</del>');
-    let originalSize, modifiedComparatorSize, modifiedComparedSize, j, k: number;
-    let acum1 = '';
-    let acum2 = '';
-    j = 1;
-    k = 1;
-    let index1, index2: string;
+    let j, k, comparatorLine, comparedLine, c1, c2: any;
     this.results = [];
-    for (let i = 0; i < lines.length - 1; i++) {
-      originalSize = lines[i].length;
-      console.log(originalSize);
-      this.comparatorClass = 'normal';
-      this.comparedClass = 'normal';
-      let comparatorLine = lines[i];
-      let comparedLine = lines[i];
-      comparatorLine = this.deleteUselessData(comparatorLine, '<ins>', '</ins>', 1);
-      comparatorLine = acum1 + comparatorLine;
-      modifiedComparatorSize = comparatorLine.length;
-      comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>', 0);
-      comparedLine = acum2 + comparedLine;
-      modifiedComparedSize = comparedLine.length;
-      if (modifiedComparatorSize < (originalSize * 0.2)) {
-        this.comparatorClass = 'added';
-        acum1 = comparatorLine;
-        comparatorLine = '';
-        index2 = k.toString() + '.';
-        k++;
-      } else if (modifiedComparedSize < (originalSize * 0.2)) {
-        this.comparedClass = 'added';
-        acum2 = comparedLine;
-        comparedLine = '';
-        index1 = j.toString() + '.';
-        j++;
-      } else {
-        acum1 = '';
-        acum2 = '';
-        index1 = j.toString() + '.';
-        index2 = k.toString() + '.';
-        j++;
-        k++;
+    this.resetIterator();
+    lines.pop();
+    lines.forEach(line => {
+      j = this.iteratorContent.j;
+      k = this.iteratorContent.k;
+      comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 1);
+      comparatorLine = this.iteratorContent.a1 + comparatorLine;
+      comparedLine = this.deleteUselessData(line, '<del>', '</del>', 0);
+      comparedLine = this.iteratorContent.a2 + comparedLine;
+      (comparatorLine.length < (line.length * 0.3)) ? (this.updateIndexes(comparatorLine, '', '',
+        comparedLine, j, k + 1, this.iteratorContent.i1, k.toString() + '.', 0)) : (c1 = true);
+      (comparedLine.length < (line.length * 0.3)) ? (this.updateIndexes('', comparedLine, comparatorLine,
+        '', j + 1, k, j.toString() + '.', this.iteratorContent.i2, 1)) : (c2 = true);
+      if (c1 && c2) {
+        this.updateIndexes('', '', comparatorLine, comparedLine, j + 1, k + 1, j.toString() + '.', k.toString() + '.');
       }
-      this.results = this.results.concat({
-        'index_p': index1,
-        'com_p': {
-          'content': comparatorLine.replace('<div>', '').replace('</div>', ''),
-          'class': this.comparatorClass
-        },
-        'indexp': index2,
-        'comp': {
-          'content': comparedLine.replace('<div>', '').replace('</div>', ''),
-          'class': this.comparedClass
-        }
-      });
-    }
+      this.concatResults(this.iteratorContent.i1, this.iteratorContent.i2, this.iteratorContent.line1, this.iteratorContent.line2);
+    });
     this.showResults = true;
   }
 
@@ -142,38 +103,39 @@ export class ComparisonComponent {
     this.active = true;
   }
 
-  private addExecs(type: number, exec: number, method: string) {
+  private addExecs(execs: any[], exec: number, method: string) {
     let classN = 'execs';
-    switch (type) {
-      case 1:
-        this.execsComparator = [];
-        for (let i = 0; i < this.execsNumber; i++) {
-          if (i + 1 === exec) {
-            classN = 'active';
-          }
-          this.execsComparator = this.execsComparator.concat({
-            'id': i + 1,
-            'class': classN,
-            'method': method
-          });
-          classN = 'execs';
-        }
-        break;
-      case 2:
-        this.execsCompared = [];
-        for (let i = 0; i < this.execsNumber; i++) {
-          if (i + 1 === exec) {
-            classN = 'active';
-          }
-          this.execsCompared = this.execsCompared.concat({
-            'id': i + 1,
-            'class': classN,
-            'method': method
-          });
-          classN = 'execs';
-        }
-        break;
+    execs = [];
+    for (let i = 0; i < this.execsNumber; i++) {
+      if (i + 1 === exec) {
+        classN = 'active';
+      }
+      execs = execs.concat({
+        'id': i + 1,
+        'class': classN,
+        'method': method
+      });
+      classN = 'execs';
     }
+  }
+
+  private concatData(data: any[]) {
+    let exec = '';
+    data.forEach(dat => exec += dat.entire_log + '\n');
+    return exec;
+  }
+
+  private concatResults(index1: any, index2: any, comparatorLine: any, comparedLine: any) {
+    this.results = this.results.concat({
+      'index_p': index1,
+      'com_p': {'content': comparatorLine.replace('<div>', '').replace('</div>', ''),
+        'class': this.comparatorClass},
+      'indexp': index2,
+      'comp': {'content': comparedLine.replace('<div>', '').replace('</div>', ''),
+        'class': this.comparedClass}
+    });
+    this.comparatorClass = 'normal';
+    this.comparedClass = 'normal';
   }
 
   private correctMistakes(lines: any[], t1: string, t2: string) {
@@ -205,8 +167,7 @@ export class ComparisonComponent {
         } else {
           this.execsNumber = index;
         }
-      },
-      error => console.log(error)
+      }
     );
   }
 
@@ -231,6 +192,10 @@ export class ComparisonComponent {
     return line;
   }
 
+  private deselect() {
+    this.methods.forEach(method => method.class = 'no-active');
+  }
+
   private initInfo(value: string) {
     this.elasticsearchService.get(1, 1000, '1', false).subscribe(
       data1 => {
@@ -247,8 +212,7 @@ export class ComparisonComponent {
             })
           }
         }
-      },
-      error => console.log(error)
+      }
     );
   }
 
@@ -268,26 +232,27 @@ export class ComparisonComponent {
         aux = aux.concat(data);
         switch (type) {
           case 0:
-            this.comparatorText = '';
-            for (const dat of aux) {
-              this.comparatorText += dat.entire_log + '\n';
-            }
+            this.comparatorText = this.concatData(aux);
             break;
           case 1:
-            this.comparedText = '';
-            for (const dat of aux) {
-              this.comparedText += dat.entire_log + '\n';
-            }
+            this.comparedText = this.concatData(aux);
             break;
         }
-      },
-      error => console.log(error)
+      }
     );
   }
 
-  private deselect() {
-    for (const method of this.methods) {
-      method.class = 'no-active';
-    }
+  private resetIterator() {
+    this.iteratorContent = {'a1': '', 'a2': '', 'line1': '', 'line2': '', 'j': 1, 'k': 1, 'i1': '', 'i2': ''};
+  }
+
+  private updateIndexes(a1: any, a2: any, value1: any, value2: any, j: any, k: any, i1: any, i2: any, id?: number) {
+    (id) ? ((id === 0) ? (this.comparatorClass = 'added') : (this.comparedClass = 'added')) : (this.comparatorClass = this.comparatorClass);
+    this.iteratorContent = {
+      'a1': a1, 'a2': a2,
+      'line1': value1, 'line2': value2,
+      'j': j, 'k': k,
+      'i1': i1, 'i2': i2,
+    };
   }
 }

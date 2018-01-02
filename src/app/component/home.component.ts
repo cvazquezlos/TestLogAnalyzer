@@ -4,7 +4,6 @@ import {
   Component
 } from '@angular/core';
 import {
-  IPageChangeEvent,
   ITdDataTableColumn,
   ITdDataTableSortChangeEvent,
   TdDataTableService,
@@ -75,14 +74,10 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private cleanWholeNav() {
-    for (const options of this.navmenu) {
+    this.navmenu.forEach(options => {
       options.icon = 'check_box_outline_blank';
-      for (const classI of options.classes) {
-        for (const method of classI.methods) {
-          method.icon = 'check_box_outline_blank';
-        }
-      }
-    }
+      options.classes.forEach(classI => classI.methods.forEach(method => method.icon = 'check_box_outline_blank'));
+    });
   }
 
   private countExecs(index: number) {
@@ -152,37 +147,36 @@ export class HomeComponent implements AfterViewInit {
           });
           id += 1;
         }
-        this.elasticsearchService.get(1, 1000, value, false).subscribe(
-          data1 => {
-            this.methods = [];
-            let logs: Log[] = [];
-            logs = logs.concat(data1);
-            for (const log of logs) {
-              const args = log.formatted_message.split(' ');
-              if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
-                this.methods = this.methods.concat(args[1]);
-              }
-            }
-            for (const logger of this.navmenu[index].classes) {
-              for (const method of this.methods) {
-                this.elasticsearchService.count(3, value, method.replace('(', '').replace(')', ''), logger.name).subscribe(
-                  data2 => {
-                    if (data2 !== 0) {
-                      logger.methods = logger.methods.concat({
-                        'name': method,
-                        'icon': 'check_box_outline_blank'
-                      });
-                    }
-                  }
-                );
-              }
-            }
-            this.loadingNavbar = true;
-          },
-          error => console.log(error)
-        );
+        this.loadNavbarInfoAux(value, index);
       },
       error => console.log(error)
+    );
+  }
+
+  private loadNavbarInfoAux(value: any, index: any) {
+    this.elasticsearchService.get(1, 1000, value, false).subscribe(
+      data1 => {
+        this.methods = [];
+        let logs: Log[] = [];
+        logs = logs.concat(data1);
+        for (const log of logs) {
+          const args = log.formatted_message.split(' ');
+          if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
+            this.methods = this.methods.concat(args[1]);
+          }
+        }
+        for (const logger of this.navmenu[index].classes) {
+          for (const method of this.methods) {
+            this.elasticsearchService.count(3, value, method.replace('(', '').replace(')', ''), logger.name).subscribe(
+              data2 => {
+                (data2 !== 0) ? (logger.methods = logger.methods.concat({'name': method, 'icon': 'check_box_outline_blank'}))
+                  : (logger.methods = logger.methods);
+              }
+            );
+          }
+        }
+        this.loadingNavbar = true;
+      }
     );
   }
 
@@ -190,12 +184,8 @@ export class HomeComponent implements AfterViewInit {
     let meth = method;
     if (value) {
       this.idSelected = +value;
-      if (method) {
-        this.updateIcon(value, method);
-        meth = method.replace('(', '').replace(')', '');
-      } else {
-        this.updateIcon(value);
-      }
+      (method) ? (this.updateIcon(value, method)) : (this.updateIcon(value));
+      (method) ? (meth = method.replace('(', '').replace(')', '')) : (meth = method);
       this.active = true;
     }
     this.elasticsearchService.get(code, 1000, this.idSelected.toString(), this.mavenMessages, meth).subscribe(
@@ -205,36 +195,25 @@ export class HomeComponent implements AfterViewInit {
         this.dataRowData = [];
         for (const log of this.logs) {
           this.dataRowData = this.dataRowData.concat({
-            'id': (+log.id),
-            'timestamp': log.timestamp,
-            'thread': log.thread_name,
-            'level': log.level,
+            'id': (+log.id), 'timestamp': log.timestamp, 'thread': log.thread_name, 'level': log.level,
             'class': (log.logger_name.split('.')[log.logger_name.split('.').length - 1]),
-            'method': log.method,
-            'message': log.formatted_message
+            'method': log.method, 'message': log.formatted_message
           });
         }
         this.loadingData = true;
       },
-      error => console.log(error)
     );
   }
 
   private updateIcon(id: string, method?: string) {
     this.cleanWholeNav();
-    for (const option of this.navmenu) {
-      if (option.id === id) {
-        if (method !== undefined) {
-          for (const classI of option.classes) {
-            for (const meth of classI.methods) {
-              if (meth.name === method) {
-                meth.icon = 'check_box';
-              }
-            }
-          }
-        } else {
-          option.icon = 'check_box';
-        }
+    const option = this.navmenu.filter(op => op.id === id);
+    if (option[0]) {
+      if (method !== undefined) {
+        option[0].classes.forEach(classI => classI.methods.forEach(meth => (meth.name === method) ?
+          (meth.icon = 'check_box') : (meth.icon = meth.icon)));
+      } else {
+        option[0].icon = 'check_box';
       }
     }
   }
