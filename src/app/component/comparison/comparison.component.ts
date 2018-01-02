@@ -7,6 +7,7 @@ import {TdMediaService} from '@covalent/core';
 
 import {Log} from '../../model/source.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
+import {_switch} from "rxjs/operator/switch";
 
 @Component({
   selector: 'app-comparison',
@@ -32,6 +33,7 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
+  iteratorContent: any;
   methods: any[] = [];
   results = [];
   showResults = false;
@@ -65,52 +67,27 @@ export class ComparisonComponent {
   }
 
   generateComparison() {
-    const comparisonResult = this.process.nativeElement.innerHTML.toString();
-    let lines = this.correctMistakes(comparisonResult.split('<br>'), '<ins>', '</ins>');
+    let lines = this.correctMistakes(this.process.nativeElement.innerHTML.toString().split('<br>'), '<ins>', '</ins>');
     lines = this.correctMistakes(lines, '<del>', '</del>');
-    let originalSize, modifiedComparatorSize, modifiedComparedSize, j, k: number;
-    let acum1 = '';
-    let acum2 = '';
-    j = 1;
-    k = 1;
-    let index1, index2: string;
+    let originalSize, j, k, comparatorLine, comparedLine, c1, c2: any;
     this.results = [];
+    this.resetIterator();
     for (let i = 0; i < lines.length - 1; i++) {
+      j = this.iteratorContent.j;
+      k = this.iteratorContent.k;
       originalSize = lines[i].length;
-      console.log(originalSize);
-      this.comparatorClass = 'normal';
-      this.comparedClass = 'normal';
-      let comparatorLine = lines[i];
-      let comparedLine = lines[i];
-      comparatorLine = this.deleteUselessData(comparatorLine, '<ins>', '</ins>', 1);
-      comparatorLine = acum1 + comparatorLine;
-      modifiedComparatorSize = comparatorLine.length;
-      comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>', 0);
-      comparedLine = acum2 + comparedLine;
-      modifiedComparedSize = comparedLine.length;
-      if (modifiedComparatorSize < (originalSize * 0.3)) {
-        this.comparatorClass = 'added';
-        acum1 = comparatorLine;
-        acum2 = '';
-        comparatorLine = '';
-        index2 = k.toString() + '.';
-        k++;
-      } else if (modifiedComparedSize < (originalSize * 0.3)) {
-        this.comparedClass = 'added';
-        acum2 = comparedLine;
-        acum1 = '';
-        comparedLine = '';
-        index1 = j.toString() + '.';
-        j++;
-      } else {
-        acum1 = '';
-        acum2 = '';
-        index1 = j.toString() + '.';
-        index2 = k.toString() + '.';
-        j++;
-        k++;
+      comparatorLine = this.deleteUselessData(lines[i], '<ins>', '</ins>', 1);
+      comparatorLine = this.iteratorContent.a1 + comparatorLine;
+      comparedLine = this.deleteUselessData(lines[i], '<del>', '</del>', 0);
+      comparedLine = this.iteratorContent.a2 + comparedLine;
+      (comparatorLine.length < (originalSize * 0.3)) ? (this.updateIndexes(comparatorLine, '', '',
+        comparedLine, j, k+1, this.iteratorContent.i1, k.toString() + '.')) : (c1 = true);
+      (comparedLine.length < (originalSize * 0.3)) ? (this.updateIndexes('', comparedLine, comparatorLine,
+        '', j+1, k, j.toString() + '.', this.iteratorContent.i2)) : (c2 = true);
+      if (c1 && c2) {
+        this.updateIndexes('','',comparatorLine, comparedLine, j+1, k+1, j.toString() + '.', k.toString() + '.');
       }
-      this.concatResults(index1, index2, comparatorLine, comparedLine);
+      this.concatResults(this.iteratorContent.i1, this.iteratorContent.i2, this.iteratorContent.line1, this.iteratorContent.line2);
     }
     this.showResults = true;
   }
@@ -158,6 +135,8 @@ export class ComparisonComponent {
       'comp': {'content': comparedLine.replace('<div>', '').replace('</div>', ''),
         'class': this.comparedClass}
     });
+    this.comparatorClass = 'normal';
+    this.comparedClass = 'normal';
   }
 
   private correctMistakes(lines: any[], t1: string, t2: string) {
@@ -214,6 +193,10 @@ export class ComparisonComponent {
     return line;
   }
 
+  private deselect() {
+    this.methods.forEach(method => method.class = 'no-active');
+  }
+
   private initInfo(value: string) {
     this.elasticsearchService.get(1, 1000, '1', false).subscribe(
       data1 => {
@@ -260,7 +243,16 @@ export class ComparisonComponent {
     );
   }
 
-  private deselect() {
-    this.methods.forEach(method => method.class = 'no-active');
+  private resetIterator() {
+    this.iteratorContent = {'a1': '', 'a2': '', 'line1': '', 'line2': '', 'j': 1, 'k': 1, 'i1': '', 'i2': '',};
+  }
+
+  private updateIndexes(a1: any, a2: any, value1: any, value2: any, j: any, k: any, i1: any, i2: any) {
+    this.iteratorContent = {
+      'a1': a1, 'a2': a2,
+      'line1': value1, 'line2': value2,
+      'j': j, 'k': k,
+      'i1': i1, 'i2': i2,
+    };
   }
 }
