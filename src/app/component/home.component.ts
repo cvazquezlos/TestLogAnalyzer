@@ -219,19 +219,13 @@ export class HomeComponent implements AfterViewInit {
 
   private updateIcon(id: string, method?: string) {
     this.cleanWholeNav();
-    for (const option of this.navmenu) {
-      if (option.id === id) {
-        if (method !== undefined) {
-          for (const classI of option.classes) {
-            for (const meth of classI.methods) {
-              if (meth.name === method) {
-                meth.icon = 'check_box';
-              }
-            }
-          }
-        } else {
-          option.icon = 'check_box';
-        }
+    let option = this.navmenu.filter(option => option.id === id);
+    if (option[0]) {
+      if (method !== undefined) {
+        option[0].classes.forEach(classI => classI.methods.forEach(meth => (meth.name === method) ?
+          (meth.icon = 'check_box') : (meth.icon = meth.icon)));
+      } else {
+        option[0].icon = 'check_box';
       }
     }
   }

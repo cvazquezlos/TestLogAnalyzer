@@ -94,15 +94,17 @@ export class ComparisonComponent {
       comparedLine = this.deleteUselessData(comparedLine, '<del>', '</del>', 0);
       comparedLine = acum2 + comparedLine;
       modifiedComparedSize = comparedLine.length;
-      if (modifiedComparatorSize < (originalSize * 0.2)) {
+      if (modifiedComparatorSize < (originalSize * 0.3)) {
         this.comparatorClass = 'added';
         acum1 = comparatorLine;
+        acum2 = '';
         comparatorLine = '';
         index2 = k.toString() + '.';
         k++;
-      } else if (modifiedComparedSize < (originalSize * 0.2)) {
+      } else if (modifiedComparedSize < (originalSize * 0.3)) {
         this.comparedClass = 'added';
         acum2 = comparedLine;
+        acum1 = '';
         comparedLine = '';
         index1 = j.toString() + '.';
         j++;
@@ -112,6 +114,7 @@ export class ComparisonComponent {
         index1 = j.toString() + '.';
         index2 = k.toString() + '.';
         j++;
+        k++;
       }
       this.results = this.results.concat({
         'index_p': index1,
@@ -143,7 +146,6 @@ export class ComparisonComponent {
 
   private addExecs(execs: any[], exec: number, method: string) {
     let classN = 'execs';
-          this.execsComparator = this.execsComparator.concat({
     execs = [];
     for (let i = 0; i < this.execsNumber; i++) {
       if (i + 1 === exec) {
@@ -164,7 +166,7 @@ export class ComparisonComponent {
       exec += dat.entire_log + '\n';
     }
     return exec;
-  } 
+  }
 
   private correctMistakes(lines: any[], t1: string, t2: string) {
     for (let i = 0; i < lines.length; i++) {
