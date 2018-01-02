@@ -96,8 +96,7 @@ const MATERIAL_MODULES: any[] = [
   MatTooltipModule,
   MatStepperModule,
   MatNativeDateModule,
-  MatRippleModule,
-  NoConflictStyleCompatibilityMode
+  MatRippleModule
 ];
 
 const COVALENT_MODULES: any[] = [
