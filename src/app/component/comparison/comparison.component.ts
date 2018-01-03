@@ -34,6 +34,7 @@ export class ComparisonComponent {
   execsNumber = 0;
   iteratorContent: any;
   methods: any[] = [];
+  mode: number;
   results = [];
   showResults = false;
 
