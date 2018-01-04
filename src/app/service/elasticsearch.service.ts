@@ -1,17 +1,17 @@
-import {Headers,
-  Http} from '@angular/http';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Injectable} from '@angular/core';
-import 'rxjs/Rx';
+import {Observable} from "rxjs/Observable";
+import 'rxjs/add/operator/map';
 
 import {Log} from '../model/source.model';
 
-class Count {
+class CountFormat {
   constructor(public _shards: Object,
               public count: number) {
   }
 }
 
-class Get {
+class RD {
   constructor(public took: number,
               public timed_out: boolean,
               public __shards: Object,
@@ -31,7 +31,8 @@ class ESResponse {
               public _type: string,
               public _id: string,
               public _score: any,
-              public _source: Log) {
+              public _source: Log,
+              public sort: any[]) {
   }
 }
 
@@ -42,7 +43,7 @@ export class ElasticsearchService {
   searchURL = this.baseURL + '_search';
   countURL  = this.baseURL + '_count';
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   count(type: number, value?: string, method?: string, logger?: string) {
@@ -59,30 +60,28 @@ export class ElasticsearchService {
         (+value < 10) ? (value = '0' + value) : (value = value);
         const body = {query: {query_string: {query: '(method:' + method + '*) AND (test_no:' + value + ') AND ' +
               '(logger_name:' + logger + ')'}}};
-        const headers: Headers = new Headers();
+        const headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(getURL, JSON.stringify(body), {headers: headers})
-          .map(response => console.log(response.json()));
+        return this.http.post<CountFormat>(getURL, JSON.stringify(body), {headers: headers})
+          .map(response => response.count);
       case 0:
     }
-    return this.http.get(getURL)
-      .map(response => response.json().count);
+    return this.http.get<CountFormat>(getURL)
+      .map(response => response.count);
   }
 
-  get(type: number, size: number, value: string, maven: boolean, method?: string) {
+  get(type: number, size: number, value: string, maven: boolean, method?: string): Observable<Log[]> {
     const values1 = '&size=' + size;
     const values2 = '&from=0';
     const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
     (+value < 10) ? (value = '0' + value) : (value = value);
-    const headers: Headers = new Headers();
+    const headers: HttpHeaders = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(getURL, JSON.stringify(this.getBody(type, value, maven, method)), {headers: headers})
+    return this.http.post<RD>(getURL, JSON.stringify(this.getBody(type, value, maven, method)), {headers: headers})
       .map((responseData) => {
-        console.log('RD' + responseData.json());
-        return responseData.json();
+        return responseData;
       })
       .map((answer) => {
-        console.log('AW' + answer.hits);
         let result: any[];
         result = [];
         if (answer) {
