@@ -8,6 +8,13 @@
   display: inline-block;
   font-size: 1.3em;
 }
+.title-icon {
+  color: white;
+}
+
+.active-icon {
+  color: #BF360C;
+}
 
 .active {
   background-color: rgb(25, 118, 210);

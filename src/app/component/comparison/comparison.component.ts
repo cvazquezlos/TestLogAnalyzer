@@ -43,7 +43,15 @@ export class ComparisonComponent {
   }
 
   generateComparison() {
-    this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
+    switch (this.mode) {
+      case 0:
+        this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
+        break;
+      case 1:
+        break;
+      case 2:
+        break;
+    }
     this.showResults = true;
   }
 

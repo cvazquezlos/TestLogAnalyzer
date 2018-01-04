@@ -23,9 +23,27 @@
         </button>
         <span class="title">Comparisons</span>
         <span flex></span>
-        <a mat-icon-button (click)="setMode(0)"><mat-icon>view_headline</mat-icon></a>
-        <a mat-icon-button (click)="setMode(1)"><mat-icon>timer_off</mat-icon></a>
-        <a mat-icon-button (click)="setMode(2)"><mat-icon >exposure_zero</mat-icon></a>
+        <mat-icon *ngIf="mode == 0; else activeRaw" class="active-icon"
+                  matTooltip="LOGANALYZER is comparing raw logs">view_headline</mat-icon>
+        <ng-template #activeRaw>
+          <a mat-icon-button matTooltip="Compare raw logs" (click)="setMode(0)">
+            <mat-icon class="title-icon">view_headline</mat-icon>
+          </a>
+        </ng-template>
+        <mat-icon *ngIf="mode == 1; else noTSActive" class="active-icon"
+                  matTooltip="LOGANALYZER is comparing logs without timestamp">timer_off</mat-icon>
+        <ng-template #noTSActive>
+          <a mat-icon-button matTooltip="Compare logs without timestamp" (click)="setMode(1)">
+            <mat-icon class="title-icon">timer_off</mat-icon>
+          </a>
+        </ng-template>
+        <mat-icon *ngIf="mode == 2; else timeDiffActive" class="active-icon"
+                  matTooltip="LOGANALYZER is comparing logs with time differentiation">exposure_zero</mat-icon>
+        <ng-template #timeDiffActive>
+          <a mat-icon-button matTooltip="Compare logs with time differentiation" (click)="setMode(2)">
+            <mat-icon class="title-icon">exposure_zero</mat-icon>
+          </a>
+        </ng-template>
       </div>
     </mat-toolbar>
     <div *ngIf="showResults">
