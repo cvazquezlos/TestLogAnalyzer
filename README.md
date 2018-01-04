@@ -91,11 +91,12 @@ Ensure you have Elasticsearch installed and an instance of it running.
 31. https://forum.freecodecamp.org/ - NPM behind a proxy server.
 32. https://www.quora.com/ - Reducing code complexity.
 33. https://www.jhipster.tech/ - Configuring a corporate proxy.
+34. https://auth0.com/blog/whats-new-in-angular5/ - Angular 5 updated.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site
 ------------------|----------------------------------------------------|-----------------------------
-Angular 4         | App development framework                          | https://angular.io/
+Angular 5         | App development framework                          | https://angular.io/
 Angular Material  | Material Design components for Angular             | https://material.angular.io/
 Angular-CLI       | Command line interface for Angular                 | https://cli.angular.io/
 CircleCI          | Continuous Integration and Delivery                | https://circleci.com/

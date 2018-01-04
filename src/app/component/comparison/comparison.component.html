@@ -23,9 +23,9 @@
         </button>
         <span class="title">Comparisons</span>
         <span flex></span>
-        <a mat-icon-button><mat-icon>view_headline</mat-icon></a>
-        <a mat-icon-button><mat-icon>timer_off</mat-icon></a>
-        <a mat-icon-button><mat-icon >exposure_zero</mat-icon></a>
+        <a mat-icon-button (click)="setMode(0)"><mat-icon>view_headline</mat-icon></a>
+        <a mat-icon-button (click)="setMode(1)"><mat-icon>timer_off</mat-icon></a>
+        <a mat-icon-button (click)="setMode(2)"><mat-icon >exposure_zero</mat-icon></a>
       </div>
     </mat-toolbar>
     <div *ngIf="showResults">
@@ -57,7 +57,7 @@
             </mat-card-title>
             <mat-card-subtitle>
               <ng-template let-execC ngFor [ngForOf]="execsComparator">
-                <button (click)="comparator(execC)" [class]="execC.class">{{execC.id}}</button>
+                <button (click)="prepare(execC, 0)" [class]="execC.class">{{execC.id}}</button>
               </ng-template>
             </mat-card-subtitle>
             <mat-divider></mat-divider>
@@ -71,7 +71,7 @@
             <mat-card-title>Comparated execution</mat-card-title>
             <mat-card-subtitle>
               <ng-template let-execc ngFor [ngForOf]="execsCompared">
-                <button (click)="compared(execc)" [class]="execc.class">{{execc.id}}</button>
+                <button (click)="prepare(execc, 1)" [class]="execc.class">{{execc.id}}</button>
               </ng-template>
             </mat-card-subtitle>
             <mat-divider></mat-divider>

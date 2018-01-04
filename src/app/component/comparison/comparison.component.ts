@@ -34,7 +34,7 @@ export class ComparisonComponent {
   execsNumber = 0;
   iteratorContent: any;
   methods: any[] = [];
-  mode: number;
+  mode = 0;
   results = [];
   showResults = false;
 
@@ -44,26 +44,8 @@ export class ComparisonComponent {
     this.comparedText = '';
   }
 
-  comparator(exec: any) {
-    this.prepareContent(exec, this.execsCompared, 0);
-  }
-
-  compared(exec: any) {
-    this.prepareContent(exec, this.execsComparator, 1);
-  }
-
-  private prepareContent(exec: any, execs: any[], type: number) {
-    if (!this.isSelectedAnyElement(execs)) {
-      this.addExecs(this.execsComparator, exec.id, exec.method);
-      this.addExecs(this.execsCompared, exec.id, exec.method);
-      exec.class = 'active';
-      this.loadInfo(exec.id, type, exec.method);
-      this.deleteExec(execs, exec);
-    } else {
-      exec.class = 'active';
-      this.loadInfo(exec.id, type, exec.method);
-      this.deleteExec(execs, exec);
-    }
+  prepare(exec: any, code: number) {
+    (code === 0) ? (this.prepareContent(exec, this.execsCompared, 0)) : (this.prepareContent(exec, this.execsComparator, 1))
   }
 
   generateComparison() {
@@ -102,6 +84,10 @@ export class ComparisonComponent {
     this.countExecs(0, method.title.replace('(', '').replace(')', ''));
     method.class = 'meth-active';
     this.active = true;
+  }
+
+  setMode(mode: number) {
+    this.mode = mode;
   }
 
   private addExecs(execs: any[], exec: number, method: string) {
@@ -241,6 +227,20 @@ export class ComparisonComponent {
         }
       }
     );
+  }
+
+  private prepareContent(exec: any, execs: any[], type: number) {
+    if (!this.isSelectedAnyElement(execs)) {
+      this.addExecs(this.execsComparator, exec.id, exec.method);
+      this.addExecs(this.execsCompared, exec.id, exec.method);
+      exec.class = 'active';
+      this.loadInfo(exec.id, type, exec.method);
+      this.deleteExec(execs, exec);
+    } else {
+      exec.class = 'active';
+      this.loadInfo(exec.id, type, exec.method);
+      this.deleteExec(execs, exec);
+    }
   }
 
   private resetIterator() {
