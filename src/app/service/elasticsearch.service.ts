@@ -3,6 +3,38 @@ import {Headers,
 import {Injectable} from '@angular/core';
 import 'rxjs/Rx';
 
+import {Log} from '../model/source.model';
+
+class Count {
+  constructor(public _shards: Object,
+              public count: number) {
+  }
+}
+
+class Get {
+  constructor(public took: number,
+              public timed_out: boolean,
+              public __shards: Object,
+              public hits: AW) {
+  }
+}
+
+class AW {
+  constructor(public total: number,
+              public max_score: any,
+              public hits: ESResponse[]) {
+  }
+}
+
+class ESResponse {
+  constructor(public _index: string,
+              public _type: string,
+              public _id: string,
+              public _score: any,
+              public _source: Log) {
+  }
+}
+
 @Injectable()
 export class ElasticsearchService {
 
@@ -30,7 +62,7 @@ export class ElasticsearchService {
         const headers: Headers = new Headers();
         headers.append('Content-Type', 'application/json');
         return this.http.post(getURL, JSON.stringify(body), {headers: headers})
-          .map(response => response.json().count);
+          .map(response => console.log(response.json()));
       case 0:
     }
     return this.http.get(getURL)
@@ -46,9 +78,11 @@ export class ElasticsearchService {
     headers.append('Content-Type', 'application/json');
     return this.http.post(getURL, JSON.stringify(this.getBody(type, value, maven, method)), {headers: headers})
       .map((responseData) => {
+        console.log('RD' + responseData.json());
         return responseData.json();
       })
       .map((answer) => {
+        console.log('AW' + answer.hits);
         let result: any[];
         result = [];
         if (answer) {

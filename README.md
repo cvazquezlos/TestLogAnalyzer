@@ -93,6 +93,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 33. https://www.jhipster.tech/ - Configuring a corporate proxy.
 34. https://auth0.com/blog/whats-new-in-angular5/ - Angular 5 updated.
 35. https://docs.travis-ci.com/ - Pull requests and security restrictiosn.
+36. http://blog.ninja-squad.com/ - Migrating Http module from Angular 4 to Angular 5.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site
