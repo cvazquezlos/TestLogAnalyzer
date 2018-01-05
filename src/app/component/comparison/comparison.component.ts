@@ -38,8 +38,7 @@ export class ComparisonComponent {
   results = [];
   showResults = false;
 
-  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private diffService: DiffService,
-              private diffDirective: DiffMatchPatchService) {
+  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private diffService: DiffService) {
     this.initInfo('1');
     this.comparatorText = '';
     this.comparedText = '';
@@ -47,14 +46,13 @@ export class ComparisonComponent {
 
   generateComparison() {
     switch (this.mode) {
-      case (0):
-        break;
       case (1):
         this.loadInfo(localStorage.getItem('CExecI'), 0, localStorage.getItem('CExecM'), 4);
         this.loadInfo(localStorage.getItem('cExecI'), 1, localStorage.getItem('cExecM'), 4);
         break;
       case (2):
         break;
+      case (0):
     }
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.showResults = true;
@@ -86,9 +84,7 @@ export class ComparisonComponent {
     let classN = 'execs';
     execs = [];
     for (let i = 0; i < this.execsNumber; i++) {
-      if (i + 1 === exec) {
-        classN = 'active';
-      }
+      (i + 1 === exec) ? (classN = 'active') : (classN = 'execs');
       execs = execs.concat({
         'id': i + 1,
         'class': classN,
