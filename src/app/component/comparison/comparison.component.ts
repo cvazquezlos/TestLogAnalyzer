@@ -47,8 +47,8 @@ export class ComparisonComponent {
   generateComparison() {
     switch (this.mode) {
       case (1):
-        this.loadInfo(localStorage.getItem('CExecI'), 0, localStorage.getItem('CExecM'), 4);
-        this.loadInfo(localStorage.getItem('cExecI'), 1, localStorage.getItem('cExecM'), 4);
+        this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '4 0');
+        this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '4 1');
         break;
       case (2):
         break;
@@ -169,12 +169,12 @@ export class ComparisonComponent {
     return false;
   }
 
-  private loadInfo(exec: string, type: number, method: string, code: number) {
-    this.elasticsearchService.get(code, 1000, exec, false, method).subscribe(
+  private loadInfo(exec: string, method: string, codeType: string) {
+    this.elasticsearchService.get(+codeType.split(' ')[0], 1000, exec, false, method).subscribe(
       data => {
         let aux = [];
         aux = aux.concat(data);
-        switch (type) {
+        switch (+codeType.split(' ')[1]) {
           case 0:
             this.comparatorText = this.concatData(aux);
             break;
@@ -191,11 +191,11 @@ export class ComparisonComponent {
       this.addExecs(this.execsComparator, exec.id, exec.method);
       this.addExecs(this.execsCompared, exec.id, exec.method);
       exec.class = 'active';
-      this.loadInfo(exec.id, type, exec.method, 2);
+      this.loadInfo(exec.id, exec.method, '2 ' + type.toString());
       this.deleteExec(execs, exec);
     } else {
       exec.class = 'active';
-      this.loadInfo(exec.id, type, exec.method, 2);
+      this.loadInfo(exec.id, exec.method, '2 ' + type.toString());
       this.deleteExec(execs, exec);
     }
   }
