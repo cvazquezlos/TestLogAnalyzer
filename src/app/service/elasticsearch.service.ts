@@ -61,7 +61,7 @@ export class ElasticsearchService {
             result.push(log._source);
           })
         }
-        (type == 4) ? (result = this.deleteTimestamp(result)) : (result = result);
+        (type === 4) ? (result = this.deleteTimestamp(result)) : (result = result);
         return result;
       });
   }

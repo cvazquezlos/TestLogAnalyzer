@@ -43,16 +43,16 @@ export class ComparisonComponent {
   }
 
   generateComparison() {
-    console.log(this.process.nativeElement.innerHTML.toString());
     switch (this.mode) {
+      case (0):
+        break;
       case (1):
         this.loadInfo(localStorage.getItem('CExecI'), 0, localStorage.getItem('CExecM'), 4);
-        this.loadInfo(localStorage.getItem('cExecI'), 0, localStorage.getItem('cExecM'), 4);
+        this.loadInfo(localStorage.getItem('cExecI'), 1, localStorage.getItem('cExecM'), 4);
         break;
       case (2):
         break;
     }
-    console.log(this.process.nativeElement.innerHTML.toString());
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.showResults = true;
   }
@@ -97,7 +97,10 @@ export class ComparisonComponent {
 
   private concatData(data: any[]) {
     let exec = '';
-    data.forEach(dat => exec += dat.entire_log + '\n');
+    data.forEach(dat => {
+      exec += (dat.timestamp + ' [' + dat.thread_name + '] ' + dat.level + ' ' + dat.logger_name + '' +
+        ' ' + dat.formatted_message) + '\n';
+    });
     return exec;
   }
 
