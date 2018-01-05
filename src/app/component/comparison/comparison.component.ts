@@ -5,7 +5,9 @@ import {
 } from '@angular/core';
 import {TdMediaService} from '@covalent/core';
 
-import {Log} from '../../model/source.model';
+import {DiffMatchPatchService} from 'ng-diff-match-patch/dist/diffMatchPatch.service';
+
+import {Log} from '../../model/log.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 import {DiffService} from '../../service/diff.service';
 
@@ -44,14 +46,15 @@ export class ComparisonComponent {
 
   generateComparison() {
     switch (this.mode) {
-      case 0:
-        this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
+      case (1):
+        this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '4 0');
+        this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '4 1');
         break;
-      case 1:
+      case (2):
         break;
-      case 2:
-        break;
+      case (0):
     }
+    this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.showResults = true;
   }
 
@@ -68,7 +71,9 @@ export class ComparisonComponent {
   }
 
   prepare(exec: any, code: number) {
-    (code === 0) ? (this.prepareContent(exec, this.execsCompared, 0)) : (this.prepareContent(exec, this.execsComparator, 1))
+    (code === 0) ? (this.prepareContent(exec, this.execsCompared, 0)) : (this.prepareContent(exec, this.execsComparator, 1));
+    (code === 0) ? (localStorage.setItem('CExecI', exec.id)) : (localStorage.setItem('cExecI', exec.id));
+    (code === 0) ? (localStorage.setItem('CExecM', exec.method)) : (localStorage.setItem('cExecM', exec.method));
   }
 
   setMode(mode: number) {
@@ -79,9 +84,7 @@ export class ComparisonComponent {
     let classN = 'execs';
     execs = [];
     for (let i = 0; i < this.execsNumber; i++) {
-      if (i + 1 === exec) {
-        classN = 'active';
-      }
+      (i + 1 === exec) ? (classN = 'active') : (classN = 'execs');
       execs = execs.concat({
         'id': i + 1,
         'class': classN,
@@ -93,7 +96,10 @@ export class ComparisonComponent {
 
   private concatData(data: any[]) {
     let exec = '';
-    data.forEach(dat => exec += dat.entire_log + '\n');
+    data.forEach(dat => {
+      exec += (dat.timestamp + ' [' + dat.thread_name + '] ' + dat.level + ' ' + dat.logger_name + '' +
+        ' ' + dat.formatted_message) + '\n';
+    });
     return exec;
   }
 
@@ -163,12 +169,12 @@ export class ComparisonComponent {
     return false;
   }
 
-  private loadInfo(exec: string, type: number, method: string) {
-    this.elasticsearchService.get(2, 1000, exec, false, method).subscribe(
+  private loadInfo(exec: string, method: string, codeType: string) {
+    this.elasticsearchService.get(+codeType.split(' ')[0], 1000, exec, false, method).subscribe(
       data => {
         let aux = [];
         aux = aux.concat(data);
-        switch (type) {
+        switch (+codeType.split(' ')[1]) {
           case 0:
             this.comparatorText = this.concatData(aux);
             break;
@@ -185,11 +191,11 @@ export class ComparisonComponent {
       this.addExecs(this.execsComparator, exec.id, exec.method);
       this.addExecs(this.execsCompared, exec.id, exec.method);
       exec.class = 'active';
-      this.loadInfo(exec.id, type, exec.method);
+      this.loadInfo(exec.id, exec.method, '2 ' + type.toString());
       this.deleteExec(execs, exec);
     } else {
       exec.class = 'active';
-      this.loadInfo(exec.id, type, exec.method);
+      this.loadInfo(exec.id, exec.method, '2 ' + type.toString());
       this.deleteExec(execs, exec);
     }
   }

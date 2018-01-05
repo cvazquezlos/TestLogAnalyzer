@@ -1,7 +1,12 @@
-import {Headers,
-  Http} from '@angular/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import 'rxjs/Rx';
+
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+
+import {CountFormat} from '../model/count-format.model';
+import {Log} from '../model/log.model';
+import {RD} from '../model/get-format.model';
 
 @Injectable()
 export class ElasticsearchService {
@@ -10,7 +15,7 @@ export class ElasticsearchService {
   searchURL = this.baseURL + '_search';
   countURL  = this.baseURL + '_count';
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   count(type: number, value?: string, method?: string, logger?: string) {
@@ -27,26 +32,26 @@ export class ElasticsearchService {
         (+value < 10) ? (value = '0' + value) : (value = value);
         const body = {query: {query_string: {query: '(method:' + method + '*) AND (test_no:' + value + ') AND ' +
               '(logger_name:' + logger + ')'}}};
-        const headers: Headers = new Headers();
+        const headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-Type', 'application/json');
-        return this.http.post(getURL, JSON.stringify(body), {headers: headers})
-          .map(response => response.json().count);
+        return this.http.post<CountFormat>(getURL, JSON.stringify(body), {headers: headers})
+          .map(response => response.count);
       case 0:
     }
-    return this.http.get(getURL)
-      .map(response => response.json().count);
+    return this.http.get<CountFormat>(getURL)
+      .map(response => response.count);
   }
 
-  get(type: number, size: number, value: string, maven: boolean, method?: string) {
+  get(type: number, size: number, value: string, maven: boolean, method?: string): Observable<Log[]> {
     const values1 = '&size=' + size;
     const values2 = '&from=0';
     const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
     (+value < 10) ? (value = '0' + value) : (value = value);
-    const headers: Headers = new Headers();
+    const headers: HttpHeaders = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(getURL, JSON.stringify(this.getBody(type, value, maven, method)), {headers: headers})
+    return this.http.post<RD>(getURL, JSON.stringify(this.getBody(type, value, maven, method)), {headers: headers})
       .map((responseData) => {
-        return responseData.json();
+        return responseData;
       })
       .map((answer) => {
         let result: any[];
@@ -56,8 +61,14 @@ export class ElasticsearchService {
             result.push(log._source);
           })
         }
+        (type === 4) ? (result = this.deleteTimestamp(result)) : (result = result);
         return result;
       });
+  }
+
+  private deleteTimestamp(result: any[]) {
+    result.forEach(log => log.timestamp = '');
+    return result;
   }
 
   private getBody(id: number, value: string, maven: boolean, method?: string) {
@@ -72,6 +83,7 @@ export class ElasticsearchService {
         case 1:
           body = {query: {query_string: {query: '(formatted_message:Starting) AND (test_no:' + value + ')'}}};
           break;
+        case 4:
         case 2:
           body = {query: {query_string: {query: '(method:' + method + '*) AND (test_no:' + value + ')'}}};
           break;

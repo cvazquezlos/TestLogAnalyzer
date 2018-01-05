@@ -1,8 +1,8 @@
 import {NgModule, Type} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {HttpModule,
-  JsonpModule} from '@angular/http';
+import {HttpClientModule} from '@angular/common/http';
+
 import {CodemirrorModule} from 'ng2-codemirror';
 import {DiffMatchPatchModule} from 'ng-diff-match-patch';
 
@@ -43,8 +43,7 @@ const httpInterceptorProviders: Type<any>[] = [
     CovalentHighlightModule,
     CovalentMarkdownModule,
     DiffMatchPatchModule,
-    HttpModule,
-    JsonpModule,
+    HttpClientModule,
     routing,
     SharedModule
   ],
