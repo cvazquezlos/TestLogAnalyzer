@@ -40,11 +40,11 @@
           </a>
         </ng-template>
         <a mat-icon-button *ngIf="mode == 2; else timeDiffActive" matTooltip="LOGANALYZER is comparing logs with time differentiation">
-          <mat-icon class="active-icon">exposure_zero</mat-icon>
+          <mat-icon class="active-icon">format_indent_increase</mat-icon>
         </a>
         <ng-template #timeDiffActive>
           <a mat-icon-button matTooltip="Compare logs with time differentiation" (click)="setMode(2)">
-            <mat-icon class="title-icon">exposure_zero</mat-icon>
+            <mat-icon class="title-icon">format_indent_increase</mat-icon>
           </a>
         </ng-template>
       </div>

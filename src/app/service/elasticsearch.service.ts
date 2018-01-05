@@ -1,40 +1,12 @@
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {Observable} from "rxjs/Observable";
+
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import {Log} from '../model/source.model';
-
-class CountFormat {
-  constructor(public _shards: Object,
-              public count: number) {
-  }
-}
-
-class RD {
-  constructor(public took: number,
-              public timed_out: boolean,
-              public __shards: Object,
-              public hits: AW) {
-  }
-}
-
-class AW {
-  constructor(public total: number,
-              public max_score: any,
-              public hits: ESResponse[]) {
-  }
-}
-
-class ESResponse {
-  constructor(public _index: string,
-              public _type: string,
-              public _id: string,
-              public _score: any,
-              public _source: Log,
-              public sort: any[]) {
-  }
-}
+import {CountFormat} from '../model/count-format.model';
+import {Log} from '../model/log.model';
+import {RD} from '../model/get-format.model';
 
 @Injectable()
 export class ElasticsearchService {
@@ -89,8 +61,14 @@ export class ElasticsearchService {
             result.push(log._source);
           })
         }
+        (type == 4) ? (result = this.deleteTimestamp(result)) : (result = result);
         return result;
       });
+  }
+
+  private deleteTimestamp(result: any[]) {
+    result.forEach(log => log.timestamp = '');
+    return result;
   }
 
   private getBody(id: number, value: string, maven: boolean, method?: string) {
@@ -105,6 +83,7 @@ export class ElasticsearchService {
         case 1:
           body = {query: {query_string: {query: '(formatted_message:Starting) AND (test_no:' + value + ')'}}};
           break;
+        case 4:
         case 2:
           body = {query: {query_string: {query: '(method:' + method + '*) AND (test_no:' + value + ')'}}};
           break;

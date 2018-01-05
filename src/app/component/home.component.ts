@@ -11,7 +11,7 @@ import {
   TdMediaService
 } from '@covalent/core';
 
-import {Log} from '../model/source.model';
+import {Log} from '../model/log.model';
 import {ElasticsearchService} from '../service/elasticsearch.service';
 
 @Component({
