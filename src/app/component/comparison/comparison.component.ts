@@ -4,7 +4,8 @@ import {
   ViewChild
 } from '@angular/core';
 import {TdMediaService} from '@covalent/core';
-import {DiffMatchPatchService} from "ng-diff-match-patch/dist/diffMatchPatch.service"
+
+import {DiffMatchPatchService} from 'ng-diff-match-patch/dist/diffMatchPatch.service';
 
 import {Log} from '../../model/log.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
