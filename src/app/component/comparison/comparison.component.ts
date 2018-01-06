@@ -36,15 +36,13 @@ export class ComparisonComponent {
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private diffModeService: DiffModeService) {
     this.initInfo('1');
-    this.comparatorText = '';
-    this.comparedText = '';
   }
 
   generateComparison() {
     switch (this.mode) {
       case (2):
-        this.comparatorText = this.diffModeService.timeDiff(this.logsComparator);
-        this.comparedText = this.diffModeService.timeDiff(this.logsCompared);
+        this.diffModeService.timeDiff(this.logsComparator, this.comparatorText);
+        this.diffModeService.timeDiff(this.logsCompared, this.comparedText);
         break;
       case (1):
         this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '4 0');
@@ -146,9 +144,7 @@ export class ComparisonComponent {
           const args = log.formatted_message.split(' ');
           if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
             this.methods = this.methods.concat({
-              'icon': 'event_note',
-              'title': args[1],
-              'class': 'no-active'
+              'icon': 'event_note', 'title': args[1], 'class': 'no-active'
             })
           }
         }
