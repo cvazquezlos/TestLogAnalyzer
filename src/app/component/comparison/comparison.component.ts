@@ -5,8 +5,6 @@ import {
 } from '@angular/core';
 import {TdMediaService} from '@covalent/core';
 
-import {DiffMatchPatchService} from 'ng-diff-match-patch/dist/diffMatchPatch.service';
-
 import {Log} from '../../model/log.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 import {DiffService} from '../../service/diff.service';
@@ -24,35 +22,30 @@ export class ComparisonComponent {
   active = false;
   comparatorText: string;
   comparedText: string;
-  config = {
-    lineNumbers: true,
-    theme: 'twilight',
-    readOnly: 'nocursor',
-    lineWrapping : true,
-    mode: 'xml' };
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
+  logsComparator: Log[];
+  logsCompared: Log[];
   methods: any[] = [];
   mode = 0;
   results = [];
   showResults = false;
 
-  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private diffService: DiffService) {
+  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
+              private diffService: DiffService) {
     this.initInfo('1');
-    this.comparatorText = '';
-    this.comparedText = '';
   }
 
   generateComparison() {
     switch (this.mode) {
+      case (2):
+        this.comparatorText = this.diffService.timeDiff(this.logsComparator);
+        this.comparedText = this.diffService.timeDiff(this.logsCompared);
+        break;
       case (1):
         this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '4 0');
         this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '4 1');
-        break;
-      case (2):
-        break;
-      case (0):
     }
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.showResults = true;
@@ -172,14 +165,16 @@ export class ComparisonComponent {
   private loadInfo(exec: string, method: string, codeType: string) {
     this.elasticsearchService.get(+codeType.split(' ')[0], 1000, exec, false, method).subscribe(
       data => {
-        let aux = [];
-        aux = aux.concat(data);
         switch (+codeType.split(' ')[1]) {
           case 0:
-            this.comparatorText = this.concatData(aux);
+            this.logsComparator = [];
+            this.logsComparator = this.logsComparator.concat(data);
+            this.comparatorText = this.concatData(this.logsComparator);
             break;
           case 1:
-            this.comparedText = this.concatData(aux);
+            this.logsCompared = [];
+            this.logsCompared = this.logsCompared.concat(data);
+            this.comparedText = this.concatData(this.logsCompared);
             break;
         }
       }

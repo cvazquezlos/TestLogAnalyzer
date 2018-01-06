@@ -48,8 +48,8 @@ const httpInterceptorProviders: Type<any>[] = [
     SharedModule
   ],
   providers: [
-    ElasticsearchService,
-    DiffService
+    DiffService,
+    ElasticsearchService
   ],
   bootstrap: [AppComponent],
   entryComponents: []
