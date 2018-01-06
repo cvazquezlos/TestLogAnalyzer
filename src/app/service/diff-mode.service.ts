@@ -14,8 +14,14 @@ export class DiffModeService {
     return result;
   }
 
-  noTimestampDiff() {
-
+  noTimestampDiff(data: any[]) {
+    let result = '';
+    data.forEach(log => {
+      log.timestamp = '';
+      result += (log.timestamp + ' [' + log.thread_name + '] ' + log.level + ' ' + log.logger_name + '' +
+        ' ' + log.formatted_message) + '\n'
+    });
+    return result;
   }
 
 }
