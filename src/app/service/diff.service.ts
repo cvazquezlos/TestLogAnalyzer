@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Log} from "../model/log.model";
+import {Log} from '../model/log.model';
 
 @Injectable()
 export class DiffService {
