@@ -17,7 +17,6 @@ import {SharedModule} from './shared/shared.module';
 
 import {routing} from './app.routing';
 import {DiffService} from './service/diff.service';
-import {DiffModeService} from './service/diff-mode.service';
 import {ElasticsearchService} from './service/elasticsearch.service';
 
 import {RequestInterceptor} from '../config/interceptor/request.interceptor';
@@ -50,7 +49,6 @@ const httpInterceptorProviders: Type<any>[] = [
   ],
   providers: [
     DiffService,
-    DiffModeService,
     ElasticsearchService
   ],
   bootstrap: [AppComponent],

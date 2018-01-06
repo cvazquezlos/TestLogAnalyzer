@@ -8,7 +8,6 @@ import {TdMediaService} from '@covalent/core';
 import {Log} from '../../model/log.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 import {DiffService} from '../../service/diff.service';
-import {DiffModeService} from '../../service/diff-mode.service';
 
 @Component({
   selector: 'app-comparison',
@@ -34,15 +33,15 @@ export class ComparisonComponent {
   showResults = false;
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
-              private diffService: DiffService, private diffModeService: DiffModeService) {
+              private diffService: DiffService) {
     this.initInfo('1');
   }
 
   generateComparison() {
     switch (this.mode) {
       case (2):
-        this.diffModeService.timeDiff(this.logsComparator, this.comparatorText);
-        this.diffModeService.timeDiff(this.logsCompared, this.comparedText);
+        this.comparatorText = this.diffService.timeDiff(this.logsComparator);
+        this.comparedText = this.diffService.timeDiff(this.logsCompared);
         break;
       case (1):
         this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '4 0');
@@ -144,7 +143,9 @@ export class ComparisonComponent {
           const args = log.formatted_message.split(' ');
           if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
             this.methods = this.methods.concat({
-              'icon': 'event_note', 'title': args[1], 'class': 'no-active'
+              'icon': 'event_note',
+              'title': args[1],
+              'class': 'no-active'
             })
           }
         }
