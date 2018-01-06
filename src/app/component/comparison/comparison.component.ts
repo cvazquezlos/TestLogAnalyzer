@@ -8,6 +8,7 @@ import {TdMediaService} from '@covalent/core';
 import {Log} from '../../model/log.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 import {DiffService} from '../../service/diff.service';
+import {DiffModeService} from '../../service/diff-mode.service';
 
 @Component({
   selector: 'app-comparison',
@@ -25,12 +26,15 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
+  logsComparator: Log[];
+  logsCompared: Log[];
   methods: any[] = [];
   mode = 0;
   results = [];
   showResults = false;
 
-  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private diffService: DiffService) {
+  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
+              private diffService: DiffService, private diffModeService: DiffModeService) {
     this.initInfo('1');
     this.comparatorText = '';
     this.comparedText = '';
@@ -39,11 +43,12 @@ export class ComparisonComponent {
   generateComparison() {
     switch (this.mode) {
       case (2):
+        this.comparatorText = this.diffModeService.timeDiff(this.logsComparator);
+        this.comparedText = this.diffModeService.timeDiff(this.logsCompared);
         break;
       case (1):
         this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '4 0');
         this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '4 1');
-      case (0):
     }
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.showResults = true;
@@ -163,14 +168,16 @@ export class ComparisonComponent {
   private loadInfo(exec: string, method: string, codeType: string) {
     this.elasticsearchService.get(+codeType.split(' ')[0], 1000, exec, false, method).subscribe(
       data => {
-        let aux = [];
-        aux = aux.concat(data);
         switch (+codeType.split(' ')[1]) {
           case 0:
-            this.comparatorText = this.concatData(aux);
+            this.logsComparator = [];
+            this.logsComparator = this.logsComparator.concat(data);
+            this.comparatorText = this.concatData(this.logsComparator);
             break;
           case 1:
-            this.comparedText = this.concatData(aux);
+            this.logsCompared = [];
+            this.logsCompared = this.logsCompared.concat(data);
+            this.comparedText = this.concatData(this.logsCompared);
             break;
         }
       }
