@@ -5,8 +5,6 @@ import {
 } from '@angular/core';
 import {TdMediaService} from '@covalent/core';
 
-import {DiffMatchPatchService} from 'ng-diff-match-patch/dist/diffMatchPatch.service';
-
 import {Log} from '../../model/log.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 import {DiffService} from '../../service/diff.service';
@@ -24,12 +22,6 @@ export class ComparisonComponent {
   active = false;
   comparatorText: string;
   comparedText: string;
-  config = {
-    lineNumbers: true,
-    theme: 'twilight',
-    readOnly: 'nocursor',
-    lineWrapping : true,
-    mode: 'xml' };
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
@@ -46,12 +38,11 @@ export class ComparisonComponent {
 
   generateComparison() {
     switch (this.mode) {
+      case (2):
+        break;
       case (1):
         this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '4 0');
         this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '4 1');
-        break;
-      case (2):
-        break;
       case (0):
     }
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
