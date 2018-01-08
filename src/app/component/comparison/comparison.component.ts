@@ -59,7 +59,7 @@ export class ComparisonComponent {
     this.execsComparator = [];
     this.execsCompared = [];
     this.countExecs(0, method.title.replace('(', '').replace(')', ''));
-    method.class = 'meth-active';
+    method.class = 'true';
     this.active = true;
   }
 
@@ -145,7 +145,7 @@ export class ComparisonComponent {
             this.methods = this.methods.concat({
               'icon': 'event_note',
               'title': args[1],
-              'class': ''
+              'class': 'false'
             })
           }
         }

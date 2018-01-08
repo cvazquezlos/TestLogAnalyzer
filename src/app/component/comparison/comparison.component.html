@@ -10,7 +10,11 @@
     </mat-toolbar>
     <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
       <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
-        <a mat-list-item (click)="methodSelected(item)">
+        <a mat-list-item
+           [ngClass]="{
+            'method-selected': item.class === 'true'
+           }"
+           (click)="methodSelected(item)">
           <mat-icon>{{item.icon}}</mat-icon>
           <h3 matLine class="clickable">{{item.title}}</h3>
         </a>
