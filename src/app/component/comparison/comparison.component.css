@@ -48,7 +48,7 @@
 }
 
 .clickable {
-  font-size: 0.9em;
+  font-size: 0.75em;
 }
 
 .classname {
@@ -69,18 +69,13 @@
 }
 
 .meth-active {
-  border: none;
-  margin: 0;
-  background: rgba(0,0,0,.32);
-  color: hsla(0,0%,100%,.87);
 }
 
 .meth-active mat-icon {
-  color: hsla(0,0%,100%,.87);
 }
 
 .not-displayed {
-  /*display: none;*/
+  display: none;
 }
 
 .display {

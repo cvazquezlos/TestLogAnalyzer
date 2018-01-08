@@ -145,7 +145,7 @@ export class ComparisonComponent {
             this.methods = this.methods.concat({
               'icon': 'event_note',
               'title': args[1],
-              'class': 'no-active'
+              'class': ''
             })
           }
         }
