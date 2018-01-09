@@ -110,7 +110,8 @@ export class ComparisonComponent {
     this.elasticsearchService.get(+codeType.split(' ')[0], 1000, exec, false, method).subscribe(
       data => {
         let lines: string;
-        (this.mode === 1) ? (lines = this.diffService.noTimestampDiff(data)) : ((this.mode === 2) ? (lines = this.diffService.timeDiff(data))
+        (this.mode === 1) ? (lines = this.diffService.noTimestampDiff(data))
+          : ((this.mode === 2) ? (lines = this.diffService.timeDiff(data))
           : (lines = this.concatData(data)));
         switch (+codeType.split(' ')[1]) {
           case 0:
@@ -126,7 +127,8 @@ export class ComparisonComponent {
 
   private updateStatus(code: number, exec: any) {
     let result;
-    (code === 0) ? (result = this.execStatusService.comparatorClic(+exec.id, exec.method)) : (result = this.execStatusService.comparedClic(+exec.id, exec.method));
+    (code === 0) ? (result = this.execStatusService.comparatorClic(+exec.id, exec.method))
+      : (result = this.execStatusService.comparedClic(+exec.id, exec.method));
     this.execsComparator = result.comparator;
     this.execsCompared = result.compared;
   }
