@@ -24,14 +24,17 @@ export class ExecsStatusService {
 
   comparatorClic(selected: number, method: string) {
     let result: any;
-    if (this.comparatorOptions[selected - 1]) {
-      this.comparatorOptions.forEach(elem => elem = true);
-      this.comparatorOptions[selected - 1] = false;
-      this.posCSelected = selected;
-      this.comparedOptions[selected - 1] = false;
+    if (this.comparatorOptions[selected - 1] === true) {
+      this.reset(0);
+      this.reset(1);
+      (this.poscSelected !== -1) ? (this.comparedOptions[this.poscSelected] = false) : (this.comparedOptions = this.comparedOptions);
+      (this.poscSelected !== -1) ? (this.comparatorOptions[this.poscSelected] = false) : (this.comparatorOptions = this.comparatorOptions);
+      this.posCSelected = selected - 1;
+      this.comparatorOptions[this.posCSelected] = false;
+      this.comparedOptions[this.posCSelected] = false;
     } else {
-      this.comparatorOptions.forEach(elem => elem = true);
-      this.comparedOptions[selected - 1] = true;
+      this.comparatorOptions[this.posCSelected] = true;
+      this.comparedOptions[this.posCSelected] = true;
       this.posCSelected = -1;
     }
     result = {
@@ -43,14 +46,17 @@ export class ExecsStatusService {
 
   comparedClic(selected: number, method: string) {
     let result: any;
-    if (this.comparedOptions[selected - 1]) {
-      this.comparedOptions.forEach(elem => elem = true);
-      this.comparedOptions[selected - 1] = false;
-      this.poscSelected = selected;
-      this.comparatorOptions[selected - 1] = false;
+    if (this.comparedOptions[selected - 1] === true) {
+      this.reset(1);
+      this.reset(0);
+      (this.posCSelected !== -1) ? (this.comparedOptions[this.posCSelected] = false) : (this.comparedOptions = this.comparedOptions);
+      (this.posCSelected !== -1) ? (this.comparatorOptions[this.posCSelected] = false) : (this.comparatorOptions = this.comparatorOptions);
+      this.poscSelected = selected - 1;
+      this.comparatorOptions[this.poscSelected] = false;
+      this.comparedOptions[this.poscSelected] = false;
     } else {
-      this.comparedOptions.forEach(elem => elem = true);
-      this.comparatorOptions[selected - 1] = true;
+      this.comparatorOptions[this.poscSelected] = true;
+      this.comparedOptions[this.poscSelected] = true;
       this.poscSelected = -1;
     }
     result = {
@@ -69,7 +75,7 @@ export class ExecsStatusService {
     result = [];
     let classs = '';
     for (let i = 0; i < variable.length; i++) {
-      (variable[i]) ? (classs = 'execs') : ((i === (pos - 1) ? (classs = 'active') : (classs = 'hide')));
+      (variable[i] === true) ? (classs = 'execs') : ((i === pos) ? (classs = 'active') : (classs = 'hide'));
       result = result.concat({
         'id': i + 1,
         'class': classs,
@@ -77,5 +83,14 @@ export class ExecsStatusService {
       })
     }
     return result;
+  }
+
+  private reset(code: number) {
+    let variable: boolean[];
+    (code === 0) ? (variable = this.comparatorOptions) : (variable = this.comparedOptions);
+    for (let i = 0; i < variable.length; i++) {
+      variable[i] = true;
+    }
+    (code === 0) ? (this.comparatorOptions = variable) : (this.comparedOptions = variable);
   }
 }

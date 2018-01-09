@@ -110,3 +110,7 @@
 .method-selected mat-icon {
   color: hsla(0,0%,100%,.87);
 }
+
+.hide {
+  display: none;
+}

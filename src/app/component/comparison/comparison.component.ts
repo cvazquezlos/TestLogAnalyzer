@@ -68,24 +68,26 @@ export class ComparisonComponent {
 
   // Method is called when any execution of a determined method is selected.
   prepare(exec: any, code: number) {
-    (code === 0) ? (this.updateStatus(exec, 0)) : (this.updateStatus(exec, 1));
+    (code === 0) ? (this.updateStatus(0, exec)) : (this.updateStatus(1, exec));
     (code === 0) ? (localStorage.setItem('CExecI', exec.id)) : (localStorage.setItem('cExecI', exec.id));
     (code === 0) ? (localStorage.setItem('CExecM', exec.method)) : (localStorage.setItem('cExecM', exec.method));
   }
 
   private updateStatus(code: number, exec: any) {
+    let result;
+    console.log(typeof code);
     switch (code) {
       case 0:
-        this.execsComparator = this.execStatusService.comparatorClic(exec.id, exec.method).comparator;
-        this.execsCompared = this.execStatusService.comparatorClic(exec.id, exec.method).compared;
+        result = this.execStatusService.comparatorClic(+exec.id, exec.method);
+        this.execsComparator = result.comparator;
+        this.execsCompared = result.compared;
         break;
       case 1:
-        this.execsComparator = this.execStatusService.comparedClic(exec.id, exec.method).comparator;
-        this.execsCompared = this.execStatusService.comparedClic(exec.id, exec.method).compared;
+        result = this.execStatusService.comparedClic(+exec.id, exec.method);
+        this.execsComparator = result.comparator;
+        this.execsCompared = result.compared;
         break;
     }
-    console.log(this.execsCompared);
-    console.log(this.execsComparator);
   }
 
   // Method is called when a mode button is clicked.
