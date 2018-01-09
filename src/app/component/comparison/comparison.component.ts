@@ -38,6 +38,7 @@ export class ComparisonComponent {
     this.initInfo('1');
   }
 
+  // Method is called when button "Execute" is pressed.
   generateComparison() {
     switch (this.mode) {
       case (2):
@@ -52,6 +53,7 @@ export class ComparisonComponent {
     this.showResults = true;
   }
 
+  // Method is called when any method is selected.
   methodSelected(method: any) {
     this.deselect();
     this.showResults = false;
@@ -64,28 +66,31 @@ export class ComparisonComponent {
     this.active = true;
   }
 
+  // Method is called when any execution of a determined method is selected.
   prepare(exec: any, code: number) {
-    (code === 0) ? (this.prepareContent(exec, this.execsCompared, 0)) : (this.prepareContent(exec, this.execsComparator, 1));
+    (code === 0) ? (this.updateStatus(exec, 0)) : (this.updateStatus(exec, 1));
     (code === 0) ? (localStorage.setItem('CExecI', exec.id)) : (localStorage.setItem('cExecI', exec.id));
     (code === 0) ? (localStorage.setItem('CExecM', exec.method)) : (localStorage.setItem('cExecM', exec.method));
   }
 
-  setMode(mode: number) {
-    this.mode = mode;
+  private updateStatus(code: number, exec: any) {
+    switch (code) {
+      case 0:
+        this.execsComparator = this.execStatusService.comparatorClic(exec.id, exec.method).comparator;
+        this.execsCompared = this.execStatusService.comparatorClic(exec.id, exec.method).compared;
+        break;
+      case 1:
+        this.execsComparator = this.execStatusService.comparedClic(exec.id, exec.method).comparator;
+        this.execsCompared = this.execStatusService.comparedClic(exec.id, exec.method).compared;
+        break;
+    }
+    console.log(this.execsCompared);
+    console.log(this.execsComparator);
   }
 
-  private addExecs(execs: any[], exec: number, method: string) {
-    let classN = 'execs';
-    execs = [];
-    for (let i = 0; i < this.execsNumber; i++) {
-      (i + 1 === exec) ? (classN = 'active') : (classN = 'execs');
-      execs = execs.concat({
-        'id': i + 1,
-        'class': classN,
-        'method': method
-      });
-      classN = 'execs';
-    }
+  // Method is called when a mode button is clicked.
+  setMode(mode: number) {
+    this.mode = mode;
   }
 
   private concatData(data: any[]) {
@@ -97,37 +102,18 @@ export class ComparisonComponent {
     return exec;
   }
 
-  private countExecs(index: number, method) {
+  private countExecs(index: number, method: string) {
     this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
       count => {
         if (count !== 0) {
-          this.execsComparator = this.execsComparator.concat({
-            'id': index + 1,
-            'class': 'execs',
-            'method': method,
-          });
-          this.execsCompared = this.execsCompared.concat({
-            'id': index + 1,
-            'class': 'execs',
-            'method': method,
-          });
           this.countExecs(index + 1, method);
         } else {
           this.execsNumber = index;
+          this.execsComparator = this.execStatusService.initialize(this.execsNumber, method).comparator;
+          this.execsCompared = this.execStatusService.initialize(this.execsNumber, method).compared;
         }
       }
     );
-  }
-
-  private deleteExec(execs: any[], exec: any) {
-    let index = 0;
-    for (const execution of execs) {
-      if (execution.id === exec.id) {
-        execs.splice(index, 1);
-        break;
-      }
-      index += 1;
-    }
   }
 
   private deselect() {
@@ -154,15 +140,6 @@ export class ComparisonComponent {
     );
   }
 
-  private isSelectedAnyElement(execs: any[]) {
-    for (const exec of execs) {
-      if (exec.class === 'active') {
-        return true;
-      }
-    }
-    return false;
-  }
-
   private loadInfo(exec: string, method: string, codeType: string) {
     this.elasticsearchService.get(+codeType.split(' ')[0], 1000, exec, false, method).subscribe(
       data => {
@@ -180,19 +157,5 @@ export class ComparisonComponent {
         }
       }
     );
-  }
-
-  private prepareContent(exec: any, execs: any[], type: number) {
-    if (!this.isSelectedAnyElement(execs)) {
-      this.addExecs(this.execsComparator, exec.id, exec.method);
-      this.addExecs(this.execsCompared, exec.id, exec.method);
-      exec.class = 'active';
-      this.loadInfo(exec.id, exec.method, '2 ' + type.toString());
-      this.deleteExec(execs, exec);
-    } else {
-      exec.class = 'active';
-      this.loadInfo(exec.id, exec.method, '2 ' + type.toString());
-      this.deleteExec(execs, exec);
-    }
   }
 }

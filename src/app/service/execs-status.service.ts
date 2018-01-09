@@ -7,13 +7,19 @@ export class ExecsStatusService {
   comparatorOptions: boolean[];
   comparedOptions: boolean[];
 
-  initialize(execsNumber: number) {
+  initialize(execsNumber: number, method: string) {
+    let result: any;
     this.comparatorOptions = [];
     this.comparedOptions = [];
     for (let i = 0; i < execsNumber; i++) {
       this.comparatorOptions = this.comparatorOptions.concat(true);
       this.comparedOptions = this.comparedOptions.concat(true);
     }
+    result = {
+      'comparator': this.exportResults(method, 0),
+      'compared': this.exportResults(method, 1)
+    };
+    return result;
   }
 
   comparatorClic(selected: number, method: string) {
