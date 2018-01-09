@@ -26,8 +26,6 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
-  logsComparator: Log[];
-  logsCompared: Log[];
   methods: any[] = [];
   mode = 0;
   results = [];
@@ -38,24 +36,13 @@ export class ComparisonComponent {
     this.initInfo();
   }
 
-  // Method is called when button "Execute" is pressed.
   generateComparison() {
     this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '2 0');
-    this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');/*
-    switch (this.mode) {
-      case (2):
-        this.comparatorText = this.diffService.timeDiff(this.logsComparator);
-        this.comparedText = this.diffService.timeDiff(this.logsCompared);
-        break;
-      case (1):
-        this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '2 0');
-        this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');
-    }*/
+    this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.showResults = true;
   }
 
-  // Method is called when any method is selected.
   methodSelected(method: any) {
     this.deselect();
     this.showResults = false;
@@ -68,14 +55,12 @@ export class ComparisonComponent {
     this.active = true;
   }
 
-  // Method is called when any execution of a determined method is selected.
   execution(exec: any, code: number) {
     (code === 0) ? (this.updateStatus(0, exec)) : (this.updateStatus(1, exec));
     (code === 0) ? (localStorage.setItem('CExecI', exec.id)) : (localStorage.setItem('cExecI', exec.id));
     (code === 0) ? (localStorage.setItem('CExecM', exec.method)) : (localStorage.setItem('cExecM', exec.method));
   }
 
-  // Method is called when a mode button is clicked.
   setMode(mode: number) {
     this.mode = mode;
   }

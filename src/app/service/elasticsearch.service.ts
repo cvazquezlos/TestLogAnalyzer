@@ -61,14 +61,8 @@ export class ElasticsearchService {
             result.push(log._source);
           })
         }
-        (type === 4) ? (result = this.deleteTimestamp(result)) : (result = result);
         return result;
       });
-  }
-
-  private deleteTimestamp(result: any[]) {
-    result.forEach(log => log.timestamp = '');
-    return result;
   }
 
   private getBody(id: number, value: string, maven: boolean, method?: string) {
