@@ -6,8 +6,9 @@ import {
 import {TdMediaService} from '@covalent/core';
 
 import {Log} from '../../model/log.model';
-import {ElasticsearchService} from '../../service/elasticsearch.service';
 import {DiffService} from '../../service/diff.service';
+import {ElasticsearchService} from '../../service/elasticsearch.service';
+import {ExecsStatusService} from '../../service/execs-status.service';
 
 @Component({
   selector: 'app-comparison',
@@ -33,7 +34,7 @@ export class ComparisonComponent {
   showResults = false;
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
-              private diffService: DiffService) {
+              private diffService: DiffService, private execStatusService: ExecsStatusService) {
     this.initInfo('1');
   }
 
