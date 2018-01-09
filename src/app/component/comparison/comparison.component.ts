@@ -35,20 +35,22 @@ export class ComparisonComponent {
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
-    this.initInfo('1');
+    this.initInfo();
   }
 
   // Method is called when button "Execute" is pressed.
   generateComparison() {
+    this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '2 0');
+    this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');/*
     switch (this.mode) {
       case (2):
         this.comparatorText = this.diffService.timeDiff(this.logsComparator);
         this.comparedText = this.diffService.timeDiff(this.logsCompared);
         break;
       case (1):
-        this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '4 0');
-        this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '4 1');
-    }
+        this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '2 0');
+        this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');
+    }*/
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.showResults = true;
   }
@@ -67,27 +69,10 @@ export class ComparisonComponent {
   }
 
   // Method is called when any execution of a determined method is selected.
-  prepare(exec: any, code: number) {
+  execution(exec: any, code: number) {
     (code === 0) ? (this.updateStatus(0, exec)) : (this.updateStatus(1, exec));
     (code === 0) ? (localStorage.setItem('CExecI', exec.id)) : (localStorage.setItem('cExecI', exec.id));
     (code === 0) ? (localStorage.setItem('CExecM', exec.method)) : (localStorage.setItem('cExecM', exec.method));
-  }
-
-  private updateStatus(code: number, exec: any) {
-    let result;
-    console.log(typeof code);
-    switch (code) {
-      case 0:
-        result = this.execStatusService.comparatorClic(+exec.id, exec.method);
-        this.execsComparator = result.comparator;
-        this.execsCompared = result.compared;
-        break;
-      case 1:
-        result = this.execStatusService.comparedClic(+exec.id, exec.method);
-        this.execsComparator = result.comparator;
-        this.execsCompared = result.compared;
-        break;
-    }
   }
 
   // Method is called when a mode button is clicked.
@@ -122,20 +107,14 @@ export class ComparisonComponent {
     this.methods.forEach(method => method.class = 'no-active');
   }
 
-  private initInfo(value: string) {
+  private initInfo() {
     this.elasticsearchService.get(1, 1000, '1', false).subscribe(
-      data1 => {
+      data => {
         this.methods = [];
-        let logs: Log[] = [];
-        logs = logs.concat(data1);
-        for (const log of logs) {
+        for (const log of data) {
           const args = log.formatted_message.split(' ');
           if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
-            this.methods = this.methods.concat({
-              'icon': 'event_note',
-              'title': args[1],
-              'class': 'false'
-            })
+            this.methods = this.methods.concat({'icon': 'event_note', 'title': args[1], 'class': 'false'});
           }
         }
       }
@@ -145,19 +124,25 @@ export class ComparisonComponent {
   private loadInfo(exec: string, method: string, codeType: string) {
     this.elasticsearchService.get(+codeType.split(' ')[0], 1000, exec, false, method).subscribe(
       data => {
+        let lines: string;
+        (this.mode === 1) ? (lines = this.diffService.noTimestampDiff(data)) : ((this.mode === 2) ? (lines = this.diffService.timeDiff(data))
+          : (lines = this.concatData(data)));
         switch (+codeType.split(' ')[1]) {
           case 0:
-            this.logsComparator = [];
-            this.logsComparator = this.logsComparator.concat(data);
-            this.comparatorText = this.concatData(this.logsComparator);
+            this.comparatorText = lines;
             break;
           case 1:
-            this.logsCompared = [];
-            this.logsCompared = this.logsCompared.concat(data);
-            this.comparedText = this.concatData(this.logsCompared);
+            this.comparedText = lines;
             break;
         }
       }
     );
+  }
+
+  private updateStatus(code: number, exec: any) {
+    let result;
+    (code === 0) ? (result = this.execStatusService.comparatorClic(+exec.id, exec.method)) : (result = this.execStatusService.comparedClic(+exec.id, exec.method));
+    this.execsComparator = result.comparator;
+    this.execsCompared = result.compared;
   }
 }

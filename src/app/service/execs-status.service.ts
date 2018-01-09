@@ -9,6 +9,8 @@ export class ExecsStatusService {
 
   initialize(execsNumber: number, method: string) {
     let result: any;
+    this.posCSelected = -1;
+    this.poscSelected = -1;
     this.comparatorOptions = [];
     this.comparedOptions = [];
     for (let i = 0; i < execsNumber; i++) {
