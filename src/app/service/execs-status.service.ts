@@ -61,7 +61,6 @@ export class ExecsStatusService {
     (code === 0) ? (pos = this.posCSelected) : (pos = this.poscSelected);
     let result: any[];
     result = [];
-    let i = 0;
     let classs = '';
     for (let i = 0; i < variable.length; i++) {
       (variable[i]) ? (classs = 'execs') : ((i === (pos - 1) ? (classs = 'active') : (classs = 'hide')));
