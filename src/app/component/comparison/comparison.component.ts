@@ -75,7 +75,7 @@ export class ComparisonComponent {
   }
 
   private countExecs(index: number, method: string) {
-    this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
+    this.elasticsearchService.count(2, [(index + 1).toString(), undefined, undefined]).subscribe(
       count => {
         if (count !== 0) {
           this.countExecs(index + 1, method);

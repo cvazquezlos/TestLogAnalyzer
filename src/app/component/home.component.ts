@@ -81,7 +81,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private countExecs(index: number) {
-    this.elasticsearchService.count(2, (index + 1).toString()).subscribe(
+    this.elasticsearchService.count(2, [(index + 1).toString(), undefined, undefined]).subscribe(
       count => {
         if (count !== 0) {
           this.countExecs(index + 1);
@@ -167,7 +167,7 @@ export class HomeComponent implements AfterViewInit {
         }
         for (const logger of this.navmenu[index].classes) {
           for (const method of this.methods) {
-            this.elasticsearchService.count(3, value, method.replace('(', '').replace(')', ''), logger.name).subscribe(
+            this.elasticsearchService.count(3, [value, method.replace('(', '').replace(')', ''), logger.name]).subscribe(
               data2 => {
                 (data2 !== 0) ? (logger.methods = logger.methods.concat({'name': method, 'icon': 'check_box_outline_blank'}))
                   : (logger.methods = logger.methods);
