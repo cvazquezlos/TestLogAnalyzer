@@ -4,8 +4,8 @@ import {Log} from '../model/log.model';
 @Injectable()
 export class DiffService {
 
-  comparatorClass: any;
-  comparedClass: any;
+  comparatorClass: string;
+  comparedClass: string;
   iteratorContent: any;
   results: any[];
 
@@ -19,9 +19,9 @@ export class DiffService {
     lines.forEach(line => {
       j = this.iteratorContent.j;
       k = this.iteratorContent.k;
-      comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 1);
+      comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 0);
       comparatorLine = this.iteratorContent.a1 + comparatorLine;
-      comparedLine = this.deleteUselessData(line, '<del>', '</del>', 0);
+      comparedLine = this.deleteUselessData(line, '<del>', '</del>', 1);
       comparedLine = this.iteratorContent.a2 + comparedLine;
       (comparatorLine.length < (line.length * 0.3)) ? (this.updateIndexes(comparatorLine, '', '',
         comparedLine, j, k + 1, this.iteratorContent.i1, k.toString() + '.', 0)) : (c1 = true);
@@ -88,7 +88,7 @@ export class DiffService {
     while (line.indexOf(t1) !== -1) {
       uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
       line = line.replace(t1 + uselessData + t2, '');
-      (id === 1) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
+      (id === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
     }
     return line;
   }
