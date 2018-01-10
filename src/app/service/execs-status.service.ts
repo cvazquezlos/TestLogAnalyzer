@@ -18,8 +18,8 @@ export class ExecsStatusService {
       this.comparedOptions = this.comparedOptions.concat(true);
     }
     result = {
-      'comparator': this.exportResults(method, 0),
-      'compared': this.exportResults(method, 1)
+      'comparator': this.exportResults(method, this.posCSelected, this.comparatorOptions),
+      'compared': this.exportResults(method, this.poscSelected, this.comparedOptions)
     };
     return result;
   }
@@ -40,8 +40,8 @@ export class ExecsStatusService {
       this.posCSelected = -1;
     }
     result = {
-      'comparator': this.exportResults(method, 0),
-      'compared': this.exportResults(method, 1)
+      'comparator': this.exportResults(method, this.posCSelected, this.comparatorOptions),
+      'compared': this.exportResults(method, this.poscSelected, this.comparedOptions)
     };
     return result;
   }
@@ -62,22 +62,17 @@ export class ExecsStatusService {
       this.poscSelected = -1;
     }
     result = {
-      'comparator': this.exportResults(method, 0),
-      'compared': this.exportResults(method, 1)
+      'comparator': this.exportResults(method, this.posCSelected, this.comparatorOptions),
+      'compared': this.exportResults(method, this.poscSelected, this.comparedOptions)
     };
     return result;
   }
 
-  exportResults(method: string, code: number) {
-    let variable: boolean[];
-    let pos: number;
-    (code === 0) ? (variable = this.comparatorOptions) : (variable = this.comparedOptions);
-    (code === 0) ? (pos = this.posCSelected) : (pos = this.poscSelected);
-    let result: any[];
-    result = [];
+  exportResults(method: string, pos: number, options: boolean[]) {
+    let result: any[] = [];
     let classs = '';
-    for (let i = 0; i < variable.length; i++) {
-      (variable[i] === true) ? (classs = 'execs') : ((i === pos) ? (classs = 'active') : (classs = 'hide'));
+    for (let i = 0; i < options.length; i++) {
+      (options[i] === true) ? (classs = 'execs') : ((i === pos) ? (classs = 'active') : (classs = 'hide'));
       result = result.concat({
         'id': i + 1,
         'class': classs,

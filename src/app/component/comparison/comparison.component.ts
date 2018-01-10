@@ -67,9 +67,8 @@ export class ComparisonComponent {
 
   private concatData(data: any[]) {
     let exec = '';
-    data.forEach(dat => {
-      exec += (dat.timestamp + ' [' + dat.thread_name + '] ' + dat.level + ' ' + dat.logger_name + '' +
-        ' ' + dat.formatted_message) + '\n';
+    data.forEach(log => {
+      exec += this.diffService.generateOutput(log);
     });
     return exec;
   }

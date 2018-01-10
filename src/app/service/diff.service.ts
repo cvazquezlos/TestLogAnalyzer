@@ -35,6 +35,11 @@ export class DiffService {
     return this.results;
   }
 
+  generateOutput(log: Log) {
+    return (log.timestamp + ' [' + log.thread_name + '] ' + log.level + ' ' + log.logger_name + '' +
+      ' ' + log.formatted_message) + '\n';
+  }
+
   noTimestampDiff(data: any[]) {
     let result = '';
     data.forEach(noTLog => {
@@ -86,11 +91,6 @@ export class DiffService {
       (id === 1) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
     }
     return line;
-  }
-
-  private generateOutput(log: Log) {
-    return (log.timestamp + ' [' + log.thread_name + '] ' + log.level + ' ' + log.logger_name + '' +
-      ' ' + log.formatted_message) + '\n';
   }
 
   private resetIterator() {
