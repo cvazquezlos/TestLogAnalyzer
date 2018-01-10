@@ -29,8 +29,8 @@ export class ExecsStatusService {
     if (this.comparatorOptions[selected - 1] === true) {
       this.reset(0);
       this.reset(1);
-      (this.poscSelected !== -1) ? (this.comparedOptions[this.poscSelected] = false) : (this.comparedOptions = this.comparedOptions);
-      (this.poscSelected !== -1) ? (this.comparatorOptions[this.poscSelected] = false) : (this.comparatorOptions = this.comparatorOptions);
+      (this.poscSelected !== -1) && (this.comparedOptions[this.poscSelected] = false);
+      (this.poscSelected !== -1) && (this.comparatorOptions[this.poscSelected] = false);
       this.posCSelected = selected - 1;
       this.comparatorOptions[this.posCSelected] = false;
       this.comparedOptions[this.posCSelected] = false;
@@ -51,8 +51,8 @@ export class ExecsStatusService {
     if (this.comparedOptions[selected - 1] === true) {
       this.reset(1);
       this.reset(0);
-      (this.posCSelected !== -1) ? (this.comparedOptions[this.posCSelected] = false) : (this.comparedOptions = this.comparedOptions);
-      (this.posCSelected !== -1) ? (this.comparatorOptions[this.posCSelected] = false) : (this.comparatorOptions = this.comparatorOptions);
+      (this.posCSelected !== -1) && (this.comparedOptions[this.posCSelected] = false);
+      (this.posCSelected !== -1) && (this.comparatorOptions[this.posCSelected] = false);
       this.poscSelected = selected - 1;
       this.comparatorOptions[this.poscSelected] = false;
       this.comparedOptions[this.poscSelected] = false;

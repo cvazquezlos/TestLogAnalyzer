@@ -98,7 +98,7 @@ export class DiffService {
   }
 
   private updateIndexes(a1: any, a2: any, value1: any, value2: any, j: any, k: any, i1: any, i2: any, id?: number) {
-    (id) ? ((id === 0) ? (this.comparatorClass = 'added') : (this.comparedClass = 'added')) : (this.comparatorClass = this.comparatorClass);
+    (id) && ((id === 0) ? (this.comparatorClass = 'added') : (this.comparedClass = 'added'));
     this.iteratorContent = {
       'a1': a1, 'a2': a2,
       'line1': value1, 'line2': value2,

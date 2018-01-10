@@ -47,7 +47,7 @@ export class ElasticsearchService {
     const values1 = '&size=' + typeSize[1];
     const values2 = '&from=0';
     const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
-    (+valueMethod[0] < 10) ? (valueMethod[0] = '0' + valueMethod[0]) : (valueMethod[0] = valueMethod[0]);
+    (+valueMethod[0] < 10) && (valueMethod[0] = '0' + valueMethod[0]);
     const headers: HttpHeaders = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
     return this.http.post<RD>(getURL, JSON.stringify(this.getBody(typeSize[0], valueMethod[0], maven, valueMethod[1])), {headers: headers})

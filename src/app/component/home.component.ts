@@ -161,16 +161,13 @@ export class HomeComponent implements AfterViewInit {
         logs = logs.concat(data1);
         for (const log of logs) {
           const args = log.formatted_message.split(' ');
-          if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
-            this.methods = this.methods.concat(args[1]);
-          }
+          ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) && (this.methods = this.methods.concat(args[1]));
         }
         for (const logger of this.navmenu[index].classes) {
           for (const method of this.methods) {
             this.elasticsearchService.count(3, [value, method.replace('(', '').replace(')', ''), logger.name]).subscribe(
               data2 => {
-                (data2 !== 0) ? (logger.methods = logger.methods.concat({'name': method, 'icon': 'check_box_outline_blank'}))
-                  : (logger.methods = logger.methods);
+                (data2 !== 0) && (logger.methods = logger.methods.concat({'name': method, 'icon': 'check_box_outline_blank'}));
               }
             );
           }
@@ -210,8 +207,8 @@ export class HomeComponent implements AfterViewInit {
     const option = this.navmenu.filter(op => op.id === id);
     if (option[0]) {
       if (method !== undefined) {
-        option[0].classes.forEach(classI => classI.methods.forEach(meth => (meth.name === method) ?
-          (meth.icon = 'check_box') : (meth.icon = meth.icon)));
+        option[0].classes.forEach(classI => classI.methods.forEach(meth => (meth.name === method) &&
+          (meth.icon = 'check_box')));
       } else {
         option[0].icon = 'check_box';
       }
