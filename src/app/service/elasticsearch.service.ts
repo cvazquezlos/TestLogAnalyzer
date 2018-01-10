@@ -25,12 +25,13 @@ export class ElasticsearchService {
         getURL += '?q=thread_name:main';
         break;
       case 2:
-        (+valueMethodLogger[0] < 10) ? (valueMethodLogger[0] = '0' + valueMethodLogger[0]) : (undefined);
+        (+valueMethodLogger[0] < 10) && (valueMethodLogger[0] = '0' + valueMethodLogger[0]);
         getURL += '?q=test_no:' + valueMethodLogger[0];
         break;
       case 3:
-        (+valueMethodLogger[0] < 10) ? (valueMethodLogger[0] = '0' + valueMethodLogger[0]) : (undefined);
-        const body = {query: {query_string: {query: '(method:' + valueMethodLogger[1] + '*) AND (test_no:' + valueMethodLogger[0] + ') AND ' +
+        (+valueMethodLogger[0] < 10) && (valueMethodLogger[0] = '0' + valueMethodLogger[0]);
+        const body = {query: {query_string: {query: '(method:' + valueMethodLogger[1] + '*) ' +
+              'AND (test_no:' + valueMethodLogger[0] + ') AND ' +
               '(logger_name:' + valueMethodLogger[2] + ')'}}};
         const headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-Type', 'application/json');
