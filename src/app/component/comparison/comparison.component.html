@@ -10,9 +10,13 @@
     </mat-toolbar>
     <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
       <ng-template let-item let-last="last" ngFor [ngForOf]="methods">
-        <a mat-list-item [class]="item.class" (click)="methodSelected(item)">
-          <mat-icon matListIcon>{{item.icon}}</mat-icon>
-          {{item.title}}
+        <a mat-list-item
+           [ngClass]="{
+            'method-selected': item.class === 'true'
+           }"
+           (click)="methodSelected(item)">
+          <mat-icon>{{item.icon}}</mat-icon>
+          <h3 matLine class="clickable">{{item.title}}</h3>
         </a>
       </ng-template>
     </mat-nav-list>
@@ -78,7 +82,7 @@
             </mat-card-title>
             <mat-card-subtitle>
               <ng-template let-execC ngFor [ngForOf]="execsComparator">
-                <button (click)="prepare(execC, 0)" [class]="execC.class">{{execC.id}}</button>
+                <button (click)="execution(execC, 0)" [class]="execC.class">{{execC.id}}</button>
               </ng-template>
             </mat-card-subtitle>
             <mat-divider></mat-divider>
@@ -89,7 +93,7 @@
             <mat-card-title>Comparated execution</mat-card-title>
             <mat-card-subtitle>
               <ng-template let-execc ngFor [ngForOf]="execsCompared">
-                <button (click)="prepare(execc, 1)" [class]="execc.class">{{execc.id}}</button>
+                <button (click)="execution(execc, 1)" [class]="execc.class">{{execc.id}}</button>
               </ng-template>
             </mat-card-subtitle>
             <mat-divider></mat-divider>

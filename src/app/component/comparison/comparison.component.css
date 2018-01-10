@@ -48,7 +48,7 @@
 }
 
 .clickable {
-  font-size: 0.9em;
+  font-size: 0.75em;
 }
 
 .classname {
@@ -68,19 +68,8 @@
   width: 100%
 }
 
-.meth-active {
-  border: none;
-  margin: 0;
-  background: rgba(0,0,0,.32);
-  color: hsla(0,0%,100%,.87);
-}
-
-.meth-active mat-icon {
-  color: hsla(0,0%,100%,.87);
-}
-
 .not-displayed {
-  /*display: none;*/
+  display: none;
 }
 
 .display {
@@ -111,4 +100,17 @@
 
 .index {
   color: rgb(102, 102, 102);
+}
+
+.method-selected {
+  background: rgba(0,0,0,.32);
+  color: hsla(0,0%,100%,.87);
+}
+
+.method-selected mat-icon {
+  color: hsla(0,0%,100%,.87);
+}
+
+.hide {
+  display: none;
 }
