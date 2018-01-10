@@ -42,14 +42,14 @@ export class ElasticsearchService {
       .map(response => response.count);
   }
 
-  get(type: number, size: number, value: string, maven: boolean, method?: string): Observable<Log[]> {
-    const values1 = '&size=' + size;
+  get(typeSize: number[], valueMethod: string[], maven: boolean): Observable<Log[]> {
+    const values1 = '&size=' + typeSize[1];
     const values2 = '&from=0';
     const getURL = this.searchURL + '?pretty&sort=id' + values1 + values2;
-    (+value < 10) ? (value = '0' + value) : (value = value);
+    (+valueMethod[0] < 10) ? (valueMethod[0] = '0' + valueMethod[0]) : (valueMethod[0] = valueMethod[0]);
     const headers: HttpHeaders = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    return this.http.post<RD>(getURL, JSON.stringify(this.getBody(type, value, maven, method)), {headers: headers})
+    return this.http.post<RD>(getURL, JSON.stringify(this.getBody(typeSize[0], valueMethod[0], maven, valueMethod[1])), {headers: headers})
       .map((responseData) => {
         return responseData;
       })

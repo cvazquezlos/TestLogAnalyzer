@@ -130,7 +130,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private loadNavbarInfo(value: string, index: number) {
-    this.elasticsearchService.get(3, 73, value, false).subscribe(
+    this.elasticsearchService.get([3, 73], [value, undefined], false).subscribe(
       data => {
         this.aux = [];
         this.aux = this.aux.concat(data);
@@ -154,7 +154,7 @@ export class HomeComponent implements AfterViewInit {
   }
 
   private loadNavbarInfoAux(value: any, index: any) {
-    this.elasticsearchService.get(1, 1000, value, false).subscribe(
+    this.elasticsearchService.get([1, 1000], [value, undefined], false).subscribe(
       data1 => {
         this.methods = [];
         let logs: Log[] = [];
@@ -188,7 +188,7 @@ export class HomeComponent implements AfterViewInit {
       (method) ? (meth = method.replace('(', '').replace(')', '')) : (meth = method);
       this.active = true;
     }
-    this.elasticsearchService.get(code, 1000, this.idSelected.toString(), this.mavenMessages, meth).subscribe(
+    this.elasticsearchService.get([code, 1000], [this.idSelected.toString(), meth], this.mavenMessages).subscribe(
       data => {
         this.logs = [];
         this.logs = this.logs.concat(data);

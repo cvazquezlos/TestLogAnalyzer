@@ -93,7 +93,7 @@ export class ComparisonComponent {
   }
 
   private initInfo() {
-    this.elasticsearchService.get(1, 1000, '1', false).subscribe(
+    this.elasticsearchService.get([1, 1000], ['1', undefined], false).subscribe(
       data => {
         this.methods = [];
         for (const log of data) {
@@ -107,7 +107,7 @@ export class ComparisonComponent {
   }
 
   private loadInfo(exec: string, method: string, codeType: string) {
-    this.elasticsearchService.get(+codeType.split(' ')[0], 1000, exec, false, method).subscribe(
+    this.elasticsearchService.get([+codeType.split(' ')[0], 1000], [exec, method], false).subscribe(
       data => {
         let lines: string;
         (this.mode === 1) ? (lines = this.diffService.noTimestampDiff(data))
