@@ -23,13 +23,13 @@ export class ComparisonComponent {
   active = false;
   comparatorText: string;
   comparedText: string;
+  comparison = false;
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
   methods: any[] = [];
   mode = 0;
   results = [];
-  showResults = false;
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
@@ -40,12 +40,12 @@ export class ComparisonComponent {
     this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '2 0');
     this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
-    this.showResults = true;
+    this.comparison = true;
   }
 
   methodSelected(method: any) {
     this.deselect();
-    this.showResults = false;
+    this.comparison = false;
     this.comparatorText = '';
     this.comparedText = '';
     this.execsComparator = [];
