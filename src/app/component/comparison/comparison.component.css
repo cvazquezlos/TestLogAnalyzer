@@ -114,3 +114,17 @@
 .hide {
   display: none;
 }
+
+.comparator-section {
+  float: left;
+  width: 50%;
+}
+
+.clear {
+  clear: both;
+  overflow: hidden;
+}
+
+.comp-title {
+  font-size: x-large;
+}
