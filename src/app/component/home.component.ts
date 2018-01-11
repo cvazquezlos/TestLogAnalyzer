@@ -88,8 +88,7 @@ export class HomeComponent implements AfterViewInit {
         } else {
           this.createNav(index);
         }
-      },
-      error => console.log(error)
+      }
     );
   }
 
@@ -148,8 +147,7 @@ export class HomeComponent implements AfterViewInit {
           id += 1;
         }
         this.loadNavbarInfoAux(value, index);
-      },
-      error => console.log(error)
+      }
     );
   }
 
