@@ -96,6 +96,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 36. http://blog.ninja-squad.com/ - Migrating Http module from Angular 4 to Angular 5.
 37. https://codecraft.tv/ - HTTP with Observables in Angular 5.
 38. https://angular.io/ - Angular 4 and 5 API.
+39. https://github.com/bill-long/angular-rich-text-diff - Google Diff-Match-Patch.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site

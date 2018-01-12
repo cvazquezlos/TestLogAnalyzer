@@ -52,7 +52,7 @@ const httpInterceptorProviders: Type<any>[] = [
   providers: [
     DiffService,
     ElasticsearchService,
-    ExecsStatusService
+    ExecsStatusService,
   ],
   bootstrap: [AppComponent],
   entryComponents: []
