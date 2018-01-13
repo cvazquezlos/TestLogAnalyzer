@@ -93,7 +93,7 @@
       <div class="full-width">
         <button class="find" (click)="generateComparison()">Find difference</button>
       </div>
-      <pre class="not-displayed" #process diff [left]="comparatorText" [right]="comparedText"></pre>
+      <pre class="not-displayed" #process semanticDiff [left]="comparatorText" [right]="comparedText"></pre>
     </div>
     <ng-template #default>
       <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">

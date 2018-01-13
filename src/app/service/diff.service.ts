@@ -4,14 +4,17 @@ import {Log} from '../model/log.model';
 @Injectable()
 export class DiffService {
 
+  active: boolean;
   comparatorClass: string;
   comparedClass: string;
   iteratorContent: any;
   results: any[];
 
   generateComparison(diff: string) {
-    let lines = this.correctMistakes(diff.split('<br>'), '<ins>', '</ins>');
-    lines = this.correctMistakes(lines, '<del>', '</del>');
+    console.log(diff.split('<br>'));
+    let lines = this.correctDelMistakes(diff.split('<br>'), ['<del>', '</del>'], ['<ins>', '<ins>']);
+    //lines = this.correctInsMistakes(lines, ['<ins>', '</ins>'], ['<del>', '</del>']);
+    console.log('After clean del' + lines);
     let j, k, comparatorLine, comparedLine, c1, c2: any;
     this.results = [];
     this.resetIterator();
@@ -20,9 +23,7 @@ export class DiffService {
       j = this.iteratorContent.j;
       k = this.iteratorContent.k;
       comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 0);
-      comparatorLine = this.iteratorContent.a1 + comparatorLine;
       comparedLine = this.deleteUselessData(line, '<del>', '</del>', 1);
-      comparedLine = this.iteratorContent.a2 + comparedLine;
       (comparatorLine.length < (line.length * 0.3)) ? (this.updateIndexes(comparatorLine, '', '',
         comparedLine, j, k + 1, this.iteratorContent.i1, k.toString() + '.', 0)) : (c1 = true);
       (comparedLine.length < (line.length * 0.3)) ? (this.updateIndexes('', comparedLine, comparatorLine,
@@ -33,6 +34,23 @@ export class DiffService {
       this.concatResults(this.iteratorContent.i1, this.iteratorContent.i2, this.iteratorContent.line1, this.iteratorContent.line2);
     });
     return this.results;
+  }
+
+  private correctDelMistakes(lines: any[], t1: string[], t2: string[]) {
+    for (let i = 0; i < lines.length; i++) {
+      console.log(lines[i]);
+      if (lines[i].lastIndexOf(t1[0]) > lines[i].lastIndexOf(t1[1])) {
+        console.log('First condition');
+        lines[i] = lines[i] + t1[1];
+        this.active = true;
+      } else if (this.active) {
+        console.log('Second condition');
+        lines[i] = t1[0] + lines[i];
+        this.active = false;
+      }
+      console.log(lines[i]);
+    }
+    return lines;
   }
 
   generateOutput(log: Log) {
@@ -70,17 +88,6 @@ export class DiffService {
     });
     this.comparatorClass = 'normal';
     this.comparedClass = 'normal';
-  }
-
-  private correctMistakes(lines: any[], t1: string, t2: string) {
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].lastIndexOf(t1) > lines[i].lastIndexOf(t2)) {
-        lines[i] = lines[i] + t2;
-      } else if (lines[i].indexOf(t2) < lines[i].indexOf(t1)) {
-        lines[i] = t1 + lines[i];
-      }
-    }
-    return lines;
   }
 
   private deleteUselessData(line: string, t1: string, t2: string, id: number) {

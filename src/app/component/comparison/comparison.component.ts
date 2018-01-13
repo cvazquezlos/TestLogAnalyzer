@@ -33,17 +33,6 @@ export class ComparisonComponent {
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
     this.initInfo();
-    const richTextDiff = require('../../../../node_modules/rich-text-diff');
-    const str1 = `2017-12-28 13:58:23.069 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can't be null.
-2017-12-28 13:58:23.074 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.
-2017-12-28 13:58:23.074 [main] INFO com.example.bookstore.basic.BasicUnitTest After deleting info, database size have to be 19.
-2017-12-28 13:58:23.074 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can't contain target value.
-`;
-    const str2 = `2017-11-19 00:24:43.881 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.
-2017-11-19 00:24:43.886 [main] INFO com.example.bookstore.basic.BasicUnitTest After deleting info, database size have to be 19.
-2017-11-19 00:24:43.887 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can't contain target value.
-`;
-    console.log("Hola" + richTextDiff(str1, str2));
   }
 
   generateComparison() {
