@@ -12,9 +12,10 @@ export class DiffService {
 
   generateComparison(diff: string) {
     console.log(diff.split('<br>'));
-    let lines = this.correctDelMistakes(diff.split('<br>'), ['<del>', '</del>'], ['<ins>', '<ins>']);
-    //lines = this.correctInsMistakes(lines, ['<ins>', '</ins>'], ['<del>', '</del>']);
+    let lines = this.correctDelMistakes(diff.split('<br>'), ['<del>', '</del>']);
     console.log('After clean del' + lines);
+    lines = this.correctInsMistakes(lines, ['<ins>', '</ins>']);
+    console.log('After clean ins' + lines);
     let j, k, comparatorLine, comparedLine, c1, c2: any;
     this.results = [];
     this.resetIterator();
@@ -36,7 +37,24 @@ export class DiffService {
     return this.results;
   }
 
-  private correctDelMistakes(lines: any[], t1: string[], t2: string[]) {
+  private correctDelMistakes(lines: any[], t1: string[]) {
+    for (let i = 0; i < lines.length; i++) {
+      console.log(lines[i]);
+      if (lines[i].lastIndexOf(t1[0]) > lines[i].lastIndexOf(t1[1])) {
+        console.log('First condition');
+        lines[i] = lines[i] + t1[1];
+        this.active = true;
+      } else if (this.active) {
+        console.log('Second condition');
+        lines[i] = t1[0] + lines[i];
+        this.active = false;
+      }
+      console.log(lines[i]);
+    }
+    return lines;
+  }
+
+  private correctInsMistakes(lines: any[], t1: string[]) {
     for (let i = 0; i < lines.length; i++) {
       console.log(lines[i]);
       if (lines[i].lastIndexOf(t1[0]) > lines[i].lastIndexOf(t1[1])) {

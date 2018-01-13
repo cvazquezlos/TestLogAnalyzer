@@ -111,6 +111,7 @@ export class ComparisonComponent {
         (this.mode === 1) ? (lines = this.diffService.noTimestampDiff(data))
           : ((this.mode === 2) ? (lines = this.diffService.timeDiff(data))
           : (lines = this.concatData(data)));
+        console.log(lines);
         switch (+codeType.split(' ')[1]) {
           case 0:
             this.comparatorText = lines;
