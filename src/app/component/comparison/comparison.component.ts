@@ -29,6 +29,7 @@ export class ComparisonComponent {
   methods: any[] = [];
   mode = 0;
   results = [];
+  richTextDiff = require('../../../../node_modules/rich-text-diff');
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
@@ -38,16 +39,26 @@ export class ComparisonComponent {
 5 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.
 5 [main] INFO com.example.bookstore.basic.BasicUnitTest After deleting info, database size have to be 19.
 5 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can't contain target value.`;
-    const str2 = `5 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.
+    const str2 = `0 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.
 5 [main] INFO com.example.bookstore.basic.BasicUnitTest After deleting info, database size have to be 19.
 6 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can't contain target value.`;
-    console.log('Hola' + richTextDiff(str1, str2));
+    const str3 = `2017-12-28 13:58:23.069 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can't be null.
+2017-12-28 13:58:23.074 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.
+2017-12-28 13:58:23.074 [main] INFO com.example.bookstore.basic.BasicUnitTest After deleting info, database size have to be 19.
+2017-12-28 13:58:23.074 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can't contain target value.`;
+    const str4 = `2017-11-19 00:24:43.881 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.
+2017-11-19 00:24:43.886 [main] INFO com.example.bookstore.basic.BasicUnitTest After deleting info, database size have to be 19.
+2017-11-19 00:24:43.887 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can't contain target value.`;
+    console.log('Time primero ejecucion 3 diff: ' + richTextDiff(str1, str2));
+    console.log('Time primero ejecucion 1 diff: ' + richTextDiff(str2, str1));
+    console.log('Normal primero ejecucion 3: ' + richTextDiff(str3, str4));
+    console.log('Normal primero ejecucion 1: ' + richTextDiff(str4, str3));
   }
 
   generateComparison() {
     this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '2 0');
     this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');
-    this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
+    this.results = this.diffService.generateComparison(this.richTextDiff(this.comparatorText, this.comparedText));
     this.comparison = true;
   }
 
