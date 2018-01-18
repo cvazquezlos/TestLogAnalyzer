@@ -4,7 +4,6 @@ import {Log} from '../model/log.model';
 @Injectable()
 export class DiffService {
 
-  active: boolean;
   comparatorClass: string;
   comparedClass: string;
   iteratorContent: any;
