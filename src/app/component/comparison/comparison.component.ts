@@ -29,11 +29,11 @@ export class ComparisonComponent {
   methods: any[] = [];
   mode = 0;
   results = [];
-  richTextDiff = require('../../../../node_modules/rich-text-diff');
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
     this.initInfo();
+    console.log(localStorage.getItem('result'));
   }
 
   generateComparison() {
