@@ -1,4 +1,5 @@
-
+localStorage.setItem('left', JSON.stringify(['INITIALIZING...']));
+localStorage.setItem('right', JSON.stringify(['INITIALIZING...']));
 var AngularRichTextDiff;
 (function (AngularRichTextDiff) {
   'use strict';
@@ -8,19 +9,21 @@ var AngularRichTextDiff;
       this.$scope = $scope;
       this.$sce = $sce;
       this.unicodeRangeStart = 0xE000;
-      $scope.$watch('left', function () {
+      $scope.$watch(getLeftValue(), function () {
         _this.doDiff();
+        console.log(localStorage.getItem('left'));
       });
-      $scope.$watch('right', function () {
+      $scope.$watch(getRightValue(), function () {
         _this.doDiff();
+        console.log(localStorage.getItem('right'));
       });
       this.tagMap = {};
       this.dmp = new diff_match_patch();
       this.doDiff();
     }
     RichTextDiffController.prototype.doDiff = function () {
-      var diffableLeft = this.convertHtmlToDiffableString(this.$scope.left);
-      var diffableRight = this.convertHtmlToDiffableString(this.$scope.right);
+      var diffableLeft = this.convertJSONToDiffableString(localStorage.getItem('left'));
+      var diffableRight = this.convertJSONToDiffableString(localStorage.getItem('right'));
       var diffs = this.dmp.diff_main(diffableLeft, diffableRight);
       this.dmp.diff_cleanupSemantic(diffs);
       var diffOutput = '';
@@ -30,6 +33,14 @@ var AngularRichTextDiff;
       }
       localStorage.setItem('result', diffOutput);
       this.$scope.diffOutput = this.$sce.trustAsHtml(diffOutput);
+    };
+    RichTextDiffController.prototype.convertJSONToDiffableString = function(JSONString) {
+      var diffableString = '';
+      var content = JSON.parse(JSONString);
+      for (var i = 0; i < content.length; i++) {
+        diffableString += content[i] + '\n';
+      }
+      return diffableString;
     };
     RichTextDiffController.prototype.insertTagsForOperation = function (diffableString, operation) {
       var openTag = '';
@@ -69,7 +80,7 @@ var AngularRichTextDiff;
         outputString += closeTag;
       return outputString;
     };
-    RichTextDiffController.prototype.convertHtmlToDiffableString = function (htmlString) {
+    /*RichTextDiffController.prototype.convertHtmlToDiffableString = function (htmlString) {
       var diffableString = '';
       var offset = 0;
       while (offset < htmlString.length) {
@@ -103,7 +114,7 @@ var AngularRichTextDiff;
         }
       }
       return diffableString;
-    };
+    };*/
     RichTextDiffController.prototype.convertDiffableBackToHtml = function (diffableString) {
       var htmlString = '';
       for (var x = 0; x < diffableString.length; x++) {
@@ -138,6 +149,12 @@ var AngularRichTextDiff;
       controller: RichTextDiffController
     };
     return directive;
+  }
+  function getLeftValue() {
+    return localStorage.getItem('left');
+  }
+  function getRightValue() {
+    return localStorage.getItem('right');
   }
   angular.module('angular-rich-text-diff', ['ngSanitize']);
   angular.module('angular-rich-text-diff').directive('richTextDiff', richTextDiff);

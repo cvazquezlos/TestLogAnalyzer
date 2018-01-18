@@ -97,6 +97,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 37. https://codecraft.tv/ - HTTP with Observables in Angular 5.
 38. https://angular.io/ - Angular 4 and 5 API.
 39. https://github.com/bill-long/angular-rich-text-diff - Google Diff-Match-Patch.
+40. https://www.w3schools.com/angular/ - AngularJS modules.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site

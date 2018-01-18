@@ -34,6 +34,10 @@ export class ComparisonComponent {
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
     this.initInfo();
     console.log(localStorage.getItem('result'));
+    localStorage.setItem('left', JSON.stringify(['0 [main] INFO com.example.bookstore.basic.BasicUnitTest Database can\'t be null.',
+      '5 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.', '5 [main] INFO com.example.bookstore.basic.BasicUnitTest After deleting info, database size have to be 19.']));
+    localStorage.setItem('right', JSON.stringify(['0 [main] INFO com.example.bookstore.basic.BasicUnitTest Database must contain any target value.', '5 [main] INFO com.example.bookstore.basic.BasicUnitTest After deleting info, database size have to be 19.']));
+    console.log(localStorage.getItem('result'));
   }
 
   generateComparison() {
