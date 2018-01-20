@@ -1,3 +1,4 @@
+/// <reference path='../../module/diff.module.ts'/>
 import {
   Component,
   ElementRef,

@@ -1,4 +1,4 @@
-declare class g_diff_match_patch {
+declare class DiffMatchPatch {
   diff_main(left: string, right: string): Array<IDiff>;
   diff_cleanupSemantic(diff: Array<IDiff>);
 }
