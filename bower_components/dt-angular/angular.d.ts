@@ -628,8 +628,7 @@ declare module ng {
     interface IHttpPromise<T> extends IPromise<T> {
         success(callback: IHttpPromiseCallback<T>): IHttpPromise<T>;
         error(callback: IHttpPromiseCallback<T>): IHttpPromise<T>;
-        then<TResult>(successCallback: (response: IHttpPromiseCallbackArg<T>) => TResult, errorCallback?: (response: IHttpPromiseCallbackArg<T>) => any): IPromise<TResult>;
-        then<TResult>(successCallback: (response: IHttpPromiseCallbackArg<T>) => IPromise<TResult>, errorCallback?: (response: IHttpPromiseCallbackArg<T>) => any): IPromise<TResult>;
+        then<TResult>(successCallback: (promiseValue: T) => TResult, errorCallback?: (reason: any) => TResult, notifyCallback?: (state: any) => any): IPromise<TResult>;
     }
 
     interface IHttpProvider extends IServiceProvider {
@@ -830,7 +829,7 @@ declare module ng {
             annotate(fn: Function): string[];
             annotate(inlineAnnotatedFunction: any[]): string[];
             get(name: string): any;
-            has(name: string): boolean; 
+            has(name: string): boolean;
             instantiate(typeConstructor: Function, locals?: any): any;
             invoke(inlineAnnotatedFunction: any[]): any;
             invoke(func: Function, context?: any, locals?: any): any;

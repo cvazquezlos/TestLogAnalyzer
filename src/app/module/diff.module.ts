@@ -1,5 +1,5 @@
-/// <reference path="../../../bower_components/dt-angular/angular.d.ts"/>
-/// <reference path="google-diff-match-patch.module.ts"/>
+/// <reference path='../../../bower_components/dt-angular/angular.d.ts'/>
+/// <reference path='google-diff-match-patch.module.ts'/>
 module AngularRichTextDiff {
   'use strict';
 
@@ -24,8 +24,12 @@ module AngularRichTextDiff {
     dmp: g_diff_match_patch;
 
     constructor(public $scope: IRichTextDiffScope, public $sce: ng.ISCEService) {
-      $scope.$watch('left',() => { this.doDiff(); });
-      $scope.$watch('right',() => { this.doDiff(); });
+      $scope.$watch('left', () => {
+        this.doDiff();
+      });
+      $scope.$watch('right', () => {
+        this.doDiff();
+      });
       this.tagMap = {};
       this.mapLength = 0;
 
