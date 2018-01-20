@@ -170,7 +170,7 @@ module AngularRichTextDiff {
           continue;
         }
 
-        let tagString = this.tagMap[diffableString[x]];
+        const tagString = this.tagMap[diffableString[x]];
         if (tagString === undefined) {
           // We somehow have a character that is above our range but didn't map
           // Do we need to add an upper bound or change the range?
