@@ -18,6 +18,7 @@ import {ExecsStatusService} from '../../service/execs-status.service';
 export class ComparisonComponent {
 
   @ViewChild('process') process: ElementRef;
+  @ViewChild('data1') output: any;
 
   active = false;
   comparatorText: string;
@@ -33,7 +34,7 @@ export class ComparisonComponent {
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
     this.initInfo();
-    console.log(localStorage.getItem('result'));
+    console.log(document.getElementById('data1').innerText);
   }
 
   generateComparison() {
