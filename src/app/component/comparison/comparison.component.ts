@@ -27,14 +27,20 @@ export class ComparisonComponent {
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
+  left: any;
   methods: any[] = [];
   mode = 0;
+  right: HTMLElement;
   results = [];
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
     this.initInfo();
-    console.log(document.getElementById('data1').innerText);
+    console.log(document.getElementById('textRich'));
+    //this.left = document.getElementById('leftt').lastChild.attributes[3];
+    //console.log(this.left);
+    //console.log(this.left);
+    //this.left = document.querySelector("div.ta-scroll-window.ng-scope.ta-text.ta-editor.form-control");
   }
 
   generateComparison() {
@@ -113,9 +119,9 @@ export class ComparisonComponent {
         (this.mode === 1) ? (lines = this.diffService.noTimestampDiff(data))
           : ((this.mode === 2) ? (lines = this.diffService.timeDiff(data))
           : (lines = this.concatData(data)));
-        console.log(lines);
         switch (+codeType.split(' ')[1]) {
           case 0:
+            document.getElementById('leftt').innerText = "Hoal";
             this.comparatorText = lines;
             break;
           case 1:

@@ -1,5 +1,3 @@
-/// <reference path="bower_components/dt-angular/angular.d.ts"/>
-/// <reference path="google-diff-match-patch.d.ts"/>
 var AngularRichTextDiff;
 (function (AngularRichTextDiff) {
   'use strict';
@@ -11,9 +9,15 @@ var AngularRichTextDiff;
       this.unicodeRangeStart = 0xE000;
       $scope.$watch('left', function () {
         _this.doDiff();
+        console.log("Changes.");
+        console.log(this.$scope.left);
+        console.log(this.$scope.right);
       });
       $scope.$watch('right', function () {
         _this.doDiff();
+        console.log("Changes.");
+        console.log(this.$scope.left);
+        console.log(this.$scope.right);
       });
       this.tagMap = {};
       this.dmp = new diff_match_patch();

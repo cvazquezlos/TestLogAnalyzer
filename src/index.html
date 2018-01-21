@@ -40,24 +40,12 @@
     </div>
   </app-root>
   <p>Hello {{name}}!</p>
-  <div class="panel panel-primary">
-    <div class="panel-heading">Left</div>
-    <div class="panel-body">
-      <text-angular ng-model="richText1"></text-angular>
-    </div>
-  </div>
-  <p id="data1" #data1>{{richText1}}</p>
-  <div class="panel panel-primary">
-    <div class="panel-heading">Right</div>
-    <div class="panel-body">
-      <text-angular ng-model="richText2"></text-angular>
-    </div>
-  </div>
-  <p>{{richText2}}</p>
+  <p id="leftt" ng-model="richText1"></p>
+  <p id="rightt" ng-model="richText2"></p>
   <div class="panel panel-primary">
     <div class="panel-heading">Diff</div>
     <div class="panel-body">
-      <rich-text-diff #output left="richText1" right="richText2"></rich-text-diff>
+      <rich-text-diff id="textRich" left="richText1" right="richText2"></rich-text-diff>
     </div>
   </div>
 </body>
