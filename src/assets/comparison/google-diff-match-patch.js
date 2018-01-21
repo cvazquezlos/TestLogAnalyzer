@@ -779,6 +779,7 @@ diff_match_patch.prototype.diff_cleanupSemantic = function(diffs) {
       }
     }
     pointer++;
+    return diffs;
   }
 
   // Normalize the diff.

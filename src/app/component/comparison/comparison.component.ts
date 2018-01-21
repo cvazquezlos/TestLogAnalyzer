@@ -1,3 +1,5 @@
+/// <reference path='../../../assets/comparison/google-diff-match-patch.js'/>
+
 import {
   Component,
   ElementRef,
@@ -24,6 +26,7 @@ export class ComparisonComponent {
   comparatorText: string;
   comparedText: string;
   comparison = false;
+  dmp = new diff_match_patch();
   execsComparator: any[] = [];
   execsCompared: any[] = [];
   execsNumber = 0;
@@ -32,22 +35,91 @@ export class ComparisonComponent {
   mode = 0;
   right: HTMLElement;
   results = [];
+  tagMap = {};
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService,
               private diffService: DiffService, private execStatusService: ExecsStatusService) {
     this.initInfo();
-    console.log(document.getElementById('textRich'));
-    //this.left = document.getElementById('leftt').lastChild.attributes[3];
-    //console.log(this.left);
-    //console.log(this.left);
-    //this.left = document.querySelector("div.ta-scroll-window.ng-scope.ta-text.ta-editor.form-control");
+    //console.log(document.getElementById('textRich'));
   }
 
   generateComparison() {
     this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '2 0');
     this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
+    console.log(this.comparatorText);
+    console.log(this.comparedText);
+    let diffs = this.dmp.diff_main(this.comparatorText, this.comparedText, null, null);
+    console.log(diffs);
+    diffs = this.dmp.diff_cleanupSemantic(diffs);
+    console.log(diffs);
+    let diffOutput = '';
+    for (var x = 0; x < diffs.length; x++) {
+      diffs[x][1] = this.insertTagsForOperation(diffs[x][1], diffs[x][0]);
+      diffOutput += this.convertDiffableBackToHtml(diffs[x][1]);
+    }
+    console.log(diffOutput);
     this.comparison = true;
+  }
+
+  convertDiffableBackToHtml(diffableString: string) {
+    var htmlString = '';
+    for (var x = 0; x < diffableString.length; x++) {
+      var charCode = diffableString.charCodeAt(x);
+      if (charCode < 0xE000) {
+        htmlString += diffableString[x];
+        continue;
+      }
+      var tagString = this.tagMap[diffableString[x]];
+      if (tagString === undefined) {
+        // We somehow have a character that is above our range but didn't map
+        // Do we need to add an upper bound or change the range?
+        htmlString += diffableString[x];
+      }
+      else {
+        htmlString += tagString;
+      }
+    }
+    return htmlString;
+  }
+
+  insertTagsForOperation(diffableString: string, operation: number) {
+    var openTag = '';
+    var closeTag = '';
+    if (operation === 1) {
+      openTag = '<ins>';
+      closeTag = '</ins>';
+    }
+    else if (operation === -1) {
+      openTag = '<del>';
+      closeTag = '</del>';
+    }
+    else {
+      return diffableString;
+    }
+    var outputString = openTag;
+    var isOpen = true;
+    for (var x = 0; x < diffableString.length; x++) {
+      if (diffableString.charCodeAt(x) < 0xE000) {
+        // We just hit a regular character. If tag is not open, open it.
+        if (!isOpen) {
+          outputString += openTag;
+          isOpen = true;
+        }
+        outputString += diffableString[x];
+      }
+      else {
+        // We just hit one of our mapped unicode characters. Close our tag.
+        if (isOpen) {
+          outputString += closeTag;
+          isOpen = false;
+        }
+        outputString += diffableString[x];
+      }
+    }
+    if (isOpen)
+      outputString += closeTag;
+    return outputString;
   }
 
   methodSelected(method: any) {
@@ -121,10 +193,10 @@ export class ComparisonComponent {
           : (lines = this.concatData(data)));
         switch (+codeType.split(' ')[1]) {
           case 0:
-            document.getElementById('leftt').innerText = "Hoal";
             this.comparatorText = lines;
             break;
           case 1:
+            //(document.getElementById('rightt') as HTMLInputElement).value = lines;
             this.comparedText = lines;
             break;
         }
