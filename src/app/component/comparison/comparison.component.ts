@@ -5,7 +5,6 @@ import {
 } from '@angular/core';
 import {TdMediaService} from '@covalent/core';
 
-import {Log} from '../../model/log.model';
 import {DiffService} from '../../service/diff.service';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 import {ExecsStatusService} from '../../service/execs-status.service';

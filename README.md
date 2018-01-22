@@ -62,7 +62,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 2. https://qbox.io/blog/parsing-logs-using-logstash - Parsing logs using Logstash.
 3. https://elastic.co/guide/index.html - Getting started guide, API, Pagination and Kibana requests (filtering, ranges, POST and GET requests).
 4. http://jupyter.org/ - Getting started guide, kernels and design.
-5. https://developer.mozilla.org/es/ - Date type in TypeScript language and CORS disable for Elasticsearch requests.
+5. https://developer.mozilla.org/es/ - Date type in TypeScript language and CORS disable for Elasticsearch requests, HTMLElement API.
 6. https://typescriptlang.org/docs/home.html - Looking for TS simple and complex types.
 7. http://getbootstrap.com/css/ - Bootstrap CSS and components guidelines.
 8. https://teradata.github.io/covalent - Teradata Covalent library.
@@ -96,6 +96,8 @@ Ensure you have Elasticsearch installed and an instance of it running.
 36. http://blog.ninja-squad.com/ - Migrating Http module from Angular 4 to Angular 5.
 37. https://codecraft.tv/ - HTTP with Observables in Angular 5.
 38. https://angular.io/ - Angular 4 and 5 API.
+39. https://github.com/bill-long/angular-rich-text-diff - Google Diff-Match-Patch.
+40. https://www.w3schools.com/angular/ - AngularJS modules.
 
 ## Involved technologies
 Element           | LOGANALYZER needs it because...                    | Official site
