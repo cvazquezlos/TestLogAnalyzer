@@ -116,7 +116,6 @@ export class ComparisonComponent {
             this.comparatorText = lines;
             break;
           case 1:
-            //(document.getElementById('rightt') as HTMLInputElement).value = lines;
             this.comparedText = lines;
             break;
         }
