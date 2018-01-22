@@ -37,7 +37,7 @@ export class DiffService {
 
   generateOutput(log: Log) {
     return (log.timestamp + ' [' + log.thread_name + '] ' + log.level + ' ' + log.logger_name + '' +
-      ' ' + log.formatted_message) + '|';
+      ' ' + log.formatted_message) + '\n';
   }
 
   noTimestampDiff(data: any[]) {
