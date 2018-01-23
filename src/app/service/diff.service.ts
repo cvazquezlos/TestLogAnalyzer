@@ -56,10 +56,7 @@ export class DiffService {
         lines[i] = lines[i] + end;
       } else {
         const enil = this.reverse(lines[i]);
-        if ((enil.lastIndexOf(end[1])) >
-          (enil.lastIndexOf(init[1]))) {
-          lines[i] = init + lines[i];
-        }
+        ((enil.lastIndexOf(end[1])) > (enil.lastIndexOf(init[1]))) ? (lines[i] = init + lines[i]) : (lines[i] = lines[i]);
       }
     }
     return lines;
