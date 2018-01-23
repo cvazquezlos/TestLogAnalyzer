@@ -14,7 +14,7 @@ export class DiffService {
   generateComparison(diff: string) {
     let lines = this.solveMistakes(diff.split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
     lines = this.solveMistakes(lines, ['<ins>', this.reverse('<ins>')], ['</ins>', this.reverse('</ins>')]);
-    let comparatorLine, comparedLine, i, j: any;
+    const comparatorLine, comparedLine, i, j: any;
     this.results = [];
     i = 1;
     j = 1;
