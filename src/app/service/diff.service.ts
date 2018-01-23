@@ -14,7 +14,7 @@ export class DiffService {
   generateComparison(diff: string) {
     let lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
-    lines = this.solveMistakes(lines, ['<ins>', this.reverse('<ins>')], ['</ins>', this.reverse('</ins>')]);
+    lines.pop();
     console.log(lines);
     let comparatorLine, comparedLine, i, j: any;
     this.results = [];
@@ -53,16 +53,24 @@ export class DiffService {
 
   private solveMistakes(lines: string[], init: string[], end: string[]) {
     let wholeLog = '';
+    let added = '';
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].lastIndexOf(init[0]) > lines[i].lastIndexOf(end[0])) {
-        wholeLog = lines[i].split(init[0])[0];
-        lines[i] = init[0] + wholeLog + lines[i].split(init[0])[1] + end[0];
+        wholeLog = lines[i].substr(0, lines[i].indexOf(init[0]));
+        if (lines[i].indexOf('<ins>') !== -1) {
+          added = '<ins>' + lines[i].substring(lines[i].indexOf('<ins>') + 5, lines[i].indexOf('</ins>')) + '</ins>';
+          lines[i] = lines[i].replace(added, '');
+        } else {
+          added = '';
+        }
+        console.log(added);
+        lines[i] = init[0] + wholeLog + lines[i].replace(wholeLog, '') + end[0];
       } else {
         const enil = this.reverse(lines[i]);
         if ((enil.lastIndexOf(end[1])) > (enil.lastIndexOf(init[1]))) {
           lines[i] = lines[i].replace(wholeLog, '');
           lines[i] = init[0] + lines[i];
-          lines[i] = wholeLog + lines[i];
+          lines[i] = wholeLog + added + lines[i];
         }
       }
     }

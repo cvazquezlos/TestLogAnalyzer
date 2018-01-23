@@ -38,9 +38,9 @@ export class ComparisonComponent {
   generateComparison() {
     this.loadInfo(localStorage.getItem('CExecI'), localStorage.getItem('CExecM'), '2 0');
     this.loadInfo(localStorage.getItem('cExecI'), localStorage.getItem('cExecM'), '2 1');
-    console.log(this.process.nativeElement.innerHTML.toString());
     this.diffService.setComparator(this.comparatorText);
     this.diffService.setCompared(this.comparedText);
+    console.log(this.process.nativeElement.innerHTML.toString());
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.comparison = true;
   }
