@@ -56,7 +56,7 @@ export class DiffService {
       } else {
         const enil = this.reverse(lines[i]);
         if ((enil.lastIndexOf(this.reverse(end))) >
-          (enil.lastIndexOf(this.reverse(init))){
+          (enil.lastIndexOf(this.reverse(init)))) {
           lines[i] = init + lines[i];
         }
       }
