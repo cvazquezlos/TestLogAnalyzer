@@ -63,9 +63,11 @@ export class DiffService {
         wholeLog = lines[i].substr(0, lines[i].indexOf(init[0]));
         if (lines[i].indexOf('<del>') !== lines[i].lastIndexOf('</del>')) {
           added = lines[i].substring(lines[i].indexOf('<del>'), lines[i].lastIndexOf('<del>'));
+
+          lines[i] = lines[i].replace(added, added + '<ins>_doNotCare</ins>');
           while (added.indexOf('<del>') !== -1) {
-            let useless = added.substring(added.indexOf('<del>') + 5, added.indexOf('</del>'));
-            added = added.replace('<del>' + useless + '</del>', '');
+            const useless = added.substring(added.indexOf('<del>') + 5, added.indexOf('</del>'));
+            added = added.replace('<del>' + useless + '</del>', '').replace('</ins>', '') + '</ins>';
           }
         } else {
           added = '';
@@ -137,8 +139,13 @@ export class DiffService {
     let uselessData;
     while (line.indexOf(t1) !== -1) {
       uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
-      line = line.replace(t1 + uselessData + t2, '');
-      (id === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
+      if (id === 1 && (line.indexOf('_doNotCare') !== -1)) {
+        this.comparedClass = 'added';
+        line = '';
+      } else {
+        line = line.replace(t1 + uselessData + t2, '');
+        (id === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
+      }
     }
     return line;
   }
