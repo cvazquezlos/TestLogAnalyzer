@@ -12,12 +12,13 @@ export class DiffService {
   results: any[];
 
   generateComparison(diff: string) {
-    let lines = this.solveMistakes(diff.split('<br>'), '<del>', '</del>');
-    lines = this.solveMistakes(lines, '<ins>', '</ins>');
+    let lines = this.solveMistakes(diff.split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
+    lines = this.solveMistakes(lines, ['<ins>', this.reverse('<ins>')], ['</ins>', this.reverse('</ins>')]);
     let comparatorLine, comparedLine, i, j: any;
     this.results = [];
     i = 1;
     j = 1;
+    /*
     lines.forEach(line => {
       comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 0);
       comparedLine = this.deleteUselessData(line, '<del>', '</del>', 1);
@@ -49,14 +50,14 @@ export class DiffService {
     */
   }
 
-  private solveMistakes(lines: string[], init: string, end: string) {
+  private solveMistakes(lines: string[], init: string[], end: string[]) {
     for (let i = 0; i < lines.length; i++) {
-      if (lines[i].lastIndexOf(init) > lines[i].lastIndexOf(end)) {
+      if (lines[i].lastIndexOf(init[0]) > lines[i].lastIndexOf(end[0])) {
         lines[i] = lines[i] + end;
       } else {
         const enil = this.reverse(lines[i]);
-        if ((enil.lastIndexOf(this.reverse(end))) >
-          (enil.lastIndexOf(this.reverse(init)))) {
+        if ((enil.lastIndexOf(end[1])) >
+          (enil.lastIndexOf(init[1]))) {
           lines[i] = init + lines[i];
         }
       }
