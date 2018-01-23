@@ -54,9 +54,9 @@ export class DiffService {
       if (lines[i].lastIndexOf(init) > lines[i].lastIndexOf(end)) {
         lines[i] = lines[i] + end;
       } else {
-        const enil = lines[i].split("").reverse().join("");
-        if ((enil.lastIndexOf(end.split("").reverse().join(""))) >
-          (enil.lastIndexOf(init.split("").reverse().join("")))) {
+        const enil = lines[i].split('').reverse().join("");
+        if ((enil.lastIndexOf(end.split('').reverse().join(""))) >
+          (enil.lastIndexOf(init.split('').reverse().join("")))) {
           lines[i] = init + lines[i];
         }
       }
