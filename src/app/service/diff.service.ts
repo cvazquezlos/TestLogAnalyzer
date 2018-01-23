@@ -12,7 +12,7 @@ export class DiffService {
   results: any[];
 
   generateComparison(diff: string) {
-    let lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
+    const lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
     lines.pop();
     console.log(lines);
@@ -51,15 +51,22 @@ export class DiffService {
     */
   }
 
+  private getIntraTags(part: string, t1: string, t2: string) {
+
+  }
+
   private solveMistakes(lines: string[], init: string[], end: string[]) {
     let wholeLog = '';
     let added = '';
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].lastIndexOf(init[0]) > lines[i].lastIndexOf(end[0])) {
         wholeLog = lines[i].substr(0, lines[i].indexOf(init[0]));
-        if (lines[i].indexOf('<ins>') !== -1) {
-          added = '<ins>' + lines[i].substring(lines[i].indexOf('<ins>') + 5, lines[i].indexOf('</ins>')) + '</ins>';
-          lines[i] = lines[i].replace(added, '');
+        if (lines[i].indexOf('<del>') !== lines[i].lastIndexOf('</del>')) {
+          added = lines[i].substring(lines[i].indexOf('<del>'), lines[i].lastIndexOf('<del>'));
+          while (added.indexOf('<del>') !== -1) {
+            let useless = added.substring(added.indexOf('<del>') + 5, added.indexOf('</del>'));
+            added = added.replace('<del>' + useless + '</del>', '');
+          }
         } else {
           added = '';
         }
