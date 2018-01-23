@@ -54,14 +54,18 @@ export class DiffService {
       if (lines[i].lastIndexOf(init) > lines[i].lastIndexOf(end)) {
         lines[i] = lines[i] + end;
       } else {
-        const enil = lines[i].split('').reverse().join("");
-        if ((enil.lastIndexOf(end.split('').reverse().join(""))) >
-          (enil.lastIndexOf(init.split('').reverse().join("")))) {
+        const enil = this.reverse(lines[i]);
+        if ((enil.lastIndexOf(this.reverse(end))) >
+          (enil.lastIndexOf(this.reverse(init))){
           lines[i] = init + lines[i];
         }
       }
     }
     return lines;
+  }
+
+  private reverse(str: string) {
+    return str.split('').reverse().join('');
   }
 
   generateOutput(log: Log) {
