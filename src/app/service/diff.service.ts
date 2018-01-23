@@ -4,14 +4,29 @@ import {Log} from '../model/log.model';
 @Injectable()
 export class DiffService {
 
+  comparator: string;
   comparatorClass: string;
+  compared: string;
   comparedClass: string;
   iteratorContent: any;
   results: any[];
 
   generateComparison(diff: string) {
-    let lines = this.correctMistakes(diff.split('<br>'), '<ins>', '</ins>');
-    lines = this.correctMistakes(lines, '<del>', '</del>');
+    let lines = this.solveMistakes(diff.split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
+    lines = this.solveMistakes(lines, ['<ins>', this.reverse('<ins>')], ['</ins>', this.reverse('</ins>')]);
+    /*let comparatorLine, comparedLine, i, j: any;
+    this.results = [];
+    i = 1;
+    j = 1;
+    lines.forEach(line => {
+      comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 0);
+      comparedLine = this.deleteUselessData(line, '<del>', '</del>', 1);
+      this.concatResults(i, j, comparatorLine, comparedLine);
+      i++;
+      j++;
+    });
+    return this.results;
+    /*
     let j, k, comparatorLine, comparedLine, c1, c2: any;
     this.results = [];
     this.resetIterator();
@@ -20,9 +35,7 @@ export class DiffService {
       j = this.iteratorContent.j;
       k = this.iteratorContent.k;
       comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 0);
-      comparatorLine = this.iteratorContent.a1 + comparatorLine;
       comparedLine = this.deleteUselessData(line, '<del>', '</del>', 1);
-      comparedLine = this.iteratorContent.a2 + comparedLine;
       (comparatorLine.length < (line.length * 0.3)) ? (this.updateIndexes(comparatorLine, '', '',
         comparedLine, j, k + 1, this.iteratorContent.i1, k.toString() + '.', 0)) : (c1 = true);
       (comparedLine.length < (line.length * 0.3)) ? (this.updateIndexes('', comparedLine, comparatorLine,
@@ -33,11 +46,28 @@ export class DiffService {
       this.concatResults(this.iteratorContent.i1, this.iteratorContent.i2, this.iteratorContent.line1, this.iteratorContent.line2);
     });
     return this.results;
+    */
+  }
+
+  private solveMistakes(lines: string[], init: string[], end: string[]) {
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].lastIndexOf(init[0]) > lines[i].lastIndexOf(end[0])) {
+        lines[i] = lines[i] + end;
+      } else {
+        const enil = this.reverse(lines[i]);
+        ((enil.lastIndexOf(end[1])) > (enil.lastIndexOf(init[1]))) ? (lines[i] = init + lines[i]) : (lines[i] = lines[i]);
+      }
+    }
+    return lines;
+  }
+
+  private reverse(str: string) {
+    return str.split('').reverse().join('');
   }
 
   generateOutput(log: Log) {
     return (log.timestamp + ' [' + log.thread_name + '] ' + log.level + ' ' + log.logger_name + '' +
-      ' ' + log.formatted_message) + '|';
+      ' ' + log.formatted_message) + '\n';
   }
 
   noTimestampDiff(data: any[]) {
@@ -47,6 +77,14 @@ export class DiffService {
       result += this.generateOutput(noTLog);
     });
     return result;
+  }
+
+  setComparator(comparator: string) {
+    this.comparator = comparator;
+  }
+
+  setCompared(compared: string) {
+    this.compared = compared;
   }
 
   timeDiff(data: any[]) {
@@ -70,17 +108,6 @@ export class DiffService {
     });
     this.comparatorClass = 'normal';
     this.comparedClass = 'normal';
-  }
-
-  private correctMistakes(lines: any[], t1: string, t2: string) {
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].lastIndexOf(t1) > lines[i].lastIndexOf(t2)) {
-        lines[i] = lines[i] + t2;
-      } else if (lines[i].indexOf(t2) < lines[i].indexOf(t1)) {
-        lines[i] = t1 + lines[i];
-      }
-    }
-    return lines;
   }
 
   private deleteUselessData(line: string, t1: string, t2: string, id: number) {
