@@ -41,7 +41,6 @@ export class ComparisonComponent {
     console.log(this.process.nativeElement.innerHTML.toString());
     this.diffService.setComparator(this.comparatorText);
     this.diffService.setCompared(this.comparedText);
-    console.log(this.process.nativeElement.innerHTML.toString());
     this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
     this.comparison = true;
   }
