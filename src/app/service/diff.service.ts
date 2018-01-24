@@ -11,14 +11,26 @@ export class DiffService {
   iteratorContent: any;
   results: any[];
 
-  private solveInsMistakes() {
-
-  }
-
   generateComparison(diff: string) {
+    const l = this.solveInsMistakes(diff.replace('<div>', '').replace('</div>', '')
+      .split('<br>'), ['<ins>', this.reverse('<ins>')], ['</ins>', this.reverse('</ins>')]);
+    l.pop();
+    console.log(l);
+    let comparatorLine, comparedLine, i, j: any;
+    this.results = [];
+    i = 1;
+    j = 1;
+    l.forEach(line => {
+      comparatorLine = this.deleteUselessDataIns(line, '<ins>', '</ins>', 0);
+      comparedLine = this.deleteUselessDataIns(line, '<del>', '</del>', 1);
+      this.concatResults(i, j, comparatorLine, comparedLine);
+      i++;
+      j++;
+    });
+    return this.results;
+    /*
     const lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
-    const l = this.solveInsMistakes();
     lines.pop();
     console.log(lines);
     let comparatorLine, comparedLine, i, j: any;
@@ -33,6 +45,29 @@ export class DiffService {
       j++;
     });
     return this.results;
+    */
+  }
+
+  private solveInsMistakes(lines: string[], init: string[], end: string[]) {
+    let wholeLog = '';
+    let added = '';
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].indexOf(init[0]) > lines[i].lastIndexOf(end[0])) {
+        wholeLog = lines[i].substr(0, lines[i].indexOf(init[0]));
+        lines[i] = init[0] + wholeLog + lines[i].replace(wholeLog, '') + end[0];
+        if (lines[i].indexOf('<del>') !== 0) {
+          lines[i] = lines[i] + '<del>_doNotCare_</del>';
+        }
+      } else {
+        const enil = this.reverse(lines[i]);
+        if (enil.lastIndexOf(end[1]) > (enil.lastIndexOf(init[1]))) {
+          lines[i] = lines[i].replace(wholeLog, '');
+          lines[i] = init[0] + lines[i];
+          lines[i] = wholeLog + added + lines[i];
+        }
+      }
+    }
+    return lines;
   }
 
   private solveMistakes(lines: string[], init: string[], end: string[]) {
@@ -43,7 +78,6 @@ export class DiffService {
         wholeLog = lines[i].substr(0, lines[i].indexOf(init[0]));
         if (lines[i].indexOf('<del>') !== lines[i].lastIndexOf('</del>')) {
           added = lines[i].substring(lines[i].indexOf('<del>'), lines[i].lastIndexOf('<del>'));
-
           lines[i] = lines[i].replace(added, added + '<ins>_doNotCare</ins>');
           while (added.indexOf('<del>') !== -1) {
             const useless = added.substring(added.indexOf('<del>') + 5, added.indexOf('</del>'));
@@ -52,7 +86,6 @@ export class DiffService {
         } else {
           added = '';
         }
-        console.log(added);
         lines[i] = init[0] + wholeLog + lines[i].replace(wholeLog, '') + end[0];
       } else {
         const enil = this.reverse(lines[i]);
@@ -121,6 +154,24 @@ export class DiffService {
       uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
       if (id === 1 && (line.indexOf('_doNotCare') !== -1)) {
         this.comparedClass = 'added';
+        line = '';
+      } else {
+        (id === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
+        if (line.indexOf(t1) + 5 === line.indexOf(t2)) {
+          (id === 0) ? (this.comparatorClass = 'normal') : (this.comparedClass = 'normal');
+        }
+        line = line.replace(t1 + uselessData + t2, '');
+      }
+    }
+    return line;
+  }
+
+  private deleteUselessDataIns(line: string, t1: string, t2: string, id: number) {
+    let uselessData;
+    while (line.indexOf(t1) !== -1) {
+      uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
+      if (id === 0 && (line.indexOf('_doNotCare') !== -1)) {
+        this.comparatorClass = 'added';
         line = '';
       } else {
         (id === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
