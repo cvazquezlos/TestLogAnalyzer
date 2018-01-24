@@ -143,8 +143,11 @@ export class DiffService {
         this.comparedClass = 'added';
         line = '';
       } else {
-        line = line.replace(t1 + uselessData + t2, '');
         (id === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
+        if (line.indexOf(t1) == 0) {
+          (id === 0) ? (this.comparatorClass = 'normal') : (this.comparedClass = 'normal');
+        }
+        line = line.replace(t1 + uselessData + t2, '');
       }
     }
     return line;
