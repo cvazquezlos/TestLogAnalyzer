@@ -41,7 +41,15 @@ export class ComparisonComponent {
     this.diffService.setComparator(this.comparatorText);
     this.diffService.setCompared(this.comparedText);
     console.log(this.process.nativeElement.innerHTML.toString());
-    this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString());
+    let code = 0;
+    console.log(this.comparatorText.split('\n').length);
+    console.log(this.comparedText.split('\n').length);
+    if ((this.comparatorText.split('\n').length) >= (this.comparedText.split('\n').length)) {
+      code = 0;
+    } else {
+      code = 1;
+    }
+    this.results = this.diffService.generateComparison(this.process.nativeElement.innerHTML.toString(), code);
     this.comparison = true;
   }
 
