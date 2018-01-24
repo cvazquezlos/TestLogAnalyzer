@@ -11,9 +11,14 @@ export class DiffService {
   iteratorContent: any;
   results: any[];
 
+  private solveInsMistakes() {
+
+  }
+
   generateComparison(diff: string) {
     const lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
+    const l = this.solveInsMistakes();
     lines.pop();
     console.log(lines);
     let comparatorLine, comparedLine, i, j: any;
@@ -112,10 +117,8 @@ export class DiffService {
 
   private deleteUselessData(line: string, t1: string, t2: string, id: number) {
     let uselessData;
-    console.log("id: " + id + "pos of " + t1 + ": " + line.indexOf(t1));
     while (line.indexOf(t1) !== -1) {
       uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
-      console.log(uselessData);
       if (id === 1 && (line.indexOf('_doNotCare') !== -1)) {
         this.comparedClass = 'added';
         line = '';
