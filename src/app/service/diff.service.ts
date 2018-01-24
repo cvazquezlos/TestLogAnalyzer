@@ -30,6 +30,7 @@ export class DiffService {
       j++;
     });
     return this.results;
+
     /* Comparación entre 3 y 1
     const lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
@@ -52,10 +53,14 @@ export class DiffService {
 
   private solveInsMistakes(lines: string[], init: string[], end: string[]) {
     let wholeLog = '';
-    const added = '';
+    let added = '';
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].indexOf(init[0]) > lines[i].lastIndexOf(end[0])) {
-        wholeLog = lines[i].substr(0, lines[i].indexOf(init[0]));
+        wholeLog = lines[i].substr(0, lines[i].indexOf('<ins>'));
+        if (lines[i].indexOf('<ins>') !== lines[i].lastIndexOf('</ins>')) {
+        } else {
+          added = '';
+        }
         lines[i] = init[0] + wholeLog + lines[i].replace(wholeLog, '') + end[0];
         if (lines[i].indexOf('<del>') !== 0) {
           lines[i] = lines[i] + '<del>_doNotCare_</del>';
@@ -168,12 +173,36 @@ export class DiffService {
     return line;
   }
 
+  private getIndexOf(str1: any[], str2: any[]) {
+    let pos = -1;
+    for (let i = 0; i < Math.max(str1.length, str2.length); i++) {
+      if (str1[i] !== str2[i]) {
+        pos++;
+      } else {
+        return pos;
+      }
+    }
+    return pos;
+  }
+
+
   private deleteUselessDataIns(line: string, t1: string, t2: string, id: number, i: number) {
     let uselessData;
     if (id === 1 && (i === 2)) {
-      const mustBeDeleted = line.substr(0, line.indexOf('<del>'));
+      let mustBeDeleted = line.substr(0, line.indexOf('<del>'));
       if (line.indexOf(mustBeDeleted) !== line.lastIndexOf(mustBeDeleted)) {
         line = line.replace('<ins>' + mustBeDeleted, '<ins>');
+      }
+      console.log('Hola');
+      mustBeDeleted = line.substring(0, line.indexOf('<ins>'));
+      const pos = this.getIndexOf(mustBeDeleted.split(''), line.substring(line.indexOf('<ins>') + 5, line.indexOf('</ins>')).split(''));
+      console.log(pos);
+      if (pos !== -1) {
+        line = line.replace(mustBeDeleted, '');
+        line = line.replace('<ins>', '');
+        const acum = line.substr(0, pos + 1);
+        line = '<ins>' + acum + '</ins>' + line.replace(acum, '').replace('</ins>', '');
+        this.comparedClass = 'insC';
       }
     }
     while (line.indexOf(t1) !== -1) {
