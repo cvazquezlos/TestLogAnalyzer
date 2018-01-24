@@ -21,8 +21,9 @@ export class DiffService {
     i = 1;
     j = 1;
     l.forEach(line => {
-      comparatorLine = this.deleteUselessDataIns(line, '<ins>', '</ins>', 0);
-      comparedLine = this.deleteUselessDataIns(line, '<del>', '</del>', 1);
+      console.log(line);
+      comparatorLine = this.deleteUselessDataIns(line, '<ins>', '</ins>', 0, i);
+      comparedLine = this.deleteUselessDataIns(line, '<del>', '</del>', 1, i);
       this.concatResults(i, j, comparatorLine, comparedLine);
       i++;
       j++;
@@ -166,8 +167,14 @@ export class DiffService {
     return line;
   }
 
-  private deleteUselessDataIns(line: string, t1: string, t2: string, id: number) {
+  private deleteUselessDataIns(line: string, t1: string, t2: string, id: number, i: number) {
     let uselessData;
+    if (id === 1 && (i == 2)) {
+      const mustBeDeleted = line.substr(0, line.indexOf('<del>'));
+      if (line.indexOf(mustBeDeleted) !== line.lastIndexOf(mustBeDeleted)) {
+        line = line.replace('<ins>' + mustBeDeleted, '<ins>');
+      }
+    }
     while (line.indexOf(t1) !== -1) {
       uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
       if (id === 0 && (line.indexOf('_doNotCare') !== -1)) {
