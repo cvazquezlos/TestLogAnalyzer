@@ -12,6 +12,7 @@ export class DiffService {
   results: any[];
 
   generateComparison(diff: string) {
+    // Comparación entre 1 y 3
     const l = this.solveInsMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<ins>', this.reverse('<ins>')], ['</ins>', this.reverse('</ins>')]);
     l.pop();
@@ -29,7 +30,7 @@ export class DiffService {
       j++;
     });
     return this.results;
-    /*
+    /* Comparación entre 3 y 1
     const lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]);
     lines.pop();
@@ -51,7 +52,7 @@ export class DiffService {
 
   private solveInsMistakes(lines: string[], init: string[], end: string[]) {
     let wholeLog = '';
-    let added = '';
+    const added = '';
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].indexOf(init[0]) > lines[i].lastIndexOf(end[0])) {
         wholeLog = lines[i].substr(0, lines[i].indexOf(init[0]));
@@ -169,7 +170,7 @@ export class DiffService {
 
   private deleteUselessDataIns(line: string, t1: string, t2: string, id: number, i: number) {
     let uselessData;
-    if (id === 1 && (i == 2)) {
+    if (id === 1 && (i === 2)) {
       const mustBeDeleted = line.substr(0, line.indexOf('<del>'));
       if (line.indexOf(mustBeDeleted) !== line.lastIndexOf(mustBeDeleted)) {
         line = line.replace('<ins>' + mustBeDeleted, '<ins>');
