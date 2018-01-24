@@ -28,31 +28,6 @@ export class DiffService {
       j++;
     });
     return this.results;
-    /*
-    let j, k, comparatorLine, comparedLine, c1, c2: any;
-    this.results = [];
-    this.resetIterator();
-    lines.pop();
-    lines.forEach(line => {
-      j = this.iteratorContent.j;
-      k = this.iteratorContent.k;
-      comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 0);
-      comparedLine = this.deleteUselessData(line, '<del>', '</del>', 1);
-      (comparatorLine.length < (line.length * 0.3)) ? (this.updateIndexes(comparatorLine, '', '',
-        comparedLine, j, k + 1, this.iteratorContent.i1, k.toString() + '.', 0)) : (c1 = true);
-      (comparedLine.length < (line.length * 0.3)) ? (this.updateIndexes('', comparedLine, comparatorLine,
-        '', j + 1, k, j.toString() + '.', this.iteratorContent.i2, 1)) : (c2 = true);
-      if (c1 && c2) {
-        this.updateIndexes('', '', comparatorLine, comparedLine, j + 1, k + 1, j.toString() + '.', k.toString() + '.');
-      }
-      this.concatResults(this.iteratorContent.i1, this.iteratorContent.i2, this.iteratorContent.line1, this.iteratorContent.line2);
-    });
-    return this.results;
-    */
-  }
-
-  private getIntraTags(part: string, t1: string, t2: string) {
-
   }
 
   private solveMistakes(lines: string[], init: string[], end: string[]) {
@@ -137,14 +112,16 @@ export class DiffService {
 
   private deleteUselessData(line: string, t1: string, t2: string, id: number) {
     let uselessData;
+    console.log("id: " + id + "pos of " + t1 + ": " + line.indexOf(t1));
     while (line.indexOf(t1) !== -1) {
       uselessData = line.substring(line.indexOf(t1) + 5, line.indexOf(t2));
+      console.log(uselessData);
       if (id === 1 && (line.indexOf('_doNotCare') !== -1)) {
         this.comparedClass = 'added';
         line = '';
       } else {
         (id === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
-        if (line.indexOf(t1) == 0) {
+        if (line.indexOf(t1) + 5 === line.indexOf(t2)) {
           (id === 0) ? (this.comparatorClass = 'normal') : (this.comparedClass = 'normal');
         }
         line = line.replace(t1 + uselessData + t2, '');
