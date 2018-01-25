@@ -12,7 +12,7 @@ services:
       - elk-data:/var/lib/elasticsearch
 
   loganalyzer:
-    image: cvazquezlos/loganalyzer:latest
+    image: cvazquezlos/loganalyzer:2.0.0
     depends_on:
       - elasticsearch
     ports:

@@ -169,7 +169,6 @@ export class DiffService {
     return pos;
   }
 
-
   private deleteUselessDataIns(line: string, t1: string, t2: string, id: number, i: number) {
     let uselessData;
     if (id === 1 && (i === 2)) {
