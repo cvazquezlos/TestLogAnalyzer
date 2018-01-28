@@ -19,7 +19,7 @@
                    [required]="true">
           </mat-form-field>
           <div>
-            <button mat-button matStepperNext>
+            <button mat-button matStepperNext class="iconBtn-lg">
               <mat-icon>arrow_forward</mat-icon>
             </button>
           </div>
@@ -37,10 +37,10 @@
             </mat-form-field>
           </div>
           <div layout="row" layout-align="center center">
-            <button mat-button matStepperPrevious>
+            <button mat-button matStepperPrevious class="iconBtn-lg">
               <mat-icon>arrow_back</mat-icon>
             </button>
-            <button mat-button matStepperNext>
+            <button mat-button matStepperNext class="iconBtn-lg">
               <mat-icon>arrow_forward</mat-icon>
             </button>
           </div>
@@ -49,9 +49,12 @@
       <mat-step>
         <ng-template matStepLabel>Done</ng-template>
         <div layout="row" layout-align="end center">
-          <button mat-button matStepperPrevious>
+          <button mat-button matStepperPrevious class="iconBtn-lg">
             <mat-icon>arrow_back</mat-icon>
           </button>
+          <mat-chip-list>
+            <mat-chip color="accent" [selected]="true">Save</mat-chip>
+          </mat-chip-list>
         </div>
       </mat-step>
     </mat-horizontal-stepper>
