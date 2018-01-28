@@ -31,6 +31,10 @@ public class ESProjectService {
 		return repository.findById(id, new PageRequest(page, size)).getContent();
 	}
 
+	public List<Project> findByName(String name, int page, int size) {
+		return repository.findByName(name, new PageRequest(page, size)).getContent();
+	}
+
 	public Project findOne(String id) {
 		return repository.findOne(id);
 

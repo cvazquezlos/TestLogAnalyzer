@@ -45,4 +45,11 @@ public class ProjectResource {
 			@RequestParam(name = "size", defaultValue = "10") int size) {
 		return esProjectService.findById(id, page, size);
 	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public List<Project> getLocationByName(@RequestParam(name = "name") String name,
+			@RequestParam(name = "page", defaultValue = "0") int page,
+			@RequestParam(name = "size", defaultValue = "10") int size) {
+		return esProjectService.findByName(name, page, size);
+	}
 }

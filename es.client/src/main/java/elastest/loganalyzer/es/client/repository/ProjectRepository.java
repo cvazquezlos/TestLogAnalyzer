@@ -13,4 +13,7 @@ public interface ProjectRepository extends ElasticsearchCrudRepository<Project, 
 
     @Query("{\"bool\":{\"filter\":{\"id\":\"?0\"}}}")
 	Page<Project> findById(String id, Pageable page);
+    
+    @Query("{\"bool\":{\"filter\":{\"name\":\"?0\"}}}")
+	Page<Project> findByName(String name, Pageable page);
 }
