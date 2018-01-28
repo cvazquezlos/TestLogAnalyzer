@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import elastest.loganalyzer.es.client.model.ProjectL;
+import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.repository.ProjectRepository;
 
 @Service
@@ -19,28 +19,28 @@ public class ESProjectService {
 		this.repository = repository;
 	}
 
-	public void delete(ProjectL project) {
+	public void delete(Project project) {
 		repository.delete(project);
 	}
 
-	public Iterable<ProjectL> findAll() {
+	public Iterable<Project> findAll() {
 		return repository.findAll();
 	}
 
-	public List<ProjectL> findById(String id, int page, int size) {
+	public List<Project> findById(String id, int page, int size) {
 		return repository.findById(id, new PageRequest(page, size)).getContent();
 	}
 
-	public ProjectL findByName(String name) {
+	public Project findByName(String name) {
 		return repository.findByName(name);
 	}
 
-	public ProjectL findOne(String id) {
+	public Project findOne(String id) {
 		return repository.findOne(id);
 
 	}
 
-	public String save(ProjectL project) {
+	public String save(Project project) {
 		return repository.save(project).getId();
 	}
 }

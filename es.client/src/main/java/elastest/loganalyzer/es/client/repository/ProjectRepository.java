@@ -6,14 +6,14 @@ import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchCrudRepository;
 import org.springframework.stereotype.Repository;
 
-import elastest.loganalyzer.es.client.model.ProjectL;
+import elastest.loganalyzer.es.client.model.Project;
 
 @Repository
-public interface ProjectRepository extends ElasticsearchCrudRepository<ProjectL, String> {
+public interface ProjectRepository extends ElasticsearchCrudRepository<Project, String> {
 
     @Query("{\"bool\":{\"filter\":{\"id\":\"?0\"}}}")
-	Page<ProjectL> findById(String id, Pageable page);
+	Page<Project> findById(String id, Pageable page);
     
     @Query("{\"bool\":{\"filter\":{\"name\":\"?0\"}}}")
-	ProjectL findByName(String name);
+	Project findByName(String name);
 }

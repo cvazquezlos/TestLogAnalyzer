@@ -26,15 +26,15 @@ public class ESLogService {
 		return repository.findAll();
 	}
 
-	public List<Log> findByTimestamp(String timestamp, int page, int size) {
-		return repository.findByTimestamp(timestamp, new PageRequest(page, size)).getContent();
-	}
-
 	public Log findOne(String id) {
 		return repository.findOne(id);
 	}
 
 	public String save(Log log) {
 		return repository.save(log).getId();
+	}
+
+	public List<Log> findByLevel(String level, int page, int size) {
+		return repository.findByLevel(level, new PageRequest(page, size)).getContent();
 	}
 }

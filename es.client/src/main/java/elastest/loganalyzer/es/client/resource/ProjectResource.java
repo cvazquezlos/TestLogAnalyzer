@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import elastest.loganalyzer.es.client.model.ProjectL;
+import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.service.ESProjectService;
 
 @RestController
@@ -28,19 +28,19 @@ public class ProjectResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> addLocation(@RequestBody ProjectL project) {
+	public ResponseEntity<?> addLocation(@RequestBody Project project) {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(esProjectService.save(project)).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
-	public ProjectL getLog(@PathVariable String id) {
+	@RequestMapping(method = RequestMethod.GET, path = "/id/{id}")
+	public Project getLog(@PathVariable String id) {
 		return esProjectService.findOne(id);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, path = "/{name}")
-	public ProjectL getProject(@PathVariable String name) {
+	@RequestMapping(method = RequestMethod.GET, path = "/name/{name}")
+	public Project getProject(@PathVariable String name) {
 		return esProjectService.findByName(name);
 	}
 }

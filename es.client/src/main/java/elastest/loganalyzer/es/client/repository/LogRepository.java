@@ -10,8 +10,7 @@ import elastest.loganalyzer.es.client.model.Log;
 
 @Repository
 public interface LogRepository extends ElasticsearchCrudRepository<Log, String> {
-
-    @Query("{\"bool\":{\"filter\":{\"timestamp\":\"?0\"}}}")
-    Page<Log> findByTimestamp(String timestamp, Pageable pageable);
+    
+	Page<Log> findByLevel(String level, Pageable pageable);
 
 }
