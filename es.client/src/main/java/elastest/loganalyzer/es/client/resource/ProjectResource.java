@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,13 @@ public class ProjectResource {
 	@RequestMapping(method = RequestMethod.GET, path = "/id/{id}")
 	public Project getLog(@PathVariable String id) {
 		return esProjectService.findOne(id);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<Iterable<Project>> getAll() {
+		Iterable<Project> projects = esProjectService.findAll();
+		
+		return new ResponseEntity<>(projects, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/name/{name}")

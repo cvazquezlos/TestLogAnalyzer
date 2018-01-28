@@ -11,9 +11,7 @@ import elastest.loganalyzer.es.client.model.Project;
 @Repository
 public interface ProjectRepository extends ElasticsearchCrudRepository<Project, String> {
 
-    @Query("{\"bool\":{\"filter\":{\"id\":\"?0\"}}}")
 	Page<Project> findById(String id, Pageable page);
     
-    @Query("{\"bool\":{\"filter\":{\"name\":\"?0\"}}}")
 	Project findByName(String name);
 }

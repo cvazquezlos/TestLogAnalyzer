@@ -7,13 +7,15 @@ import 'rxjs/add/operator/map';
 import {CountFormat} from '../model/count-format.model';
 import {Log} from '../model/log.model';
 import {RD} from '../model/get-format.model';
+import {Project} from '../model/project.model';
 
 @Injectable()
 export class ElasticsearchService {
 
-  baseURL = 'http://localhost:9200/loganalyzer/';
-  searchURL = this.baseURL + '_search';
-  countURL  = this.baseURL + '_count';
+  baseElasticUrl = 'http://localhost:9200/loganalyzer/';
+  baseAPIUrl = 'http://localhost:8443/';
+  searchURL = this.baseElasticUrl + '_search';
+  countURL  = this.baseElasticUrl + '_count';
 
   constructor(private http: HttpClient) {
   }
@@ -41,6 +43,13 @@ export class ElasticsearchService {
     }
     return this.http.get<CountFormat>(getURL)
       .map(response => response.count);
+  }
+
+  getProjects(page: number) {
+    return this.http.get<Project>(this.baseAPIUrl + 'projects').map(
+      response => {
+        return response
+      });
   }
 
   get(typeSize: number[], valueMethod: string[], maven: boolean): Observable<Log[]> {

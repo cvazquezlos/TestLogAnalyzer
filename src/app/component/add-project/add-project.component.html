@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<mat-card>
+  <mat-card-title>
+    <div layout="row">
+      <span>New project</span>
+      <span flex></span>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <p>Give to the project a name and then, the first execution by updating it or posting an url.</p>
+    <mat-horizontal-stepper [linear]="true">
+      <mat-step [stepControl]="nameStep">
+        <form [formGroup]="nameStep">
+          <ng-template matStepLabel>Fill out the name of the project</ng-template>
+          <mat-form-field>
+            <input matInput
+                   formControlName="name"
+                   placeholder="Name of the project"
+                   [required]="true">
+          </mat-form-field>
+          <div>
+            <button mat-button matStepperNext>
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="importStep">
+        <form [formGroup]="importStep">
+          <ng-template matStepLabel>Select a way to import the first execution of this project.</ng-template>
+          <div layout="row" layout-align="center center">
+            <mat-form-field>
+              <input matInput
+                     formControlName="import"
+                     placeholder="Name of the project"
+                     [required]="true">
+            </mat-form-field>
+          </div>
+          <div layout="row" layout-align="center center">
+            <button mat-button matStepperPrevious>
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+            <button mat-button matStepperNext>
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <div layout="row" layout-align="end center">
+          <button mat-button matStepperPrevious>
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </mat-card-content>
+</mat-card>
