@@ -21,11 +21,20 @@
           <!--<button mat-button (click)="editProject(row)" stopRowClick title="Edit project">
             <mat-icon>mode_edit</mat-icon>
           </button>-->
-          <button mat-button (click)="deleteProject(row)" [disabled]="deletingInProgress" stopRowClick title="Delete project">
-            <mat-icon>delete</mat-icon>
+          <button class="iconBtn-lg"
+                  mat-button
+                  stopRowClick
+                  title="Delete project"
+                  (click)="deleteProject(row)"
+                  [disabled]="deletingInProgress">
+                  <mat-icon>delete</mat-icon>
           </button>
-          <button mat-button (click)="viewProject(row)" stopRowClick title="View project">
-            <mat-icon>remove_red_eye</mat-icon>
+          <button class="iconBtn-lg"
+                  mat-button
+                  stopRowClick
+                  title="View project"
+                  (click)="viewProject(row)">
+                  <mat-icon>remove_red_eye</mat-icon>
           </button>
         </div>
       </ng-template>

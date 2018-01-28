@@ -26,7 +26,7 @@ export class HomeComponent implements AfterViewInit {
   aux: Log[] = [];
   classes: any[] = [];
   projectsData: ITdDataTableColumn[] = [
-    {name: 'id', label: 'Id'},
+    {name: 'id', label: 'Id', width: 100},
     {name: 'name', label: 'Name'},
     {name: 'options', label: 'Options'}
   ];
