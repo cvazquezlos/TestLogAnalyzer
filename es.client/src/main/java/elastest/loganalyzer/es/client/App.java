@@ -1,20 +1,11 @@
 package elastest.loganalyzer.es.client;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 import elastest.loganalyzer.es.client.service.ESLogService;
-import elastest.loganalyzer.es.client.model.Log;
 
 @SpringBootApplication
 @Import(EsConfiguration.class)

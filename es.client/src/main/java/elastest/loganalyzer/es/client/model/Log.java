@@ -77,4 +77,75 @@ public class Log {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	public String getTest_no() {
+		return test_no;
+	}
+
+	public void setTest_no(String test_no) {
+		this.test_no = test_no;
+	}
+
+	public String getEntire_log() {
+		return entire_log;
+	}
+
+	public void setEntire_log(String entire_log) {
+		this.entire_log = entire_log;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public String getThread_name() {
+		return thread_name;
+	}
+
+	public void setThread_name(String thread_name) {
+		this.thread_name = thread_name;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	public String getLogger_name() {
+		return logger_name;
+	}
+
+	public void setLogger_name(String logger_name) {
+		this.logger_name = logger_name;
+	}
+
+	public String getFormatted_message() {
+		return formatted_message;
+	}
+
+	public void setFormatted_message(String formatted_message) {
+		this.formatted_message = formatted_message;
+	}
+
+	@Override
+	public String toString() {
+		return "Log{" + "entire_log='" + entire_log + '\'' + ", timestamp='" + timestamp + '\'' + ", thread_name='"
+				+ thread_name + '\'' + ", level='" + level + '\'' + ", logger_name='" + logger_name + '\''
+				+ ", formatted_message='" + formatted_message + '\'' + ", test_no='" + test_no + "\'}";
+	}
 }

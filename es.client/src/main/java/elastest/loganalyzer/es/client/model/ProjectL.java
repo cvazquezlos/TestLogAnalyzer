@@ -3,8 +3,8 @@ package elastest.loganalyzer.es.client.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "projects", type ="projects")
-public class Project {
+@Document(indexName = "laprojects", type ="projects")
+public class ProjectL {
 
 	@Id
 	private String id;
@@ -12,10 +12,10 @@ public class Project {
 	private String name;
 	private int num_execs;
 	
-	public Project() {
+	public ProjectL() {
 	}
 	
-	public Project(String id, String name, int num_execs) {
+	public ProjectL(String id, String name, int num_execs) {
 		this.id = id;
 		this.name = name;
 		this.num_execs = num_execs;
@@ -27,14 +27,6 @@ public class Project {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public int getNum_execs() {

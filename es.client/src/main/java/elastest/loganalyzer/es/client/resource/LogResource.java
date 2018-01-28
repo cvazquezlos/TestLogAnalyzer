@@ -1,6 +1,7 @@
 package elastest.loganalyzer.es.client.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,9 +29,10 @@ public class LogResource {
 		return ResponseEntity.created(uri).build();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
-	public Log getLog(@PathVariable String id) {
-		return esLogService.findOne(id);
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
+	public ResponseEntity<Log> getLog(@PathVariable String id) {
+		Log log = esLogService.findOne(id);
+		return new ResponseEntity<>(log, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET)

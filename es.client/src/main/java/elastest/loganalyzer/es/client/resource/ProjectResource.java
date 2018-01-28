@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import elastest.loganalyzer.es.client.model.Project;
+import elastest.loganalyzer.es.client.model.ProjectL;
 import elastest.loganalyzer.es.client.service.ESProjectService;
 
 @RestController
@@ -28,28 +28,19 @@ public class ProjectResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> addLocation(@RequestBody Project project) {
+	public ResponseEntity<?> addLocation(@RequestBody ProjectL project) {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(esProjectService.save(project)).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/{id}")
-	public Project getLog(@PathVariable String id) {
+	public ProjectL getLog(@PathVariable String id) {
 		return esProjectService.findOne(id);
 	}
-
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Project> getLocationById(@RequestParam(name = "id") String id,
-			@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size) {
-		return esProjectService.findById(id, page, size);
-	}
-
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Project> getLocationByName(@RequestParam(name = "name") String name,
-			@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size) {
-		return esProjectService.findByName(name, page, size);
+	
+	@RequestMapping(method = RequestMethod.GET, path = "/{name}")
+	public ProjectL getProject(@PathVariable String name) {
+		return esProjectService.findByName(name);
 	}
 }
