@@ -26,9 +26,9 @@ export class HomeComponent implements AfterViewInit {
   aux: Log[] = [];
   classes: any[] = [];
   projectsData: ITdDataTableColumn[] = [
-    {name: 'Id', label: 'Id'},
-    {name: 'Name', label: 'Name'},
-    {name: 'Options', label: 'Options'}
+    {name: 'id', label: 'Id'},
+    {name: 'name', label: 'Name'},
+    {name: 'options', label: 'Options'}
   ];
   projectsRowData: any[] = [];
   dataColumnDefs: ITdDataTableColumn[] = [
@@ -56,6 +56,9 @@ export class HomeComponent implements AfterViewInit {
   constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
               private ref: ChangeDetectorRef, public media: TdMediaService) {
     this.countExecs(0);
+    this.projectsRowData = this.projectsRowData.concat({
+      'id': 1, 'name': 'Example', 'options': 'Hola'
+    });
   }
 
   maven(): void {

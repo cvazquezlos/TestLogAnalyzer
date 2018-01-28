@@ -8,11 +8,27 @@
   </mat-card-title>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <td-data-table *ngIf="true"
-      [columns]="projectsData"
-      [data]="projectsRowData"
-      [sortable]="false"
-      [style.height.px]="200">
+    <td-data-table [clickable]="true"
+                   [columns]="projectsData"
+                   [data]="projectsRowData"
+                   [sortable]="false"
+                   [style.height.px]="200">
+      <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value" let-row="row">
+        <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
+      </ng-template>
+      <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
+        <div layout="row">
+          <!--<button mat-button (click)="editProject(row)" stopRowClick title="Edit project">
+            <mat-icon>mode_edit</mat-icon>
+          </button>-->
+          <button mat-button (click)="deleteProject(row)" [disabled]="deletingInProgress" stopRowClick title="Delete project">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-button (click)="viewProject(row)" stopRowClick title="View project">
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+        </div>
+      </ng-template>
     </td-data-table>
   </mat-card-content>
 </mat-card>
