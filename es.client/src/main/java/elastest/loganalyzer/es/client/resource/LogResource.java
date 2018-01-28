@@ -10,7 +10,6 @@ import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.service.ESLogService;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/logs")
@@ -33,12 +32,5 @@ public class LogResource {
 	public ResponseEntity<Log> getLog(@PathVariable String id) {
 		Log log = esLogService.findOne(id);
 		return new ResponseEntity<>(log, HttpStatus.OK);
-	}
-
-	@RequestMapping(method = RequestMethod.GET)
-	public List<Log> getLocationByTimestamp(@RequestParam(name = "timestamp") String timestamp,
-			@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size) {
-		return esLogService.findByTimestamp(timestamp, page, size);
 	}
 }
