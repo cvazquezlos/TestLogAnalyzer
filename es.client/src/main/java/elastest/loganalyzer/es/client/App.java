@@ -28,6 +28,8 @@ public class App {
 	}
 	
 	public static void main(String[] args) {
+		SpringApplication.run(App.class, args);
+		/*
 		switch (args[0]) {
 		case "reseting":
 			SpringApplication.run(App.class, args);
@@ -40,9 +42,10 @@ public class App {
 			break;
 		default:
 			System.err.println("Invalid arguments.");
-		}
+		}*/
 	}
 
+	/*
 	public static void inserDataIntoElasticsearch() {
 		ArrayList<String> data = new ArrayList<String>();
 		Integer testNo = 0;
@@ -202,5 +205,5 @@ public class App {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 }
