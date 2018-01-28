@@ -13,6 +13,7 @@ import {CovalentMarkdownModule} from '@covalent/markdown';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 
+import {AddProjectComponent} from './component/add-project/add-project.component';
 import {ComparisonComponent} from './component/comparison/comparison.component';
 import {HomeComponent} from './component/home.component';
 
@@ -29,6 +30,7 @@ const httpInterceptorProviders: Type<any>[] = [
 
 @NgModule({
   declarations: [
+    AddProjectComponent,
     AppComponent,
     ComparisonComponent,
     HomeComponent,
