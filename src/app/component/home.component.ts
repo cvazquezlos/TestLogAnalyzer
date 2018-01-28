@@ -25,6 +25,12 @@ export class HomeComponent implements AfterViewInit {
   active = false;
   aux: Log[] = [];
   classes: any[] = [];
+  projectsData: ITdDataTableColumn[] = [
+    {name: 'Id', label: 'Id'},
+    {name: 'Name', label: 'Name'},
+    {name: 'Options', label: 'Options'}
+  ];
+  projectsRowData: any[] = [];
   dataColumnDefs: ITdDataTableColumn[] = [
     {name: 'id', label: 'id', sortable: true, width: 100},
     {name: 'timestamp', label: 'timestamp', width: 230},

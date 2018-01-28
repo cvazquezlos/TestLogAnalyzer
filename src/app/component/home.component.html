@@ -3,13 +3,15 @@
     <div layout="row">
       <span>Projects</span>
       <span flex></span>
-      <button md-raised-button color="accent" [routerLink]="['/add']">New project</button>
     </div>
   </mat-card-title>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <td-data-table>
-      
+    <td-data-table *ngIf=""
+      [columns]="projectsData"
+      [data]="projectsRowData"
+      [sortable]="false"
+      [style.height.px]="200">
     </td-data-table>
   </mat-card-content>
 </mat-card>
