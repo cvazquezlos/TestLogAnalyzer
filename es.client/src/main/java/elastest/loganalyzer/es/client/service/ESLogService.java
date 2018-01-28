@@ -29,7 +29,7 @@ public class ESLogService {
 	public List<Log> findByTimestamp(String timestamp, int page, int size) {
 		return repository.findByTimestamp(timestamp, new PageRequest(page, size)).getContent();
 	}
-	
+
 	public Log findOne(String id) {
 		return repository.findOne(id);
 	}
