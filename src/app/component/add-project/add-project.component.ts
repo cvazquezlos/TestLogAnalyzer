@@ -13,6 +13,7 @@ import {Project} from '../../model/project.model';
 
 export class AddProjectComponent {
 
+  fileSelected: boolean;
   fileTxt: any;
   fileXml: any;
   urlTxt: string;
@@ -25,6 +26,7 @@ export class AddProjectComponent {
     this.isFile = true;
     this.urlTxt = '';
     this.urlXml = '';
+    this.fileSelected = true;
     this.fileTxt = '';
     this.fileXml = '';
   }
