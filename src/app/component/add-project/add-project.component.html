@@ -9,13 +9,14 @@
   <mat-card-content>
     <p>Give to the project a name and then, the first execution by updating it or posting an url.</p>
     <mat-vertical-stepper [linear]="true">
-      <mat-step [stepControl]="nameStep">
-        <form [formGroup]="nameStep">
+      <mat-step>
+        <form>
           <ng-template matStepLabel>Fill out the name of the project</ng-template>
           <mat-form-field>
-            <input formControlName="name"
-                   matInput
+            <input matInput
                    maxlength="20"
+                   name = "Name of the project"
+                   onclick="this.select()"
                    placeholder="Name of the project"
                    required
                    type="text"
@@ -23,7 +24,7 @@
           </mat-form-field>
         </form>
       </mat-step>
-      <mat-step [stepControl]="importStep">
+      <mat-step>
         <ng-template matStepLabel>Select a way to import the first execution of this project.</ng-template>
         <mat-tab-group>
           <mat-tab label="Choose files">
@@ -64,16 +65,18 @@
             </div>
           </mat-tab>
           <mat-tab label="Paste URLs">
-            <form [formGroup]="importStep">
+            <form>
               <div layout="row">
                 <div flex="50">
                   <p>Paste the URL of the file which contains the logs of the execution...</p>
                   <mat-form-field>
-                    <input formControlName="urlTxt"
-                           matInput
+                    <input matInput
+                           name = "URL of .txt file"
+                           onclick="this.select()"
                            placeholder="URL of .txt file"
                            required
-                           [(ngModel)]="urls.txt">
+                           type="text"
+                           [(ngModel)]="urlTxt">
                   </mat-form-field>
                 </div>
                 <div class="pad-top">
@@ -83,8 +86,11 @@
                   <p>Paste the URL of the file which contains the Surfire data...</p>
                   <mat-form-field>
                     <input matInput
+                           name = "URL of .xml file"
+                           onclick="this.select()"
                            placeholder="URL of .xml file"
-                           [(ngModel)]="urls.xml">
+                           type="text"
+                           [(ngModel)]="urlXml">
                   </mat-form-field>
                 </div>
               </div>

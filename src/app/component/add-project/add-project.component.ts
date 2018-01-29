@@ -11,44 +11,33 @@ import {Project} from '../../model/project.model';
   styleUrls: ['./add-project.component.css']
 })
 
-export class AddProjectComponent implements OnInit {
+export class AddProjectComponent {
 
-  importStep: FormGroup;
-  nameStep: FormGroup;
-  files: {
-    'txt': any,
-    'xml': any
-  };
-  urls: {
-    'txt': string,
-    'xml': string
-  };
+  fileTxt: any;
+  fileXml: any;
+  urlTxt: string;
+  urlXml: string;
   isFile: boolean;
   project: Project;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor() {
     this.project = new Project();
     this.isFile = true;
+    this.urlTxt = '';
+    this.urlXml = '';
+    this.fileTxt = '';
+    this.fileXml = '';
   }
 
   cancel() {
-    this.urls.txt = '';
-    this.urls.txt = '';
-  }
-
-  ngOnInit() {
-    this.nameStep = this.formBuilder.group({
-      name: ['', Validators.required]
-    });
-    this.importStep = this.formBuilder.group({
-      urlTxt: ['', Validators.required]
-    });
+    this.urlTxt = '';
+    this.urlXml = '';
   }
 
   update(file: File) {
-    this.urls.txt = 'Empty';
-    this.urls.txt = 'Empty';
-    console.log(this.project);
+    (file.name.includes('.txt')) ? (this.fileTxt = file) : (this.fileXml = file);
+    this.urlTxt = 'Empty';
+    this.urlXml = 'Empty';
   }
 
 }
