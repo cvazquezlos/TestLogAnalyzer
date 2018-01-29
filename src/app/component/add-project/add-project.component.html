@@ -19,7 +19,7 @@
                    placeholder="Name of the project"
                    required
                    type="text"
-                   [(ngModel)]="projectName">
+                   [(ngModel)]="project.name">
           </mat-form-field>
         </form>
       </mat-step>
@@ -73,7 +73,7 @@
                            matInput
                            placeholder="URL of .txt file"
                            required
-                           [(ngModel)]="txtUrl">
+                           [(ngModel)]="urls.txt">
                   </mat-form-field>
                 </div>
                 <div class="pad-top">
@@ -82,7 +82,9 @@
                 <div class="pad-left">
                   <p>Paste the URL of the file which contains the Surfire data...</p>
                   <mat-form-field>
-                    <input matInput placeholder="URL of .xml file">
+                    <input matInput
+                           placeholder="URL of .xml file"
+                           [(ngModel)]="urls.xml">
                   </mat-form-field>
                 </div>
               </div>

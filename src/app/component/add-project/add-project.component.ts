@@ -3,6 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {Project} from '../../model/project.model';
 
 @Component({
   selector: 'app-add-project',
@@ -14,16 +15,25 @@ export class AddProjectComponent implements OnInit {
 
   importStep: FormGroup;
   nameStep: FormGroup;
-  projectName: string;
-  txtUrl: string;
-  xmlUrl: string;
+  files: {
+    'txt': any,
+    'xml': any
+  };
+  urls: {
+    'txt': string,
+    'xml': string
+  };
+  isFile: boolean;
+  project: Project;
 
   constructor(private formBuilder: FormBuilder) {
+    this.project = new Project();
+    this.isFile = true;
   }
 
   cancel() {
-    this.txtUrl = '';
-    this.xmlUrl = '';
+    this.urls.txt = '';
+    this.urls.txt = '';
   }
 
   ngOnInit() {
@@ -36,8 +46,9 @@ export class AddProjectComponent implements OnInit {
   }
 
   update(file: File) {
-    this.txtUrl = 'None';
-    this.xmlUrl = 'None';
+    this.urls.txt = 'Empty';
+    this.urls.txt = 'Empty';
+    console.log(this.project);
   }
 
 }
