@@ -8,55 +8,91 @@
   <mat-divider></mat-divider>
   <mat-card-content>
     <p>Give to the project a name and then, the first execution by updating it or posting an url.</p>
-    <mat-horizontal-stepper [linear]="true">
+    <mat-vertical-stepper [linear]="true">
       <mat-step [stepControl]="nameStep">
         <form [formGroup]="nameStep">
           <ng-template matStepLabel>Fill out the name of the project</ng-template>
           <mat-form-field>
-            <input matInput
-                   formControlName="name"
+            <input formControlName="name"
+                   matInput
+                   maxlength="20"
                    placeholder="Name of the project"
-                   [required]="true">
+                   required
+                   type="text"
+                   [(ngModel)]="projectName">
           </mat-form-field>
-          <div>
-            <button mat-button matStepperNext class="iconBtn-lg">
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
-          </div>
         </form>
       </mat-step>
       <mat-step [stepControl]="importStep">
-        <form [formGroup]="importStep">
-          <ng-template matStepLabel>Select a way to import the first execution of this project.</ng-template>
-          <div layout="row" layout-align="center center">
-            <mat-form-field>
-              <input matInput
-                     formControlName="import"
-                     placeholder="Name of the project"
-                     [required]="true">
-            </mat-form-field>
-          </div>
-          <div layout="row" layout-align="center center">
-            <button mat-button matStepperPrevious class="iconBtn-lg">
-              <mat-icon>arrow_back</mat-icon>
-            </button>
-            <button mat-button matStepperNext class="iconBtn-lg">
-              <mat-icon>arrow_forward</mat-icon>
-            </button>
-          </div>
-        </form>
+        <ng-template matStepLabel>Select a way to import the first execution of this project.</ng-template>
+        <mat-tab-group>
+          <mat-tab label="Choose files">
+            <div layout="row">
+              <div flex="50">
+                <p>Choose the file which contains the logs of the execution...</p>
+                <td-file-upload #txtFileUpload
+                                accept=".txt"
+                                required
+                                (cancel)="cancel()"
+                                (select)="update($event)"
+                                (update)="update($event)">
+                  <mat-icon>file_upload</mat-icon><span>{{txtFileUpload.value?.name}}</span>
+                  <ng-template td-file-input-label>
+                    <mat-icon>attach_file</mat-icon>
+                    Choose a .txt file...
+                    <span [hidden]="!txtFileUpload?.required">*</span>
+                  </ng-template>
+                </td-file-upload>
+              </div>
+              <div class="pad-top">
+                <mat-divider class="divider-vertical"></mat-divider>
+              </div>
+              <div class="pad-left">
+                <p>Choose the file which contains the Surfire data...</p>
+                <td-file-upload #xmlFileUpload
+                                accept=".xml"
+                                (cancel)="cancel()"
+                                (select)="update($event)"
+                                (update)="update($event)">
+                  <mat-icon>file_upload</mat-icon><span>{{xmlFileUpload.value?.name}}</span>
+                  <ng-template td-file-input-label>
+                    <mat-icon>attach_file</mat-icon>
+                    Choose a .xml file...
+                  </ng-template>
+                </td-file-upload>
+              </div>
+            </div>
+          </mat-tab>
+          <mat-tab label="Paste URLs">
+            <form [formGroup]="importStep">
+              <div layout="row">
+                <div flex="50">
+                  <p>Paste the URL of the file which contains the logs of the execution...</p>
+                  <mat-form-field>
+                    <input formControlName="urlTxt"
+                           matInput
+                           placeholder="URL of .txt file"
+                           required
+                           [(ngModel)]="txtUrl">
+                  </mat-form-field>
+                </div>
+                <div class="pad-top">
+                  <mat-divider class="divider-vertical"></mat-divider>
+                </div>
+                <div class="pad-left">
+                  <p>Paste the URL of the file which contains the Surfire data...</p>
+                  <mat-form-field>
+                    <input matInput placeholder="URL of .xml file">
+                  </mat-form-field>
+                </div>
+              </div>
+            </form>
+          </mat-tab>
+        </mat-tab-group>
       </mat-step>
       <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <div layout="row" layout-align="end center">
-          <button mat-button matStepperPrevious class="iconBtn-lg">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-          <mat-chip-list>
-            <mat-chip color="accent" [selected]="true">Save</mat-chip>
-          </mat-chip-list>
-        </div>
+        <ng-template matStepLabel>Review and save</ng-template>
       </mat-step>
-    </mat-horizontal-stepper>
+    </mat-vertical-stepper>
   </mat-card-content>
 </mat-card>
