@@ -30,10 +30,15 @@ export class HomeComponent implements AfterViewInit {
 
   constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
               public media: TdMediaService) {
-    this.projectsRowData = this.projectsRowData.concat({
-      'id': 1, 'name': 'Example', 'options': 'Hola'
+    this.elasticsearchService.getProjects().subscribe(response=> {
+      console.log(response);
+      response.forEach(project => {
+        this.projectsRowData = this.projectsRowData.concat({
+          'id': project.id,
+          'name': project.name
+        });
+      });
     });
-    this.elasticsearchService.getProjects().subscribe(response=>console.log(response));
   }
 
   ngAfterViewInit(): void {

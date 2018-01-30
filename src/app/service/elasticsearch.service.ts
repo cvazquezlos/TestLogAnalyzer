@@ -13,9 +13,11 @@ import {Project} from '../model/project.model';
 export class ElasticsearchService {
 
   baseElasticUrl = 'http://localhost:9200/loganalyzer/';
+  baseProjectsUrl = 'http://localhost:9200/projects/';
   baseAPIUrl = 'http://localhost:8443/';
   searchURL = this.baseElasticUrl + '_search';
   countURL  = this.baseElasticUrl + '_count';
+  countProjectsURL  = this.baseProjectsUrl + '_count';
 
   constructor(private http: HttpClient) {
   }
@@ -60,8 +62,19 @@ export class ElasticsearchService {
 
 
   getProjects() {
-    return this.http.get<Project>(this.baseAPIUrl + 'projects/all')
-      .map(response => response);
+    return this.http.get<any>(this.baseAPIUrl + 'projects/all')
+      .map(response => {
+        let result = [];
+        for (let i = 0; i < response.length; i++) {
+          result[i] = response[i]
+        }
+        return result;
+      });
+  }
+
+  countProjects() {
+    return this.http.get<CountFormat>(this.countProjectsURL)
+      .map(response => response.count);
   }
 
   get(typeSize: number[], valueMethod: string[], maven: boolean): Observable<Log[]> {

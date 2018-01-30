@@ -25,7 +25,7 @@ export class AddProjectComponent {
   constructor(private elasticsearchService: ElasticsearchService) {
     this.project = new Project();
     this.project.name = '';
-    this.project.id = 0;
+    this.elasticsearchService.countProjects().subscribe(response => this.project.id = response);
     this.project.num_execs = 1;
     this.isFile = true;
     this.urlTxt = '';
