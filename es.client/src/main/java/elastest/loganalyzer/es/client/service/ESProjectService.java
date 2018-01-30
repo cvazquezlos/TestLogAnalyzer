@@ -27,7 +27,7 @@ public class ESProjectService {
 		return repository.findAll();
 	}
 
-	public List<Project> findById(String id, int page, int size) {
+	public List<Project> findById(int id, int page, int size) {
 		return repository.findById(id, new PageRequest(page, size)).getContent();
 	}
 
@@ -35,12 +35,12 @@ public class ESProjectService {
 		return repository.findByName(name);
 	}
 
-	public Project findOne(String id) {
+	public Project findOne(int id) {
 		return repository.findOne(id);
 
 	}
 
-	public String save(Project project) {
+	public int save(Project project) {
 		return repository.save(project).getId();
 	}
 }

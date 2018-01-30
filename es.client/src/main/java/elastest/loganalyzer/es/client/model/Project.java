@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class Project {
 
 	@Id
-	private String id;
+	private int id;
 	
 	private String name;
 	private int num_execs;
@@ -15,17 +15,17 @@ public class Project {
 	public Project() {
 	}
 	
-	public Project(String id, String name, int num_execs) {
+	public Project(int id, String name, int num_execs) {
 		this.id = id;
 		this.name = name;
 		this.num_execs = num_execs;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

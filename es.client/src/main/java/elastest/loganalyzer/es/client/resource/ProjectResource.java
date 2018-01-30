@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,18 +27,15 @@ public class ProjectResource {
 		this.esProjectService = esProjectService;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<String> addLocation(@RequestBody Project project) {
-		/*
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(esProjectService.save(project)).toUri();
-		return ResponseEntity.created(uri).build();*/
-		System.out.println("Called");
-		return new ResponseEntity<>("Hola" + esProjectService.save(project), HttpStatus.OK);
+	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public int addLocation(@RequestBody Project project) {
+		System.out.println("Hey");
+		System.out.println(project);
+		return esProjectService.save(project);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/id/{id}")
-	public Project getLog(@PathVariable String id) {
+	public Project getLog(@PathVariable int id) {
 		return esProjectService.findOne(id);
 	}
 	

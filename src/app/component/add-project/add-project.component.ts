@@ -25,7 +25,8 @@ export class AddProjectComponent {
   constructor(private elasticsearchService: ElasticsearchService) {
     this.project = new Project();
     this.project.name = '';
-    this.project.id = '00';
+    this.project.id = 0;
+    this.project.num_execs = 1;
     this.isFile = true;
     this.urlTxt = '';
     this.urlXml = '';
@@ -40,7 +41,9 @@ export class AddProjectComponent {
   }
 
   save() {
-    console.log(this.elasticsearchService.postProject(this.project));
+    this.elasticsearchService.postProject(this.project).subscribe(
+      response => console.log(response)
+    );
   }
 
   update(file: File) {

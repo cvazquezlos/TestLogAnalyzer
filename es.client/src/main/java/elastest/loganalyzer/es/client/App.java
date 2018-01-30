@@ -3,8 +3,13 @@ package elastest.loganalyzer.es.client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.service.ESLogService;
 import elastest.loganalyzer.es.client.service.ESProjectService;
 
@@ -27,6 +32,7 @@ public class App {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
+		//resetIndex();
 		/*
 		switch (args[0]) {
 		case "reseting":
@@ -186,14 +192,14 @@ public class App {
 		}
 		return content;
 	}
-
+	*/
 	private static void resetIndex() {
-		Iterable<Log> savedLogs = service.findAll();
-		for (Log log : savedLogs) {
-			service.delete(log);
+		Iterable<Project> savedProjects = projectService.findAll();
+		for (Project project : savedProjects) {
+			projectService.delete(project);
 		}
 	}
-	
+	/*
 	private static void writeContent(String file, String content) {
 		try {
 			File f = new File(file);
@@ -204,4 +210,18 @@ public class App {
 			e.printStackTrace();
 		}
 	}*/
+
+	@Bean
+	public WebMvcConfigurerAdapter corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "OPTIONS", "PUT", "DELETE")
+						.allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin",
+								"Access-Control-Request-Method", "Access-Control-Request-Headers")
+						.exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
+						.allowCredentials(true).maxAge(3600);
+			}
+		};
+	}
 }
