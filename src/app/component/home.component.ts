@@ -1,11 +1,9 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component
 } from '@angular/core';
 import {
   ITdDataTableColumn,
-  ITdDataTableSortChangeEvent,
   TdDataTableService,
   TdMediaService
 } from '@covalent/core';
@@ -22,6 +20,7 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent implements AfterViewInit {
 
+  exec: boolean;
   projectsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 300},
     {name: 'name', label: 'Name'},
@@ -29,12 +28,13 @@ export class HomeComponent implements AfterViewInit {
   ];
   projectsRowData: any[] = [];
 
-  constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
-              public media: TdMediaService) {
+  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
     this.reloadTable();
+    this.exec = false;
   }
 
   private reloadTable() {
+    this.exec = true;
     this.projectsRowData = [];
     this.elasticsearchService.getProjects().subscribe(response => {
       for (let i = 0; i < response.length; i++) {
@@ -44,6 +44,7 @@ export class HomeComponent implements AfterViewInit {
         };
       }
     });
+    this.exec = false;
   }
 
   delete(project: Project) {

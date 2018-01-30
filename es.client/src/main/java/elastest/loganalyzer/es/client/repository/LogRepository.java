@@ -10,7 +10,7 @@ import elastest.loganalyzer.es.client.model.Log;
 
 @Repository
 public interface LogRepository extends ElasticsearchCrudRepository<Log, String> {
-    
+
 	Page<Log> findByLevel(String level, Pageable pageable);
 
 }

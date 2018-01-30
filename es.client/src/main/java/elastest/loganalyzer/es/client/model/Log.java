@@ -57,8 +57,8 @@ public class Log {
 		this.formatted_message = formatted_message;
 	}
 
-	public Log(String id, String test_no, String entire_log, String method, String timestamp, String thread_name, String level,
-			String logger_name, String formatted_message) {
+	public Log(String id, String test_no, String entire_log, String method, String timestamp, String thread_name,
+			String level, String logger_name, String formatted_message) {
 		this.id = id;
 		this.test_no = test_no;
 		this.entire_log = entire_log;

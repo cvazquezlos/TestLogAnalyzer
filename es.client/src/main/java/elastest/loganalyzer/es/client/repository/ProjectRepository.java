@@ -11,6 +11,6 @@ import elastest.loganalyzer.es.client.model.Project;
 public interface ProjectRepository extends ElasticsearchCrudRepository<Project, Integer> {
 
 	Page<Project> findById(int id, Pageable page);
-    
+
 	Project findByName(String name);
 }

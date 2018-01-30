@@ -35,7 +35,7 @@ public class ProjectResource {
 	public Project getLog(@PathVariable int id) {
 		return esProjectService.findOne(id);
 	}
-	
+
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<Project> getAll() {
 		Iterable<Project> projects = esProjectService.findAll();
@@ -45,14 +45,14 @@ public class ProjectResource {
 		}
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
 	public Project delete(@PathVariable int id) {
 		Project deleted = esProjectService.findOne(id);
 		esProjectService.delete(deleted);
 		return deleted;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, path = "/name/{name}")
 	public Project getProject(@PathVariable String name) {
 		return esProjectService.findByName(name);

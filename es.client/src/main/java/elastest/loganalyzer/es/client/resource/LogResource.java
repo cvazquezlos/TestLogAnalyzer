@@ -32,16 +32,16 @@ public class LogResource {
 	@RequestMapping(method = RequestMethod.GET, value = "/id/{id}")
 	public ResponseEntity<Log> getLog(@PathVariable String id) {
 		Log log = esLogService.findOne(id);
-		
+
 		return new ResponseEntity<>(log, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/level/{level}")
 	public ResponseEntity<List<Log>> getLogByLevel(@PathVariable String level,
 			@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "10") int size) {
 		List<Log> log = esLogService.findByLevel(level, page, size);
-		
+
 		return new ResponseEntity<>(log, HttpStatus.OK);
 	}
 }

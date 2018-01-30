@@ -8,7 +8,7 @@
   </mat-card-title>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <div *ngIf="projectsRowData.length > 0; else emptyTable">
+    <div *ngIf="(projectsRowData.length > 0) && (!exec); else emptyTable">
       <td-data-table [clickable]="true"
                      [data]="projectsRowData"
                      [columns]="projectsData"
@@ -41,7 +41,7 @@
       </td-data-table>
     </div>
     <ng-template #emptyTable>
-      <td-message label="Warning!" sublabel="You don't have avaible projects. Please, create a new one." color="accent" icon="warning"></td-message>
+      <td-message label="Info" sublabel="You don't have avaible projects. Please, create a new one." color="light-blue" icon="info"></td-message>
     </ng-template>
   </mat-card-content>
 </mat-card>
