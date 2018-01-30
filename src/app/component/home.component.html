@@ -9,10 +9,9 @@
   <mat-divider></mat-divider>
   <mat-card-content>
     <td-data-table [clickable]="true"
-                   [columns]="projectsData"
                    [data]="projectsRowData"
-                   [sortable]="false"
-                   [sortBy]="sortBy">
+                   [columns]="projectsData"
+                   [sortable]="false">
       <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value" let-row="row">
         <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
       </ng-template>
@@ -25,7 +24,7 @@
                   mat-button
                   stopRowClick
                   title="Delete project"
-                  (click)="deleteProject(row)"
+                  (click)="delete(row)"
                   [disabled]="deletingInProgress">
                   <mat-icon>delete</mat-icon>
           </button>

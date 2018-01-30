@@ -77,6 +77,11 @@ export class ElasticsearchService {
       .map(response => response.count);
   }
 
+  deleteProject(id: number) {
+    return this.http.delete(this.baseAPIUrl + 'projects/remove/' + id.toString())
+      .map(response => response);
+  }
+
   get(typeSize: number[], valueMethod: string[], maven: boolean): Observable<Log[]> {
     const values1 = '&size=' + typeSize[1];
     const values2 = '&from=0';

@@ -10,7 +10,8 @@ import {
   TdMediaService
 } from '@covalent/core';
 
-import {Log} from '../model/log.model';
+import {Project} from '../model/project.model';
+
 import {ElasticsearchService} from '../service/elasticsearch.service';
 
 @Component({
@@ -27,7 +28,6 @@ export class HomeComponent implements AfterViewInit {
     {name: 'options', label: 'Options'}
   ];
   projectsRowData: any[] = [];
-  sortBy: string = 'id';
 
   constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
               public media: TdMediaService) {
@@ -40,6 +40,12 @@ export class HomeComponent implements AfterViewInit {
         });
       });
     });
+  }
+
+  delete(project: Project) {
+    this.elasticsearchService.deleteProject(project.id).subscribe(
+      response => console.log(response)
+    );
   }
 
   ngAfterViewInit(): void {
