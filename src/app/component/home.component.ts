@@ -31,21 +31,23 @@ export class HomeComponent implements AfterViewInit {
 
   constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
               public media: TdMediaService) {
+    this.reloadTable();
+  }
+
+  private reloadTable() {
+    this.projectsRowData = [];
     this.elasticsearchService.getProjects().subscribe(response => {
-      console.log(response);
-      response.forEach(project => {
-        this.projectsRowData = this.projectsRowData.concat({
-          'id': project.id,
-          'name': project.name
-        });
-      });
+      for (let i = 0; i < response.length; i++) {
+        this.projectsRowData[i] = {
+          'id': response[i].id,
+          'name': response[i].name
+        };
+      }
     });
   }
 
   delete(project: Project) {
-    this.elasticsearchService.deleteProject(project.id).subscribe(
-      response => console.log(response)
-    );
+    this.elasticsearchService.deleteProject(project.id).subscribe(response => this.reloadTable());
   }
 
   ngAfterViewInit(): void {
