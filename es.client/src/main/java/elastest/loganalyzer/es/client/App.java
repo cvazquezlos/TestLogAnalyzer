@@ -6,16 +6,23 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 import elastest.loganalyzer.es.client.service.ESLogService;
+import elastest.loganalyzer.es.client.service.ESProjectService;
 
 @SpringBootApplication
 @Import(EsConfiguration.class)
 public class App {
 	
-	private static ESLogService service;
+	private static ESLogService logService;
+	private static ESProjectService projectService;
 
 	@Autowired
 	public void EsLogService(ESLogService service) {
-		this.service = service;
+		this.logService = service;
+	}
+	
+	@Autowired
+	public void EsProjectService(ESProjectService service) {
+		this.projectService = service;
 	}
 	
 	public static void main(String[] args) {

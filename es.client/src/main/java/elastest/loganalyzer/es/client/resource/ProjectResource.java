@@ -27,10 +27,13 @@ public class ProjectResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> addLocation(@RequestBody Project project) {
+	public ResponseEntity<String> addLocation(@RequestBody Project project) {
+		/*
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(esProjectService.save(project)).toUri();
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).build();*/
+		System.out.println("Called");
+		return new ResponseEntity<>("Hola" + esProjectService.save(project), HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, path = "/id/{id}")
