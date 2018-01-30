@@ -105,19 +105,24 @@
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Review and save</ng-template>
-        The new project which name is <span class="md-title">{{project.name}}</span> will be created once you click on
-        save button.
-        The first execution of this project is provided by
-        <span *ngIf="fileSelected; else notSelected" class="md-title">choosing files</span>
-        <ng-template #notSelected>
-          <span class="md-title">URL</span>
-        </ng-template>
-        and its content will be saved.
-        <br><br>
-        <div layout="row" layout-align="center center">
-          <button color="accent" mat-raised-button (click)="save()">Save
-          </button>
+        <div *ngIf="(project.name !== '') && (urlTxt !== ''); else notCompleted">
+          The new project which name is <span class="md-title">{{project.name}}</span> will be created once you click on
+          save button.
+          The first execution of this project is provided by
+          <span *ngIf="fileSelected; else notSelected" class="md-title">choosing files</span>
+          <ng-template #notSelected>
+            <span class="md-title">URL</span>
+          </ng-template>
+          and its content will be saved.
+          <br><br>
+          <div layout="row" layout-align="center center">
+            <button color="accent" mat-raised-button (click)="save()">Save
+            </button>
+          </div>
         </div>
+        <ng-template #notCompleted>
+          <td-message label="Error!" sublabel="You have to fill out the required camps." color="warn" icon="error"></td-message>
+        </ng-template>
       </mat-step>
     </mat-vertical-stepper>
   </mat-card-content>

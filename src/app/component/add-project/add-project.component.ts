@@ -24,6 +24,7 @@ export class AddProjectComponent {
 
   constructor(private elasticsearchService: ElasticsearchService) {
     this.project = new Project();
+    this.project.name = '';
     this.isFile = true;
     this.urlTxt = '';
     this.urlXml = '';
