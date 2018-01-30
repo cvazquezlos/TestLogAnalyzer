@@ -1,6 +1,8 @@
 package elastest.loganalyzer.es.client.resource;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,8 +31,6 @@ public class ProjectResource {
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public int addLocation(@RequestBody Project project) {
-		System.out.println("Hey");
-		System.out.println(project);
 		return esProjectService.save(project);
 	}
 
@@ -39,11 +39,14 @@ public class ProjectResource {
 		return esProjectService.findOne(id);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Iterable<Project>> getAll() {
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	public List<Project> getAll() {
 		Iterable<Project> projects = esProjectService.findAll();
-		
-		return new ResponseEntity<>(projects, HttpStatus.OK);
+		List<Project> result = new ArrayList<Project>();
+		for (Project project : projects) {
+			result.add(project);
+		}
+		return result;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, path = "/name/{name}")

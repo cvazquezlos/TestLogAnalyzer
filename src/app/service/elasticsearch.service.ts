@@ -59,11 +59,9 @@ export class ElasticsearchService {
   }
 
 
-  getProjects(page: number) {
-    return this.http.get<Project>(this.baseAPIUrl + 'projects').map(
-      response => {
-        return response
-      });
+  getProjects() {
+    return this.http.get<Project>(this.baseAPIUrl + 'projects/all')
+      .map(response => response);
   }
 
   get(typeSize: number[], valueMethod: string[], maven: boolean): Observable<Log[]> {

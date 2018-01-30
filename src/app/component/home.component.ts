@@ -33,6 +33,7 @@ export class HomeComponent implements AfterViewInit {
     this.projectsRowData = this.projectsRowData.concat({
       'id': 1, 'name': 'Example', 'options': 'Hola'
     });
+    this.elasticsearchService.getProjects().subscribe(response=>console.log(response));
   }
 
   ngAfterViewInit(): void {
