@@ -8,35 +8,40 @@
   </mat-card-title>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <td-data-table [clickable]="true"
-                   [data]="projectsRowData"
-                   [columns]="projectsData"
-                   [sortable]="false">
-      <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value" let-row="row">
-        <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
-      </ng-template>
-      <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
-        <div layout="row">
-          <!--<button mat-button (click)="editProject(row)" stopRowClick title="Edit project">
-            <mat-icon>mode_edit</mat-icon>
-          </button>-->
-          <button class="iconBtn-lg"
-                  mat-button
-                  stopRowClick
-                  title="Delete project"
-                  (click)="delete(row)"
-                  [disabled]="deletingInProgress">
-                  <mat-icon>delete</mat-icon>
-          </button>
-          <button class="iconBtn-lg"
-                  mat-button
-                  stopRowClick
-                  title="View project"
-                  (click)="viewProject(row)">
-                  <mat-icon>remove_red_eye</mat-icon>
-          </button>
-        </div>
-      </ng-template>
-    </td-data-table>
+    <div *ngIf="projectsRowData.length > 0; else emptyTable">
+      <td-data-table [clickable]="true"
+                     [data]="projectsRowData"
+                     [columns]="projectsData"
+                     [sortable]="false">
+        <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value" let-row="row">
+          <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
+        </ng-template>
+        <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
+          <div layout="row">
+            <!--<button mat-button (click)="editProject(row)" stopRowClick title="Edit project">
+              <mat-icon>mode_edit</mat-icon>
+            </button>-->
+            <button class="iconBtn-lg"
+                    mat-button
+                    stopRowClick
+                    title="Delete project"
+                    (click)="delete(row)"
+                    [disabled]="deletingInProgress">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <button class="iconBtn-lg"
+                    mat-button
+                    stopRowClick
+                    title="View project"
+                    (click)="viewProject(row)">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </div>
+        </ng-template>
+      </td-data-table>
+    </div>
+    <ng-template #emptyTable>
+      <td-message label="Warning!" sublabel="You don't have avaible projects. Please, create a new one." color="accent" icon="warning"></td-message>
+    </ng-template>
   </mat-card-content>
 </mat-card>
