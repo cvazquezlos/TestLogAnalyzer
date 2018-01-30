@@ -64,7 +64,7 @@ export class ElasticsearchService {
   getProjects() {
     return this.http.get<any>(this.baseAPIUrl + 'projects/all')
       .map(response => {
-        let result = [];
+        const result = [];
         for (let i = 0; i < response.length; i++) {
           result[i] = response[i]
         }

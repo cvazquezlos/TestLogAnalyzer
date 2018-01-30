@@ -30,7 +30,7 @@ export class HomeComponent implements AfterViewInit {
 
   constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
               public media: TdMediaService) {
-    this.elasticsearchService.getProjects().subscribe(response=> {
+    this.elasticsearchService.getProjects().subscribe(response => {
       console.log(response);
       response.forEach(project => {
         this.projectsRowData = this.projectsRowData.concat({
