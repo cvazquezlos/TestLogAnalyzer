@@ -12,7 +12,7 @@
                    [columns]="projectsData"
                    [data]="projectsRowData"
                    [sortable]="false"
-                   [style.height.px]="200">
+                   [sortBy]="id">
       <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value" let-row="row">
         <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
       </ng-template>

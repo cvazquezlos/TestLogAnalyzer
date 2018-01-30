@@ -22,7 +22,7 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 export class HomeComponent implements AfterViewInit {
 
   projectsData: ITdDataTableColumn[] = [
-    {name: 'id', label: 'Id', width: 100},
+    {name: 'id', label: 'Id', width: 300},
     {name: 'name', label: 'Name'},
     {name: 'options', label: 'Options'}
   ];
