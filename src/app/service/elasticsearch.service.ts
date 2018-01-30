@@ -45,6 +45,13 @@ export class ElasticsearchService {
       .map(response => response.count);
   }
 
+  postProject(project: Project) {
+    const headers: HttpHeaders = new HttpHeaders();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(this.baseAPIUrl + 'projects', JSON.stringify(project), {headers: headers});
+  }
+
+
   getProjects(page: number) {
     return this.http.get<Project>(this.baseAPIUrl + 'projects').map(
       response => {

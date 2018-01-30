@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Project} from '../../model/project.model';
+import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
   selector: 'app-add-project',
@@ -21,7 +22,7 @@ export class AddProjectComponent {
   isFile: boolean;
   project: Project;
 
-  constructor() {
+  constructor(private elasticsearchService: ElasticsearchService) {
     this.project = new Project();
     this.isFile = true;
     this.urlTxt = '';
@@ -34,6 +35,10 @@ export class AddProjectComponent {
   cancel() {
     this.urlTxt = '';
     this.urlXml = '';
+  }
+
+  save() {
+    this.elasticsearchService.postProject(this.project);
   }
 
   update(file: File) {
