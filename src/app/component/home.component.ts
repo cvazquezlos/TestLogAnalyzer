@@ -27,6 +27,7 @@ export class HomeComponent implements AfterViewInit {
     {name: 'options', label: 'Options'}
   ];
   projectsRowData: any[] = [];
+  sortBy: string = 'id';
 
   constructor(private elasticsearchService: ElasticsearchService, private _dataTableService: TdDataTableService,
               public media: TdMediaService) {
