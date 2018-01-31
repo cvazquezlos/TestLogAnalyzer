@@ -1,6 +1,5 @@
 package elastest.loganalyzer.es.client.resource;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
