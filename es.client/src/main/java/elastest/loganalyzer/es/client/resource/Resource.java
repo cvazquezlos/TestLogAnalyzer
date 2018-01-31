@@ -15,11 +15,12 @@ public class Resource {
 		try {
 			if (file != null) {
 				System.out.println(file.getOriginalFilename());
+				
 			}
 		} catch (Exception e) {
 			return "error";
 		}
 		return "ok";
 	}
-	
+
 }
