@@ -21,6 +21,7 @@ export class AddProjectComponent {
   urlXml: string;
   isFile: boolean;
   project: Project;
+  updatingFile: boolean;
 
   constructor(private elasticsearchService: ElasticsearchService) {
     this.project = new Project();
@@ -33,6 +34,7 @@ export class AddProjectComponent {
     this.fileSelected = true;
     this.fileTxt = '';
     this.fileXml = '';
+    this.updatingFile = false;
   }
 
   cancel() {
@@ -42,7 +44,10 @@ export class AddProjectComponent {
 
   save() {
     this.elasticsearchService.postProject(this.project).subscribe(
-      response => console.log(response)
+      response => {
+        this.updatingFile = true;
+        
+      }
     );
   }
 

@@ -123,6 +123,11 @@
         <ng-template #notCompleted>
           <td-message label="Error!" sublabel="You have to fill out the required camps." color="warn" icon="error"></td-message>
         </ng-template>
+        <div *ngIf="updatingFile">
+          <ng-template tdLoading [tdLoadingUntil]="!updatingFile" tdLoadingStrategy="overlay" tdLoadingType="linear">
+          </ng-template>
+          <td-message label="Success!" sublabel="Uploading file content into Elasticsearch..." color="green" icon="check_circle"></td-message>
+        </div>
       </mat-step>
     </mat-vertical-stepper>
   </mat-card-content>
