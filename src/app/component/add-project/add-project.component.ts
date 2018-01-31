@@ -15,8 +15,8 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
 export class AddProjectComponent {
 
   fileSelected: boolean;
-  fileTxt: any;
-  fileXml: any;
+  fileTxt: File;
+  fileXml: File;
   urlTxt: string;
   urlXml: string;
   isFile: boolean;
@@ -32,8 +32,8 @@ export class AddProjectComponent {
     this.urlTxt = '';
     this.urlXml = '';
     this.fileSelected = true;
-    this.fileTxt = '';
-    this.fileXml = '';
+    this.fileTxt = null;
+    this.fileXml = null;
     this.updatingFile = false;
   }
 
@@ -46,11 +46,14 @@ export class AddProjectComponent {
     this.updatingFile = true;
     this.elasticsearchService.postProject(this.project).subscribe(
       response => {
-        const headers: HttpHeaders = new HttpHeaders();
+        let headers: HttpHeaders = new HttpHeaders();
+        headers.append('Content-Type', 'application/json');
+        this.http.post('http://localhost:8443/files/update', this.project.name, {headers: headers});
+        headers = new HttpHeaders();
         headers.append('Content-Type', 'application/pdf');
         const formData = new FormData();
         formData.append('file', this.fileTxt);
-        this.http.post('http://localhost:8443/files/upload?project=' + this.project.name, formData, {headers: headers}).subscribe(result => console.log(result));
+        this.http.post('http://localhost:8443/files/upload', formData, {headers: headers});
         this.updatingFile = false;
       }
     );
