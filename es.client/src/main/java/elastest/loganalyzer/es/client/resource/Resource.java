@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @RestController
 @RequestMapping("/files")
 public class Resource {
@@ -18,11 +17,13 @@ public class Resource {
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public ResponseEntity<String> upload(@RequestParam MultipartFile file) {
-		System.out.print("Hola");
+		System.out.println("Hola");
 		try {
 			if (file != null) {
 				System.out.println(file.getOriginalFilename());
 				System.out.println("hey " + recentProject);
+			} else {
+				System.out.println("Fail");
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -32,6 +33,7 @@ public class Resource {
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public ResponseEntity<String> update(@RequestBody String name) {
+		System.out.println("Hola");
 		System.out.println(name);
 		recentProject = name;
 		return new ResponseEntity<>(recentProject, HttpStatus.CREATED);

@@ -48,13 +48,19 @@ export class AddProjectComponent {
       response => {
         let headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-Type', 'application/json');
-        this.http.post('http://localhost:8443/files/update', this.project.name, {headers: headers});
-        headers = new HttpHeaders();
-        headers.append('Content-Type', 'application/pdf');
-        const formData = new FormData();
-        formData.append('file', this.fileTxt);
-        this.http.post('http://localhost:8443/files/upload', formData, {headers: headers});
-        this.updatingFile = false;
+        this.http.post('http://localhost:8443/files/update', this.project.name, {headers: headers}).subscribe(
+          result => {
+            headers = new HttpHeaders();
+            headers.append('Content-Type', 'application/pdf');
+            const formData = new FormData();
+            formData.append('file', this.fileTxt);
+            this.http.post('http://localhost:8443/files/upload', formData, {headers: headers}).subscribe(
+              result2 => {
+                this.updatingFile = false;
+              }
+            );
+          }
+        );
       }
     );
   }
