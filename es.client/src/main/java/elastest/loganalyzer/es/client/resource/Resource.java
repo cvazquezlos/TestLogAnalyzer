@@ -11,11 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class Resource {
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String upload(@RequestParam MultipartFile file) {
+	public String upload(@RequestParam MultipartFile file, @RequestParam(name = "project") String name) {
 		try {
 			if (file != null) {
 				System.out.println(file.getOriginalFilename());
-				
+				System.out.println(name);
 			}
 		} catch (Exception e) {
 			return "error";

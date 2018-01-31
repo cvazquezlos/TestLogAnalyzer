@@ -50,7 +50,7 @@ export class AddProjectComponent {
         headers.append('Content-Type', 'application/pdf');
         const formData = new FormData();
         formData.append('file', this.fileTxt);
-        this.http.post('http://localhost:8443/files/upload', formData, {headers: headers}).subscribe(response => console.log(response));
+        this.http.post('http://localhost:8443/files/upload?project=' + this.project.name, formData, {headers: headers}).subscribe(result => console.log(result));
         this.updatingFile = false;
       }
     );
