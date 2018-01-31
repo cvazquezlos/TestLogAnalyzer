@@ -3,10 +3,8 @@ import {
   OnInit
 } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
-import {RequestOptions} from "http";
 
 @Component({
   selector: 'app-add-project',
@@ -50,7 +48,7 @@ export class AddProjectComponent {
       response => {
         const headers: HttpHeaders = new HttpHeaders();
         headers.append('Content-Type', 'application/pdf');
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append('file', this.fileTxt);
         this.http.post('http://localhost:8443/files/upload', formData, {headers: headers}).subscribe(response => console.log(response));
         this.updatingFile = false;
