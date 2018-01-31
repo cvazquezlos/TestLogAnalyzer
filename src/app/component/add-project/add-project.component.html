@@ -115,19 +115,21 @@
           </ng-template>
           and its content will be saved.
           <br><br>
-          <div layout="row" layout-align="center center" #hideSave>
-            <button color="accent" mat-raised-button (click)="save()">Save
-            </button>
+          <div *ngIf="updatingFile; else hideSave">
+            <ng-template tdLoading [tdLoadingUntil]="!updatingFile" tdLoadingStrategy="overlay" tdLoadingType="linear">
+            </ng-template>
+            <td-message label="Success!" sublabel="Uploading file content into Elasticsearch..." color="green" icon="check_circle"></td-message>
           </div>
+          <ng-template #hideSave>
+            <div layout="row" layout-align="center center">
+              <button color="accent" mat-raised-button (click)="save()">Save
+              </button>
+            </div>
+          </ng-template>
         </div>
         <ng-template #notCompleted>
           <td-message label="Error!" sublabel="You have to fill out the required camps." color="warn" icon="error"></td-message>
         </ng-template>
-        <div *ngIf="updatingFile; else hideSave">
-          <ng-template tdLoading [tdLoadingUntil]="!updatingFile" tdLoadingStrategy="overlay" tdLoadingType="linear">
-          </ng-template>
-          <td-message label="Success!" sublabel="Uploading file content into Elasticsearch..." color="green" icon="check_circle"></td-message>
-        </div>
       </mat-step>
     </mat-vertical-stepper>
   </mat-card-content>
