@@ -47,8 +47,7 @@ export class AddProjectComponent {
     this.elasticsearchService.postProject(this.project).subscribe(
       response => {
         let headers: HttpHeaders = new HttpHeaders();
-        headers.append('Content-Type', 'application/json; charset = UTF-8');
-        this.http.post('http://localhost:8443/files/update', this.project.name, {headers: headers}).subscribe(
+        this.http.post('http://localhost:8443/files/update', JSON.stringify(this.project.name), {headers: headers}).subscribe(
           result => {
             headers = new HttpHeaders();
             headers.append('Content-Type', 'application/pdf');
@@ -59,7 +58,8 @@ export class AddProjectComponent {
                 this.updatingFile = false;
               }
             );
-          }
+          },
+          error => console.log(error)
         );
       }
     );

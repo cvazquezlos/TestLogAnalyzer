@@ -37,7 +37,6 @@ public class ProjectResource {
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<Project> getAll() {
-		System.out.println("Called");
 		Iterable<Project> projects = esProjectService.findAll();
 		List<Project> result = new ArrayList<Project>();
 		for (Project project : projects) {
