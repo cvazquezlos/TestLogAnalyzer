@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import elastest.loganalyzer.es.client.EsConfiguration;
 import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.service.ESProjectService;
+import elastest.loganalyzer.es.client.service.ExecutionParserService;
 
 @RestController
 @RequestMapping("/files")
@@ -21,10 +22,12 @@ import elastest.loganalyzer.es.client.service.ESProjectService;
 public class Resource {
 	
 	private final ESProjectService esProjectService;
+	private final ExecutionParserService executionParserService;
 
 	@Autowired
-	public Resource(ESProjectService esProjectService) {
+	public Resource(ESProjectService esProjectService, ExecutionParserService executionParserService) {
 		this.esProjectService = esProjectService;
+		this.executionParserService = executionParserService;
 	}
 	
 	private String recentProject;
@@ -39,6 +42,7 @@ public class Resource {
 				String indexName = recentProject + "_exec_" + esProjectService.findByName(recentProject).getNum_execs();
 				elasticsearchTemplate.createIndex(indexName.replaceAll("\"", "").toLowerCase());
 				elasticsearchTemplate.putMapping(indexName, "logs", elasticsearchTemplate.getMapping(Log.class));
+				this.executionParserService.parse(file);
 			} else {
 				System.out.println("Fail");
 			}
