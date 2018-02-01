@@ -16,7 +16,7 @@ public class Resource {
 	private String recentProject;
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public ResponseEntity<String> upload(@RequestParam MultipartFile file) {
+	public ResponseEntity<String> upload(@RequestBody MultipartFile file) {
 		System.out.println("Hola");
 		try {
 			if (file != null) {
@@ -25,18 +25,18 @@ public class Resource {
 			} else {
 				System.out.println("Fail");
 			}
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public ResponseEntity<String> update(@RequestBody String name) {
-		System.out.println("Hola");
-		System.out.println(name);
+	public String update(@RequestBody String name) {
+		System.out.println("Update method called.");
 		recentProject = name;
-		return new ResponseEntity<>(recentProject, HttpStatus.CREATED);
+		System.out.println(recentProject);
+		return recentProject;
 	}
 
 }
