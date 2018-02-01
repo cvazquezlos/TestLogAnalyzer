@@ -33,18 +33,18 @@ public class Resource {
 	private ElasticsearchOperations elasticsearchTemplate;
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public ResponseEntity<String> upload(@RequestBody MultipartFile file) {
+	public String upload(@RequestBody MultipartFile file) {
 		try {
 			if (file != null) {
 				String indexName = recentProject + "_exec_" + esProjectService.findByName(recentProject).getNum_execs();
-				elasticsearchTemplate.createIndex(indexName);
+				elasticsearchTemplate.createIndex(indexName.replaceAll("\"", "").toLowerCase());
 				elasticsearchTemplate.putMapping(indexName, "logs", elasticsearchTemplate.getMapping(Log.class));
 			} else {
 				System.out.println("Fail");
 			}
-			return new ResponseEntity<>(HttpStatus.OK);
+			return "200";
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return "400";
 		}
 	}
 	
