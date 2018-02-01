@@ -1,10 +1,8 @@
 package elastest.loganalyzer.es.client.service;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,29 +22,13 @@ public class ExecutionParserService {
 		this.esLogService = esLogService;
 	}
 
-	public void parse(MultipartFile file) {
+	public void parse(MultipartFile file, Integer testNo, int lastId) {
+		// Save in data ArrayList the content of the file of logs.
 		ArrayList<String> data = new ArrayList<String>();
-		Integer testNo = 0;
+		data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
 		try {
-			File f = new File("testno.txt");
-			BufferedReader br = new BufferedReader(new FileReader(f));
-			String line = "";
-			while ((line = br.readLine()) != null) {
-				testNo = Integer.valueOf(line);
-			}
-			data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
-			testNo += 1;
-			BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-			String testNumber = String.format("%02d", testNo);
-			bw.write(testNumber);
-			br.close();
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		testNo -= 1;
-		try {
-			File f = new File("log.txt");
+			File f = new File(file.getOriginalFilename());
+			file.transferTo(f);
 			BufferedReader br = new BufferedReader(new FileReader(f));
 			String line = "";
 			while ((line = br.readLine()) != null) {
@@ -57,8 +39,9 @@ public class ExecutionParserService {
 			e.printStackTrace();
 		}
 		data.add("[INFO] Finishing unit test number " + testNo + "...");
+
 		String testNumber = String.format("%02d", testNo);
-		Integer identificator = readIntegerContent("idno.txt");
+		Integer identificator = lastId;
 		// Just before first -------------------- line.
 		while (data.get(0).indexOf("[") == 0) {
 			String id = String.format("%04d", identificator);
@@ -118,9 +101,6 @@ public class ExecutionParserService {
 			data.remove(0);
 			identificator++;
 		}
-		String id = String.format("%04d", identificator);
-		writeContent("idno.txt", id);
-
 	}
 
 	private static String[] getArgsLogback(String string) {
@@ -150,32 +130,5 @@ public class ExecutionParserService {
 			args[1] = "";
 		}
 		return args;
-	}
-
-	private static Integer readIntegerContent(String file) {
-		Integer content = 0;
-		try {
-			File f = new File(file);
-			BufferedReader br = new BufferedReader(new FileReader(f));
-			String line = "";
-			while ((line = br.readLine()) != null) {
-				content = Integer.valueOf(line);
-			}
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return content;
-	}
-
-	private static void writeContent(String file, String content) {
-		try {
-			File f = new File(file);
-			BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-			bw.write(content);
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

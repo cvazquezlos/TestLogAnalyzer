@@ -3,9 +3,10 @@ package elastest.loganalyzer.es.client.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+//@Document(indexName = "${elasticsearch.index.name}", type = "logs")
 @Document(indexName = "loganalyzer", type = "logs")
 public class Log {
-
+	
 	@Id
 	private String id;
 
