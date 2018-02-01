@@ -12,11 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import elastest.loganalyzer.es.client.EsConfiguration;
+import elastest.loganalyzer.es.client.model.Log;
+import elastest.loganalyzer.es.client.service.ESProjectService;
 
 @RestController
 @RequestMapping("/files")
 @Import(EsConfiguration.class)
 public class Resource {
+	
+	private final ESProjectService esProjectService;
+
+	@Autowired
+	public Resource(ESProjectService esProjectService) {
+		this.esProjectService = esProjectService;
+	}
 	
 	private String recentProject;
 	
@@ -25,9 +34,11 @@ public class Resource {
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public ResponseEntity<String> upload(@RequestBody MultipartFile file) {
-		System.out.println("Hola");
 		try {
 			if (file != null) {
+				String indexName = recentProject + "_exec_" + esProjectService.findByName(recentProject).getNum_execs();
+				elasticsearchTemplate.createIndex(indexName);
+				elasticsearchTemplate.putMapping(indexName, "logs", elasticsearchTemplate.getMapping(Log.class));
 			} else {
 				System.out.println("Fail");
 			}
