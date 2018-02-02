@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.common.collect.Lists;
+
 import elastest.loganalyzer.es.client.EsConfiguration;
 import elastest.loganalyzer.es.client.model.Index;
 import elastest.loganalyzer.es.client.model.Log;
@@ -60,9 +62,7 @@ public class Resource {
 		        index.setV(indexName);
 		        Index index1 = (Index) context.getBean("index");
 		        System.out.println("New index name: " + index1.getV());
-		        //this.executionParserService.parse(file, numExecs, Lists.newArrayList(esLogService.findAll()).size());
-				Log log = new Log("1", "0", "Prueba", "Prueba");
-				esLogService.save(log);
+		        this.executionParserService.parse(file, numExecs, Lists.newArrayList(esLogService.findAll()).size());
 				/*elasticsearchTemplate.putMapping(indexName, "logs", );
 				System.out.println("Working 2");
 				System.out.println(elasticsearchTemplate.getMapping(indexName, "logs"));
