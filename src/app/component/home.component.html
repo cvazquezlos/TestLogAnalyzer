@@ -18,7 +18,8 @@
                      [data]="projectsRowData"
                      [columns]="projectsData"
                      [sortable]="false">
-        <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value" let-row="row">
+        <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value"
+                     let-row="row">
           <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
         </ng-template>
         <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
@@ -46,7 +47,8 @@
       </td-data-table>
     </div>
     <ng-template #emptyTable>
-      <td-message label="Info" sublabel="You don't have avaible projects. Please, create a new one." color="light-blue" icon="info"></td-message>
+      <td-message label="Info" sublabel="You don't have avaible projects. Please, create a new one." color="light-blue"
+                  icon="info"></td-message>
     </ng-template>
   </mat-card-content>
 </mat-card>

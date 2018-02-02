@@ -1,5 +1,7 @@
 package elastest.loganalyzer.es.client.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.annotations.Query;
@@ -12,5 +14,7 @@ import elastest.loganalyzer.es.client.model.Log;
 public interface LogRepository extends ElasticsearchCrudRepository<Log, String> {
 
 	Page<Log> findByLevel(String level, Pageable pageable);
+
+	List<Log> findByProject(String project);
 
 }

@@ -12,17 +12,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.model.Project;
+import elastest.loganalyzer.es.client.service.ESLogService;
 import elastest.loganalyzer.es.client.service.ESProjectService;
 
 @RestController
 @RequestMapping("/projects")
 public class ProjectResource {
 
+	private final ESLogService esLogService;
 	private final ESProjectService esProjectService;
 
 	@Autowired
-	public ProjectResource(ESProjectService esProjectService) {
+	public ProjectResource(ESProjectService esProjectService, ESLogService esLogService) {
+		this.esLogService = esLogService;
 		this.esProjectService = esProjectService;
 	}
 
@@ -49,6 +53,10 @@ public class ProjectResource {
 	@RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
 	public Project delete(@PathVariable int id) {
 		Project deleted = esProjectService.findOne(id);
+		List<Log> logs = esLogService.findByProject(deleted.getName());
+		for (int i = 0; i < logs.size(); i++) {
+			esLogService.delete(logs.get(i));
+		}
 		esProjectService.delete(deleted);
 		return deleted;
 	}

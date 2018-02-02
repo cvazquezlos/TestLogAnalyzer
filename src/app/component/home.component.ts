@@ -35,8 +35,8 @@ export class HomeComponent implements AfterViewInit {
 
   reloadTable() {
     this.exec = true;
-    this.projectsRowData = [];
     this.elasticsearchService.getProjects().subscribe(response => {
+      this.projectsRowData = [];
       for (let i = 0; i < response.length; i++) {
         this.projectsRowData[i] = {
           'id': response[i].id,
