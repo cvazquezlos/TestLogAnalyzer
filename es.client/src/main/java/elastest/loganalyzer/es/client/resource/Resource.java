@@ -50,30 +50,11 @@ public class Resource {
 		try {
 			if (file != null) {
 				Project target = esProjectService.findByName(recentProject);
-				int numExecs = target.getNum_execs();
-				String indexName = recentProject + "_exec_" + numExecs;
-				indexName = indexName.replaceAll("\"", "").toLowerCase();
-				elasticsearchTemplate.createIndex(indexName);
-				System.out.println("Working 1");
-				System.out.println(elasticsearchTemplate.getMapping("loganalyzer", "logs"));
-				elasticsearchTemplate.putMapping(indexName, "logs", elasticsearchTemplate.getMapping("loganalyzer", "logs"));
-				System.out.println(elasticsearchTemplate.getMapping(indexName, "logs"));	
-				System.out.println((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))[0]);
-		        //this.executionParserService.parse(file, target, Lists.newArrayList(esLogService.findAll()).size());
-//				index = (Index) context.getBean("index");
-//		        index.setV(indexName);
-//		        Index index1 = (Index) context.getBean("index");
-//		        System.out.println("New index name: " + index1.getV());
-				/*elasticsearchTemplate.putMapping(indexName, "logs", );
-				System.out.println("Working 2");
-				System.out.println(elasticsearchTemplate.getMapping(indexName, "logs"));
-				System.out.println("Working 3");
-				/*index = indexName;
-				System.out.println("Working 3: " + index);
-				System.out.println(Lists.newArrayList(esLogService.findAll()).size());
-				System.out.println(numExecs);
-				this.executionParserService.parse(file, numExecs, Lists.newArrayList(esLogService.findAll()).size());
-				target.setNum_execs(numExecs + 1);*/
+				this.executionParserService.parse(file, target, Lists.newArrayList(esLogService.findAll()).size());
+				
+				//elasticsearchTemplate.createIndex(indexName);
+				//elasticsearchTemplate.putMapping(indexName, "logs", elasticsearchTemplate.getMapping("loganalyzer", "logs"));
+				System.out.println((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator")));
 			} else {
 				System.out.println("Fail");
 			}

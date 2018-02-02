@@ -1,10 +1,8 @@
 package elastest.loganalyzer.es.client.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,25 +21,14 @@ public class ExecutionParserService {
 		this.esLogService = esLogService;
 	}
 
-	public void parse(MultipartFile file, Project project, int lastId) {
+	public void parse(MultipartFile file, Project project, int lastId) throws Exception, IOException {
 		// Save in data ArrayList the content of the file of logs.
-		ArrayList<String> data = new ArrayList<String>();
-		data.add(0, "[INFO] Building project and starting unit test number " + project.getNum_execs() + "...");
-		try {
-			File f = new File(file.getOriginalFilename());
-			file.transferTo(f);
-			BufferedReader br = new BufferedReader(new FileReader(f));
-			String line = "";
-			while ((line = br.readLine()) != null) {
-				data.add(line);
-			}
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		data.add("[INFO] Finishing unit test number " + project.getNum_execs() + "...");
+		ArrayList<String> data = new ArrayList<>(Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
+		int numExecs = project.getNum_execs();
+		data.add(0, "[INFO] Building project and starting unit test number " + numExecs + "...");
+		data.add("[INFO] Finishing unit test number " + numExecs + "...");
 
-		String testNumber = String.format("%02d", project.getNum_execs());
+		String testNumber = String.format("%02d", numExecs);
 		Integer identificator = lastId;
 		// Just before first -------------------- line.
 		while (data.get(0).indexOf("[") == 0) {
