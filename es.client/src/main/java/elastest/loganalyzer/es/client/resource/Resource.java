@@ -36,7 +36,7 @@ public class Resource {
 	private final ApplicationContext context;
 	
 	private static String recentProject;
-	private String index;
+	private Index index;
 
 	@Autowired
 	public Resource(ESProjectService esProjectService, ExecutionParserService executionParserService, ESLogService esLogService) {
@@ -44,11 +44,6 @@ public class Resource {
 		this.esLogService = esLogService;
 		this.executionParserService = executionParserService;
 	    context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		Index index = (Index) context.getBean("index");
-        System.out.println(index.getV());
-        index.setV("hola");
-        Index index1 = (Index) context.getBean("index");
-        System.out.println(index1.getV());
 	}
 
 	@Autowired
@@ -66,8 +61,14 @@ public class Resource {
 				System.out.println("Working 1");
 				System.out.println(elasticsearchTemplate.getMapping("loganalyzer", "logs"));
 				elasticsearchTemplate.putMapping(indexName, "logs", elasticsearchTemplate.getMapping("loganalyzer", "logs"));
-				System.out.println(elasticsearchTemplate.getMapping(indexName, "logs"));
-				System.out.println(index);
+				System.out.println(elasticsearchTemplate.getMapping(indexName, "logs"));				
+				index = (Index) context.getBean("index");
+		        index.setV(indexName);
+		        Index index1 = (Index) context.getBean("index");
+		        System.out.println("New index name: " + index1.getV());
+		        //this.executionParserService.parse(file, numExecs, Lists.newArrayList(esLogService.findAll()).size());
+				Log log = new Log("1", "0", "Prueba", "Prueba");
+				esLogService.save(log);
 				/*elasticsearchTemplate.putMapping(indexName, "logs", );
 				System.out.println("Working 2");
 				System.out.println(elasticsearchTemplate.getMapping(indexName, "logs"));
