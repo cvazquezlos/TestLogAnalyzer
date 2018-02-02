@@ -2,18 +2,18 @@ package elastest.loganalyzer.es.client.model;
 
 public class Index {
 
-	String value;
+	public String v;
 
-	public Index(String value) {
-		this.value = value;
+	public Index() {
+		this.v = "default";
 	}
 	
-	public String getValue() {
-		return value;
+	public String getV() {
+		return v;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setV(String v) {
+		this.v = v;
 	}
 	
 }

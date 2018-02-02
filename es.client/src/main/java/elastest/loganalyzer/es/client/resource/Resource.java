@@ -37,9 +37,6 @@ public class Resource {
 	
 	private static String recentProject;
 	private String index;
-	
-//	@Value("${elasticsearch.index.name}")
-//	private String index;
 
 	@Autowired
 	public Resource(ESProjectService esProjectService, ExecutionParserService executionParserService, ESLogService esLogService) {
@@ -47,16 +44,13 @@ public class Resource {
 		this.esLogService = esLogService;
 		this.executionParserService = executionParserService;
 	    context = new ClassPathXmlApplicationContext("applicationContext.xml");
-//		Index index = (Index) context.getBean("index");
-//        System.out.println(index.getValue());
-//        index.setValue("hola");
-//        Index index1 = (Index) context.getBean("index");
-//        System.out.println(index1.getValue());
+		Index index = (Index) context.getBean("index");
+        System.out.println(index.getV());
+        index.setV("hola");
+        Index index1 = (Index) context.getBean("index");
+        System.out.println(index1.getV());
 	}
-	
-	@Autowired
-	private Environment env;
-	
+
 	@Autowired
 	private ElasticsearchOperations elasticsearchTemplate;
 

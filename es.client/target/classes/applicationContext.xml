@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="index" class="elastest.loganalyzer.es.client.model.Index">
-	    <constructor-arg value="default"/>
+	    <property name="v" value="default"></property>
 	</bean>
 
 </beans>

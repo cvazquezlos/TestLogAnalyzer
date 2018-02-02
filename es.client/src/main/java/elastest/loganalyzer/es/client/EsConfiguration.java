@@ -21,8 +21,6 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 @EnableElasticsearchRepositories(basePackages = "elastest/loganalyzer/es/client/repository")
 public class EsConfiguration {
 	
-	private String index;
-	
 	@Bean
 	public NodeBuilder nodeBuilder() {
 		return new NodeBuilder();
@@ -38,15 +36,6 @@ public class EsConfiguration {
 				.settings(elasticsearchSettings.build())
 				.node()
 				.client());
-	}
-	
-	@Bean
-	public String index() {
-		return index;
-	}
-	
-	public void setIndex(String index) {
-		this.index = index;
 	}
 
 }

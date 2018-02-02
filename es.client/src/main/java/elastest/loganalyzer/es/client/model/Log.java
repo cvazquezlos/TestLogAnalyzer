@@ -4,11 +4,20 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 //@Document(indexName = "${elasticsearch.index.name}", type = "logs")
-@Document(indexName = "loganalyzer", type = "logs")
+@Document(indexName = "cluster", type = "logs")
 public class Log {
 	
 	@Id
 	private String id;
+
+	private String project;
+	public String getProject() {
+		return project;
+	}
+
+	public void setProject(String project) {
+		this.project = project;
+	}
 
 	private String test_no;
 	private String entire_log;
