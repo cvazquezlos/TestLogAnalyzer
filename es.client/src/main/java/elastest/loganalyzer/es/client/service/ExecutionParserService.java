@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import elastest.loganalyzer.es.client.model.Log;
+import elastest.loganalyzer.es.client.model.Project;
 
 @Service
 public class ExecutionParserService {
@@ -22,10 +23,10 @@ public class ExecutionParserService {
 		this.esLogService = esLogService;
 	}
 
-	public void parse(MultipartFile file, Integer testNo, int lastId) {
+	public void parse(MultipartFile file, Project project, int lastId) {
 		// Save in data ArrayList the content of the file of logs.
 		ArrayList<String> data = new ArrayList<String>();
-		data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
+		data.add(0, "[INFO] Building project and starting unit test number " + project.getNum_execs() + "...");
 		try {
 			File f = new File(file.getOriginalFilename());
 			file.transferTo(f);
@@ -38,15 +39,15 @@ public class ExecutionParserService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		data.add("[INFO] Finishing unit test number " + testNo + "...");
+		data.add("[INFO] Finishing unit test number " + project.getNum_execs() + "...");
 
-		String testNumber = String.format("%02d", testNo);
+		String testNumber = String.format("%02d", project.getNum_execs());
 		Integer identificator = lastId;
 		// Just before first -------------------- line.
 		while (data.get(0).indexOf("[") == 0) {
 			String id = String.format("%04d", identificator);
 			String[] args = getArgsNormal(data.get(0));
-			Log log = new Log(id, testNumber, data.get(0), args[0], args[1]);
+			Log log = new Log(id, project.getName(), testNumber, data.get(0), args[0], args[1]);
 			esLogService.save(log);
 			System.out.println(data.get(0));
 			data.remove(0);
@@ -55,7 +56,7 @@ public class ExecutionParserService {
 		// Just before first Running com.... line.
 		while (data.get(0).indexOf("R") != 0) {
 			String id = String.format("%04d", identificator);
-			Log log = new Log(id, testNumber, data.get(0), data.get(0));
+			Log log = new Log(id, project.getName(), testNumber, data.get(0), data.get(0));
 			esLogService.save(log);
 			System.out.println(data.get(0));
 			data.remove(0);
@@ -66,7 +67,7 @@ public class ExecutionParserService {
 		while (data.get(0).length() != 0) {
 			if (data.get(0).indexOf("S") == 0) {
 				String id = String.format("%04d", identificator);
-				Log log = new Log(id, testNumber, data.get(0), data.get(0));
+				Log log = new Log(id, project.getName(), testNumber, data.get(0), data.get(0));
 				esLogService.save(log);
 				System.out.println(data.get(0));
 				method = data.get(0).split(" ")[1];
@@ -75,7 +76,7 @@ public class ExecutionParserService {
 			} else if (data.get(0).indexOf("2") == 0) {
 				String id = String.format("%04d", identificator);
 				String[] args = getArgsLogback(data.get(0));
-				Log log = new Log(id, testNumber, data.get(0), method, args[0], args[1], args[2], args[3], args[4]);
+				Log log = new Log(id, project.getName(), testNumber, data.get(0), method, args[0], args[1], args[2], args[3], args[4]);
 				esLogService.save(log);
 				System.out.println(data.get(0));
 				data.remove(0);
@@ -85,7 +86,7 @@ public class ExecutionParserService {
 			} else {
 				method = "-";
 				String id = String.format("%04d", identificator);
-				Log log = new Log(id, testNumber, data.get(0), data.get(0));
+				Log log = new Log(id, project.getName(), testNumber, data.get(0), data.get(0));
 				esLogService.save(log);
 				System.out.println(data.get(0));
 				data.remove(0);
@@ -95,7 +96,7 @@ public class ExecutionParserService {
 		while (!data.isEmpty()) {
 			String id = String.format("%04d", identificator);
 			String[] args = getArgsNormal(data.get(0));
-			Log log = new Log(id, testNumber, data.get(0), args[0], args[1]);
+			Log log = new Log(id, project.getName(), testNumber, data.get(0), args[0], args[1]);
 			esLogService.save(log);
 			System.out.println(data.get(0));
 			data.remove(0);

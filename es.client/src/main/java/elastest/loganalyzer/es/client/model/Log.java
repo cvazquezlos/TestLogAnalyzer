@@ -24,8 +24,9 @@ public class Log {
 	public Log() {
 	}
 
-	public Log(String id, String test_no, String entire_log) {
+	public Log(String id, String project, String test_no, String entire_log) {
 		this.id = id;
+		this.project = project;
 		this.test_no = test_no;
 		this.entire_log = entire_log;
 		this.method = "-";
@@ -36,8 +37,9 @@ public class Log {
 		this.formatted_message = "-";
 	}
 
-	public Log(String id, String test_no, String entire_log, String level, String formatted_message) {
+	public Log(String id, String project, String test_no, String entire_log, String level, String formatted_message) {
 		this.id = id;
+		this.project = project;
 		this.test_no = test_no;
 		this.entire_log = entire_log;
 		this.method = "-";
@@ -48,8 +50,9 @@ public class Log {
 		this.formatted_message = formatted_message;
 	}
 
-	public Log(String id, String test_no, String entire_log, String formatted_message) {
+	public Log(String id, String project, String test_no, String entire_log, String formatted_message) {
 		this.id = id;
+		this.project = project;
 		this.test_no = test_no;
 		this.entire_log = entire_log;
 		this.method = "-";
@@ -60,9 +63,10 @@ public class Log {
 		this.formatted_message = formatted_message;
 	}
 
-	public Log(String id, String test_no, String entire_log, String method, String timestamp, String thread_name,
+	public Log(String id, String project, String test_no, String entire_log, String method, String timestamp, String thread_name,
 			String level, String logger_name, String formatted_message) {
 		this.id = id;
+		this.project = project;
 		this.test_no = test_no;
 		this.entire_log = entire_log;
 		this.method = method;

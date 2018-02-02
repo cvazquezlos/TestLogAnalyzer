@@ -58,11 +58,11 @@ public class Resource {
 				System.out.println(elasticsearchTemplate.getMapping("loganalyzer", "logs"));
 				elasticsearchTemplate.putMapping(indexName, "logs", elasticsearchTemplate.getMapping("loganalyzer", "logs"));
 				System.out.println(elasticsearchTemplate.getMapping(indexName, "logs"));				
-				index = (Index) context.getBean("index");
-		        index.setV(indexName);
-		        Index index1 = (Index) context.getBean("index");
-		        System.out.println("New index name: " + index1.getV());
-		        this.executionParserService.parse(file, numExecs, Lists.newArrayList(esLogService.findAll()).size());
+//				index = (Index) context.getBean("index");
+//		        index.setV(indexName);
+//		        Index index1 = (Index) context.getBean("index");
+//		        System.out.println("New index name: " + index1.getV());
+		        this.executionParserService.parse(file, target, Lists.newArrayList(esLogService.findAll()).size());
 				/*elasticsearchTemplate.putMapping(indexName, "logs", );
 				System.out.println("Working 2");
 				System.out.println(elasticsearchTemplate.getMapping(indexName, "logs"));
