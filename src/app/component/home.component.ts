@@ -33,7 +33,7 @@ export class HomeComponent implements AfterViewInit {
     this.exec = false;
   }
 
-  private reloadTable() {
+  reloadTable() {
     this.exec = true;
     this.projectsRowData = [];
     this.elasticsearchService.getProjects().subscribe(response => {

@@ -3,6 +3,11 @@
     <div layout="row">
       <span>Projects</span>
       <span flex></span>
+      <button class="iconBtn-lg  bgc-light-blue-100"
+              mat-raised-button
+              (click)="reloadTable()">
+        <mat-icon class="tc-light-blue-700">refresh</mat-icon>
+      </button>&nbsp;
       <button mat-raised-button color="accent" [routerLink]="['/add']">New project</button>
     </div>
   </mat-card-title>
