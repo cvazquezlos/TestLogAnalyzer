@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 //@Document(indexName = "${elasticsearch.index.name}", type = "logs")
-@Document(indexName = "#{'${index.v}'}", type = "logs")
+@Document(indexName = "cluster", type = "logs")
 public class Log {
 	
 	@Id

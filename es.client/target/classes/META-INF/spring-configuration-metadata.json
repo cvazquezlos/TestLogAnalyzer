@@ -1,0 +1,17 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "elastest.loganalyzer.es.client.model.Index",
+      "name": "index",
+      "type": "elastest.loganalyzer.es.client.model.Index"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "elastest.loganalyzer.es.client.model.Index",
+      "name": "index.v",
+      "type": "java.lang.String"
+    }
+  ]
+}

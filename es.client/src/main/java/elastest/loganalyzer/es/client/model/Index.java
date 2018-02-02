@@ -1,5 +1,8 @@
 package elastest.loganalyzer.es.client.model;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties(prefix = "index")
 public class Index {
 
 	public String v;
