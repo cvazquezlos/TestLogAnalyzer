@@ -39,7 +39,7 @@
                     mat-button
                     stopRowClick
                     title="View project"
-                    (click)="viewProject(row)">
+                    [routerLink]="['/', row.name]">
               <mat-icon>remove_red_eye</mat-icon>
             </button>
           </div>

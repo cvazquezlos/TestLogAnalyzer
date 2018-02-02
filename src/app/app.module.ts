@@ -3,12 +3,12 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClientModule} from '@angular/common/http';
 
-import {CodemirrorModule} from 'ng2-codemirror';
-import {DiffMatchPatchModule} from 'ng-diff-match-patch';
-
 import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
+
+import {CodemirrorModule} from 'ng2-codemirror';
+import {DiffMatchPatchModule} from 'ng-diff-match-patch';
 
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
@@ -16,6 +16,7 @@ import {routing} from './app.routing';
 import {AddProjectComponent} from './component/add-project/add-project.component';
 import {ComparisonComponent} from './component/comparison/comparison.component';
 import {HomeComponent} from './component/home.component';
+import {ProjectComponent} from './component/project/project.component';
 
 import {DiffService} from './service/diff.service';
 import {ElasticsearchService} from './service/elasticsearch.service';
@@ -34,6 +35,7 @@ const httpInterceptorProviders: Type<any>[] = [
     AppComponent,
     ComparisonComponent,
     HomeComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,
