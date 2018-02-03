@@ -1,7 +1,4 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {Project} from '../../model/project.model';
@@ -13,12 +10,12 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
   styleUrls: ['./project.component.css']
 })
 
-export class ProjectComponent implements OnInit {
+export class ProjectComponent {
 
   project: Project;
   execs: any;
   execsData: ITdDataTableColumn[] = [
-    {name: 'id', label: 'Id', width: 300},
+    {name: 'id', label: 'Id', width: 100},
     {name: 'timestamp', label: 'Timestamp'},
     {name: 'entries', label: 'Entries'},
     {name: 'status', label: 'Status'},
@@ -32,18 +29,24 @@ export class ProjectComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService) {
     const name = this.activatedRoute.snapshot.params['project'];
-    this.elasticsearchService.getProjectByName(name).subscribe(
-      response => {
+    this.elasticsearchService.getProjectByName(name).subscribe(response => {
         this.project = response;
       }
     );
-    this.elasticsearchService.loadExecutionsByProject(name).subscribe(
-      response => {console.log(response)}
-    );
+    this.elasticsearchService.loadExecutionsByProject(name).subscribe(response => {
+      this.execsRowData = [];
+      for (let i = 0; i < response.length; i++) {
+        this.execsRowData[i] = {
+          'id': response[i].id,
+          'timestamp': response[i].timestamp,
+          'entries': response[i].entries,
+          'status': response[i].status,
+          'DEBUG': response[i].debug,
+          'INFO': response[i].info,
+          'WARNING': response[i].warning,
+          'ERROR': response[i].error
+        }
+      }
+    });
   }
-
-  ngOnInit() {
-    console.log(name);
-  }
-
 }

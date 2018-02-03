@@ -78,13 +78,13 @@ public class LogResource {
 	
 	private Log findLog(List<Log> logs) {
 		for (int i = 0; i < logs.size(); i++) {
-			System.out.println("Execution " + i + logs.get(i));
-			if (logs.get(i).getMethod() != "-" && logs.get(i).getLogger() != "-") {
+			System.out.println(logs.get(i).getTimestamp());
+			if (logs.get(i).getTimestamp() != "-") {
 				System.out.println("TIL HERE: " + logs.get(i));
 				return logs.get(i);
 			}
 		}
-		return logs.get(0);
+		return new Log();
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/test/{test}")
