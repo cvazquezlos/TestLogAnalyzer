@@ -2,14 +2,12 @@ import {
   AfterViewInit,
   Component
 } from '@angular/core';
+import {Router} from '@angular/router';
 import {
   ITdDataTableColumn,
-  TdDataTableService,
   TdMediaService
 } from '@covalent/core';
-
 import {Project} from '../model/project.model';
-
 import {ElasticsearchService} from '../service/elasticsearch.service';
 
 @Component({
@@ -22,15 +20,25 @@ export class HomeComponent implements AfterViewInit {
 
   exec: boolean;
   projectsData: ITdDataTableColumn[] = [
-    {name: 'id', label: 'Id', width: 300},
+    {name: 'id', label: 'Id', width: 200},
     {name: 'name', label: 'Name'},
     {name: 'options', label: 'Options'}
   ];
   projectsRowData: any[] = [];
 
-  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService) {
+  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private router: Router) {
     this.reloadTable();
     this.exec = false;
+  }
+
+  delete(project: Project) {
+    this.elasticsearchService.deleteProject(project.id).subscribe(response => this.reloadTable());
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.media.broadcast();
+    });
   }
 
   reloadTable() {
@@ -47,14 +55,7 @@ export class HomeComponent implements AfterViewInit {
     this.exec = false;
   }
 
-  delete(project: Project) {
-    this.elasticsearchService.deleteProject(project.id).subscribe(response => this.reloadTable());
-  }
-
-  ngAfterViewInit(): void {
-    // broadcast to all listener observables when loading the page
-    setTimeout(() => { // workaround since MatSidenav has issues redrawing at the beggining
-      this.media.broadcast();
-    });
+  viewProject(event: any) {
+    this.router.navigateByUrl('/' + event.row.name);
   }
 }

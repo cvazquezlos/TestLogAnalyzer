@@ -15,7 +15,7 @@ export class ProjectComponent {
   project: Project;
   execs: any;
   execsData: ITdDataTableColumn[] = [
-    {name: 'id', label: 'Id', width: 100},
+    {name: 'id', label: 'Id'},
     {name: 'timestamp', label: 'Timestamp'},
     {name: 'entries', label: 'Entries'},
     {name: 'status', label: 'Status'},
@@ -38,7 +38,7 @@ export class ProjectComponent {
       for (let i = 0; i < response.length; i++) {
         this.execsRowData[i] = {
           'id': response[i].id,
-          'timestamp': response[i].timestamp.split(" ")[0],
+          'timestamp': response[i].timestamp.split(' ')[0],
           'entries': response[i].entries,
           'status': response[i].status,
           'DEBUG': response[i].debug,
