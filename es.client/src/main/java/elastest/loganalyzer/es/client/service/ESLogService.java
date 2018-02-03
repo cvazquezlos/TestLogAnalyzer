@@ -37,8 +37,12 @@ public class ESLogService {
 	public List<Log> findByLevel(String level, int page, int size) {
 		return repository.findByLevel(level, new PageRequest(page, size)).getContent();
 	}
-
+	
 	public List<Log> findByProject(String project) {
 		return repository.findByProject(project);
+	}
+	
+	public List<Log> findByTest(String test) {
+		return repository.findByTest(test);
 	}
 }

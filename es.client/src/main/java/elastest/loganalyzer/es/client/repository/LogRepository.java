@@ -15,4 +15,6 @@ public interface LogRepository extends ElasticsearchCrudRepository<Log, String> 
 	Page<Log> findByLevel(String level, Pageable pageable);
 
 	List<Log> findByProject(String project);
+
+	List<Log> findByTest(String test);
 }

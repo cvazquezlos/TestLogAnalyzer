@@ -7,19 +7,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import elastest.loganalyzer.es.client.model.Log;
+import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.service.ESLogService;
+import elastest.loganalyzer.es.client.service.ESProjectService;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/logs")
 public class LogResource {
 	private final ESLogService esLogService;
+	private final ESProjectService esProjectService;
 
 	@Autowired
-	public LogResource(ESLogService esLogService) {
+	public LogResource(ESLogService esLogService, ESProjectService esProjectService) {
 		this.esLogService = esLogService;
+		this.esProjectService = esProjectService;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/id/{id}")
@@ -40,9 +45,19 @@ public class LogResource {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/project/{project}")
 	public List<Log> getLogByProject(@PathVariable String project) {
-		
+		Project target = esProjectService.findByName(project);
+		List<Log> execs = new ArrayList<Log>();
+		for (int i = 0; i < target.getNum_execs(); i++ ) {
+		}
+		return execs;
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/test/{test}")
+	public List<Log> getLogByTestno(@PathVariable String test) {
+		System.out.println(test);
+		return esLogService.findByTest(test);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> addLocation(@RequestBody Log log) {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(esLogService.save(log))
