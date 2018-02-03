@@ -3,9 +3,9 @@ import {
   OnInit
 } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {ITdDataTableColumn} from '@covalent/core';
 import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
-import {ITdDataTableColumn} from "@covalent/core";
 
 @Component({
   selector: 'app-project',
@@ -13,7 +13,7 @@ import {ITdDataTableColumn} from "@covalent/core";
   styleUrls: ['./project.component.css']
 })
 
-export class ProjectComponent implements OnInit{
+export class ProjectComponent implements OnInit {
 
   project: Project;
   execs: any;

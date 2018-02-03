@@ -5,10 +5,10 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 import {CountFormat} from '../model/count-format.model';
-import {Log} from '../model/log.model';
+import {Execution} from '../model/execution.model';
 import {RD} from '../model/get-format.model';
+import {Log} from '../model/log.model';
 import {Project} from '../model/project.model';
-import {Execution} from "../model/execution.model";
 
 @Injectable()
 export class ElasticsearchService {

@@ -23,13 +23,12 @@ public class ExecutionParserService {
 
 	public void parse(MultipartFile file, Project project, int lastId) throws Exception, IOException {
 		// Save in data ArrayList the content of the file of logs.
-		ArrayList<String> data = new ArrayList<>(
+		ArrayList<String> dirtyData = new ArrayList<>(
 				Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
-		for (int i = 0; i < data.size(); i++) {
-			System.out.print("LINE " + i);
-			System.out.println(data.get(i).replaceAll("\n", ""));
+		ArrayList<String> data = new ArrayList<>();
+		for (int i = 0; i < dirtyData.size(); i++) {
+			data.add(dirtyData.get(i).replaceAll("\n", ""));
 		}
-		/*
 		int numExecs = project.getNum_execs();
 		data.add(0, "[INFO] Building project and starting unit test number " + numExecs + "...");
 		data.add("[INFO] Finishing unit test number " + numExecs + "...");
@@ -95,7 +94,7 @@ public class ExecutionParserService {
 			System.out.println(data.get(0));
 			data.remove(0);
 			identificator++;
-		}*/
+		}
 	}
 
 	private static String[] getArgsLogback(String string) {
