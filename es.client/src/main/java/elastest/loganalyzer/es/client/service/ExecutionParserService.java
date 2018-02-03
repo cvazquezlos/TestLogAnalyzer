@@ -26,8 +26,8 @@ public class ExecutionParserService {
 		ArrayList<String> data = new ArrayList<>(
 				Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
 		for (int i = 0; i < data.size(); i++) {
-			System.out.println("LINE " + i);
-			System.out.println(data.get(i));
+			System.out.print("LINE " + i);
+			System.out.println(data.get(i).replaceAll("\n", ""));
 		}
 		/*
 		int numExecs = project.getNum_execs();
