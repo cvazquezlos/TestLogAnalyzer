@@ -38,7 +38,7 @@ export class ProjectComponent {
       for (let i = 0; i < response.length; i++) {
         this.execsRowData[i] = {
           'id': response[i].id,
-          'timestamp': response[i].timestamp,
+          'timestamp': response[i].timestamp.split(" ")[0],
           'entries': response[i].entries,
           'status': response[i].status,
           'DEBUG': response[i].debug,

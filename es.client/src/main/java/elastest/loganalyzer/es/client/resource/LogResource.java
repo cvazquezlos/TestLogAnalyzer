@@ -28,14 +28,14 @@ public class LogResource {
 		this.esProjectService = esProjectService;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/id/{id}")
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Log> getLog(@PathVariable String id) {
 		Log log = esLogService.findOne(id);
 
 		return new ResponseEntity<>(log, HttpStatus.OK);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/level/{level}")
+	@RequestMapping(value = "/level/{level}", method = RequestMethod.GET)
 	public ResponseEntity<List<Log>> getLogByLevel(@PathVariable String level,
 			@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "10") int size) {
@@ -44,17 +44,7 @@ public class LogResource {
 		return new ResponseEntity<>(log, HttpStatus.OK);
 	}
 	
-
-//	this.id = id;
-//	this.timestamp = timestamp;
-//	this.entries = entries;
-//	this.status = status;
-//	this.debug = debug;
-//	this.info = info;
-//	this.warning = warning;
-//	this.error = error;
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/project/{project}")
+	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
 	public List<Execution> getLogByProject(@PathVariable String project) {
 		Project target = esProjectService.findByName(project);
 		List<Execution> execs = new ArrayList<Execution>();
@@ -75,19 +65,8 @@ public class LogResource {
 		}
 		return execs;
 	}
-	
-	private Log findLog(List<Log> logs) {
-		for (int i = 0; i < logs.size(); i++) {
-			System.out.println(logs.get(i).getTimestamp());
-			if (logs.get(i).getTimestamp() != "-") {
-				System.out.println("TIL HERE: " + logs.get(i));
-				return logs.get(i);
-			}
-		}
-		return new Log();
-	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/test/{test}")
+	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
 	public List<Log> getLogByTestno(@PathVariable String test) {
 		System.out.println(test);
 		return esLogService.findByTest(test);
@@ -98,5 +77,16 @@ public class LogResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(esLogService.save(log))
 				.toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	private Log findLog(List<Log> logs) {
+		for (int i = 0; i < logs.size(); i++) {
+			System.out.println(logs.get(i).getTimestamp());
+			if (logs.get(i).getTimestamp() != "-") {
+				System.out.println("TIL HERE: " + logs.get(i));
+				return logs.get(i);
+			}
+		}
+		return new Log();
 	}
 }

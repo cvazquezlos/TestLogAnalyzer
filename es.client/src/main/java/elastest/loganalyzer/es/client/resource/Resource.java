@@ -37,9 +37,9 @@ public class Resource {
 		try {
 			if (file != null) {
 				Project target = esProjectService.findByName(recentProject);
-				this.executionParserService.parse(file, target, Lists.newArrayList(esLogService.findAll()).size());
 				target.setNum_execs(target.getNum_execs() + 1);
 				esProjectService.save(target);
+				this.executionParserService.parse(file, target, Lists.newArrayList(esLogService.findAll()).size());
 			} else {
 				System.out.println("Fail");
 			}

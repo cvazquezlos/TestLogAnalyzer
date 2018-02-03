@@ -27,7 +27,7 @@ export class AddProjectComponent {
     this.project = new Project();
     this.project.name = '';
     this.elasticsearchService.countProjects().subscribe(response => this.project.id = response);
-    this.project.num_execs = 1;
+    this.project.num_execs = 0;
     this.isFile = true;
     this.urlTxt = '';
     this.urlXml = '';
