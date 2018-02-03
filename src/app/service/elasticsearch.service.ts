@@ -8,6 +8,7 @@ import {CountFormat} from '../model/count-format.model';
 import {Log} from '../model/log.model';
 import {RD} from '../model/get-format.model';
 import {Project} from '../model/project.model';
+import {Execution} from "../model/execution.model";
 
 @Injectable()
 export class ElasticsearchService {
@@ -74,6 +75,11 @@ export class ElasticsearchService {
         }
         return result;
       });
+  }
+
+  loadExecutionsByProject(project: string) {
+    return this.http.get<Execution>(this.baseAPIUrl + 'logs/project/' + project)
+      .map(response => response);
   }
 
   countProjects() {

@@ -25,6 +25,11 @@ public class ExecutionParserService {
 		// Save in data ArrayList the content of the file of logs.
 		ArrayList<String> data = new ArrayList<>(
 				Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
+		for (int i = 0; i < data.size(); i++) {
+			System.out.println("LINE " + i);
+			System.out.println(data.get(i));
+		}
+		/*
 		int numExecs = project.getNum_execs();
 		data.add(0, "[INFO] Building project and starting unit test number " + numExecs + "...");
 		data.add("[INFO] Finishing unit test number " + numExecs + "...");
@@ -90,7 +95,7 @@ public class ExecutionParserService {
 			System.out.println(data.get(0));
 			data.remove(0);
 			identificator++;
-		}
+		}*/
 	}
 
 	private static String[] getArgsLogback(String string) {

@@ -31,14 +31,19 @@ export class ProjectComponent implements OnInit{
   execsRowData: any[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService) {
-  }
-
-  ngOnInit() {
-    this.elasticsearchService.getProjectByName(this.activatedRoute.snapshot.params['project']).subscribe(
+    const name = this.activatedRoute.snapshot.params['project'];
+    this.elasticsearchService.getProjectByName(name).subscribe(
       response => {
         this.project = response;
       }
     );
+    this.elasticsearchService.loadExecutionsByProject(name).subscribe(
+      response => {console.log(response)}
+    );
+  }
+
+  ngOnInit() {
+    console.log(name);
   }
 
 }
