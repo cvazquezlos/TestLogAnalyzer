@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchCrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +15,4 @@ public interface LogRepository extends ElasticsearchCrudRepository<Log, String> 
 	Page<Log> findByLevel(String level, Pageable pageable);
 
 	List<Log> findByProject(String project);
-
 }

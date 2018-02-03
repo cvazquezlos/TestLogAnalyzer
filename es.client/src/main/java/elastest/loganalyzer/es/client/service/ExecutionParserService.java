@@ -23,7 +23,8 @@ public class ExecutionParserService {
 
 	public void parse(MultipartFile file, Project project, int lastId) throws Exception, IOException {
 		// Save in data ArrayList the content of the file of logs.
-		ArrayList<String> data = new ArrayList<>(Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
+		ArrayList<String> data = new ArrayList<>(
+				Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
 		int numExecs = project.getNum_execs();
 		data.add(0, "[INFO] Building project and starting unit test number " + numExecs + "...");
 		data.add("[INFO] Finishing unit test number " + numExecs + "...");
@@ -63,7 +64,8 @@ public class ExecutionParserService {
 			} else if (data.get(0).indexOf("2") == 0) {
 				String id = String.format("%04d", identificator);
 				String[] args = getArgsLogback(data.get(0));
-				Log log = new Log(id, project.getName(), testNumber, data.get(0), method, args[0], args[1], args[2], args[3], args[4]);
+				Log log = new Log(id, project.getName(), testNumber, data.get(0), method, args[0], args[1], args[2],
+						args[3], args[4]);
 				esLogService.save(log);
 				System.out.println(data.get(0));
 				data.remove(0);

@@ -22,13 +22,6 @@ public class LogResource {
 		this.esLogService = esLogService;
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> addLocation(@RequestBody Log log) {
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(esLogService.save(log))
-				.toUri();
-		return ResponseEntity.created(uri).build();
-	}
-
 	@RequestMapping(method = RequestMethod.GET, value = "/id/{id}")
 	public ResponseEntity<Log> getLog(@PathVariable String id) {
 		Log log = esLogService.findOne(id);
@@ -43,5 +36,17 @@ public class LogResource {
 		List<Log> log = esLogService.findByLevel(level, page, size);
 
 		return new ResponseEntity<>(log, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/project/{project}")
+	public List<Log> getLogByProject(@PathVariable String project) {
+		
+	}
+
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<?> addLocation(@RequestBody Log log) {
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(esLogService.save(log))
+				.toUri();
+		return ResponseEntity.created(uri).build();
 	}
 }

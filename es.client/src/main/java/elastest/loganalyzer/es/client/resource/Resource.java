@@ -17,15 +17,16 @@ import elastest.loganalyzer.es.client.service.ExecutionParserService;
 @RestController
 @RequestMapping("/files")
 public class Resource {
-	
+
 	private final ESProjectService esProjectService;
 	private final ESLogService esLogService;
 	private final ExecutionParserService executionParserService;
-	
+
 	private static String recentProject;
 
 	@Autowired
-	public Resource(ESProjectService esProjectService, ExecutionParserService executionParserService, ESLogService esLogService) {
+	public Resource(ESProjectService esProjectService, ExecutionParserService executionParserService,
+			ESLogService esLogService) {
 		this.esProjectService = esProjectService;
 		this.esLogService = esLogService;
 		this.executionParserService = executionParserService;
@@ -47,11 +48,10 @@ public class Resource {
 			return "400";
 		}
 	}
-	
+
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String update(@RequestBody String name) {
 		recentProject = name;
 		return recentProject;
 	}
-
 }

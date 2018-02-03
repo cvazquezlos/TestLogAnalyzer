@@ -3,10 +3,9 @@ package elastest.loganalyzer.es.client.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-//@Document(indexName = "${elasticsearch.index.name}", type = "logs")
 @Document(indexName = "cluster", type = "logs")
 public class Log {
-	
+
 	@Id
 	private String id;
 
@@ -63,8 +62,8 @@ public class Log {
 		this.formatted_message = formatted_message;
 	}
 
-	public Log(String id, String project, String test_no, String entire_log, String method, String timestamp, String thread_name,
-			String level, String logger_name, String formatted_message) {
+	public Log(String id, String project, String test_no, String entire_log, String method, String timestamp,
+			String thread_name, String level, String logger_name, String formatted_message) {
 		this.id = id;
 		this.project = project;
 		this.test_no = test_no;
@@ -84,7 +83,7 @@ public class Log {
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getProject() {
 		return project;
 	}

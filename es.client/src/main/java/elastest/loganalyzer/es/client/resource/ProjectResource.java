@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,16 +29,6 @@ public class ProjectResource {
 		this.esProjectService = esProjectService;
 	}
 
-	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public int addLocation(@RequestBody Project project) {
-		return esProjectService.save(project);
-	}
-
-	@RequestMapping(method = RequestMethod.GET, path = "/id/{id}")
-	public Project getLog(@PathVariable int id) {
-		return esProjectService.findOne(id);
-	}
-
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<Project> getAll() {
 		Iterable<Project> projects = esProjectService.findAll();
@@ -48,6 +37,21 @@ public class ProjectResource {
 			result.add(project);
 		}
 		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, path = "/id/{id}")
+	public Project getLog(@PathVariable int id) {
+		return esProjectService.findOne(id);
+	}
+
+	@RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
+	public Project getProject(@PathVariable String name) {
+		return esProjectService.findByName(name);
+	}
+
+	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public int addLocation(@RequestBody Project project) {
+		return esProjectService.save(project);
 	}
 
 	@RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
@@ -59,10 +63,5 @@ public class ProjectResource {
 		}
 		esProjectService.delete(deleted);
 		return deleted;
-	}
-
-	@RequestMapping(method = RequestMethod.GET, path = "/name/{name}")
-	public Project getProject(@PathVariable String name) {
-		return esProjectService.findByName(name);
 	}
 }

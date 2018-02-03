@@ -60,6 +60,10 @@ export class ElasticsearchService {
       .map(response => response);
   }
 
+  getProjectByName(name: string) {
+    return this.http.get<Project>(this.baseAPIUrl + 'projects/name/' + name)
+      .map(response => {return response});
+  }
 
   getProjects() {
     return this.http.get<any>(this.baseAPIUrl + 'projects/all')
