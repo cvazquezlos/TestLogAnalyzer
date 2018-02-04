@@ -12,7 +12,7 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 export class ProjectComponent {
 
-  project: Project;
+  deleteInProgress: boolean;
   execs: any;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id'},
@@ -23,9 +23,10 @@ export class ProjectComponent {
     {name: 'INFO', label: 'INFO'},
     {name: 'WARNING', label: 'WARNING'},
     {name: 'ERROR', label: 'ERROR'},
-    {name: 'options', label: 'Options'}
+    {name: 'options', label: 'Options', width: 150}
   ];
   execsRowData: any[] = [];
+  project: Project;
 
   constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService) {
     const name = this.activatedRoute.snapshot.params['project'];

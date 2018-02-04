@@ -18,17 +18,19 @@ import {ElasticsearchService} from '../service/elasticsearch.service';
 
 export class HomeComponent implements AfterViewInit {
 
+  deleteInProgress: boolean;
   exec: boolean;
   projectsData: ITdDataTableColumn[] = [
-    {name: 'id', label: 'Id', width: 200},
+    {name: 'id', label: 'Id', width: 100},
     {name: 'name', label: 'Name'},
-    {name: 'options', label: 'Options'}
+    {name: 'options', label: 'Options', width: 150}
   ];
   projectsRowData: any[] = [];
 
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private router: Router) {
-    this.reloadTable();
+    this.deleteInProgress = false;
     this.exec = false;
+    this.reloadTable();
   }
 
   delete(project: Project) {

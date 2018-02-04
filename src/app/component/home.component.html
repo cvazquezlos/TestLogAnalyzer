@@ -24,23 +24,28 @@
           <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
         </ng-template>
         <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
-          <div layout="row">
-            <button class="iconBtn-lg"
-                    mat-button
-                    stopRowClick
-                    title="Delete project"
-                    (click)="delete(row)"
-                    [disabled]="deletingInProgress">
-              <mat-icon>delete</mat-icon>
-            </button>
-            <button class="iconBtn-lg"
-                    mat-button
-                    stopRowClick
-                    title="View project"
-                    [routerLink]="['/', row.name]">
-              <mat-icon>remove_red_eye</mat-icon>
-            </button>
+          <div *ngIf="deleteInProgress; else notDeleting">
+            
           </div>
+          <ng-template #notDeleting>
+            <div layout="row">
+              <button class="iconBtn-lg"
+                      mat-button
+                      stopRowClick
+                      title="Delete project"
+                      (click)="delete(row)"
+                      [disabled]="deletingInProgress">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button class="iconBtn-lg"
+                      mat-button
+                      stopRowClick
+                      title="View project"
+                      [routerLink]="['/', row.name]">
+                <mat-icon>remove_red_eye</mat-icon>
+              </button>
+            </div>
+          </ng-template>
         </ng-template>
       </td-data-table>
     </div>
