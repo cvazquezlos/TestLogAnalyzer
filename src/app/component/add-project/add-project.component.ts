@@ -44,21 +44,27 @@ export class AddProjectComponent {
     this.code = 1;
     this.elasticsearchService.postProject(this.project).subscribe(
       response => {
-        let headers: HttpHeaders = new HttpHeaders();
-        this.http.post('http://localhost:8443/files/update', JSON.stringify(this.project.name), {headers: headers}).subscribe(
-          result => {
-            headers = new HttpHeaders();
-            headers.append('Content-Type', 'application/pdf');
-            const formData = new FormData();
-            formData.append('file', this.fileTxt);
-            this.http.post('http://localhost:8443/files/upload', formData, {headers: headers}).subscribe(
-              result2 => {
-                this.code = 2;
-              }
-            );
-          },
-          error => console.log(error)
-        );
+        if (this.urlTxt !== 'Empty') {
+          this.elasticsearchService.downloadUrl(this.urlTxt).subscribe(
+            response => console.log(response)
+          );
+        } else {
+          let headers: HttpHeaders = new HttpHeaders();
+          this.http.post('http://localhost:8443/files/update', JSON.stringify(this.project.name), {headers: headers}).subscribe(
+            result => {
+              headers = new HttpHeaders();
+              headers.append('Content-Type', 'application/pdf');
+              const formData = new FormData();
+              formData.append('file', this.fileTxt);
+              this.http.post('http://localhost:8443/files/upload', formData, {headers: headers}).subscribe(
+                result2 => {
+                  this.code = 2;
+                }
+              );
+            },
+            error => console.log(error)
+          );
+        }
       }
     );
   }

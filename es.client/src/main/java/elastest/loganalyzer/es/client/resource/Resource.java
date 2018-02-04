@@ -1,5 +1,7 @@
 package elastest.loganalyzer.es.client.resource;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,5 +55,12 @@ public class Resource {
 	public String update(@RequestBody String name) {
 		recentProject = name;
 		return recentProject;
+	}
+	
+	@RequestMapping(value = "/url", method = RequestMethod.POST)
+	public String uploadFile(@RequestBody String url) throws IOException {
+		System.out.println(url);
+		System.out.println(executionParserService.getStream(url));
+		return url;
 	}
 }
