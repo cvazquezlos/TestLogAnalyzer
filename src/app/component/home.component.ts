@@ -20,6 +20,7 @@ export class HomeComponent implements AfterViewInit {
 
   deleteInProgress: boolean;
   exec: boolean;
+  projectDeleting: string;
   projectsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
     {name: 'name', label: 'Name'},
@@ -30,11 +31,18 @@ export class HomeComponent implements AfterViewInit {
   constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private router: Router) {
     this.deleteInProgress = false;
     this.exec = false;
+    this.projectDeleting = '';
     this.reloadTable();
   }
 
   delete(project: Project) {
-    this.elasticsearchService.deleteProject(project.id).subscribe(response => this.reloadTable());
+    this.deleteInProgress = true;
+    this.projectDeleting = project.name;
+    this.elasticsearchService.deleteProject(project.id).subscribe(response => {
+      this.reloadTable();
+      this.deleteInProgress = false;
+      this.projectDeleting = '';
+    });
   }
 
   ngAfterViewInit(): void {

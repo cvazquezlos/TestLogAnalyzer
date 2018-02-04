@@ -15,14 +15,14 @@ export class ProjectComponent {
   deleteInProgress: boolean;
   execs: any;
   execsData: ITdDataTableColumn[] = [
-    {name: 'id', label: 'Id'},
-    {name: 'timestamp', label: 'Timestamp'},
-    {name: 'entries', label: 'Entries'},
+    {name: 'id', label: 'Id', width: 100},
+    {name: 'timestamp', label: 'Timestamp', width: 200},
+    {name: 'entries', label: 'Entries', width: 100},
     {name: 'status', label: 'Status'},
-    {name: 'DEBUG', label: 'DEBUG'},
-    {name: 'INFO', label: 'INFO'},
-    {name: 'WARNING', label: 'WARNING'},
-    {name: 'ERROR', label: 'ERROR'},
+    {name: 'DEBUG', label: 'DEBUG', width: 80},
+    {name: 'INFO', label: 'INFO', width: 80},
+    {name: 'WARNING', label: 'WARNING', width: 80},
+    {name: 'ERROR', label: 'ERROR', width: 80},
     {name: 'options', label: 'Options', width: 150}
   ];
   execsRowData: any[] = [];

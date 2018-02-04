@@ -17,15 +17,13 @@
       <td-data-table [clickable]="true"
                      [data]="projectsRowData"
                      [columns]="projectsData"
-                     [sortable]="false"
-                     (rowClick)="viewProject($event)">
+                     [sortable]="false">
         <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value"
                      let-row="row">
           <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
         </ng-template>
         <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
-          <div *ngIf="deleteInProgress; else notDeleting">
-            
+          <div *ngIf="(deleteInProgress && (row.name === projectDeleting)); else notDeleting">
           </div>
           <ng-template #notDeleting>
             <div layout="row">
@@ -34,8 +32,8 @@
                       stopRowClick
                       title="Delete project"
                       (click)="delete(row)"
-                      [disabled]="deletingInProgress">
-                <mat-icon>delete</mat-icon>
+                      [disabled] = "(row.name !== projectDeleting) && deleteInProgress">
+                <mat-icon [ngClass]="{'tc-grey-300': (row.name !== projectDeleting) && deleteInProgress}">delete</mat-icon>
               </button>
               <button class="iconBtn-lg"
                       mat-button
