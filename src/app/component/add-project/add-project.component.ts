@@ -46,12 +46,12 @@ export class AddProjectComponent {
       response => {
         if (this.urlTxt !== 'Empty') {
           this.elasticsearchService.downloadUrl(this.urlTxt).subscribe(
-            response => console.log(response)
+            result0 => console.log(result0)
           );
         } else {
           let headers: HttpHeaders = new HttpHeaders();
           this.http.post('http://localhost:8443/files/update', JSON.stringify(this.project.name), {headers: headers}).subscribe(
-            result => {
+            result1 => {
               headers = new HttpHeaders();
               headers.append('Content-Type', 'application/pdf');
               const formData = new FormData();
