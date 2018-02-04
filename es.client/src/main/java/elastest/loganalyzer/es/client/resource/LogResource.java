@@ -52,7 +52,7 @@ public class LogResource {
 			Execution execution = new Execution();
 			execution.setId(i + 1);
 			String test = String.format("%02d", i + 1);
-			List<Log> logs = esLogService.findByTest(test);
+			List<Log> logs = esLogService.findByTestAndProject(test, project);
 			execution.setEntries(logs.size());
 			Log selected = this.findLog(logs);
 			execution.setTimestamp(selected.getTimestamp());

@@ -45,4 +45,8 @@ public class ESLogService {
 	public List<Log> findByTest(String test) {
 		return repository.findByTest(test);
 	}
+	
+	public List<Log> findByTestAndProject(String test, String project) {
+		return repository.findByTestAndProject(test, project);
+	}
 }

@@ -16,13 +16,13 @@ export class ProjectComponent {
   execs: any;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
-    {name: 'timestamp', label: 'Timestamp', width: 200},
+    {name: 'startdate', label: 'Start date'},
     {name: 'entries', label: 'Entries', width: 100},
-    {name: 'status', label: 'Status'},
-    {name: 'DEBUG', label: 'DEBUG', width: 80},
-    {name: 'INFO', label: 'INFO', width: 80},
-    {name: 'WARNING', label: 'WARNING', width: 80},
-    {name: 'ERROR', label: 'ERROR', width: 80},
+    {name: 'status', label: 'Status', width: 130},
+    {name: 'DEBUG', label: 'DEBUG', width: 130},
+    {name: 'INFO', label: 'INFO', width: 130},
+    {name: 'WARNING', label: 'WARNING', width: 130},
+    {name: 'ERROR', label: 'ERROR', width: 130},
     {name: 'options', label: 'Options', width: 150}
   ];
   execsRowData: any[] = [];
@@ -39,7 +39,7 @@ export class ProjectComponent {
       for (let i = 0; i < response.length; i++) {
         this.execsRowData[i] = {
           'id': response[i].id,
-          'timestamp': response[i].timestamp.split(' ')[0],
+          'startdate': response[i].timestamp,
           'entries': response[i].entries,
           'status': response[i].status,
           'DEBUG': response[i].debug,
