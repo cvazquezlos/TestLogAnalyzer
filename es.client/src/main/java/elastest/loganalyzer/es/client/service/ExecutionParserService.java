@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -27,10 +28,7 @@ public class ExecutionParserService {
 		this.esLogService = esLogService;
 	}
 
-	public void parse(MultipartFile file, Project project, int lastId) throws Exception, IOException {
-		// Save in data ArrayList the content of the file of logs.
-		ArrayList<String> dirtyData = new ArrayList<>(
-				Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
+	public void parse(List<String> dirtyData, Project project, int lastId) throws Exception, IOException {
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
 			data.add(dirtyData.get(i).replaceAll("\n", ""));
@@ -41,7 +39,6 @@ public class ExecutionParserService {
 
 		String testNumber = String.format("%02d", numExecs);
 		Integer identificator = lastId;
-		// Just before first -------------------- line.
 		while (data.get(0).indexOf("[") == 0) {
 			String id = String.format("%04d", identificator);
 			String[] args = getArgsNormal(data.get(0));
@@ -51,7 +48,6 @@ public class ExecutionParserService {
 			data.remove(0);
 			identificator++;
 		}
-		// Just before first Running com.... line.
 		while (data.get(0).indexOf("R") != 0) {
 			String id = String.format("%04d", identificator);
 			Log log = new Log(id, project.getName(), testNumber, data.get(0), data.get(0));
@@ -60,7 +56,6 @@ public class ExecutionParserService {
 			data.remove(0);
 			identificator++;
 		}
-		// ALL WORKING PROPERLY TILL HERE.
 		String method = "";
 		while (data.get(0).length() != 0) {
 			if (data.get(0).indexOf("S") == 0) {
@@ -132,17 +127,24 @@ public class ExecutionParserService {
 		return args;
 	}
 
-	public String getStream(String url) throws IOException {
+	public List<String> getStreamByUrl(String url) throws IOException {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext();
 		Resource resource = appContext.getResource(url);
-        InputStream is = resource.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		InputStream is = resource.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		List<String> data = new ArrayList<>();
+		String line;
+		int i = 0;
+		while ((line = br.readLine()) != null) {
+			data.add(line);
+		}
+		br.close();
+		return data;
+	}
 
-        String line;
-        while ((line = br.readLine()) != null) {
-           System.out.println(line);
-        } 
-        br.close();
-		return resource.getInputStream().toString();
+	public List<String> getStreamByFile(MultipartFile file) throws IOException, Exception {
+		List<String> data = new ArrayList<>(
+				Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
+		return data;
 	}
 }

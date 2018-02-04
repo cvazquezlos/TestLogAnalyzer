@@ -1,6 +1,7 @@
 package elastest.loganalyzer.es.client.resource;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,14 +35,15 @@ public class Resource {
 		this.executionParserService = executionParserService;
 	}
 
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@RequestMapping(value = "/file", method = RequestMethod.POST)
 	public String upload(@RequestBody MultipartFile file) {
 		try {
 			if (file != null) {
+				List<String> data = executionParserService.getStreamByFile(file);
 				Project target = esProjectService.findByName(recentProject);
 				target.setNum_execs(target.getNum_execs() + 1);
 				esProjectService.save(target);
-				this.executionParserService.parse(file, target, Lists.newArrayList(esLogService.findAll()).size());
+				this.executionParserService.parse(data, target, Lists.newArrayList(esLogService.findAll()).size());
 			} else {
 				System.out.println("Fail");
 			}
@@ -58,9 +60,12 @@ public class Resource {
 	}
 	
 	@RequestMapping(value = "/url", method = RequestMethod.POST)
-	public String uploadFile(@RequestBody String url) throws IOException {
-		System.out.println(url);
-		System.out.println(executionParserService.getStream(url));
-		return url;
+	public List<String> uploadFile(@RequestBody String url) throws Exception {
+		List<String> data = executionParserService.getStreamByUrl(url);
+		Project target = esProjectService.findByName(recentProject);
+		target.setNum_execs(target.getNum_execs() + 1);
+		esProjectService.save(target);
+		this.executionParserService.parse(data, target, Lists.newArrayList(esLogService.findAll()).size());
+		return executionParserService.getStreamByUrl(url);
 	}
 }
