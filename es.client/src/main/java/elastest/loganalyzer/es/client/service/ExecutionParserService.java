@@ -1,10 +1,16 @@
 package elastest.loganalyzer.es.client.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -124,5 +130,19 @@ public class ExecutionParserService {
 			args[1] = "";
 		}
 		return args;
+	}
+
+	public String getStream(String url) throws IOException {
+		ApplicationContext appContext = new ClassPathXmlApplicationContext();
+		Resource resource = appContext.getResource(url);
+        InputStream is = resource.getInputStream();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+        String line;
+        while ((line = br.readLine()) != null) {
+           System.out.println(line);
+        } 
+        br.close();
+		return resource.getInputStream().toString();
 	}
 }

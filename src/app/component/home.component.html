@@ -17,30 +17,36 @@
       <td-data-table [clickable]="true"
                      [data]="projectsRowData"
                      [columns]="projectsData"
-                     [sortable]="false"
-                     (rowClick)="viewProject($event)">
+                     [sortable]="false">
         <ng-template *ngFor="let column of projectsData" tdDataTableTemplate="{{column.name}}" let-value="value"
                      let-row="row">
           <div *ngIf="column.name !== 'options'" (click)="viewProject(row)">{{value}}</div>
         </ng-template>
         <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
-          <div layout="row">
-            <button class="iconBtn-lg"
-                    mat-button
-                    stopRowClick
-                    title="Delete project"
-                    (click)="delete(row)"
-                    [disabled]="deletingInProgress">
-              <mat-icon>delete</mat-icon>
-            </button>
-            <button class="iconBtn-lg"
-                    mat-button
-                    stopRowClick
-                    title="View project"
-                    [routerLink]="['/', row.name]">
-              <mat-icon>remove_red_eye</mat-icon>
-            </button>
+          <div *ngIf="(deleteInProgress && (row.name === projectDeleting)); else notDeleting">
+            <div class="iconBtn-lg">
+              <mat-spinner [diameter]="25"></mat-spinner>
+            </div>
           </div>
+          <ng-template #notDeleting>
+            <div layout="row">
+              <button class="iconBtn-lg"
+                      mat-button
+                      stopRowClick
+                      title="Delete project"
+                      (click)="delete(row)"
+                      [disabled] = "(row.name !== projectDeleting) && deleteInProgress">
+                <mat-icon [ngClass]="{'tc-grey-300': (row.name !== projectDeleting) && deleteInProgress}">delete</mat-icon>
+              </button>
+              <button class="iconBtn-lg"
+                      mat-button
+                      stopRowClick
+                      title="View project"
+                      [routerLink]="['/', row.name]">
+                <mat-icon>remove_red_eye</mat-icon>
+              </button>
+            </div>
+          </ng-template>
         </ng-template>
       </td-data-table>
     </div>
