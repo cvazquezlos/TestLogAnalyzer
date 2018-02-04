@@ -142,6 +142,6 @@ export class ElasticsearchService {
   downloadUrl(url: string) {
     const headers: HttpHeaders = new HttpHeaders();
     headers.append('Content-Type', 'text/plain');
-    return this.http.post('http://localhost:8443/files/url', url, {headers: headers});
+    return this.http.post<string[]>('http://localhost:8443/files/url', url, {headers: headers});
   }
 }

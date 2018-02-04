@@ -44,27 +44,29 @@ export class AddProjectComponent {
     this.code = 1;
     this.elasticsearchService.postProject(this.project).subscribe(
       response => {
-        if (this.urlTxt !== 'Empty') {
-          this.elasticsearchService.downloadUrl(this.urlTxt).subscribe(
-            result0 => console.log(result0)
-          );
-        } else {
-          let headers: HttpHeaders = new HttpHeaders();
-          this.http.post('http://localhost:8443/files/update', JSON.stringify(this.project.name), {headers: headers}).subscribe(
-            result1 => {
-              headers = new HttpHeaders();
-              headers.append('Content-Type', 'application/pdf');
-              const formData = new FormData();
-              formData.append('file', this.fileTxt);
-              this.http.post('http://localhost:8443/files/upload', formData, {headers: headers}).subscribe(
+        let headers: HttpHeaders = new HttpHeaders();
+        this.http.post<string>('http://localhost:8443/files/update', JSON.stringify(this.project.name), {headers: headers}).subscribe(
+          result1 => {
+            if (this.urlTxt !== 'Empty') {
+              this.elasticsearchService.downloadUrl(this.urlTxt).subscribe(
                 result2 => {
                   this.code = 2;
                 }
               );
-            },
-            error => console.log(error)
-          );
-        }
+            } else {
+              headers = new HttpHeaders();
+              headers.append('Content-Type', 'application/pdf');
+              const formData = new FormData();
+              formData.append('file', this.fileTxt);
+              this.http.post<string>('http://localhost:8443/files/file', formData, {headers: headers}).subscribe(
+                result2 => {
+                  this.code = 2;
+                }
+              );
+            }
+          },
+          error => console.log(error)
+        );
       }
     );
   }
