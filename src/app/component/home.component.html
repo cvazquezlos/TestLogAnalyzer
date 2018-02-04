@@ -24,6 +24,9 @@
         </ng-template>
         <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
           <div *ngIf="(deleteInProgress && (row.name === projectDeleting)); else notDeleting">
+            <div class="iconBtn-lg">
+              <mat-spinner [diameter]="25"></mat-spinner>
+            </div>
           </div>
           <ng-template #notDeleting>
             <div layout="row">
