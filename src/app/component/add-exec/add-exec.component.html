@@ -3,7 +3,8 @@
     <div layout="row">
       <span>New execution</span>
       <span flex></span>
-      <button  *ngIf="project.name != undefined" mat-raised-button class="iconBtn-lg" color="accent" [routerLink]="['/', project.name]">
+      <button *ngIf="project.name != undefined" mat-raised-button class="iconBtn-lg" color="accent"
+              [routerLink]="['/', project.name]">
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>

@@ -80,5 +80,4 @@ export class AddProjectComponent {
   private returnHome() {
     this.router.navigateByUrl('/');
   }
-
 }
