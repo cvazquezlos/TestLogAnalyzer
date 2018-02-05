@@ -58,7 +58,7 @@ public class LogResource {
 			execution.setTimestamp(selected.getTimestamp());
 			execution.setDebug(2);
 			execution.setError(0);
-			execution.setStatus("SUCCESS");
+			execution.setStatus(esLogService.findByProjectAndTestAndMessageContaining(test, project).getMessage());
 			execution.setWarning(0);
 			execution.setInfo(10);
 			execs.add(execution);
@@ -83,7 +83,6 @@ public class LogResource {
 		for (int i = 0; i < logs.size(); i++) {
 			System.out.println(logs.get(i).getTimestamp());
 			if (logs.get(i).getTimestamp() != "-") {
-				System.out.println("TIL HERE: " + logs.get(i));
 				return logs.get(i);
 			}
 		}

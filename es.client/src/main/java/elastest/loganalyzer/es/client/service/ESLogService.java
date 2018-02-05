@@ -49,4 +49,16 @@ public class ESLogService {
 	public List<Log> findByTestAndProject(String test, String project) {
 		return repository.findByTestAndProject(test, project);
 	}
+	
+	public Log findByProjectAndTestAndMessageContaining(String test, String project) {
+		List<Log> logs = repository.findByProjectAndTestAndMessageContaining(project, test, "BUILD");
+		for (int i = 0; i < logs.size(); i++) {
+			System.out.println("Iteration");
+			if (logs.get(i).getMessage().contains("BUILD ")) {
+				System.out.println("Yep");
+				return logs.get(i);
+			}
+		}
+		return logs.get(logs.size() - 1);
+	}
 }
