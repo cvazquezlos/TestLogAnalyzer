@@ -86,7 +86,6 @@ public class LogResource {
 	
 	private Log findLog(List<Log> logs) {
 		for (int i = 0; i < logs.size(); i++) {
-			System.out.println(logs.get(i).getTimestamp());
 			if (logs.get(i).getTimestamp() != "-") {
 				return logs.get(i);
 			}

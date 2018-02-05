@@ -13,6 +13,7 @@ import {DiffMatchPatchModule} from 'ng-diff-match-patch';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 
+import {AddExecComponent} from './component/add-exec/add-exec.component';
 import {AddProjectComponent} from './component/add-project/add-project.component';
 import {ComparisonComponent} from './component/comparison/comparison.component';
 import {HomeComponent} from './component/home.component';
@@ -31,6 +32,7 @@ const httpInterceptorProviders: Type<any>[] = [
 
 @NgModule({
   declarations: [
+    AddExecComponent,
     AddProjectComponent,
     AppComponent,
     ComparisonComponent,

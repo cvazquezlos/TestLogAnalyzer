@@ -62,7 +62,6 @@ public class ESLogService {
 	
 	public int findByProjectAndTestAndLevel(String test, String project, String level) {
 		List<Log> logs = repository.findByProjectAndTestAndLevel(project, test, level);
-		System.out.println(logs.size());
 		return logs.size();
 	}
 }

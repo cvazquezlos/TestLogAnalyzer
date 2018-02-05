@@ -1,0 +1,123 @@
+<mat-card>
+  <mat-card-title>
+    <div layout="row">
+      <span>New execution</span>
+      <span flex></span>
+      <button  *ngIf="project.name != undefined" mat-raised-button class="iconBtn-lg" color="accent" [routerLink]="['/', project.name]">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <mat-tab-group>
+      <mat-tab label="Choose files">
+        <div layout="row">
+          <div flex="50">
+            <p>Choose the file which contains the logs of the execution...</p>
+            <td-file-upload #txtFileUpload
+                            accept=".txt"
+                            required
+                            (cancel)="cancel()"
+                            (select)="update($event)"
+                            (update)="update($event)">
+              <mat-icon>file_upload</mat-icon>
+              <span>{{txtFileUpload.value?.name}}</span>
+              <ng-template td-file-input-label>
+                <mat-icon>attach_file</mat-icon>
+                Choose a .txt file...
+                <span [hidden]="!txtFileUpload?.required">*</span>
+              </ng-template>
+            </td-file-upload>
+          </div>
+          <div class="pad-top">
+            <mat-divider class="divider-vertical"></mat-divider>
+          </div>
+          <div class="pad-left">
+            <p>Choose the file which contains the Surfire data...</p>
+            <td-file-upload #xmlFileUpload
+                            accept=".xml"
+                            (cancel)="cancel()"
+                            (select)="update($event)"
+                            (update)="update($event)">
+              <mat-icon>file_upload</mat-icon>
+              <span>{{xmlFileUpload.value?.name}}</span>
+              <ng-template td-file-input-label>
+                <mat-icon>attach_file</mat-icon>
+                Choose a .xml file...
+              </ng-template>
+            </td-file-upload>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Paste URLs">
+        <form>
+          <div layout="row">
+            <div flex="50">
+              <p>Paste the URL of the file which contains the logs of the execution...</p>
+              <mat-form-field>
+                <input matInput
+                       name="URL of .txt file"
+                       onclick="this.select()"
+                       placeholder="URL of .txt file"
+                       required
+                       type="text"
+                       [(ngModel)]="urlTxt">
+              </mat-form-field>
+            </div>
+            <div class="pad-top">
+              <mat-divider class="divider-vertical"></mat-divider>
+            </div>
+            <div class="pad-left">
+              <p>Paste the URL of the file which contains the Surfire data...</p>
+              <mat-form-field>
+                <input matInput
+                       name="URL of .xml file"
+                       onclick="this.select()"
+                       placeholder="URL of .xml file"
+                       type="text"
+                       [(ngModel)]="urlXml">
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+    <div *ngIf="(urlTxt !== ''); else notCompleted">
+      The new project which name is <span class="md-title">{{project.name}}</span> will be created once you click on
+      save button.
+      The first execution of this project is provided by
+      <span *ngIf="fileSelected; else notSelected" class="md-title">choosing files</span>
+      <ng-template #notSelected>
+        <span class="md-title">URL</span>
+      </ng-template>
+      and its content will be saved.
+      <br><br>
+      <div *ngIf="(code == 1) || (code == 2); else hideSave">
+        <ng-template tdLoading [tdLoadingUntil]="code != 1" tdLoadingStrategy="overlay" tdLoadingType="linear">
+        </ng-template>
+        <div *ngIf="code == 1; else secondCode">
+          <td-message label="Success!" sublabel="Uploading file content into Elasticsearch..." color="green"
+                      icon="check_circle"></td-message>
+        </div>
+        <ng-template #secondCode>
+          <td-message label="Done!"
+                      sublabel="The project has been created and its content have been updated to Elasticsearch."
+                      color="green" icon="check_circle"></td-message>
+          <div layout="row" layout-align="center center">
+          </div>
+        </ng-template>
+      </div>
+      <ng-template #hideSave>
+        <div layout="row" layout-align="center center">
+          <button color="accent" mat-raised-button (click)="save()">Save
+          </button>
+        </div>
+      </ng-template>
+    </div>
+    <ng-template #notCompleted>
+      <td-message label="Error!" sublabel="You have to fill out the required camps." color="warn"
+                  icon="error"></td-message>
+    </ng-template>
+  </mat-card-content>
+</mat-card>
