@@ -52,15 +52,20 @@ public class LogResource {
 			Execution execution = new Execution();
 			execution.setId(i + 1);
 			String test = String.format("%02d", i + 1);
-			List<Log> logs = esLogService.findByTest(test);
+			List<Log> logs = esLogService.findByTestAndProject(test, project);
 			execution.setEntries(logs.size());
 			Log selected = this.findLog(logs);
 			execution.setTimestamp(selected.getTimestamp());
-			execution.setDebug(2);
-			execution.setError(0);
-			execution.setStatus("SUCCESS");
-			execution.setWarning(0);
-			execution.setInfo(10);
+			execution.setDebug(esLogService.findByProjectAndTestAndLevel(test, project, "DEBUG"));
+			execution.setInfo(esLogService.findByProjectAndTestAndLevel(test, project, "INFO"));
+			execution.setWarning(esLogService.findByProjectAndTestAndLevel(test, project, "WARNING"));
+			execution.setError(esLogService.findByProjectAndTestAndLevel(test, project, "ERROR"));
+			Log status = esLogService.findByProjectAndTestAndMessageContainingIgnoreCase(test, project);
+			if (status.getMessage() == "-") {
+				execution.setStatus("UNKNOWN");
+			} else {
+				execution.setStatus(status.getMessage());
+			}
 			execs.add(execution);
 		}
 		return execs;
@@ -83,7 +88,6 @@ public class LogResource {
 		for (int i = 0; i < logs.size(); i++) {
 			System.out.println(logs.get(i).getTimestamp());
 			if (logs.get(i).getTimestamp() != "-") {
-				System.out.println("TIL HERE: " + logs.get(i));
 				return logs.get(i);
 			}
 		}

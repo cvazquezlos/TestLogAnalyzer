@@ -45,4 +45,24 @@ public class ESLogService {
 	public List<Log> findByTest(String test) {
 		return repository.findByTest(test);
 	}
+	
+	public List<Log> findByTestAndProject(String test, String project) {
+		return repository.findByTestAndProject(test, project);
+	}
+	
+	public Log findByProjectAndTestAndMessageContainingIgnoreCase(String test, String project) {
+		List<Log> logs = repository.findByProjectAndTestAndMessageContainingIgnoreCase(project, test, "BUILD");
+		for (int i = 0; i < logs.size(); i++) {
+			if (logs.get(i).getMessage().contains("BUILD ")) {
+				return logs.get(i);
+			}
+		}
+		return new Log();
+	}
+	
+	public int findByProjectAndTestAndLevel(String test, String project, String level) {
+		List<Log> logs = repository.findByProjectAndTestAndLevel(project, test, level);
+		System.out.println(logs.size());
+		return logs.size();
+	}
 }

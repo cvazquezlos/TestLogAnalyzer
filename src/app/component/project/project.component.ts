@@ -16,17 +16,17 @@ export class ProjectComponent {
   execs: any;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
-    {name: 'timestamp', label: 'Timestamp', width: 200},
+    {name: 'startdate', label: 'Start date', width: 300},
     {name: 'entries', label: 'Entries', width: 100},
     {name: 'status', label: 'Status'},
-    {name: 'DEBUG', label: 'DEBUG', width: 80},
-    {name: 'INFO', label: 'INFO', width: 80},
-    {name: 'WARNING', label: 'WARNING', width: 80},
-    {name: 'ERROR', label: 'ERROR', width: 80},
+    {name: 'DEBUG', label: 'DEBUG', width: 100},
+    {name: 'INFO', label: 'INFO', width: 100},
+    {name: 'WARNING', label: 'WARNING', width: 100},
+    {name: 'ERROR', label: 'ERROR', width: 100},
     {name: 'options', label: 'Options', width: 150}
   ];
   execsRowData: any[] = [];
-  project: Project;
+  project: Project = new Project();
 
   constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService) {
     const name = this.activatedRoute.snapshot.params['project'];
@@ -39,7 +39,7 @@ export class ProjectComponent {
       for (let i = 0; i < response.length; i++) {
         this.execsRowData[i] = {
           'id': response[i].id,
-          'timestamp': response[i].timestamp.split(' ')[0],
+          'startdate': response[i].timestamp,
           'entries': response[i].entries,
           'status': response[i].status,
           'DEBUG': response[i].debug,
