@@ -46,7 +46,7 @@ public class ESLogService {
 		return repository.findByTest(test);
 	}
 	
-	public List<Log> findByTestAndProject(String test, String project) {
+	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {
 		return repository.findByTestAndProject(test, project);
 	}
 	

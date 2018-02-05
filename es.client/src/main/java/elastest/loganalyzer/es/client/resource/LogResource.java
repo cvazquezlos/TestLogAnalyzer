@@ -52,7 +52,12 @@ public class LogResource {
 			Execution execution = new Execution();
 			execution.setId(i + 1);
 			String test = String.format("%02d", i + 1);
-			List<Log> logs = esLogService.findByTestAndProject(test, project);
+			List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(test, project);
+			System.out.println("--------- EXEC " + i);
+			for (int j = 0; j < logs.size();j++) {
+				System.out.println(logs.get(j));
+				System.out.println(logs.get(j).getId());
+			}
 			execution.setEntries(logs.size());
 			Log selected = this.findLog(logs);
 			execution.setTimestamp(selected.getTimestamp());
@@ -86,7 +91,7 @@ public class LogResource {
 	
 	private Log findLog(List<Log> logs) {
 		for (int i = 0; i < logs.size(); i++) {
-			if (logs.get(i).getTimestamp() != "-") {
+			if (logs.get(i).getTimestamp().length() == 23) {
 				return logs.get(i);
 			}
 		}
