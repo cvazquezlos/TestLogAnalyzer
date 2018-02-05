@@ -35,8 +35,9 @@
                       stopRowClick
                       title="Delete project"
                       (click)="delete(row)"
-                      [disabled] = "(row.name !== projectDeleting) && deleteInProgress">
-                <mat-icon [ngClass]="{'tc-grey-300': (row.name !== projectDeleting) && deleteInProgress}">delete</mat-icon>
+                      [disabled]="(row.name !== projectDeleting) && deleteInProgress">
+                <mat-icon [ngClass]="{'tc-grey-300': (row.name !== projectDeleting) && deleteInProgress}">delete
+                </mat-icon>
               </button>
               <button class="iconBtn-lg"
                       mat-button

@@ -1,0 +1,21 @@
+.iconBtn-lg {
+  min-width: initial !important;
+  padding: 0 15px !important;
+}
+
+.divider-vertical {
+  border-top-width: 0;
+  border-right-width: 1px;
+  border-right-color: #E0E0E0;
+  border-right-style: solid;
+  height: 100px;
+}
+
+.pad-left {
+  padding-left: 10px;
+}
+
+.pad-top {
+  padding-top: 10px;
+}
+

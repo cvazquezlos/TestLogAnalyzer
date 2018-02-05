@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
@@ -28,12 +28,20 @@ export class ProjectComponent {
   execsRowData: any[] = [];
   project: Project = new Project();
 
-  constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService) {
+  constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService, private router: Router) {
     const name = this.activatedRoute.snapshot.params['project'];
     this.elasticsearchService.getProjectByName(name).subscribe(response => {
         this.project = response;
+        this.reloadTable(name);
       }
     );
+  }
+
+  addExec() {
+    this.router.navigateByUrl('/' + this.project.name + '/add-exec');
+  }
+
+  reloadTable(name: string) {
     this.elasticsearchService.loadExecutionsByProject(name).subscribe(response => {
       this.execsRowData = [];
       for (let i = 0; i < response.length; i++) {

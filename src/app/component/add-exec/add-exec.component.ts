@@ -1,16 +1,16 @@
 import {Component} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
-  selector: 'app-add-project',
-  templateUrl: './add-project.component.html',
-  styleUrls: ['./add-project.component.css']
+  selector: 'app-add-exec',
+  templateUrl: './add-exec.component.html',
+  styleUrls: ['./add-exec.component.css']
 })
 
-export class AddProjectComponent {
+export class AddExecComponent {
 
   code: number;
   fileSelected: boolean;
@@ -21,7 +21,8 @@ export class AddProjectComponent {
   urlTxt: string;
   urlXml: string;
 
-  constructor(private elasticsearchService: ElasticsearchService, private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private elasticsearchService: ElasticsearchService,
+              private activatedRoute: ActivatedRoute) {
     this.code = 0;
     this.fileSelected = true;
     this.fileTxt = null;
@@ -29,10 +30,11 @@ export class AddProjectComponent {
     this.isFile = true;
     this.urlTxt = '';
     this.urlXml = '';
-    this.project = new Project();
-    this.project.name = '';
-    this.elasticsearchService.countProjects().subscribe(response => this.project.id = response);
-    this.project.num_execs = 0;
+    const name = this.activatedRoute.snapshot.params['project'];
+    this.elasticsearchService.getProjectByName(name).subscribe(response => {
+        this.project = response;
+      }
+    );
   }
 
   cancel() {
@@ -75,9 +77,5 @@ export class AddProjectComponent {
     (file.name.includes('.txt')) ? (this.fileTxt = file) : (this.fileXml = file);
     this.urlTxt = 'Empty';
     this.urlXml = 'Empty';
-  }
-
-  private returnHome() {
-    this.router.navigateByUrl('/');
   }
 }
