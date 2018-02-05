@@ -1,5 +1,5 @@
 
-![logo](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/LOGANALYZER-logo.png)
+![logo](https://github.com/cvazquezlos/LOGANALYZER/blob/master/resources/media/README/TestLogAnalyzer-logo.png)
 
 [![Build Status](https://travis-ci.org/cvazquezlos/LOGANALYZER.svg?branch=master)](https://travis-ci.org/cvazquezlos/LOGANALYZER)
 [![CircleCI](https://circleci.com/gh/cvazquezlos/LOGANALYZER.svg?style=shield)](https://circleci.com/gh/cvazquezlos/LOGANALYZER)
@@ -8,7 +8,7 @@
 [![Code Climate](https://codeclimate.com/github/cvazquezlos/LOGANALYZER.png)](https://codeclimate.com/github/cvazquezlos/LOGANALYZER) 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# LOGANALYZER - Product development
+# TestLogAnalyzer - Log analysis module for ElasTest.
 
 ## Getting started
 1. Clone this repository.
@@ -16,8 +16,8 @@
 3. Execute `docker-compose up` and navigate to **http://localhost:4200** on your favourite browser.
 4. Enjoy!
 
-## LOGANALYZER
-LOGANALYZER allows you to work with determinate kinds of logs. In this moment, `Beta version`, LOGANALYZER works with Apache logs.
+## TestLogAnalyzer
+TestLogAnalyzer allows you to work with determinate kinds of logs. In this moment, `Beta version`, TestLogAnalyzer works with Logback logs.
 
 ### Data format allowed
 #### Logback format
@@ -107,7 +107,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 40. https://www.w3schools.com/angular/ - AngularJS modules.
 
 ## Involved technologies
-Element           | LOGANALYZER needs it because...                    | Official site
+Element           | TestLogAnalyzer needs it because...                    | Official site
 ------------------|----------------------------------------------------|-----------------------------
 Angular 5         | App development framework                          | https://angular.io/
 Angular Material  | Material Design components for Angular             | https://material.angular.io/
