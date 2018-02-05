@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-title>
     <div layout="row">
-      <span>{{project.name}}</span>
+      <span *ngIf="project.name != undefined">{{project.name}}</span>
       <span flex></span>
       <button mat-raised-button class="iconBtn-lg" color="accent" [routerLink]="['/']">
         <mat-icon>home</mat-icon>
@@ -20,9 +20,6 @@
       </ng-template>
       <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
         <div layout="row">
-          <!--<button mat-button (click)="editProject(row)" stopRowClick title="Edit project">
-            <mat-icon>mode_edit</mat-icon>
-          </button>-->
           <button class="iconBtn-lg"
                   mat-button
                   stopRowClick

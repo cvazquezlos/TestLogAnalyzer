@@ -56,11 +56,16 @@ public class LogResource {
 			execution.setEntries(logs.size());
 			Log selected = this.findLog(logs);
 			execution.setTimestamp(selected.getTimestamp());
-			execution.setDebug(2);
-			execution.setError(0);
-			execution.setStatus(esLogService.findByProjectAndTestAndMessageContaining(test, project).getMessage());
-			execution.setWarning(0);
-			execution.setInfo(10);
+			execution.setDebug(esLogService.findByProjectAndTestAndLevel(test, project, "DEBUG"));
+			execution.setInfo(esLogService.findByProjectAndTestAndLevel(test, project, "INFO"));
+			execution.setWarning(esLogService.findByProjectAndTestAndLevel(test, project, "WARNING"));
+			execution.setError(esLogService.findByProjectAndTestAndLevel(test, project, "ERROR"));
+			Log status = esLogService.findByProjectAndTestAndMessageContainingIgnoreCase(test, project);
+			if (status.getMessage() == "-") {
+				execution.setStatus("UNKNOWN");
+			} else {
+				execution.setStatus(status.getMessage());
+			}
 			execs.add(execution);
 		}
 		return execs;

@@ -16,17 +16,17 @@ export class ProjectComponent {
   execs: any;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
-    {name: 'startdate', label: 'Start date'},
+    {name: 'startdate', label: 'Start date', width: 300},
     {name: 'entries', label: 'Entries', width: 100},
-    {name: 'status', label: 'Status', width: 130},
-    {name: 'DEBUG', label: 'DEBUG', width: 130},
-    {name: 'INFO', label: 'INFO', width: 130},
-    {name: 'WARNING', label: 'WARNING', width: 130},
-    {name: 'ERROR', label: 'ERROR', width: 130},
+    {name: 'status', label: 'Status'},
+    {name: 'DEBUG', label: 'DEBUG', width: 100},
+    {name: 'INFO', label: 'INFO', width: 100},
+    {name: 'WARNING', label: 'WARNING', width: 100},
+    {name: 'ERROR', label: 'ERROR', width: 100},
     {name: 'options', label: 'Options', width: 150}
   ];
   execsRowData: any[] = [];
-  project: Project;
+  project: Project = new Project();
 
   constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService) {
     const name = this.activatedRoute.snapshot.params['project'];
