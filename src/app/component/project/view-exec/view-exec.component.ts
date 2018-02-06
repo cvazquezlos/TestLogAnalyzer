@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
-import {Log} from '../../model/log.model';
+import {Log} from '../../../model/log.model';
 
 @Component({
   selector: 'app-view-exec',

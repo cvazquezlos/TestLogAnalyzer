@@ -1,22 +1,16 @@
-import {
-  AfterViewInit,
-  Component
-} from '@angular/core';
+import {Component} from '@angular/core';
+import {Project} from '../../model/project.model';
 import {Router} from '@angular/router';
-import {
-  ITdDataTableColumn,
-  TdMediaService
-} from '@covalent/core';
-import {Project} from '../model/project.model';
-import {ElasticsearchService} from '../service/elasticsearch.service';
+import {ITdDataTableColumn, TdMediaService} from '@covalent/core';
+import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-view-projects',
+  templateUrl: './view-projects.component.html',
+  styleUrls: ['./view-projects.component.css']
 })
 
-export class HomeComponent implements AfterViewInit {
+export class ViewProjectsComponent {
 
   deleteInProgress: boolean;
   exec: boolean;
@@ -42,12 +36,6 @@ export class HomeComponent implements AfterViewInit {
       this.reloadTable();
       this.deleteInProgress = false;
       this.projectDeleting = '';
-    });
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.media.broadcast();
     });
   }
 

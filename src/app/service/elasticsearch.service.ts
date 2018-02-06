@@ -14,7 +14,7 @@ import {Project} from '../model/project.model';
 export class ElasticsearchService {
 
   baseElasticUrl = 'http://localhost:9200/loganalyzer/';
-  baseProjectsUrl = 'http://localhost:9200/projects/';
+  baseProjectsUrl = 'http://localhost:9200/public/';
   baseAPIUrl = 'http://localhost:8443/';
   searchURL = this.baseElasticUrl + '_search';
   countURL  = this.baseElasticUrl + '_count';
@@ -57,17 +57,17 @@ export class ElasticsearchService {
       name: project.name,
       'num_execs': project.num_execs
     };
-    return this.http.post(this.baseAPIUrl + 'projects', object, {headers: headers})
+    return this.http.post(this.baseAPIUrl + 'public', object, {headers: headers})
       .map(response => response);
   }
 
   getProjectByName(name: string) {
-    return this.http.get<Project>(this.baseAPIUrl + 'projects/name/' + name)
+    return this.http.get<Project>(this.baseAPIUrl + 'public/name/' + name)
       .map(response => {return response});
   }
 
   getProjects() {
-    return this.http.get<any>(this.baseAPIUrl + 'projects/all')
+    return this.http.get<any>(this.baseAPIUrl + 'public/all')
       .map(response => {
         const result = [];
         for (let i = 0; i < response.length; i++) {
@@ -88,7 +88,7 @@ export class ElasticsearchService {
   }
 
   deleteProject(id: number) {
-    return this.http.delete(this.baseAPIUrl + 'projects/remove/' + id.toString())
+    return this.http.delete(this.baseAPIUrl + 'public/remove/' + id.toString())
       .map(response => response);
   }
 

@@ -1,17 +1,16 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
-import {Log} from '../../model/log.model';
-import {Project} from '../../model/project.model';
-import {ElasticsearchService} from '../../service/elasticsearch.service';
+import {Project} from '../../../model/project.model';
+import {ElasticsearchService} from '../../../service/elasticsearch.service';
 
 @Component({
-  selector: 'app-project',
-  templateUrl: './view-project.component.html',
-  styleUrls: ['./view-project.component.css']
+  selector: 'app-view-execs',
+  templateUrl: './view-execs.component.html',
+  styleUrls: ['./view-execs.component.css']
 })
 
-export class ViewProjectComponent {
+export class ViewExecsComponent {
 
   deleteInProgress: boolean;
   execDeleting: string;

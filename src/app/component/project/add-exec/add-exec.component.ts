@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Project} from '../../model/project.model';
-import {ElasticsearchService} from '../../service/elasticsearch.service';
+import {Project} from '../../../model/project.model';
+import {ElasticsearchService} from '../../../service/elasticsearch.service';
 
 @Component({
   selector: 'app-add-exec',
