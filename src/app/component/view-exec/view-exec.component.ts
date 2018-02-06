@@ -15,9 +15,9 @@ export class ViewExecComponent {
   logsRowData: any[] = [];
   logsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
-    {name: 'timestamp', label: 'Timestamp'},
-    {name: 'thread', label: 'Thread'},
-    {name: 'level', label: 'Level'},
+    {name: 'timestamp', label: 'Timestamp', width: 250},
+    {name: 'thread', label: 'Thread', width: 150},
+    {name: 'level', label: 'Level', width: 100},
     {name: 'logger', label: 'Logger'},
     {name: 'message', label: 'Message'}
   ];
