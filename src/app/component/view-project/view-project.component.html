@@ -25,23 +25,30 @@
         <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
       </ng-template>
       <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
-        <div layout="row">
-          <button class="iconBtn-lg"
-                  mat-button
-                  stopRowClick
-                  title="Delete execution"
-                  (click)="delete(row)"
-                  [disabled]="deletingInProgress">
-            <mat-icon>delete</mat-icon>
-          </button>
-          <button class="iconBtn-lg"
-                  mat-button
-                  stopRowClick
-                  title="View execution"
-                  (click)="viewExec(row)">
-            <mat-icon>remove_red_eye</mat-icon>
-          </button>
+        <div *ngIf="(deleteInProgress && (row.id === execDeleting)); else notDeleting">
+          <div class="iconBtn-lg">
+            <mat-spinner [diameter]="25"></mat-spinner>
+          </div>
         </div>
+        <ng-template #notDeleting>
+          <div layout="row">
+            <button class="iconBtn-lg"
+                    mat-button
+                    stopRowClick
+                    title="Delete execution"
+                    (click)="delete(row)"
+                    [disabled]="(row.id !== execDeleting) && deleteInProgress">
+              <mat-icon [ngClass]="{'tc-grey-300': (row.id !== execDeleting) && deleteInProgress}">delete</mat-icon>
+            </button>
+            <button class="iconBtn-lg"
+                    mat-button
+                    stopRowClick
+                    title="View execution"
+                    (click)="viewExec(row)">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </div>
+        </ng-template>
       </ng-template>
     </td-data-table>
   </mat-card-content>

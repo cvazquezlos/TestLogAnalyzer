@@ -95,4 +95,17 @@ public class LogResource {
 		}
 		return new Log();
 	}
+
+	@RequestMapping(value = "/remove/test/{test}", method = RequestMethod.DELETE)
+	public String deleteByTestAndProject(@PathVariable int test, @RequestParam(value = "project", required = true) String project) {
+		String testNo = String.format("%02d", test);
+		List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
+		Project target = esProjectService.findByName(project);
+		target.setNum_execs(target.getNum_execs() - 1);
+		for (int i = 0; i < logs.size(); i++) {
+			esLogService.delete(logs.get(i));
+		}
+		esProjectService.save(target);
+		return "200";
+	}
 }

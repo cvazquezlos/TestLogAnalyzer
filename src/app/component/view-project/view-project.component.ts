@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
+import {Log} from '../../model/log.model';
 import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 
@@ -12,6 +13,8 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 export class ViewProjectComponent {
 
+  deleteInProgress: boolean;
+  execDeleting: string;
   execs: any;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
@@ -36,6 +39,16 @@ export class ViewProjectComponent {
     );
   }
 
+  delete(row: any) {
+    this.deleteInProgress = true;
+    this.execDeleting = row.id;
+    this.elasticsearchService.deleteExec(row.id, this.project.name).subscribe(response => {
+      this.reloadTable(this.project.name);
+      this.deleteInProgress = false;
+      this.execDeleting = '';
+    })
+  }
+
   addExec() {
     this.router.navigateByUrl('/' + this.project.name + '/add-exec');
   }
@@ -58,7 +71,7 @@ export class ViewProjectComponent {
     });
   }
 
-  viewExec(event: any) {
-    this.router.navigateByUrl('/' + this.project.name + '/' + event.id);
+  viewExec(row: any) {
+    this.router.navigateByUrl('/' + this.project.name + '/' + row.id);
   }
 }
