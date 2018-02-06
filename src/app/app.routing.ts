@@ -12,9 +12,9 @@ const appRoutes = [
   {path: '', component: HomeComponent},
   {path: 'add', component: AddProjectComponent},
   {path: 'comparison', component: ComparisonComponent},
-  {path: ':view-project', component: ViewProjectComponent},
-  {path: ':view-project/add-exec', component: AddExecComponent},
-  {path: ':view-project/:exec', component: ViewExecComponent}
+  {path: ':project', component: ViewProjectComponent},
+  {path: ':project/add-exec', component: AddExecComponent},
+  {path: ':project/:exec', component: ViewExecComponent}
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

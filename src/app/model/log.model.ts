@@ -1,11 +1,11 @@
 export interface Log {
   id: string;
-  test_no?: any;
-  entire_log: string;
+  test?: string;
+  log: string;
   timestamp: any;
-  thread_name: string;
+  thread: string;
   level: string;
-  logger_name: string;
-  formatted_message: string;
+  logger: string;
+  message: string;
   method: string
 }

@@ -29,10 +29,9 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Log> getLog(@PathVariable String id) {
+	public Log getLog(@PathVariable String id) {
 		Log log = esLogService.findOne(id);
-
-		return new ResponseEntity<>(log, HttpStatus.OK);
+		return log;
 	}
 
 	@RequestMapping(value = "/level/{level}", method = RequestMethod.GET)
@@ -72,9 +71,9 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
-	public List<Log> getLogByTestno(@PathVariable String test) {
-		System.out.println(test);
-		return esLogService.findByTest(test);
+	public List<Log> getLogByTestno(@PathVariable int test) {
+		String testNo = String.format("%02d", test);
+		return esLogService.findByTestOrderByIdAsc(testNo);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

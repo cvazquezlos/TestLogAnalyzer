@@ -38,7 +38,7 @@
                   mat-button
                   stopRowClick
                   title="View execution"
-                  [routerLink]="['/', row.name]">
+                  (click)="viewExec(row)">
             <mat-icon>remove_red_eye</mat-icon>
           </button>
         </div>

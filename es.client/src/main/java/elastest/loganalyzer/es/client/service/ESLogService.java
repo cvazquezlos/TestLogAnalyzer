@@ -42,12 +42,12 @@ public class ESLogService {
 		return repository.findByProject(project);
 	}
 	
-	public List<Log> findByTest(String test) {
-		return repository.findByTest(test);
+	public List<Log> findByTestOrderByIdAsc(String test) {
+		return repository.findByTestOrderByIdAsc(test);
 	}
 	
 	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {
-		return repository.findByTestAndProject(test, project);
+		return repository.findByTestAndProjectOrderByIdAsc(test, project);
 	}
 	
 	public Log findByProjectAndTestAndMessageContainingIgnoreCase(String test, String project) {

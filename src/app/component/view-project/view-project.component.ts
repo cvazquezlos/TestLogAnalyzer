@@ -12,7 +12,6 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 export class ViewProjectComponent {
 
-  deleteInProgress: boolean;
   execs: any;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
@@ -57,5 +56,9 @@ export class ViewProjectComponent {
         }
       }
     });
+  }
+
+  viewExec(event: any) {
+    this.router.navigateByUrl('/' + this.project.name + '/' + event.id);
   }
 }
