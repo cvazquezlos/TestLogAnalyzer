@@ -92,6 +92,11 @@ export class ElasticsearchService {
       .map(response => response);
   }
 
+  deleteExec(id: string, project: string) {
+    return this.http.delete(this.baseAPIUrl + 'logs/remove/test/' + id + '?project=' + project)
+      .map(response => response);
+  }
+
   get(typeSize: number[], valueMethod: string[], maven: boolean): Observable<Log[]> {
     const values1 = '&size=' + typeSize[1];
     const values2 = '&from=0';
