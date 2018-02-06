@@ -1,7 +1,7 @@
 
 ![logo](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/resources/media/README/TestLogAnalyzer-logo.png)
 
-[![Build Status](https://travis-ci.org/cvazquezlos/LOGANALYZER.svg?branch=master)](https://travis-ci.org/cvazquezlos/LOGANALYZER)
+[![Build Status](https://travis-ci.org/cvazquezlos/TestLogAnalyzer.svg?branch=master)](https://travis-ci.org/cvazquezlos/LOGANALYZER)
 [![CircleCI](https://circleci.com/gh/cvazquezlos/TestLogAnalyzer.svg?style=shield)](https://circleci.com/gh/cvazquezlos/LOGANALYZER)
 [![npm version](https://badge.fury.io/js/%40angular%2Fcore.svg)](https://badge.fury.io/js/%40angular%2Fcore)
 
