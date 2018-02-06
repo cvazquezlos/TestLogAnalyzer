@@ -1,0 +1,24 @@
+<mat-card>
+  <mat-card-title>
+    <div layout="row">
+      <span *ngIf="test != undefined">{{test}}</span>
+      <span flex></span>
+      <button class="iconBtn-lg  bgc-light-blue-100"
+              mat-raised-button
+              (click)="reloadTable()">
+        <mat-icon class="tc-light-blue-700">refresh</mat-icon>
+      </button>&nbsp;
+      <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
+              [routerLink]="['/', project]">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <td-data-table [data]="logsRowData"
+                   [columns]="logsData"
+                   [sortable]="false">
+    </td-data-table>
+  </mat-card-content>
+</mat-card>

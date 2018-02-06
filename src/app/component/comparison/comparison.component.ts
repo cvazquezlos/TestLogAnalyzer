@@ -106,7 +106,7 @@ export class ComparisonComponent {
       data => {
         this.methods = [];
         for (const log of data) {
-          const args = log.formatted_message.split(' ');
+          const args = log.message.split(' ');
           if ((this.methods.indexOf(args[1]) === -1) && (args[2] === 'method')) {
             this.methods = this.methods.concat({'icon': 'event_note', 'title': args[1], 'class': 'false'});
           }

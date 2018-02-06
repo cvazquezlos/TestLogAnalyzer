@@ -6,13 +6,12 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
   selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.css']
+  templateUrl: './view-project.component.html',
+  styleUrls: ['./view-project.component.css']
 })
 
-export class ProjectComponent {
+export class ViewProjectComponent {
 
-  deleteInProgress: boolean;
   execs: any;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
@@ -57,5 +56,9 @@ export class ProjectComponent {
         }
       }
     });
+  }
+
+  viewExec(event: any) {
+    this.router.navigateByUrl('/' + this.project.name + '/' + event.id);
   }
 }
