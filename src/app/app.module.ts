@@ -17,7 +17,8 @@ import {AddExecComponent} from './component/add-exec/add-exec.component';
 import {AddProjectComponent} from './component/add-project/add-project.component';
 import {ComparisonComponent} from './component/comparison/comparison.component';
 import {HomeComponent} from './component/home.component';
-import {ProjectComponent} from './component/project/project.component';
+import {ViewProjectComponent} from './component/view-project/view-project.component';
+import {ViewExecComponent} from './component/view-exec/view-exec.component';
 
 import {DiffService} from './service/diff.service';
 import {ElasticsearchService} from './service/elasticsearch.service';
@@ -37,7 +38,8 @@ const httpInterceptorProviders: Type<any>[] = [
     AppComponent,
     ComparisonComponent,
     HomeComponent,
-    ProjectComponent
+    ViewProjectComponent,
+    ViewExecComponent
   ],
   imports: [
     BrowserModule,

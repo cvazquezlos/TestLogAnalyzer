@@ -53,11 +53,6 @@ public class LogResource {
 			execution.setId(i + 1);
 			String test = String.format("%02d", i + 1);
 			List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(test, project);
-			System.out.println("--------- EXEC " + i);
-			for (int j = 0; j < logs.size();j++) {
-				System.out.println(logs.get(j));
-				System.out.println(logs.get(j).getId());
-			}
 			execution.setEntries(logs.size());
 			Log selected = this.findLog(logs);
 			execution.setTimestamp(selected.getTimestamp());

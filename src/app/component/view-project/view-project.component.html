@@ -29,7 +29,7 @@
           <button class="iconBtn-lg"
                   mat-button
                   stopRowClick
-                  title="Delete project"
+                  title="Delete execution"
                   (click)="delete(row)"
                   [disabled]="deletingInProgress">
             <mat-icon>delete</mat-icon>
@@ -37,7 +37,7 @@
           <button class="iconBtn-lg"
                   mat-button
                   stopRowClick
-                  title="View project"
+                  title="View execution"
                   [routerLink]="['/', row.name]">
             <mat-icon>remove_red_eye</mat-icon>
           </button>

@@ -78,7 +78,7 @@ export class ElasticsearchService {
   }
 
   loadExecutionsByProject(project: string) {
-    return this.http.get<Execution[]>(this.baseAPIUrl + 'logs/project/' + project)
+    return this.http.get<Execution[]>(this.baseAPIUrl + 'logs/view-project/' + project)
       .map(response => response);
   }
 
