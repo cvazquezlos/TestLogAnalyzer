@@ -7,5 +7,5 @@ export interface Log {
   level: string;
   logger: string;
   message: string;
-  method: string
+  method: string;
 }
