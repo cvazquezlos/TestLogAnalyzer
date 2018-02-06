@@ -71,9 +71,13 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
-	public List<Log> getLogByTestno(@PathVariable int test) {
+	public List<Log> getLogByTestno(@PathVariable int test, @RequestParam(value = "project", required = false) String project) {
 		String testNo = String.format("%02d", test);
-		return esLogService.findByTestOrderByIdAsc(testNo);
+		if (project == null) {
+			return esLogService.findByTestOrderByIdAsc(testNo);
+		} else {
+			return esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
+		}
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

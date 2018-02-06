@@ -31,7 +31,8 @@ export class ViewExecComponent {
   }
 
   reloadTable() {
-    this.http.get<Log[]>('http://localhost:8443/logs/test/' + this.test).subscribe(response => {
+    console.log(this.project);
+    this.http.get<Log[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project).subscribe(response => {
       this.logsRowData = [];
       console.log(response);
       for (let i = 0; i < response.length; i++) {
