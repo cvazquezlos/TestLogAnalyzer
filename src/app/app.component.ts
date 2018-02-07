@@ -9,13 +9,17 @@ import {MatIconRegistry} from '@angular/material';
 
 export class AppComponent {
 
+  isFull: boolean;
+
   constructor(private _iconRegistry: MatIconRegistry,
               private _domSanitizer: DomSanitizer) {
     this._iconRegistry.addSvgIconInNamespace('assets', 'github',
       this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/github.svg'));
+    this.isFull = false;
   }
 
   toggleFullscreen() {
+    this.isFull = !this.isFull;
     const documentVar = document as any;
     const documentElement = document.documentElement as any;
     const documentBody = document.body as any;
