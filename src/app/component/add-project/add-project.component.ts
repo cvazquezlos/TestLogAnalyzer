@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Project} from '../../model/project.model';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
@@ -21,7 +22,8 @@ export class AddProjectComponent {
   urlTxt: string;
   urlXml: string;
 
-  constructor(private elasticsearchService: ElasticsearchService, private http: HttpClient, private router: Router) {
+  constructor(private elasticsearchService: ElasticsearchService, private http: HttpClient, private router: Router,
+              private breadcrumbs: BreadcrumbsService) {
     this.code = 0;
     this.fileSelected = true;
     this.fileTxt = null;
@@ -33,6 +35,11 @@ export class AddProjectComponent {
     this.project.name = '';
     this.elasticsearchService.countProjects().subscribe(response => this.project.id = response);
     this.project.num_execs = 0;
+  }
+
+  ngOnInit() {
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
+      {label: 'New project', url: '/projects/add', params: []}]);
   }
 
   cancel() {

@@ -13,31 +13,16 @@ export const appRoutes: Routes = [
   {path: 'projects', component: PublicComponent,
     children: [
       {path: '', component: ViewProjectsComponent},
-      {path: 'add', component: AddProjectComponent,
-        data: {
-          breadcrumb: 'New project'
-        }
-      },
-      {path: ':project/:breadcrumb', component: ProjectComponent,
+      {path: 'add', component: AddProjectComponent},
+      {path: ':project', component: ProjectComponent,
         children: [
           {path: '', component: ViewExecsComponent},
-          {path: 'add', component: AddExecComponent,
-            data: {
-              breadcrumb: 'New execution'
-            }
-          },
-          {path: ':exec/:breadcrumb', component: ViewExecComponent}
+          {path: 'add', component: AddExecComponent},
+          {path: ':exec', component: ViewExecComponent}
         ]
       },
-      {path: 'comparison', component: ComparisonComponent,
-        data: {
-          breadcrumb: 'Comparison'
-        }
-      }
-    ],
-    data: {
-      breadcrumb: 'Home'
-    }
+      {path: 'comparison', component: ComparisonComponent}
+    ]
   }
 ];
 

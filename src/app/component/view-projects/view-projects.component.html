@@ -8,7 +8,7 @@
               (click)="reloadTable()">
         <mat-icon class="tc-light-blue-700">refresh</mat-icon>
       </button>&nbsp;
-      <button mat-raised-button color="accent" routerLink="./add">New project</button>
+      <button mat-raised-button color="accent" routerLink="add">New project</button>
     </div>
   </mat-card-title>
   <mat-divider></mat-divider>
@@ -43,7 +43,7 @@
                       mat-button
                       stopRowClick
                       title="View project"
-                      [routerLink]="['/', row.name]">
+                      (click)="goTo(row.name)">
                 <mat-icon>remove_red_eye</mat-icon>
               </button>
             </div>

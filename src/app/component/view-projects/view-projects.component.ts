@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 import {Project} from '../../model/project.model';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn, TdMediaService} from '@covalent/core';
+import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
@@ -22,11 +23,16 @@ export class ViewProjectsComponent {
   ];
   projectsRowData: any[] = [];
 
-  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private router: Router) {
+  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private router: Router,
+              private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService) {
     this.deleteInProgress = false;
     this.exec = false;
     this.projectDeleting = '';
     this.reloadTable();
+  }
+
+  ngOnInit() {
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []}]);
   }
 
   delete(project: Project) {
@@ -37,6 +43,10 @@ export class ViewProjectsComponent {
       this.deleteInProgress = false;
       this.projectDeleting = '';
     });
+  }
+
+  goTo(project: string) {
+    this.router.navigate(['./', project], {relativeTo: this.activatedRoute});
   }
 
   reloadTable() {

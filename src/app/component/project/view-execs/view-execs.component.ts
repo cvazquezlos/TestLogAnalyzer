@@ -49,7 +49,7 @@ export class ViewExecsComponent {
   }
 
   addExec() {
-    this.router.navigateByUrl('/' + this.project.name + '/add-exec');
+    this.router.navigate(['./', this.project.name, '/add'], {relativeTo: this.activatedRoute});
   }
 
   reloadTable(name: string) {
