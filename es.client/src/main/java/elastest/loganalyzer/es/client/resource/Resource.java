@@ -1,6 +1,5 @@
 package elastest.loganalyzer.es.client.resource;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

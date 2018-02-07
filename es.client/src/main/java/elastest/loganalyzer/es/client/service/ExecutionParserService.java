@@ -126,15 +126,16 @@ public class ExecutionParserService {
 		}
 		return args;
 	}
-
+	
 	public List<String> getStreamByUrl(String url) throws IOException {
+		@SuppressWarnings("resource")
 		ApplicationContext appContext = new ClassPathXmlApplicationContext();
 		Resource resource = appContext.getResource(url);
+		
 		InputStream is = resource.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		List<String> data = new ArrayList<>();
 		String line;
-		int i = 0;
 		while ((line = br.readLine()) != null) {
 			data.add(line);
 		}
