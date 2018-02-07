@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {Project} from '../../model/project.model';
 import {Router, ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn, TdMediaService} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
+import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
@@ -31,10 +31,6 @@ export class ViewProjectsComponent {
     this.reloadTable();
   }
 
-  ngOnInit() {
-    this.breadcrumbs.store([{label: 'Home', url: '/', params: []}]);
-  }
-
   delete(project: Project) {
     this.deleteInProgress = true;
     this.projectDeleting = project.name;
@@ -47,6 +43,10 @@ export class ViewProjectsComponent {
 
   goTo(project: string) {
     this.router.navigate(['./', project], {relativeTo: this.activatedRoute});
+  }
+
+  ngOnInit() {
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []}]);
   }
 
   reloadTable() {

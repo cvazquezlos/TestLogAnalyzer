@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {Project} from '../../model/project.model';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
+import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
@@ -37,14 +37,14 @@ export class AddProjectComponent {
     this.project.num_execs = 0;
   }
 
-  ngOnInit() {
-    this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
-      {label: 'New project', url: '/projects/add', params: []}]);
-  }
-
   cancel() {
     this.urlTxt = '';
     this.urlXml = '';
+  }
+
+  ngOnInit() {
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
+      {label: 'Add project', url: '/projects/add', params: []}])
   }
 
   save() {
