@@ -5,6 +5,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 import {DiffMatchPatchModule} from 'ng-diff-match-patch';
 import {BreadcrumbsModule} from 'ng2-breadcrumbs';
 import {CodemirrorModule} from 'ng2-codemirror';
@@ -17,7 +18,6 @@ import {ProjectComponent} from './component/project/project.component';
 import {AddExecComponent} from './component/project/add-exec/add-exec.component';
 import {ViewExecsComponent} from './component/project/view-execs/view-execs.component';
 import {ViewExecComponent} from './component/project/view-exec/view-exec.component';
-
 import {ComparisonComponent} from './component/comparison/comparison.component';
 import {DiffService} from './service/diff.service';
 import {ElasticsearchService} from './service/elasticsearch.service';
@@ -55,6 +55,7 @@ const httpInterceptorProviders: Type<any>[] = [
     CovalentMarkdownModule,
     DiffMatchPatchModule,
     HttpClientModule,
+    NgbModule.forRoot(),
     routing,
     SharedModule
   ],
