@@ -16,9 +16,9 @@ export class AppComponent {
   }
 
   toggleFullscreen() {
-    let documentVar = document as any;
-    let documentElement = document.documentElement as any;
-    let documentBody = document.body as any;
+    const documentVar = document as any;
+    const documentElement = document.documentElement as any;
+    const documentBody = document.body as any;
 
     if (documentVar.fullscreenElement || // alternative standard method
       documentVar.mozFullScreenElement || // currently working methods
@@ -34,7 +34,7 @@ export class AppComponent {
         documentVar.msExitFullscreen();
       }
     } else {
-      let element = Element as any;
+      const element = Element as any;
       if (documentElement.requestFullscreen) {
         documentElement.requestFullscreen();
       } else if (documentElement.mozRequestFullScreen) {
