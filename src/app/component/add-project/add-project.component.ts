@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
@@ -11,7 +11,7 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
   styleUrls: ['./add-project.component.css']
 })
 
-export class AddProjectComponent {
+export class AddProjectComponent implements OnInit {
 
   code: number;
   fileSelected: boolean;

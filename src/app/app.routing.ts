@@ -6,7 +6,7 @@ import {PublicComponent} from './component/public.component';
 import {ViewExecsComponent} from './component/project/view-execs/view-execs.component';
 import {ViewExecComponent} from './component/project/view-exec/view-exec.component';
 import {ViewProjectsComponent} from './component/view-projects/view-projects.component';
-import {ProjectComponent} from "./component/project/project.component";
+import {ProjectComponent} from './component/project/project.component';
 
 export const appRoutes: Routes = [
   {path: '', redirectTo: 'projects', pathMatch: 'full'},

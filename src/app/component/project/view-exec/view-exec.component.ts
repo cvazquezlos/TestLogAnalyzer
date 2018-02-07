@@ -1,5 +1,5 @@
 import {HttpClient} from '@angular/common/http';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
@@ -11,7 +11,7 @@ import {Log} from '../../../model/log.model';
   styleUrls: ['./view-exec.component.css']
 })
 
-export class ViewExecComponent {
+export class ViewExecComponent implements OnInit {
 
   logsRowData: any[] = [];
   logsData: ITdDataTableColumn[] = [

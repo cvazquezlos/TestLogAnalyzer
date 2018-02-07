@@ -1,5 +1,5 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../../model/project.model';
@@ -11,7 +11,7 @@ import {ElasticsearchService} from '../../../service/elasticsearch.service';
   styleUrls: ['./add-exec.component.css']
 })
 
-export class AddExecComponent {
+export class AddExecComponent implements OnInit {
 
   code: number;
   fileSelected: boolean;

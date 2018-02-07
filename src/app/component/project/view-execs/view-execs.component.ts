@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
@@ -11,7 +11,7 @@ import {ElasticsearchService} from '../../../service/elasticsearch.service';
   styleUrls: ['./view-execs.component.css']
 })
 
-export class ViewExecsComponent {
+export class ViewExecsComponent implements OnInit {
 
   deleteInProgress: boolean;
   execDeleting: string;
