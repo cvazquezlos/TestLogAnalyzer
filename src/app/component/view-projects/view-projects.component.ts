@@ -1,22 +1,17 @@
-import {
-  AfterViewInit,
-  Component
-} from '@angular/core';
-import {Router} from '@angular/router';
-import {
-  ITdDataTableColumn,
-  TdMediaService
-} from '@covalent/core';
-import {Project} from '../model/project.model';
-import {ElasticsearchService} from '../service/elasticsearch.service';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {ITdDataTableColumn, TdMediaService} from '@covalent/core';
+import {BreadcrumbsService} from 'ng2-breadcrumbs';
+import {Project} from '../../model/project.model';
+import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-view-projects',
+  templateUrl: './view-projects.component.html',
+  styleUrls: ['./view-projects.component.css']
 })
 
-export class HomeComponent implements AfterViewInit {
+export class ViewProjectsComponent implements OnInit {
 
   deleteInProgress: boolean;
   exec: boolean;
@@ -28,7 +23,8 @@ export class HomeComponent implements AfterViewInit {
   ];
   projectsRowData: any[] = [];
 
-  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private router: Router) {
+  constructor(private elasticsearchService: ElasticsearchService, public media: TdMediaService, private router: Router,
+              private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService) {
     this.deleteInProgress = false;
     this.exec = false;
     this.projectDeleting = '';
@@ -45,10 +41,12 @@ export class HomeComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.media.broadcast();
-    });
+  goTo(project: string) {
+    this.router.navigate(['./', project], {relativeTo: this.activatedRoute});
+  }
+
+  ngOnInit() {
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []}]);
   }
 
   reloadTable() {

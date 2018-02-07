@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
 
@@ -10,7 +11,7 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
   styleUrls: ['./add-project.component.css']
 })
 
-export class AddProjectComponent {
+export class AddProjectComponent implements OnInit {
 
   code: number;
   fileSelected: boolean;
@@ -21,7 +22,8 @@ export class AddProjectComponent {
   urlTxt: string;
   urlXml: string;
 
-  constructor(private elasticsearchService: ElasticsearchService, private http: HttpClient, private router: Router) {
+  constructor(private elasticsearchService: ElasticsearchService, private http: HttpClient, private router: Router,
+              private breadcrumbs: BreadcrumbsService) {
     this.code = 0;
     this.fileSelected = true;
     this.fileTxt = null;
@@ -38,6 +40,11 @@ export class AddProjectComponent {
   cancel() {
     this.urlTxt = '';
     this.urlXml = '';
+  }
+
+  ngOnInit() {
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
+      {label: 'Add project', url: '/projects/add', params: []}])
   }
 
   save() {

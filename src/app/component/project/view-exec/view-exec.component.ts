@@ -1,8 +1,9 @@
 import {HttpClient} from '@angular/common/http';
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
-import {Log} from '../../model/log.model';
+import {BreadcrumbsService} from 'ng2-breadcrumbs';
+import {Log} from '../../../model/log.model';
 
 @Component({
   selector: 'app-view-exec',
@@ -10,7 +11,7 @@ import {Log} from '../../model/log.model';
   styleUrls: ['./view-exec.component.css']
 })
 
-export class ViewExecComponent {
+export class ViewExecComponent implements OnInit {
 
   logsRowData: any[] = [];
   logsData: ITdDataTableColumn[] = [
@@ -24,9 +25,15 @@ export class ViewExecComponent {
   project: string;
   test: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) {
+  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient, private breadcrumbs: BreadcrumbsService) {
+  }
+
+  ngOnInit() {
     this.test = this.activatedRoute.snapshot.params['exec'];
-    this.project = this.activatedRoute.snapshot.params['project'];
+    this.project = this.activatedRoute.snapshot.parent.params['project'];
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
+      {label: this.project, url: '/projects/' + this.project, params: []},
+      {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []}]);
     this.reloadTable();
   }
 
@@ -34,7 +41,6 @@ export class ViewExecComponent {
     console.log(this.project);
     this.http.get<Log[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project).subscribe(response => {
       this.logsRowData = [];
-      console.log(response);
       for (let i = 0; i < response.length; i++) {
         this.logsRowData[i] = {
           'id': response[i].id,

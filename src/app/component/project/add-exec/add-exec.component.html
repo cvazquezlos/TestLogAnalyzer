@@ -4,7 +4,7 @@
       <span>New execution</span>
       <span flex></span>
       <button *ngIf="project.name != undefined" mat-raised-button class="iconBtn-lg" color="accent"
-              [routerLink]="['/', project.name]">
+              [routerLink]="['/projects/', project.name]">
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>

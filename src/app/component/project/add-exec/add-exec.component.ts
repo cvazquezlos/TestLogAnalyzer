@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Project} from '../../model/project.model';
-import {ElasticsearchService} from '../../service/elasticsearch.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BreadcrumbsService} from 'ng2-breadcrumbs';
+import {Project} from '../../../model/project.model';
+import {ElasticsearchService} from '../../../service/elasticsearch.service';
 
 @Component({
   selector: 'app-add-exec',
@@ -10,7 +11,7 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
   styleUrls: ['./add-exec.component.css']
 })
 
-export class AddExecComponent {
+export class AddExecComponent implements OnInit {
 
   code: number;
   fileSelected: boolean;
@@ -22,7 +23,7 @@ export class AddExecComponent {
   urlXml: string;
 
   constructor(private http: HttpClient, private router: Router, private elasticsearchService: ElasticsearchService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService) {
     this.code = 0;
     this.fileSelected = true;
     this.fileTxt = null;
@@ -30,16 +31,23 @@ export class AddExecComponent {
     this.isFile = true;
     this.urlTxt = '';
     this.urlXml = '';
-    const name = this.activatedRoute.snapshot.params['project'];
-    this.elasticsearchService.getProjectByName(name).subscribe(response => {
-        this.project = response;
-      }
-    );
   }
 
   cancel() {
     this.urlTxt = '';
     this.urlXml = '';
+  }
+
+
+  ngOnInit() {
+    const name = this.activatedRoute.snapshot.parent.params['project'];
+    this.elasticsearchService.getProjectByName(name).subscribe(response => {
+        this.project = response;
+      }
+    );
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
+      {label: name, url: '/projects/' + name, params: []},
+      {label: 'Add exec', url: '/projects/' + name + '/add', params: []}]);
   }
 
   save() {
