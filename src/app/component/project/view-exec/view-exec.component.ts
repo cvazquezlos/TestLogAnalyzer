@@ -19,7 +19,6 @@ export class ViewExecComponent implements OnInit {
     {name: 'timestamp', label: 'Timestamp', width: 250},
     {name: 'thread', label: 'Thread', width: 150},
     {name: 'level', label: 'Level', width: 100},
-    {name: 'logger', label: 'Logger'},
     {name: 'message', label: 'Message'}
   ];
   project: string;
@@ -47,7 +46,6 @@ export class ViewExecComponent implements OnInit {
           'timestamp': response[i].timestamp,
           'thread': response[i].thread,
           'level': response[i].level,
-          'logger': response[i].logger,
           'message': response[i].message
         }
       }
