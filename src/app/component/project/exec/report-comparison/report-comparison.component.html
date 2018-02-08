@@ -13,7 +13,11 @@
   <mat-card-content>
     <div *ngIf="ready">
       <div *ngFor="let class of classesL">
-        <p>{{class}}</p>
+        <p>{{class.name}}</p>
+        <div *ngFor="let method of class.methods">
+          <p>{{method}}</p>
+        </div>
+        
       </div>
     </div>
   </mat-card-content>

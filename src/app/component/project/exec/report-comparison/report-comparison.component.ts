@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {HttpClient} from '@angular/common/http';
+import {Log} from "../../../../model/log.model";
 
 @Component({
   selector: 'app-report-comparison',
@@ -11,7 +12,7 @@ import {HttpClient} from '@angular/common/http';
 
 export class ReportComparisonComponent implements OnInit {
 
-  classesL: string[];
+  classesL: any[];
   project: string;
   ready: boolean;
   test: string;
@@ -33,7 +34,15 @@ export class ReportComparisonComponent implements OnInit {
         for(let i = 0; i < response.length; i++) {
           const data = response[i].split(' ');
           if (data.length == 2) {
-            this.classesL = this.classesL.concat(data[1]);
+            const data2 = data[1].split('.');
+            this.http.get<Log[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project=' + this.project + '&test=' + this.test).subscribe(
+              response2 => {
+                this.classesL = this.classesL.concat({
+                  'name': data[1],
+                  'methods': response2
+                });
+              }
+            );
           }
         };
         this.ready = true;

@@ -26,36 +26,44 @@ public class ESLogService {
 		return repository.findAll();
 	}
 
-	public Log findOne(String id) {
-		return repository.findOne(id);
-	}
-
-	public String save(Log log) {
-		return repository.save(log).getId();
-	}
-
 	public List<Log> findByLevel(String level, int page, int size) {
 		return repository.findByLevel(level, new PageRequest(page, size)).getContent();
+	}
+	
+	public List<Log> findByLoggerOrderByIdAsc(String logger) {
+		return repository.findByLoggerOrderByIdAsc(logger);
+	}
+	
+	public List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(String logger, String project, String test) {
+		return repository.findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(logger, project, test);
 	}
 	
 	public List<Log> findByProject(String project) {
 		return repository.findByProject(project);
 	}
 	
-	public List<Log> findByTestOrderByIdAsc(String test) {
-		return repository.findByTestOrderByIdAsc(test);
-	}
-	
-	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {
-		return repository.findByTestAndProjectOrderByIdAsc(test, project);
+	public int findByProjectAndTestAndLevel(String test, String project, String level) {
+		List<Log> logs = repository.findByProjectAndTestAndLevel(project, test, level);
+		return logs.size();
 	}
 	
 	public List<Log> findByProjectAndTestAndMessageContainingIgnoreCase(String test, String project, String partialMessage) {
 		return repository.findByProjectAndTestAndMessageContainingIgnoreCase(project, test, partialMessage);
 	}
 	
-	public int findByProjectAndTestAndLevel(String test, String project, String level) {
-		List<Log> logs = repository.findByProjectAndTestAndLevel(project, test, level);
-		return logs.size();
+	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {
+		return repository.findByTestAndProjectOrderByIdAsc(test, project);
+	}
+	
+	public List<Log> findByTestOrderByIdAsc(String test) {
+		return repository.findByTestOrderByIdAsc(test);
+	}
+
+	public Log findOne(String id) {
+		return repository.findOne(id);
+	}
+
+	public String save(Log log) {
+		return repository.save(log).getId();
 	}
 }
