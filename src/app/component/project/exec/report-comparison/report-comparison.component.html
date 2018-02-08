@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<mat-card>
+  <mat-card-title>
+    <div layout="row">
+      <span *ngIf="test != undefined">Reporting of execution number {{test}}</span>
+      <span flex></span>
+      <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
+              [routerLink]="['/projects/', project, test]">
+        <mat-icon>arrow_back</mat-icon>
+      </button>&nbsp;
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+</mat-card>

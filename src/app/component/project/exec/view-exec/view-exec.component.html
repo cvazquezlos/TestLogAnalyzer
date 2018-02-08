@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-title>
     <div layout="row">
-      <span *ngIf="test != undefined">{{test}}</span>
+      <span *ngIf="test != undefined">Execution number {{test}}</span>
       <span flex></span>
       <button class="iconBtn-lg  bgc-light-blue-100"
               mat-raised-button
@@ -12,7 +12,10 @@
               [routerLink]="['/projects/', project]">
         <mat-icon>arrow_back</mat-icon>
       </button>&nbsp;
-      <button mat-raised-button class="iconBtn-lg" color="accent">
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="goTo()">
+        <mat-icon>description</mat-icon>
+      </button>&nbsp;
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="goTo()">
         <mat-icon>description</mat-icon>
       </button>
     </div>

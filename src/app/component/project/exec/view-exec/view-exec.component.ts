@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
@@ -24,7 +24,12 @@ export class ViewExecComponent implements OnInit {
   project: string;
   test: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient, private breadcrumbs: BreadcrumbsService) {
+  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient, private breadcrumbs: BreadcrumbsService,
+              private router: Router) {
+  }
+
+  goTo() {
+    this.router.navigate(['./', 'report'], {relativeTo: this.activatedRoute});
   }
 
   ngOnInit() {
