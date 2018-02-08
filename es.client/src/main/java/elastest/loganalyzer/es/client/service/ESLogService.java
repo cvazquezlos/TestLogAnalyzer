@@ -50,14 +50,8 @@ public class ESLogService {
 		return repository.findByTestAndProjectOrderByIdAsc(test, project);
 	}
 	
-	public Log findByProjectAndTestAndMessageContainingIgnoreCase(String test, String project) {
-		List<Log> logs = repository.findByProjectAndTestAndMessageContainingIgnoreCase(project, test, "BUILD");
-		for (int i = 0; i < logs.size(); i++) {
-			if (logs.get(i).getMessage().contains("BUILD ")) {
-				return logs.get(i);
-			}
-		}
-		return new Log();
+	public List<Log> findByProjectAndTestAndMessageContainingIgnoreCase(String test, String project, String partialMessage) {
+		return repository.findByProjectAndTestAndMessageContainingIgnoreCase(project, test, partialMessage);
 	}
 	
 	public int findByProjectAndTestAndLevel(String test, String project, String level) {

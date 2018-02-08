@@ -10,4 +10,11 @@
     </div>
   </mat-card-title>
   <mat-divider></mat-divider>
+  <mat-card-content>
+    <div *ngIf="ready">
+      <div *ngFor="let class of classesL">
+        <p>{{class}}</p>
+      </div>
+    </div>
+  </mat-card-content>
 </mat-card>

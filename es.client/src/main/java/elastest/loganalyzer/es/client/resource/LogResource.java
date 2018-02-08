@@ -29,22 +29,22 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-	public Log getLog(@PathVariable String id) {
+	public Log getById(@PathVariable String id) {
 		Log log = esLogService.findOne(id);
 		return log;
 	}
 
 	@RequestMapping(value = "/level/{level}", method = RequestMethod.GET)
-	public ResponseEntity<List<Log>> getLogByLevel(@PathVariable String level,
+	public ResponseEntity<List<Log>> getByLevel(@PathVariable String level,
 			@RequestParam(name = "page", defaultValue = "0") int page,
 			@RequestParam(name = "size", defaultValue = "10") int size) {
 		List<Log> log = esLogService.findByLevel(level, page, size);
 
 		return new ResponseEntity<>(log, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
-	public List<Execution> getLogByProject(@PathVariable String project) {
+	public List<Execution> getByProject(@PathVariable String project) {
 		Project target = esProjectService.findByName(project);
 		List<Execution> execs = new ArrayList<Execution>();
 		for (int i = 0; i < target.getNum_execs(); i++) {
@@ -59,11 +59,16 @@ public class LogResource {
 			execution.setInfo(esLogService.findByProjectAndTestAndLevel(test, project, "INFO"));
 			execution.setWarning(esLogService.findByProjectAndTestAndLevel(test, project, "WARNING"));
 			execution.setError(esLogService.findByProjectAndTestAndLevel(test, project, "ERROR"));
-			Log status = esLogService.findByProjectAndTestAndMessageContainingIgnoreCase(test, project);
-			if (status.getMessage() == "-") {
-				execution.setStatus("UNKNOWN");
-			} else {
-				execution.setStatus(status.getMessage());
+			logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCase(test, project, "BUILD");
+			for (int j = 0; j < logs.size(); j++) {
+				if (logs.get(j).getMessage().contains("BUILD ")) {
+					if (logs.get(j).getMessage().length() < 2) {
+						execution.setStatus("UNKNOWN");
+					} else {
+						execution.setStatus(logs.get(j).getMessage());
+					}
+					break;
+				}
 			}
 			execs.add(execution);
 		}
@@ -71,33 +76,36 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
-	public List<Log> getLogByTestno(@PathVariable int test, @RequestParam(value = "project", required = false) String project) {
+	public List<?> getByTest(@PathVariable int test,
+			@RequestParam(value = "project", required = true) String project,
+			@RequestParam(value = "classes", required = true) boolean classes) {
 		String testNo = String.format("%02d", test);
-		if (project == null) {
-			return esLogService.findByTestOrderByIdAsc(testNo);
+		if (classes) {
+			List<Log> logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCase(testNo, project, "Running");
+			List<String> classL = new ArrayList<String>();
+			for(Log log: logs) {
+				classL.add(log.getMessage());
+			}
+			return classL;
 		} else {
-			return esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
+			if (project == null) {
+				return esLogService.findByTestOrderByIdAsc(testNo);
+			} else {
+				return esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
+			}
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> addLocation(@RequestBody Log log) {
+	public ResponseEntity<?> post(@RequestBody Log log) {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(esLogService.save(log))
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	private Log findLog(List<Log> logs) {
-		for (int i = 0; i < logs.size(); i++) {
-			if (logs.get(i).getTimestamp().length() == 23) {
-				return logs.get(i);
-			}
-		}
-		return new Log();
-	}
 
 	@RequestMapping(value = "/remove/test/{test}", method = RequestMethod.DELETE)
-	public String deleteByTestAndProject(@PathVariable int test, @RequestParam(value = "project", required = true) String project) {
+	public String deleteByTestAndProject(@PathVariable int test,
+			@RequestParam(value = "project", required = true) String project) {
 		String testNo = String.format("%02d", test);
 		List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
 		Project target = esProjectService.findByName(project);
@@ -107,5 +115,14 @@ public class LogResource {
 		}
 		esProjectService.save(target);
 		return "200";
+	}
+
+	private Log findLog(List<Log> logs) {
+		for (int i = 0; i < logs.size(); i++) {
+			if (logs.get(i).getTimestamp().length() == 23) {
+				return logs.get(i);
+			}
+		}
+		return new Log();
 	}
 }

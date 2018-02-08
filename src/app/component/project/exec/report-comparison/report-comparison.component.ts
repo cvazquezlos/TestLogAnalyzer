@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-report-comparison',
@@ -10,10 +11,12 @@ import {BreadcrumbsService} from 'ng2-breadcrumbs';
 
 export class ReportComparisonComponent implements OnInit {
 
-  test: string;
+  classesL: string[];
   project: string;
+  ready: boolean;
+  test: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService) {
+  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient) {
   }
 
   ngOnInit() {
@@ -23,6 +26,18 @@ export class ReportComparisonComponent implements OnInit {
       {label: this.project, url: '/projects/' + this.project, params: []},
       {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []},
       {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
+    this.ready = false;
+    this.http.get<string[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project + '&classes=true').subscribe(
+      response => {
+        this.classesL = [];
+        for(let i = 0; i < response.length; i++) {
+          const data = response[i].split(' ');
+          if (data.length == 2) {
+            this.classesL = this.classesL.concat(data[1]);
+          }
+        };
+        this.ready = true;
+      });
   }
 
 }
