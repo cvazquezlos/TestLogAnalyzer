@@ -45,16 +45,20 @@ public class LogResource {
 	
 	@RequestMapping(value = "/logger/{logger}", method = RequestMethod.GET)
 	public List<?> getByLogger(@PathVariable String logger, @RequestParam(name = "project", required = true) String project,
-			@RequestParam(name = "test", required = true) int test) {
+			@RequestParam(name = "test", required = true) int test, @RequestParam(name = "method", required = false) String method) {
 		String testNo = String.format("%02d", test);
-		List<Log> logs = esLogService.findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(logger, project, testNo);
-		List<String> methods = new ArrayList<String>();
-		for(int i = 0; i < logs.size(); i++) {
-			if (!methods.contains(logs.get(i).getMethod())) {
-				methods.add(logs.get(i).getMethod());
+		if (method == null) {
+			List<Log> logs = esLogService.findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(logger, project, testNo);
+			List<String> methods = new ArrayList<String>();
+			for(int i = 0; i < logs.size(); i++) {
+				if (!methods.contains(logs.get(i).getMethod())) {
+					methods.add(logs.get(i).getMethod());
+				}
 			}
+			return methods;
+		} else {
+			return esLogService.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project, testNo, method);
 		}
-		return methods;
 	}
 
 	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)

@@ -15,9 +15,11 @@
       <div *ngFor="let class of classesL">
         <p>{{class.name}}</p>
         <div *ngFor="let method of class.methods">
-          <p>{{method}}</p>
+          <p>{{method.name}}</p>
+          <div *ngFor="let log of method.logs">
+            <p>{{log}}</p>
+          </div>
         </div>
-        
       </div>
     </div>
   </mat-card-content>

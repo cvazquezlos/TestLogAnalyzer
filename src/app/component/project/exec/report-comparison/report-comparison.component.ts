@@ -28,18 +28,38 @@ export class ReportComparisonComponent implements OnInit {
       {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []},
       {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
     this.ready = false;
+    // Return the name of the classes of the execution.
     this.http.get<string[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project + '&classes=true').subscribe(
       response => {
         this.classesL = [];
-        for(let i = 0; i < response.length; i++) {
+        for(let i = 0; i < response.length; i++) { // Iterates over all classes of the execution.
           const data = response[i].split(' ');
           if (data.length == 2) {
             const data2 = data[1].split('.');
-            this.http.get<Log[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project=' + this.project + '&test=' + this.test).subscribe(
+            // Return the methods of each class.
+            this.http.get<String[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project=' + this.project + '&test=' + this.test).subscribe(
               response2 => {
+                let methods = [];
+                console.log('Called 2');
+                for (let j = 0; j < response2.length; j++) { // Iterates over all methods of the class.
+                  console.log('Executing ' + j + ' iteration.');
+                  this.http.get<Log[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project='
+                    + this.project + '&test=' + this.test + '&method=' + response2[j].replace('(', '').replace(')','')).subscribe(
+                    response3 => {
+                      const name = response2[j];
+                      const logs = response3;
+                      const method = {
+                        'name': name,
+                        'logs': logs
+                      };
+                      methods = methods.concat(method);
+                    }
+                  );
+                }
+                console.log('Called 3');
                 this.classesL = this.classesL.concat({
                   'name': data[1],
-                  'methods': response2
+                  'methods': methods
                 });
               }
             );

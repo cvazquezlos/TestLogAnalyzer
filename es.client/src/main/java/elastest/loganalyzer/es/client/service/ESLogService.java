@@ -66,4 +66,13 @@ public class ESLogService {
 	public String save(Log log) {
 		return repository.save(log).getId();
 	}
+
+	public List<Log> findByLoggerAndProjectAndTestAndMethodOrderByIdAsc(String logger, String project, String testNo, String method) {
+		return repository.findByLoggerAndProjectAndTestAndMethodOrderByIdAsc(logger, project, testNo, method);
+	}
+
+	public List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(String logger,
+			String project, String testNo, String method) {
+		return repository.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project, testNo, method);
+	}
 }
