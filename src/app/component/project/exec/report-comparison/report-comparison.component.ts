@@ -41,7 +41,7 @@ export class ReportComparisonComponent implements OnInit {
           if (data.length == 2) {
             const data2 = data[1].split('.');
             // Return the methods of each class.
-            this.http.get<String[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project=' + this.project + '&test=' + this.test).subscribe(
+            this.http.get<string[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project=' + this.project + '&test=' + this.test).subscribe(
               response2 => {
                 this.currentMethods = [];
                 for (let j = 0; j < response2.length; j++) { // Iterates over all methods of the class.
