@@ -13,6 +13,9 @@ import {Log} from "../../../../model/log.model";
 export class ReportComparisonComponent implements OnInit {
 
   classesL: any[];
+  currentMethods: any[];
+  currentName: string;
+  currentLogs: Log[];
   project: string;
   ready: boolean;
   test: string;
@@ -39,28 +42,27 @@ export class ReportComparisonComponent implements OnInit {
             // Return the methods of each class.
             this.http.get<String[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project=' + this.project + '&test=' + this.test).subscribe(
               response2 => {
-                let methods = [];
-                console.log('Called 2');
+                this.currentMethods = [];
                 for (let j = 0; j < response2.length; j++) { // Iterates over all methods of the class.
-                  console.log('Executing ' + j + ' iteration.');
                   this.http.get<Log[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project='
                     + this.project + '&test=' + this.test + '&method=' + response2[j].replace('(', '').replace(')','')).subscribe(
                     response3 => {
-                      const name = response2[j];
-                      const logs = response3;
+                      this.currentName = response2[j];
+                      this.currentLogs = response3;
                       const method = {
-                        'name': name,
-                        'logs': logs
+                        'name': this.currentName,
+                        'logs': this.currentLogs
                       };
-                      methods = methods.concat(method);
+                      this.currentMethods = this.currentMethods.concat(method);
+                      console.log(this.currentMethods);
                     }
                   );
                 }
-                console.log('Called 3');
                 this.classesL = this.classesL.concat({
                   'name': data[1],
-                  'methods': methods
+                  'methods': this.currentMethods
                 });
+                console.log(this.classesL);
               }
             );
           }

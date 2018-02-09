@@ -11,16 +11,14 @@
   </mat-card-title>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <div *ngIf="ready">
-      <div *ngFor="let class of classesL">
-        <p>{{class.name}}</p>
-        <div *ngFor="let method of class.methods">
-          <p>{{method.name}}</p>
-          <div *ngFor="let log of method.logs">
-            <p>{{log}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ng-template ngFor let-item [ngForOf]="classesL" >
+      <h1>{{item.name}}</h1>
+      <ng-template ngFor let-itemm [ngForOf]="item.methods">
+        <h2>{{itemm.name}}</h2>
+        <ng-template ngFor let-itemmm [ngForOf]="itemm.logs">
+          <h3>{{itemmm.id}}</h3>
+        </ng-template>
+      </ng-template>
+    </ng-template>
   </mat-card-content>
 </mat-card>
