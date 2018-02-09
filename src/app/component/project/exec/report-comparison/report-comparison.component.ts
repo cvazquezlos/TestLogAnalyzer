@@ -13,6 +13,7 @@ import {Log} from "../../../../model/log.model";
 export class ReportComparisonComponent implements OnInit {
 
   classesL: any[];
+  currentMethod: any;
   currentMethods: any[];
   currentName: string;
   currentLogs: Log[];
@@ -47,22 +48,26 @@ export class ReportComparisonComponent implements OnInit {
                   this.http.get<Log[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project='
                     + this.project + '&test=' + this.test + '&method=' + response2[j].replace('(', '').replace(')','')).subscribe(
                     response3 => {
+                      this.currentLogs = [];
                       this.currentName = response2[j];
-                      this.currentLogs = response3;
-                      const method = {
+                      for(let k = 0; k < response3.length; k++) {
+                        console.log('iteration ' + i);
+                        this.currentLogs[k] = response3[k];
+                      }
+                      this.currentMethod = {
                         'name': this.currentName,
                         'logs': this.currentLogs
                       };
-                      this.currentMethods = this.currentMethods.concat(method);
-                      console.log(this.currentMethods);
+                      this.currentMethods = this.currentMethods.concat(this.currentMethod);
+                      if (j === (response2.length - 1)) {
+                        this.classesL = this.classesL.concat({
+                          'name': data[1],
+                          'methods': this.currentMethods
+                        });
+                      }
                     }
                   );
                 }
-                this.classesL = this.classesL.concat({
-                  'name': data[1],
-                  'methods': this.currentMethods
-                });
-                console.log(this.classesL);
               }
             );
           }
