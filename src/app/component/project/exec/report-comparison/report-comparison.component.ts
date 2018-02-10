@@ -35,10 +35,17 @@ export class ReportComparisonComponent implements OnInit {
         const logger = loggers[i].split(' ')[1];
         const partialLogger = logger.split('.')[logger.split('.').length - 1];
         const methods = await this.getMethodsByPartialLogger(partialLogger);
-        const logs = [];
+        const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
-          logs.push(await this.getLogs(partialLogger, methods[j].replace('(', '').replace(')', '')));
+          methodsData.push({
+            'name': methods[j],
+            'logs': await this.getLogs(partialLogger, methods[j].replace('(', '').replace(')', ''))
+          });
         }
+        this.classesL.push({
+          'name': loggers[i],
+          'methods': methodsData
+        });
       }
     }
     this.ready = true;
