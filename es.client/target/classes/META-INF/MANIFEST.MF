@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: Elasticsearch client
 Implementation-Version: 2.0.0
-Built-By: cvazquel
+Built-By: Usuario
 Implementation-Vendor-Id: elastest.loganalyzer
-Build-Jdk: 1.8.0_151
+Build-Jdk: 1.8.0_161
 Implementation-URL: http://elastest.io
 Created-By: Maven Integration for Eclipse
 Implementation-Vendor: Pivotal Software, Inc.

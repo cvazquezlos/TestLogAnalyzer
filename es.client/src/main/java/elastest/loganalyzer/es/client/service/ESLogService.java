@@ -26,6 +26,39 @@ public class ESLogService {
 		return repository.findAll();
 	}
 
+	public List<Log> findByLevel(String level, int page, int size) {
+		return repository.findByLevel(level, new PageRequest(page, size)).getContent();
+	}
+	
+	public List<Log> findByLoggerOrderByIdAsc(String logger) {
+		return repository.findByLoggerOrderByIdAsc(logger);
+	}
+	
+	public List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(String logger, String project, String test) {
+		return repository.findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(logger, project, test);
+	}
+	
+	public List<Log> findByProject(String project) {
+		return repository.findByProject(project);
+	}
+	
+	public int findByProjectAndTestAndLevel(String test, String project, String level) {
+		List<Log> logs = repository.findByProjectAndTestAndLevel(project, test, level);
+		return logs.size();
+	}
+	
+	public List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String test, String project, String partialMessage) {
+		return repository.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(project, test, partialMessage);
+	}
+	
+	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {
+		return repository.findByTestAndProjectOrderByIdAsc(test, project);
+	}
+	
+	public List<Log> findByTestOrderByIdAsc(String test) {
+		return repository.findByTestOrderByIdAsc(test);
+	}
+
 	public Log findOne(String id) {
 		return repository.findOne(id);
 	}
@@ -34,34 +67,12 @@ public class ESLogService {
 		return repository.save(log).getId();
 	}
 
-	public List<Log> findByLevel(String level, int page, int size) {
-		return repository.findByLevel(level, new PageRequest(page, size)).getContent();
+	public List<Log> findByLoggerAndProjectAndTestAndMethodOrderByIdAsc(String logger, String project, String testNo, String method) {
+		return repository.findByLoggerAndProjectAndTestAndMethodOrderByIdAsc(logger, project, testNo, method);
 	}
-	
-	public List<Log> findByProject(String project) {
-		return repository.findByProject(project);
-	}
-	
-	public List<Log> findByTestOrderByIdAsc(String test) {
-		return repository.findByTestOrderByIdAsc(test);
-	}
-	
-	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {
-		return repository.findByTestAndProjectOrderByIdAsc(test, project);
-	}
-	
-	public Log findByProjectAndTestAndMessageContainingIgnoreCase(String test, String project) {
-		List<Log> logs = repository.findByProjectAndTestAndMessageContainingIgnoreCase(project, test, "BUILD");
-		for (int i = 0; i < logs.size(); i++) {
-			if (logs.get(i).getMessage().contains("BUILD ")) {
-				return logs.get(i);
-			}
-		}
-		return new Log();
-	}
-	
-	public int findByProjectAndTestAndLevel(String test, String project, String level) {
-		List<Log> logs = repository.findByProjectAndTestAndLevel(project, test, level);
-		return logs.size();
+
+	public List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(String logger,
+			String project, String testNo, String method) {
+		return repository.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project, testNo, method);
 	}
 }

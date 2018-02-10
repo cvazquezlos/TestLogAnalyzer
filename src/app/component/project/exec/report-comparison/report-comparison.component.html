@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-title>
+    <div layout="row">
+      <span *ngIf="test != undefined">Reporting of execution number {{test}}</span>
+      <span flex></span>
+      <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
+              [routerLink]="['/projects/', project, test]">
+        <mat-icon>arrow_back</mat-icon>
+      </button>&nbsp;
+    </div>
+  </mat-card-title>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <ng-template ngFor let-item [ngForOf]="classesL" >
+      <h3>{{item.name}}</h3>
+      <ng-template ngFor let-itemm [ngForOf]="item.methods">
+        <h5>{{itemm.name}}</h5>
+        <table>
+          <tbody>
+          <ng-template ngFor let-itemmm let-i="index" [ngForOf]="itemm.logs">
+            <tr>
+              <td>{{i}}</td>
+              <td>{{itemmm.timestamp}} [{{itemmm.thread}}] {{itemmm.level}} {{itemmm.logger}} - {{itemmm.message}}</td>
+            </tr>
+          </ng-template>
+          </tbody>
+        </table>
+      </ng-template>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

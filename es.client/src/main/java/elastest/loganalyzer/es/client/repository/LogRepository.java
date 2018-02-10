@@ -14,13 +14,23 @@ public interface LogRepository extends ElasticsearchCrudRepository<Log, String> 
 
 	Page<Log> findByLevel(String level, Pageable pageable);
 
+	List<Log> findByLoggerOrderByIdAsc(String logger);
+
+	List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(String logger, String project, String test);
+
 	List<Log> findByProject(String project);
+
+	List<Log> findByProjectAndTestAndLevel(String project, String test, String level);
+
+	List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String project, String test, String message);
+
+	List<Log> findByTestAndProjectOrderByIdAsc(String test, String project);
 
 	List<Log> findByTestOrderByIdAsc(String test);
 
-	List<Log> findByTestAndProjectOrderByIdAsc(String test, String project);
-	
-	List<Log> findByProjectAndTestAndMessageContainingIgnoreCase(String project, String test, String message);
-	
-	List<Log> findByProjectAndTestAndLevel(String project, String test, String level);
+	List<Log> findByLoggerAndProjectAndTestAndMethodOrderByIdAsc(String logger, String project, String testNo,
+			String method);
+
+	List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(String logger, String project,
+			String testNo, String method);
 }
