@@ -50,6 +50,10 @@ public class ESLogService {
 	public List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String test, String project, String partialMessage) {
 		return repository.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(project, test, partialMessage);
 	}
+
+	public List<Log> findByTestAndProjectAndThreadOrderByIdAsc(String testNo, String project, String thread) {
+		return repository.findByTestAndProjectAndThreadOrderByIdAsc(testNo, project, thread);
+	}
 	
 	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {
 		return repository.findByTestAndProjectOrderByIdAsc(test, project);

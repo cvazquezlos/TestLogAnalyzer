@@ -42,23 +42,26 @@ public class LogResource {
 
 		return new ResponseEntity<>(log, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/logger/{logger}", method = RequestMethod.GET)
-	public List<?> getByLogger(@PathVariable String logger, @RequestParam(name = "project", required = true) String project,
-			@RequestParam(name = "test", required = true) int test, @RequestParam(name = "method", required = false) String method) {
+	public List<?> getByLogger(@PathVariable String logger,
+			@RequestParam(name = "project", required = true) String project,
+			@RequestParam(name = "test", required = true) int test,
+			@RequestParam(name = "method", required = false) String method) {
 		String testNo = String.format("%02d", test);
 		if (method == null) {
-			List<Log> logs = esLogService.findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(logger, project, testNo);
+			List<Log> logs = esLogService.findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(logger, project,
+					testNo);
 			List<String> methods = new ArrayList<String>();
-			for(int i = 0; i < logs.size(); i++) {
+			for (int i = 0; i < logs.size(); i++) {
 				if (!methods.contains(logs.get(i).getMethod())) {
 					methods.add(logs.get(i).getMethod());
 				}
 			}
-			System.out.println(methods);
 			return methods;
 		} else {
-			return esLogService.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project, testNo, method);
+			return esLogService.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project,
+					testNo, method);
 		}
 	}
 
@@ -95,14 +98,15 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
-	public List<?> getByTest(@PathVariable int test,
-			@RequestParam(value = "project", required = true) String project,
-			@RequestParam(value = "classes", required = true) boolean classes) {
+	public List<?> getByTest(@PathVariable int test, @RequestParam(value = "project", required = true) String project,
+			@RequestParam(value = "classes", required = true) boolean classes, 
+			@RequestParam(value = "maven", required = false) boolean maven) {
 		String testNo = String.format("%02d", test);
 		if (classes) {
-			List<Log> logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(testNo, project, "Running");
+			List<Log> logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(testNo,
+					project, "Running");
 			List<String> classL = new ArrayList<String>();
-			for(Log log: logs) {
+			for (Log log : logs) {
 				classL.add(log.getMessage());
 			}
 			return classL;
@@ -110,7 +114,11 @@ public class LogResource {
 			if (project == null) {
 				return esLogService.findByTestOrderByIdAsc(testNo);
 			} else {
-				return esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
+				if (!maven) {
+					return esLogService.findByTestAndProjectAndThreadOrderByIdAsc(testNo, project, "main");
+				} else {
+					return esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
+				}
 			}
 		}
 	}

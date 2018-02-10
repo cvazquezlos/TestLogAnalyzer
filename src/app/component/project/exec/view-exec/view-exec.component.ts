@@ -21,6 +21,7 @@ export class ViewExecComponent implements OnInit {
     {name: 'level', label: 'Level', width: 100},
     {name: 'message', label: 'Message'}
   ];
+  mavenMessages = true;
   project: string;
   test: string;
 
@@ -30,6 +31,11 @@ export class ViewExecComponent implements OnInit {
 
   goTo() {
     this.router.navigate(['./', 'report'], {relativeTo: this.activatedRoute});
+  }
+
+  maven() {
+    this.mavenMessages = !this.mavenMessages;
+    this.reloadTable();
   }
 
   ngOnInit() {
@@ -42,8 +48,8 @@ export class ViewExecComponent implements OnInit {
   }
 
   reloadTable() {
-    this.http.get<Log[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project
-      + '&classes=false').subscribe(response => {
+    this.http.get<Log[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project + '&classes=' +
+      'false&maven=' + this.mavenMessages).subscribe(response => {
       this.logsRowData = [];
       for (let i = 0; i < response.length; i++) {
         this.logsRowData[i] = {
