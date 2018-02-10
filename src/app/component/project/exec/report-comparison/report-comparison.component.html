@@ -12,12 +12,19 @@
   <mat-divider></mat-divider>
   <mat-card-content>
     <ng-template ngFor let-item [ngForOf]="classesL" >
-      <p>{{item.name}}</p>
+      <h3>{{item.name}}</h3>
       <ng-template ngFor let-itemm [ngForOf]="item.methods">
-        <p>{{itemm.name}}</p>
-        <ng-template ngFor let-itemmm [ngForOf]="itemm.logs">
-          <p>{{itemmm}}</p>
-        </ng-template>
+        <h5>{{itemm.name}}</h5>
+        <table>
+          <tbody>
+          <ng-template ngFor let-itemmm let-i="index" [ngForOf]="itemm.logs">
+            <tr>
+              <td>{{i}}</td>
+              <td>{{itemmm.timestamp}} [{{itemmm.thread}}] {{itemmm.level}} {{itemmm.logger}} - {{itemmm.message}}</td>
+            </tr>
+          </ng-template>
+          </tbody>
+        </table>
       </ng-template>
     </ng-template>
   </mat-card-content>
