@@ -42,7 +42,8 @@ export class ViewExecComponent implements OnInit {
   }
 
   reloadTable() {
-    this.http.get<Log[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project + '&classes=false').subscribe(response => {
+    this.http.get<Log[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project
+      + '&classes=false').subscribe(response => {
       this.logsRowData = [];
       for (let i = 0; i < response.length; i++) {
         this.logsRowData[i] = {
