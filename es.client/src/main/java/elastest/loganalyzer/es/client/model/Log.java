@@ -22,6 +22,7 @@ public class Log {
 
 	public Log() {
 		this.message = "-";
+		this.method = "-";
 	}
 
 	public Log(String id, String project, String test, String log) {

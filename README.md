@@ -105,6 +105,8 @@ Ensure you have Elasticsearch installed and an instance of it running.
 38. https://angular.io/ - Angular 4 and 5 API.
 39. https://github.com/bill-long/angular-rich-text-diff - Google Diff-Match-Patch.
 40. https://www.w3schools.com/angular/ - AngularJS modules.
+41. http://www.damirscorner.com/ - Angular await and async requests.
+42. https://medium.com/@alecwazzy - Angular Promises for async requests.
 
 ## Involved technologies
 Element           | TestLogAnalyzer needs it because...                    | Official site
