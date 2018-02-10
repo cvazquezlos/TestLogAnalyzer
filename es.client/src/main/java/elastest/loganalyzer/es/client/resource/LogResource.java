@@ -55,6 +55,7 @@ public class LogResource {
 					methods.add(logs.get(i).getMethod());
 				}
 			}
+			System.out.println(methods);
 			return methods;
 		} else {
 			return esLogService.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project, testNo, method);
@@ -77,7 +78,7 @@ public class LogResource {
 			execution.setInfo(esLogService.findByProjectAndTestAndLevel(test, project, "INFO"));
 			execution.setWarning(esLogService.findByProjectAndTestAndLevel(test, project, "WARNING"));
 			execution.setError(esLogService.findByProjectAndTestAndLevel(test, project, "ERROR"));
-			logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCase(test, project, "BUILD");
+			logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(test, project, "BUILD");
 			for (int j = 0; j < logs.size(); j++) {
 				if (logs.get(j).getMessage().contains("BUILD ")) {
 					if (logs.get(j).getMessage().length() < 2) {
@@ -99,7 +100,7 @@ public class LogResource {
 			@RequestParam(value = "classes", required = true) boolean classes) {
 		String testNo = String.format("%02d", test);
 		if (classes) {
-			List<Log> logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCase(testNo, project, "Running");
+			List<Log> logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(testNo, project, "Running");
 			List<String> classL = new ArrayList<String>();
 			for(Log log: logs) {
 				classL.add(log.getMessage());

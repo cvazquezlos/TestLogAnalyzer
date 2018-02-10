@@ -47,8 +47,8 @@ public class ESLogService {
 		return logs.size();
 	}
 	
-	public List<Log> findByProjectAndTestAndMessageContainingIgnoreCase(String test, String project, String partialMessage) {
-		return repository.findByProjectAndTestAndMessageContainingIgnoreCase(project, test, partialMessage);
+	public List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String test, String project, String partialMessage) {
+		return repository.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(project, test, partialMessage);
 	}
 	
 	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {

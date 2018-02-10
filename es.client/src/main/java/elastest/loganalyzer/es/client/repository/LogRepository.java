@@ -22,7 +22,7 @@ public interface LogRepository extends ElasticsearchCrudRepository<Log, String> 
 
 	List<Log> findByProjectAndTestAndLevel(String project, String test, String level);
 
-	List<Log> findByProjectAndTestAndMessageContainingIgnoreCase(String project, String test, String message);
+	List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String project, String test, String message);
 
 	List<Log> findByTestAndProjectOrderByIdAsc(String test, String project);
 
