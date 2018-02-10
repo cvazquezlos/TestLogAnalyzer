@@ -28,17 +28,17 @@ export class ReportComparisonComponent implements OnInit {
       {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []},
       {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
     this.ready = false;
+    this.classesL = [];
     const loggers = await this.getLoggers();
     for (let i = 0; i < loggers.length; i++) {
       if (loggers[i].split(' ').length === 2) {
         const logger = loggers[i].split(' ')[1];
         const partialLogger = logger.split('.')[logger.split('.').length - 1];
         const methods = await this.getMethodsByPartialLogger(partialLogger);
-        let logs = [];
+        const logs = [];
         for (let j = 0; j < methods.length; j++) {
           logs.push(await this.getLogs(partialLogger, methods[j].replace('(', '').replace(')', '')));
         }
-        console.log(logs);
       }
     }
     this.ready = true;
@@ -46,7 +46,7 @@ export class ReportComparisonComponent implements OnInit {
 
   private async getLoggers() {
     try {
-      let response = await this.http.get<string[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project
+      const response = await this.http.get<string[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project
         + '&classes=true').toPromise();
       return response;
     } catch (error) {
@@ -56,7 +56,7 @@ export class ReportComparisonComponent implements OnInit {
 
   private async getLogs(partialLogger: string, method: string) {
     try {
-      let response = await this.http.get<string[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
+      const response = await this.http.get<string[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
         + '&test=' + this.test + '&method=' + method).toPromise();
       return response;
     } catch (error) {
@@ -66,7 +66,7 @@ export class ReportComparisonComponent implements OnInit {
 
   private async getMethodsByPartialLogger(partialLogger: string) {
     try {
-      let response = await this.http.get<string[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
+      const response = await this.http.get<string[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
         + '&test=' + this.test).toPromise();
       return response;
     } catch (error) {
