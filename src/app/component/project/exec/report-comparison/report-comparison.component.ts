@@ -48,7 +48,7 @@ export class ReportComparisonComponent implements OnInit {
                 for (let j = 0; j < response2.length; j++) { // Iterates over all methods of the class.
                   this.http.get<Log[]>('http://localhost:8443/logs/logger/' + data2[data2.length - 1] + '?project='
                     + this.project + '&test=' + this.test + '&method=' + response2[j].replace('(', '')
-                      .replace(')','')).subscribe(
+                      .replace(')', '')).subscribe(
                     response3 => {
                       this.currentLogs = [];
                       this.currentName = response2[j];
