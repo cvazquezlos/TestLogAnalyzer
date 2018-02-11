@@ -23,7 +23,7 @@ export class ReportComparisonComponent implements OnInit {
   classesL: any[];
   comparatorText: string;
   comparedText: string;
-  execSelected: number;
+  execSelected = 3;
   mode: number;
   project: string;
   ready: boolean;
@@ -109,8 +109,14 @@ export class ReportComparisonComponent implements OnInit {
 
 export class ComparisonSettingsComponent {
 
-  constructor(public dialogRef: MatDialogRef<ComparisonSettingsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  execSelected: number;
+  mode: number;
 
+  constructor(public dialogRef: MatDialogRef<ComparisonSettingsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  onNoClick() {
+    this.dialogRef.close();
   }
 
 }
