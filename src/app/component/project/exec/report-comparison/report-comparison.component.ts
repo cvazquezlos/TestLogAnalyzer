@@ -1,8 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit
+} from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef
+} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {HttpClient} from '@angular/common/http';
-import {Log} from '../../../../model/log.model';
 
 @Component({
   selector: 'app-report-comparison',
@@ -13,11 +21,16 @@ import {Log} from '../../../../model/log.model';
 export class ReportComparisonComponent implements OnInit {
 
   classesL: any[];
+  comparatorText: string;
+  comparedText: string;
+  execSelected: number;
+  mode: number;
   project: string;
   ready: boolean;
   test: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient) {
+  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient,
+              private dialog: MatDialog) {
   }
 
   async ngOnInit() {
@@ -51,6 +64,12 @@ export class ReportComparisonComponent implements OnInit {
     this.ready = true;
   }
 
+  openComparisonDialog() {
+    const dialogRef = this.dialog.open(ComparisonSettingsComponent, {
+      data: {exec: this.execSelected, mode: this.mode}
+    });
+  }
+
   private async getLoggers() {
     try {
       const response = await this.http.get<string[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project
@@ -79,6 +98,19 @@ export class ReportComparisonComponent implements OnInit {
     } catch (error) {
       console.log(error);
     }
+  }
+
+}
+
+@Component({
+  selector: 'app-report-comparison-settings',
+  templateUrl: './comparison-settings/comparison-settings.component.html'
+})
+
+export class ComparisonSettingsComponent {
+
+  constructor(public dialogRef: MatDialogRef<ComparisonSettingsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+
   }
 
 }

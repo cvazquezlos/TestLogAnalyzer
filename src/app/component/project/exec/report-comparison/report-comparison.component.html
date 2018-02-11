@@ -7,6 +7,9 @@
               [routerLink]="['/projects/', project, test]">
         <mat-icon>arrow_back</mat-icon>
       </button>&nbsp;
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="openComparisonDialog()">
+        <mat-icon>equalizer</mat-icon>
+      </button>&nbsp;
     </div>
   </mat-card-title>
   <mat-divider></mat-divider>
@@ -15,14 +18,12 @@
       <h3>{{item.name}}</h3>
       <ng-template ngFor let-itemm [ngForOf]="item.methods">
         <h5>{{itemm.name}}</h5>
-        <table>
+        <table class="diff-table">
           <tbody>
-          <ng-template ngFor let-itemmm let-i="index" [ngForOf]="itemm.logs">
-            <tr>
-              <td>{{i}}</td>
-              <td>{{itemmm.timestamp}} [{{itemmm.thread}}] {{itemmm.level}} {{itemmm.logger}} - {{itemmm.message}}</td>
+            <tr *ngFor="let log of itemm.logs; index as i">
+              <td class="index">{{i}}.</td>
+              <td>{{log.timestamp}} [{{log.thread}}] {{log.level}} {{log.logger}} - {{log.message}}</td>
             </tr>
-          </ng-template>
           </tbody>
         </table>
       </ng-template>
