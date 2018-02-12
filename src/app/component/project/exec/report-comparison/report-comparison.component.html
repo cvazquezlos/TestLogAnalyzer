@@ -14,18 +14,23 @@
   </mat-card-title>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <ng-template ngFor let-item [ngForOf]="classesL" >
-      <h3>{{item.name}}</h3>
-      <ng-template ngFor let-itemm [ngForOf]="item.methods">
-        <h5>{{itemm.name}}</h5>
-        <table class="diff-table">
-          <tbody>
-            <tr *ngFor="let log of itemm.logs; index as i">
-              <td class="index">{{i}}.</td>
-              <td>{{log.timestamp}} [{{log.thread}}] {{log.level}} {{log.logger}} - {{log.message}}</td>
-            </tr>
-          </tbody>
-        </table>
+    <ng-template ngIf="comparisonInProcess; else notComparison">
+      <p>Comp in process..</p>
+    </ng-template>
+    <ng-template #notComparison>
+      <ng-template ngFor let-item [ngForOf]="classesL" >
+        <h3>{{item.name}}</h3>
+        <ng-template ngFor let-itemm [ngForOf]="item.methods">
+          <h5>{{itemm.name}}</h5>
+          <table class="diff-table">
+            <tbody>
+              <tr *ngFor="let log of itemm.logs; index as i">
+                <td class="index">{{i}}.</td>
+                <td>{{log.timestamp}} [{{log.thread}}] {{log.level}} {{log.logger}} - {{log.message}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
       </ng-template>
     </ng-template>
     <pre id="prdiff" #process processingDiff [left]="comparatorText" [right]="comparedText"></pre>
