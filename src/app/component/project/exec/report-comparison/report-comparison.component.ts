@@ -10,11 +10,11 @@ import {
   MatDialogRef
 } from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
+import {DiffMatchPatchService} from 'ng-diff-match-patch/dist/diffMatchPatch.service';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../../../model/project.model';
 import {Log} from '../../../../model/log.model';
 import {DiffService} from '../../../../service/diff.service';
-import {DiffMatchPatchService} from "ng-diff-match-patch/dist/diffMatchPatch.service";
 
 @Component({
   selector: 'app-report-comparison-settings',

@@ -15,16 +15,16 @@ export class DiffService {
   createHTML(diffs: Array<Diff>) {
     let html: string;
     html = '<div>';
-    for(let diff of diffs) {
+    for (const diff of diffs) {
       diff[1] = diff[1].replace(/\n/g, '<br>');
 
-      if(diff[0] === DiffOp.Equal) {
+      if (diff[0] === DiffOp.Equal) {
         html += diff[1];
       }
-      if(diff[0] === DiffOp.Delete) {
+      if (diff[0] === DiffOp.Delete) {
         html += '<del>' + diff[1] + '</del>';
       }
-      if(diff[0] === DiffOp.Insert) {
+      if (diff[0] === DiffOp.Insert) {
         html += '<ins>' + diff[1] + '</ins>';
       }
     }
