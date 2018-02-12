@@ -1,7 +1,7 @@
 import {
   Component, ElementRef,
-  Inject, OnChanges,
-  OnInit, ViewChild
+  Inject, OnInit,
+  ViewChild
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -11,7 +11,7 @@ import {
 import {ActivatedRoute} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {HttpClient} from '@angular/common/http';
-import {Project} from "../../../../model/project.model";
+import {Project} from '../../../../model/project.model';
 
 @Component({
   selector: 'app-report-comparison',
@@ -26,7 +26,7 @@ export class ReportComparisonComponent implements OnInit {
   classesL: any[];
   comparatorText = '';
   comparedText = '';
-  execSelected = 3;
+  execSelected: number;
   mode: number;
   processing: any;
   project: string;
@@ -37,9 +37,14 @@ export class ReportComparisonComponent implements OnInit {
               private dialog: MatDialog) {
   }
 
+  private async generateComparison() {
+    const comparatorLoggers = await this.getLoggers(this.test);
+    console.log(comparatorLoggers);
+    const comparedLoggers = await this.getLoggers(this.execSelected.toString());
+    console.log(comparedLoggers);
+  }
+
   async ngOnInit() {
-    this.comparatorText = "Hola";
-    this.comparedText = "Ola";
     this.test = this.activatedRoute.snapshot.parent.params['exec'];
     this.project = this.activatedRoute.snapshot.parent.parent.params['project'];
     this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
@@ -48,7 +53,7 @@ export class ReportComparisonComponent implements OnInit {
       {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
     this.ready = false;
     this.classesL = [];
-    const loggers = await this.getLoggers();
+    const loggers = await this.getLoggers(this.test);
     for (let i = 0; i < loggers.length; i++) {
       if (loggers[i].split(' ').length === 2) {
         const logger = loggers[i].split(' ')[1];
@@ -68,7 +73,6 @@ export class ReportComparisonComponent implements OnInit {
       }
     }
     this.ready = true;
-    this.readDiffer();
   }
 
   openComparisonDialog() {
@@ -87,25 +91,18 @@ export class ReportComparisonComponent implements OnInit {
         });
         dialogRef.afterClosed().subscribe(
           result => {
-            if (result) {
-              console.log(result);
-              this.execSelected = result.exec;
-              this.mode = result.mode;
-              this.generateComparison();
-            }
+            this.execSelected = result.avaible[0];
+            this.mode = result.mode;
+            this.generateComparison();
           }
         );
       }
     );
   }
 
-  private generateComparison() {
-
-  }
-
-  private async getLoggers() {
+  private async getLoggers(test: string) {
     try {
-      const response = await this.http.get<string[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project
+      const response = await this.http.get<string[]>('http://localhost:8443/logs/test/' + test + '?project=' + this.project
         + '&classes=true').toPromise();
       return response;
     } catch (error) {
