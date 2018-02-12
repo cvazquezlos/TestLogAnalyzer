@@ -58,6 +58,9 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   private async generateComparison() {
+    this.comparatorText = '';
+    this.comparedText = '';
+    this.readDiffer();
     const comparatorLoggers = await this.getLoggers(this.test);
     console.log(comparatorLoggers);
     const comparedLoggers = await this.getLoggers(this.execSelected.toString());
@@ -80,14 +83,17 @@ export class ReportComparisonComponent implements OnInit {
           console.log(methodMessage);
           const comparatorMethodLogs = await this.getLogs(this.test, partialLogger, methodMessage.replace('(', '')
             .replace(')', ''));
+          console.log(comparatorMethodLogs);
           const comparedMethodLogs = await this.getLogs(this.execSelected.toString(), partialLogger, methodMessage
             .replace('(', '').replace(')', ''));
+          console.log(comparedMethodLogs);
           for (let k = 0; k < comparatorMethodLogs.length; k++) {
             this.comparatorText += this.generateOutput(comparatorMethodLogs[k]);
           }
           for (let k = 0; k < comparedMethodLogs.length; k++) {
             this.comparedText += this.generateOutput(comparedMethodLogs[k]);
           }
+          this.readDiffer();
         }
       }
     }
@@ -185,8 +191,7 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   private readDiffer() {
-    console.log(document.getElementById('process').innerHTML);
-    return this.process.nativeElement.innerHTML.toString();
+    console.log(document.getElementById('prdiff').innerHTML);
   }
 
 }
