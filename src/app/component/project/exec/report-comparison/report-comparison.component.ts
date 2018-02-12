@@ -14,6 +14,25 @@ import {HttpClient} from '@angular/common/http';
 import {Project} from '../../../../model/project.model';
 
 @Component({
+  selector: 'app-report-comparison-settings',
+  templateUrl: './comparison-settings/comparison-settings.component.html',
+  styleUrls: ['./comparison-settings/comparison-settings.component.css']
+})
+
+export class ComparisonSettingsComponent {
+
+  execSelected: number;
+
+  constructor(public dialogRef: MatDialogRef<ComparisonSettingsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  }
+
+  onNoClick() {
+    this.dialogRef.close();
+  }
+
+}
+
+@Component({
   selector: 'app-report-comparison',
   templateUrl: './report-comparison.component.html',
   styleUrls: ['./report-comparison.component.css']
@@ -42,6 +61,10 @@ export class ReportComparisonComponent implements OnInit {
     console.log(comparatorLoggers);
     const comparedLoggers = await this.getLoggers(this.execSelected.toString());
     console.log(comparedLoggers);
+    for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
+      console.log(comparatorLoggers[i]);
+      console.log(comparedLoggers[i]);
+    }
   }
 
   async ngOnInit() {
@@ -133,25 +156,6 @@ export class ReportComparisonComponent implements OnInit {
   private readDiffer() {
     console.log(document.getElementById('process').innerHTML);
     return this.process.nativeElement.innerHTML.toString();
-  }
-
-}
-
-@Component({
-  selector: 'app-report-comparison-settings',
-  templateUrl: './comparison-settings/comparison-settings.component.html',
-  styleUrls: ['./comparison-settings/comparison-settings.component.css']
-})
-
-export class ComparisonSettingsComponent {
-
-  execSelected: number;
-
-  constructor(public dialogRef: MatDialogRef<ComparisonSettingsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
-
-  onNoClick() {
-    this.dialogRef.close();
   }
 
 }
