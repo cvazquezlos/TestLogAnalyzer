@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Diff, DiffOp} from 'ng-diff-match-patch/dist/diffMatchPatch';
 import {Log} from '../model/log.model';
 
 @Injectable()
@@ -11,7 +12,28 @@ export class DiffService {
   iteratorContent: any;
   results: any[];
 
+  createHTML(diffs: Array<Diff>) {
+    let html: string;
+    html = '<div>';
+    for (const diff of diffs) {
+      diff[1] = diff[1].replace(/\n/g, '<br>');
+
+      if (diff[0] === DiffOp.Equal) {
+        html += diff[1];
+      }
+      if (diff[0] === DiffOp.Delete) {
+        html += '<del>' + diff[1] + '</del>';
+      }
+      if (diff[0] === DiffOp.Insert) {
+        html += '<ins>' + diff[1] + '</ins>';
+      }
+    }
+    html += '</div>';
+    return html;
+  }
+
   generateComparison(diff: string, code: number) {
+    console.log(diff);
     let lines;
     (code === 0) ? (lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]))
@@ -88,10 +110,6 @@ export class DiffService {
       }
     }
     return lines;
-  }
-
-  private reverse(str: string) {
-    return str.split('').reverse().join('');
   }
 
   generateOutput(log: Log) {
@@ -202,17 +220,7 @@ export class DiffService {
     return line;
   }
 
-  private resetIterator() {
-    this.iteratorContent = {'a1': '', 'a2': '', 'line1': '', 'line2': '', 'j': 1, 'k': 1, 'i1': '', 'i2': ''};
-  }
-
-  private updateIndexes(a1: any, a2: any, value1: any, value2: any, j: any, k: any, i1: any, i2: any, id?: number) {
-    (id) && ((id === 0) ? (this.comparatorClass = 'added') : (this.comparedClass = 'added'));
-    this.iteratorContent = {
-      'a1': a1, 'a2': a2,
-      'line1': value1, 'line2': value2,
-      'j': j, 'k': k,
-      'i1': i1, 'i2': i2,
-    };
+  private reverse(str: string) {
+    return str.split('').reverse().join('');
   }
 }

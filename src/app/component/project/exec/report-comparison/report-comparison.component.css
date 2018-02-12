@@ -2,3 +2,14 @@
   min-width: initial !important;
   padding: 0 15px !important;
 }
+
+.diff-table {
+  font-family: "Inconsolata", "Consolas", "Monaco";
+  font-size: 0.9em;
+  background: white;
+  width: 100%;
+}
+
+.index {
+  color: rgb(102, 102, 102);
+}
