@@ -67,7 +67,7 @@ export class ReportComparisonComponent implements OnInit {
     this.readDiffer();
     const comparatorLoggers = await this.getLoggers(this.test);
     console.log(comparatorLoggers);
-    const comparedLoggers = await this.getLoggers(''+this.execSelected);
+    const comparedLoggers = await this.getLoggers('' + this.execSelected);
     console.log(comparedLoggers);
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
@@ -80,9 +80,11 @@ export class ReportComparisonComponent implements OnInit {
         const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
         console.log(partialLogger);
         const comparatorLoggerMethod = await this.getMethodsByPartialLogger(this.test, partialLogger);
-        const comparedLoggerMethod = await this.getMethodsByPartialLogger(''+this.execSelected, partialLogger);
+        const comparedLoggerMethod = await this.getMethodsByPartialLogger('' + this.execSelected, partialLogger);
         const methodsData = [];
         for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
+          this.comparatorText = '';
+          this.comparedText = '';
           let methodMessage: string;
           (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
             : (methodMessage = comparedLoggerMethod[j]);
@@ -90,7 +92,7 @@ export class ReportComparisonComponent implements OnInit {
           const comparatorMethodLogs = await this.getLogs(this.test, partialLogger, methodMessage.replace('(', '')
             .replace(')', ''));
           console.log(comparatorMethodLogs);
-          const comparedMethodLogs = await this.getLogs(''+this.execSelected, partialLogger, methodMessage
+          const comparedMethodLogs = await this.getLogs('' + this.execSelected, partialLogger, methodMessage
             .replace('(', '').replace(')', ''));
           console.log(comparedMethodLogs);
           for (let k = 0; k < comparatorMethodLogs.length; k++) {
