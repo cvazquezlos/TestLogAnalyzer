@@ -14,6 +14,7 @@ import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../../../model/project.model';
 import {Log} from '../../../../model/log.model';
 import {DiffService} from '../../../../service/diff.service';
+import {DiffMatchPatchService} from "ng-diff-match-patch/dist/diffMatchPatch.service";
 
 @Component({
   selector: 'app-report-comparison-settings',
@@ -57,28 +58,21 @@ export class ReportComparisonComponent implements OnInit {
   test: string;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient,
-              private dialog: MatDialog, private diffService: DiffService) {
+              private dialog: MatDialog, private diffService: DiffService, private diffMPService: DiffMatchPatchService) {
     this.comparisonInProcess = false;
   }
 
   private async generateComparison() {
-    this.comparatorText = '';
-    this.comparedText = '';
-    this.readDiffer();
     const comparatorLoggers = await this.getLoggers(this.test);
-    console.log(comparatorLoggers);
     const comparedLoggers = await this.getLoggers('' + this.execSelected);
-    console.log(comparedLoggers);
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
       let loggerMessage: string;
       (comparatorLoggers.length > comparedLoggers.length) ? (loggerMessage = comparatorLoggers[i])
         : (loggerMessage = comparedLoggers[i]);
-      console.log(loggerMessage);
       if (loggerMessage.split(' ').length === 2) {
         const currentLogger = loggerMessage.split(' ')[1];
         const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
-        console.log(partialLogger);
         const comparatorLoggerMethod = await this.getMethodsByPartialLogger(this.test, partialLogger);
         const comparedLoggerMethod = await this.getMethodsByPartialLogger('' + this.execSelected, partialLogger);
         const methodsData = [];
@@ -88,20 +82,16 @@ export class ReportComparisonComponent implements OnInit {
           let methodMessage: string;
           (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
             : (methodMessage = comparedLoggerMethod[j]);
-          console.log(methodMessage);
           const comparatorMethodLogs = await this.getLogs(this.test, partialLogger, methodMessage.replace('(', '')
             .replace(')', ''));
-          console.log(comparatorMethodLogs);
           const comparedMethodLogs = await this.getLogs('' + this.execSelected, partialLogger, methodMessage
             .replace('(', '').replace(')', ''));
-          console.log(comparedMethodLogs);
           for (let k = 0; k < comparatorMethodLogs.length; k++) {
             this.comparatorText += this.generateOutput(comparatorMethodLogs[k]);
           }
           for (let k = 0; k < comparedMethodLogs.length; k++) {
             this.comparedText += this.generateOutput(comparedMethodLogs[k]);
           }
-          this.readDiffer();
           methodsData.push({
             'name': methodMessage,
             'logs': this.readDiffer()
@@ -114,7 +104,6 @@ export class ReportComparisonComponent implements OnInit {
       }
     }
     this.comparisonInProcess = true;
-    console.log(this.resultData);
   }
 
   private generateOutput(log: Log) {
@@ -215,7 +204,8 @@ export class ReportComparisonComponent implements OnInit {
     } else {
       code = 1;
     }
-    return this.diffService.generateComparison(document.getElementById('prdiff').innerHTML, code);
+    const diff = this.diffService.createHTML(this.diffMPService.getDiff(this.comparatorText, this.comparedText));
+    return this.diffService.generateComparison(diff, code);
   }
 
 }
