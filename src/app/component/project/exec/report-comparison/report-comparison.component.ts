@@ -53,7 +53,7 @@ export class ReportComparisonComponent implements OnInit {
   processing: any;
   project: string;
   ready: boolean;
-  result: any[];
+  resultData: any[] = [];
   test: string;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient,
@@ -62,7 +62,6 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   private async generateComparison() {
-    this.comparisonInProcess = true;
     this.comparatorText = '';
     this.comparedText = '';
     this.readDiffer();
@@ -70,12 +69,12 @@ export class ReportComparisonComponent implements OnInit {
     console.log(comparatorLoggers);
     const comparedLoggers = await this.getLoggers(''+this.execSelected);
     console.log(comparedLoggers);
+    this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
       let loggerMessage: string;
       (comparatorLoggers.length > comparedLoggers.length) ? (loggerMessage = comparatorLoggers[i])
         : (loggerMessage = comparedLoggers[i]);
       console.log(loggerMessage);
-      this.result = [];
       if (loggerMessage.split(' ').length === 2) {
         const currentLogger = loggerMessage.split(' ')[1];
         const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
@@ -106,13 +105,14 @@ export class ReportComparisonComponent implements OnInit {
             'logs': this.readDiffer()
           });
         }
-        this.result.push({
+        this.resultData.push({
           'name': currentLogger,
           'methods': methodsData
         });
       }
     }
-    console.log(this.result);
+    this.comparisonInProcess = true;
+    console.log(this.resultData);
   }
 
   private generateOutput(log: Log) {
