@@ -1,11 +1,31 @@
-<h1 mat-dialog-title>Comparison settings</h1>
+<h1>Comparison settings</h1>
 <mat-dialog-content>
   <br>
-  <p>{{data.exec}}</p>
+  <div layout="row">
+    <p style="margin: auto; vertical-align: middle">Select execution to compare with</p>
+    <span flex></span>
+    <mat-form-field>
+      <mat-select [(value)]="data.execSelected" [disabled]="data.avaible.length == 0">
+        <mat-option *ngFor="let exec of data.avaible" value="exec">{{exec}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <br>
+  <div layout="row">
+    <p>Select a mode of comparison</p>
+    <span flex></span>
+    <mat-form-field>
+      <mat-select [(value)]="data.mode" [disabled]="data.avaible.length == 0">
+        <mat-option value="0">Complete diff</mat-option>
+        <mat-option value="1">No timnestamp diff</mat-option>
+        <mat-option value="2">Time diff</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <br>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <div class="dialog-buttons">
+<mat-dialog-actions class="bottom">
+  <div class="dialog-buttons" class="bottom">
     <button mat-raised-button color="primary" tabindex="1" [mat-dialog-close]="data">Save changes</button>
     <button mat-raised-button color="warn" tabindex="1" (click)="onNoClick()">Cancel</button>
   </div>

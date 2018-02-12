@@ -1,7 +1,7 @@
 import {
-  Component,
-  Inject,
-  OnInit
+  Component, ElementRef,
+  Inject, OnChanges,
+  OnInit, ViewChild
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -11,6 +11,7 @@ import {
 import {ActivatedRoute} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {HttpClient} from '@angular/common/http';
+import {Project} from "../../../../model/project.model";
 
 @Component({
   selector: 'app-report-comparison',
@@ -20,11 +21,14 @@ import {HttpClient} from '@angular/common/http';
 
 export class ReportComparisonComponent implements OnInit {
 
+  @ViewChild('process') process: ElementRef;
+
   classesL: any[];
-  comparatorText: string;
-  comparedText: string;
+  comparatorText = '';
+  comparedText = '';
   execSelected = 3;
   mode: number;
+  processing: any;
   project: string;
   ready: boolean;
   test: string;
@@ -34,6 +38,8 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.comparatorText = "Hola";
+    this.comparedText = "Ola";
     this.test = this.activatedRoute.snapshot.parent.params['exec'];
     this.project = this.activatedRoute.snapshot.parent.parent.params['project'];
     this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
@@ -62,12 +68,39 @@ export class ReportComparisonComponent implements OnInit {
       }
     }
     this.ready = true;
+    this.readDiffer();
   }
 
   openComparisonDialog() {
-    const dialogRef = this.dialog.open(ComparisonSettingsComponent, {
-      data: {exec: this.execSelected, mode: this.mode}
-    });
+    this.http.get<Project>('http://localhost:8443/projects/name/' + this.project).subscribe(
+      response => {
+        const avaibleExecs = [];
+        for (let i = 0; i < response.num_execs; i++) {
+          if ((+this.test !== (i + 1)) && (!avaibleExecs.includes(i + 1))) {
+            avaibleExecs.push(i + 1);
+          }
+        }
+        const dialogRef = this.dialog.open(ComparisonSettingsComponent, {
+          data: {exec: this.execSelected, mode: this.mode, avaible: avaibleExecs},
+          height: '310px',
+          width: '600px',
+        });
+        dialogRef.afterClosed().subscribe(
+          result => {
+            if (result) {
+              console.log(result);
+              this.execSelected = result.exec;
+              this.mode = result.mode;
+              this.generateComparison();
+            }
+          }
+        );
+      }
+    );
+  }
+
+  private generateComparison() {
+
   }
 
   private async getLoggers() {
@@ -100,17 +133,22 @@ export class ReportComparisonComponent implements OnInit {
     }
   }
 
+  private readDiffer() {
+    console.log(document.getElementById('process').innerHTML);
+    return this.process.nativeElement.innerHTML.toString();
+  }
+
 }
 
 @Component({
   selector: 'app-report-comparison-settings',
-  templateUrl: './comparison-settings/comparison-settings.component.html'
+  templateUrl: './comparison-settings/comparison-settings.component.html',
+  styleUrls: ['./comparison-settings/comparison-settings.component.css']
 })
 
 export class ComparisonSettingsComponent {
 
   execSelected: number;
-  mode: number;
 
   constructor(public dialogRef: MatDialogRef<ComparisonSettingsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
