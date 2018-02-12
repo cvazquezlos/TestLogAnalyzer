@@ -12,6 +12,7 @@ import {ActivatedRoute} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {HttpClient} from '@angular/common/http';
 import {Project} from '../../../../model/project.model';
+import {Log} from '../../../../model/log.model';
 
 @Component({
   selector: 'app-report-comparison-settings',
@@ -62,9 +63,39 @@ export class ReportComparisonComponent implements OnInit {
     const comparedLoggers = await this.getLoggers(this.execSelected.toString());
     console.log(comparedLoggers);
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
-      console.log(comparatorLoggers[i]);
-      console.log(comparedLoggers[i]);
+      let loggerMessage: string;
+      (comparatorLoggers.length > comparedLoggers.length) ? (loggerMessage = comparatorLoggers[i])
+        : (loggerMessage = comparedLoggers[i]);
+      console.log(loggerMessage);
+      if (loggerMessage.split(' ').length === 2) {
+        const currentLogger = loggerMessage.split(' ')[1];
+        const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
+        console.log(partialLogger);
+        const comparatorLoggerMethod = await this.getMethodsByPartialLogger(this.test, partialLogger);
+        const comparedLoggerMethod = await this.getMethodsByPartialLogger(this.execSelected.toString(), partialLogger);
+        for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
+          let methodMessage: string;
+          (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
+            : (methodMessage = comparedLoggerMethod[j]);
+          console.log(methodMessage);
+          const comparatorMethodLogs = await this.getLogs(this.test, partialLogger, methodMessage.replace('(', '')
+            .replace(')', ''));
+          const comparedMethodLogs = await this.getLogs(this.execSelected.toString(), partialLogger, methodMessage
+            .replace('(', '').replace(')', ''));
+          for (let k = 0; k < comparatorMethodLogs.length; k++) {
+            this.comparatorText += this.generateOutput(comparatorMethodLogs[k]);
+          }
+          for (let k = 0; k < comparedMethodLogs.length; k++) {
+            this.comparedText += this.generateOutput(comparedMethodLogs[k]);
+          }
+        }
+      }
     }
+  }
+
+  private generateOutput(log: Log) {
+    return (log.timestamp + ' [' + log.thread + '] ' + log.level + ' ' + log.logger + '' +
+      ' ' + log.message) + '\n';
   }
 
   async ngOnInit() {
@@ -81,12 +112,12 @@ export class ReportComparisonComponent implements OnInit {
       if (loggers[i].split(' ').length === 2) {
         const logger = loggers[i].split(' ')[1];
         const partialLogger = logger.split('.')[logger.split('.').length - 1];
-        const methods = await this.getMethodsByPartialLogger(partialLogger);
+        const methods = await this.getMethodsByPartialLogger(this.test, partialLogger);
         const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
           methodsData.push({
             'name': methods[j],
-            'logs': await this.getLogs(partialLogger, methods[j].replace('(', '').replace(')', ''))
+            'logs': await this.getLogs(this.test, partialLogger, methods[j].replace('(', '').replace(')', ''))
           });
         }
         this.classesL.push({
@@ -133,20 +164,20 @@ export class ReportComparisonComponent implements OnInit {
     }
   }
 
-  private async getLogs(partialLogger: string, method: string) {
+  private async getLogs(test: string, partialLogger: string, method: string) {
     try {
-      const response = await this.http.get<string[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
-        + '&test=' + this.test + '&method=' + method).toPromise();
+      const response = await this.http.get<Log[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
+        + '&test=' + test + '&method=' + method).toPromise();
       return response;
     } catch (error) {
       console.log(error);
     }
   }
 
-  private async getMethodsByPartialLogger(partialLogger: string) {
+  private async getMethodsByPartialLogger(test: string, partialLogger: string) {
     try {
       const response = await this.http.get<string[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
-        + '&test=' + this.test).toPromise();
+        + '&test=' + test).toPromise();
       return response;
     } catch (error) {
       console.log(error);
