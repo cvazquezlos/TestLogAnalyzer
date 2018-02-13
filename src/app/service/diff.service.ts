@@ -48,8 +48,10 @@ export class DiffService {
       console.log(line);
       (code === 0) ? (comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 0))
         : (comparatorLine = this.deleteUselessDataIns(line, '<ins>', '</ins>', 0, i));
+      console.log(comparatorLine);
       (code === 0) ? (comparedLine = this.deleteUselessData(line, '<del>', '</del>', 1))
         : (comparedLine = this.deleteUselessDataIns(line, '<del>', '</del>', 1, i));
+      console.log(comparedLine);
       this.concatResults(i, j, comparatorLine, comparedLine);
       i++;
       j++;

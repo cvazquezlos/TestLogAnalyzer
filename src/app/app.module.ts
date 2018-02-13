@@ -1,5 +1,8 @@
 import {HttpClientModule} from '@angular/common/http';
-import {NgModule, Type} from '@angular/core';
+import {
+  NgModule,
+  Type
+} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CovalentHighlightModule} from '@covalent/highlight';
@@ -12,7 +15,6 @@ import {CodemirrorModule} from 'ng2-codemirror';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 import {AddProjectComponent} from './component/add-project/add-project.component';
-import {ComparisonComponent} from './component/comparison/comparison.component';
 import {AddExecComponent} from './component/project/add-exec/add-exec.component';
 import {ExecComponent} from './component/project/exec/exec.component';
 import {
@@ -39,7 +41,6 @@ const httpInterceptorProviders: Type<any>[] = [
     AddExecComponent,
     AddProjectComponent,
     AppComponent,
-    ComparisonComponent,
     ComparisonSettingsComponent,
     ExecComponent,
     ProjectComponent,

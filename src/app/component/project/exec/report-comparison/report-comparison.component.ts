@@ -24,8 +24,6 @@ import {DiffService} from '../../../../service/diff.service';
 
 export class ComparisonSettingsComponent {
 
-  execSelected: number;
-
   constructor(public dialogRef: MatDialogRef<ComparisonSettingsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
@@ -65,11 +63,14 @@ export class ReportComparisonComponent implements OnInit {
   private async generateComparison() {
     const comparatorLoggers = await this.getLoggers(this.test);
     const comparedLoggers = await this.getLoggers('' + this.execSelected);
+    console.log(this.test);
+    console.log(this.execSelected);
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
       let loggerMessage: string;
       (comparatorLoggers.length > comparedLoggers.length) ? (loggerMessage = comparatorLoggers[i])
         : (loggerMessage = comparedLoggers[i]);
+      console.log(loggerMessage);
       if (loggerMessage.split(' ').length === 2) {
         const currentLogger = loggerMessage.split(' ')[1];
         const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
@@ -82,6 +83,7 @@ export class ReportComparisonComponent implements OnInit {
           let methodMessage: string;
           (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
             : (methodMessage = comparedLoggerMethod[j]);
+          console.log(methodMessage);
           const comparatorMethodLogs = await this.getLogs(this.test, partialLogger, methodMessage.replace('(', '')
             .replace(')', ''));
           const comparedMethodLogs = await this.getLogs('' + this.execSelected, partialLogger, methodMessage
@@ -152,13 +154,13 @@ export class ReportComparisonComponent implements OnInit {
           }
         }
         const dialogRef = this.dialog.open(ComparisonSettingsComponent, {
-          data: {exec: this.execSelected, mode: this.mode, avaible: avaibleExecs},
+          data: {execSelected: this.execSelected, mode: this.mode, avaible: avaibleExecs},
           height: '310px',
           width: '600px',
         });
         dialogRef.afterClosed().subscribe(
           result => {
-            this.execSelected = result.avaible[0];
+            this.execSelected = result.execSelected;
             this.mode = result.mode;
             this.generateComparison();
           }

@@ -1,6 +1,5 @@
 import {RouterModule, Routes} from '@angular/router';
 import {AddProjectComponent} from './component/add-project/add-project.component';
-import {ComparisonComponent} from './component/comparison/comparison.component';
 import {AddExecComponent} from './component/project/add-exec/add-exec.component';
 import {ExecComponent} from './component/project/exec/exec.component';
 import {ReportComparisonComponent} from './component/project/exec/report-comparison/report-comparison.component';
@@ -27,8 +26,7 @@ export const appRoutes: Routes = [
             ]
           }
         ]
-      },
-      {path: 'comparison', component: ComparisonComponent}
+      }
     ]
   }
 ];

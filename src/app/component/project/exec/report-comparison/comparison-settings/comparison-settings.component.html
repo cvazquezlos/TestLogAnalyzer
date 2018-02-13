@@ -5,8 +5,8 @@
     <p style="margin: auto; vertical-align: middle">Select execution to compare with</p>
     <span flex></span>
     <mat-form-field>
-      <mat-select [(value)]="data.execSelected" [disabled]="data.avaible.length == 0">
-        <mat-option *ngFor="let exec of data.avaible" value="exec">{{exec}}</mat-option>
+      <mat-select [(value)]="data.execSelected">
+        <mat-option *ngFor="let exec of data.avaible" value="{{exec}}">{{exec}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
