@@ -100,9 +100,14 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   private generateOutput(logs: Log[]) {
+    let dateComparator: any;
+    if (this.mode === '2') {
+      dateComparator = new Date(logs[0].timestamp);
+    }
     let result = '';
     for (let i = 0; i < logs.length; i++) {
       (this.mode === '1') && (logs[i].timestamp = '');
+      (this.mode === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf() - (dateComparator).valueOf()).toString());
       result += (logs[i].timestamp + ' [' + logs[i].thread + '] ' + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\n';
     }
@@ -157,7 +162,7 @@ export class ReportComparisonComponent implements OnInit {
         dialogRef.afterClosed().subscribe(
           result => {
             this.execSelected = result.execSelected;
-            this.mode = result.mode;
+            this.mode = '' + result.mode;
             this.generateComparison();
           }
         );
