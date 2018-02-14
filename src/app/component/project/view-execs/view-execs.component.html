@@ -24,6 +24,9 @@
                    let-row="row">
         <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
       </ng-template>
+      <ng-template tdDataTableTemplate="status" let-value="value">
+        <mat-icon [ngClass]="value.class">{{value.icon}}</mat-icon>&nbsp;&nbsp;{{value.status}}
+      </ng-template>
       <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
         <div *ngIf="(deleteInProgress && (row.id === execDeleting)); else notDeleting">
           <div class="iconBtn-lg">

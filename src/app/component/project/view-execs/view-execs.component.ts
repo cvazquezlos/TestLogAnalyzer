@@ -66,11 +66,23 @@ export class ViewExecsComponent implements OnInit {
     this.elasticsearchService.loadExecutionsByProject(name).subscribe(response => {
       this.execsRowData = [];
       for (let i = 0; i < response.length; i++) {
+        let icon, classi: any;
+        if (response[i].status.split(' ')[1] === 'SUCCESS') {
+          icon = 'check_circle';
+          classi = 'tc-green-700';
+        } else {
+          icon = 'error';
+          classi = 'tc-red-700';
+        }
         this.execsRowData[i] = {
           'id': response[i].id,
           'startdate': response[i].timestamp,
           'entries': response[i].entries,
-          'status': response[i].status,
+          'status': {
+            'icon': icon,
+            'class': classi,
+            'status': response[i].status.split(' ')[1]
+          },
           'DEBUG': response[i].debug,
           'INFO': response[i].info,
           'WARNING': response[i].warning,
