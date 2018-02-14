@@ -12,8 +12,8 @@ import {
 import {ActivatedRoute} from '@angular/router';
 import {DiffMatchPatchService} from 'ng-diff-match-patch/dist/diffMatchPatch.service';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
-import {Project} from '../../../../model/project.model';
 import {Log} from '../../../../model/log.model';
+import {Project} from '../../../../model/project.model';
 import {DiffService} from '../../../../service/diff.service';
 
 @Component({
@@ -46,10 +46,9 @@ export class ReportComparisonComponent implements OnInit {
   classesL: any[];
   comparatorText = '';
   comparedText = '';
-  comparisonInProcess: boolean;
+  comparisonInProgress: boolean;
   execSelected: number;
-  mode: number;
-  processing: any;
+  mode: string;
   project: string;
   ready: boolean;
   resultData: any[] = [];
@@ -57,20 +56,17 @@ export class ReportComparisonComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient,
               private dialog: MatDialog, private diffService: DiffService, private diffMPService: DiffMatchPatchService) {
-    this.comparisonInProcess = false;
+    this.comparisonInProgress = false;
   }
 
   private async generateComparison() {
     const comparatorLoggers = await this.getLoggers(this.test);
     const comparedLoggers = await this.getLoggers('' + this.execSelected);
-    console.log(this.test);
-    console.log(this.execSelected);
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
       let loggerMessage: string;
       (comparatorLoggers.length > comparedLoggers.length) ? (loggerMessage = comparatorLoggers[i])
         : (loggerMessage = comparedLoggers[i]);
-      console.log(loggerMessage);
       if (loggerMessage.split(' ').length === 2) {
         const currentLogger = loggerMessage.split(' ')[1];
         const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
@@ -83,17 +79,12 @@ export class ReportComparisonComponent implements OnInit {
           let methodMessage: string;
           (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
             : (methodMessage = comparedLoggerMethod[j]);
-          console.log(methodMessage);
           const comparatorMethodLogs = await this.getLogs(this.test, partialLogger, methodMessage.replace('(', '')
             .replace(')', ''));
           const comparedMethodLogs = await this.getLogs('' + this.execSelected, partialLogger, methodMessage
             .replace('(', '').replace(')', ''));
-          for (let k = 0; k < comparatorMethodLogs.length; k++) {
-            this.comparatorText += this.generateOutput(comparatorMethodLogs[k]);
-          }
-          for (let k = 0; k < comparedMethodLogs.length; k++) {
-            this.comparedText += this.generateOutput(comparedMethodLogs[k]);
-          }
+          this.comparatorText = this.generateOutput(comparatorMethodLogs);
+          this.comparedText = this.generateOutput(comparedMethodLogs);
           methodsData.push({
             'name': methodMessage,
             'logs': this.readDiffer()
@@ -104,13 +95,18 @@ export class ReportComparisonComponent implements OnInit {
           'methods': methodsData
         });
       }
+      (i === 0) && (this.comparisonInProgress = true);
     }
-    this.comparisonInProcess = true;
   }
 
-  private generateOutput(log: Log) {
-    return (log.timestamp + ' [' + log.thread + '] ' + log.level + ' ' + log.logger + '' +
-      ' ' + log.message) + '\n';
+  private generateOutput(logs: Log[]) {
+    let result = '';
+    for (let i = 0; i < logs.length; i++) {
+      (this.mode === '1') && (logs[i].timestamp = '');
+      result += (logs[i].timestamp + ' [' + logs[i].thread + '] ' + logs[i].level + ' ' + logs[i].logger + '' +
+        ' ' + logs[i].message) + '\n';
+    }
+    return result;
   }
 
   async ngOnInit() {

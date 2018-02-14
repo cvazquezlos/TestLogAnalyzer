@@ -33,7 +33,6 @@ export class DiffService {
   }
 
   generateComparison(diff: string, code: number) {
-    console.log(diff);
     let lines;
     (code === 0) ? (lines = this.solveMistakes(diff.replace('<div>', '').replace('</div>', '')
       .split('<br>'), ['<del>', this.reverse('<del>')], ['</del>', this.reverse('</del>')]))
@@ -45,13 +44,10 @@ export class DiffService {
     i = 1;
     j = 1;
     lines.forEach(line => {
-      console.log(line);
       (code === 0) ? (comparatorLine = this.deleteUselessData(line, '<ins>', '</ins>', 0))
         : (comparatorLine = this.deleteUselessDataIns(line, '<ins>', '</ins>', 0, i));
-      console.log(comparatorLine);
       (code === 0) ? (comparedLine = this.deleteUselessData(line, '<del>', '</del>', 1))
         : (comparedLine = this.deleteUselessDataIns(line, '<del>', '</del>', 1, i));
-      console.log(comparedLine);
       this.concatResults(i, j, comparatorLine, comparedLine);
       i++;
       j++;
