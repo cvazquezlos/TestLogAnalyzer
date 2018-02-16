@@ -79,7 +79,7 @@ export class AddProjectComponent implements OnInit {
                       const secondaryFormData = new FormData();
                       secondaryFormData.append('file', this.fileXml);
                       this.http.post<string>('http://localhost:8443/files/file', secondaryFormData, {headers: headers}).subscribe(
-                        result2 => {
+                        result3 => {
                           this.code = 2;
                         }
                       );
@@ -95,7 +95,7 @@ export class AddProjectComponent implements OnInit {
                       const secondaryFormData = new FormData();
                       secondaryFormData.append('file', this.fileTxt);
                       this.http.post<string>('http://localhost:8443/files/file', secondaryFormData, {headers: headers}).subscribe(
-                        result2 => {
+                        result3 => {
                           this.code = 2;
                         }
                       );

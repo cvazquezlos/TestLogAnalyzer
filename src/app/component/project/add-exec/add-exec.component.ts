@@ -61,18 +61,51 @@ export class AddExecComponent implements OnInit {
               this.elasticsearchService.downloadUrl(this.urlTxt).subscribe(
                 result2 => {
                   this.code = 2;
+                  if (this.urlXml !== 'Empty') {
+                    this.elasticsearchService.downloadUrl(this.urlXml).subscribe(
+                      result3 => {
+                      }
+                    );
+                  }
                 }
               );
             } else {
               headers = new HttpHeaders();
               headers.append('Content-Type', 'application/pdf');
-              const formData = new FormData();
-              formData.append('file', this.fileTxt);
-              this.http.post<string>('http://localhost:8443/files/file', formData, {headers: headers}).subscribe(
-                result2 => {
-                  this.code = 2;
-                }
-              );
+              const mainFormData = new FormData();
+              if (this.fileTxt !== null) {
+                mainFormData.append('file', this.fileTxt);
+                this.http.post<string>('http://localhost:8443/files/file', mainFormData, {headers: headers}).subscribe(
+                  result2 => {
+                    this.code = 2;
+                    if (this.fileXml !== null) {
+                      const secondaryFormData = new FormData();
+                      secondaryFormData.append('file', this.fileXml);
+                      this.http.post<string>('http://localhost:8443/files/file', secondaryFormData, {headers: headers}).subscribe(
+                        result3 => {
+                          this.code = 2;
+                        }
+                      );
+                    }
+                  }
+                );
+              } else {
+                mainFormData.append('file', this.fileXml);
+                this.http.post<string>('http://localhost:8443/files/file', mainFormData, {headers: headers}).subscribe(
+                  result2 => {
+                    this.code = 2;
+                    if (this.fileTxt !== null) {
+                      const secondaryFormData = new FormData();
+                      secondaryFormData.append('file', this.fileTxt);
+                      this.http.post<string>('http://localhost:8443/files/file', secondaryFormData, {headers: headers}).subscribe(
+                        result3 => {
+                          this.code = 2;
+                        }
+                      );
+                    }
+                  }
+                );
+              }
             }
           },
           error => console.log(error)
