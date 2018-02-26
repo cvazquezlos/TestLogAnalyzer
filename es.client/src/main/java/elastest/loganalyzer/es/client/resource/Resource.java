@@ -96,7 +96,7 @@ public class Resource {
 	public String upload(@RequestBody MultipartFile file) {
 		try {
 			if (file != null) {
-				if (file.getName().contains("txt")) {
+				if (file.getOriginalFilename().contains("txt")) {
 					List<String> data = executionParserService.getStreamByFile(file);
 					Project target = esProjectService.findByName(recentProject);
 					target.setNum_execs(target.getNum_execs() + 1);
