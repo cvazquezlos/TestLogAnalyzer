@@ -13,6 +13,20 @@ public class App {
 
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
+		String timestamp = "(((\\d+).)+)";
+		String level = "(\\w+)";
+		String thread = "((\\S*)((\\w+)|((\\s+)(\\w+)))(\\S*))";
+		String logger = "(((\\w+).)+)";
+		String message = "(.*)";
+		String spaces = "(\\s+)";
+		String noSpaces = "(\\S+)";
+		String divider = "(\\S*)";
+		String pattern = "^" + timestamp + spaces + level + spaces + noSpaces + spaces + divider + thread + divider
+				+ spaces + logger + spaces + divider + spaces + message + "$";
+		// String pattern =
+		// "^((((\\d+).)+)(\\s)(\\w+)(\\s+)(\\S+)(\\s)((\\S*)((\\w+)|((\\s+)(\\w+)))(\\S*))(\\s*)(((\\w+).)+)(\\s*)(\\S*)(\\s*)(.*))$";
+		String str = "2018-02-20 12:30:48.199  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.gecko.driver as /home/pablo/.m2/repository/webdriver/geckodriver/linux64/0.19.1/geckodriver";
+		System.out.println(str.matches(pattern));
 	}
 
 	@Bean

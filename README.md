@@ -107,6 +107,7 @@ Ensure you have Elasticsearch installed and an instance of it running.
 40. https://www.w3schools.com/angular/ - AngularJS modules.
 41. http://www.damirscorner.com/ - Angular await and async requests.
 42. https://medium.com/@alecwazzy - Angular Promises for async requests.
+43. https://docs.oracle.com/javase/8/docs/api/ - Java REGEX
 
 ## Involved technologies
 Element           | TestLogAnalyzer needs it because...                    | Official site
