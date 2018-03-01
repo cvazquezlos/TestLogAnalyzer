@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +28,43 @@ public class ExecutionParserService {
 	@Autowired
 	public ExecutionParserService(ESLogService esLogService) {
 		this.esLogService = esLogService;
+		String timestamp = "(((\\d+).)+)";
+		String level = "(\\w+)";
+		String thread = "((\\S*)((\\w+)|((\\s+)(\\w+)))(\\S*))";
+		String logger = "(((\\w+).)+)";
+		String message = "(.*)";
+		String spaces = "(\\s+)";
+		String noSpaces = "(\\S+)";
+		String divider = "(\\S*)";
+		String pattern = "^" + timestamp + spaces + level + spaces + noSpaces + spaces + divider + thread + divider
+				+ spaces + logger + spaces + divider + spaces + message + "$";
+		Pattern target = Pattern.compile(pattern);
+		// String pattern =
+		// "^((((\\d+).)+)(\\s)(\\w+)(\\s+)(\\S+)(\\s)((\\S*)((\\w+)|((\\s+)(\\w+)))(\\S*))(\\s*)(((\\w+).)+)(\\s*)(\\S*)(\\s*)(.*))$";
+		String str = "2018-02-20 12:30:48.199  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.gecko.driver as /home/pablo/.m2/repository/webdriver/geckodriver/linux64/0.19.1/geckodriver";
+		Matcher matcher = target.matcher(str);
+		if (matcher.find()) {
+			System.out.println(matcher.group(1));
+			System.out.println(matcher.group(5));
+			System.out.println(matcher.group(12));
+			System.out.println(matcher.group(20));
+			System.out.println(matcher.group(26));
+		}
+		pattern = "^Running" + spaces + message + "$";
+		Pattern starting = Pattern.compile(pattern);
+		str = "Running com.fullteaching.backend.e2e.FullTeachingTestE2EChat";
+		matcher = starting.matcher(str);
+		if (matcher.find()) {
+			System.out.println(matcher.group(2));
+		}
+		String basicSymbols = "((\\[)|(\\-)|(\\s{1})|(\\r)|(\n))";
+		pattern = "^" + basicSymbols + message + "$";
+		Pattern maven = Pattern.compile(pattern);
+		str = "[INFO] Scanning for projects...";
+		matcher = maven.matcher(str);
+		if (matcher.find()) {
+			System.out.println(matcher.group(2));
+		}
 	}
 
 	public void parse(List<String> dirtyData, Project project, int lastId) throws Exception, IOException {
