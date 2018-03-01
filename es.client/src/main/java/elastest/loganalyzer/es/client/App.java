@@ -38,10 +38,18 @@ public class App {
 			System.out.println(matcher.group(20));
 			System.out.println(matcher.group(26));
 		}
-		pattern = "Running" + spaces + message;
+		pattern = "^Running" + spaces + message + "$";
 		Pattern starting = Pattern.compile(pattern);
 		str = "Running com.fullteaching.backend.e2e.FullTeachingTestE2EChat";
 		matcher = starting.matcher(str);
+		if (matcher.find()) {
+			System.out.println(matcher.group(2));
+		}
+		String basicSymbols = "((\\[)|(\\-)|(\\s{1})|(\\r)|(\n))";
+		pattern = "^" + basicSymbols + message + "$";
+		Pattern maven = Pattern.compile(pattern);
+		str = "[INFO] Scanning for projects...";
+		matcher = maven.matcher(str);
 		if (matcher.find()) {
 			System.out.println(matcher.group(2));
 		}
