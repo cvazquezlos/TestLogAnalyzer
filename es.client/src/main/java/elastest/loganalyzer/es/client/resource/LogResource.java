@@ -90,6 +90,8 @@ public class LogResource {
 						execution.setStatus(logs.get(j).getMessage());
 					}
 					break;
+				} else {
+					execution.setStatus("FAILURE");
 				}
 			}
 			execs.add(execution);
@@ -146,7 +148,7 @@ public class LogResource {
 
 	private Log findLog(List<Log> logs) {
 		for (int i = 0; i < logs.size(); i++) {
-			if (logs.get(i).getTimestamp().length() == 23) {
+			if (logs.get(i).getTimestamp().indexOf("20") == 0) {
 				return logs.get(i);
 			}
 		}

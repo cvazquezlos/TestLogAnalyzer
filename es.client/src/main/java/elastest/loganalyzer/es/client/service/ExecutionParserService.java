@@ -44,131 +44,70 @@ public class ExecutionParserService {
 
 		String pattern = "^(((\\d+).)+)(\\s+)(\\w+)(\\s+)(\\S+)(\\s+)(\\S*)((\\S*)((\\w+)|((\\s+)(\\w+)))(\\S*))(\\S*)(\\s+)(((\\w+).)+)(\\s+)(\\S*)(\\s+)(.*)$";
 		Pattern targetLog = Pattern.compile(pattern);
-		pattern = "^((\\[)|(\\-)|(\\s{1})|(\\r)|(\n)|(Results)|(Tests))(.*)$";
+		pattern = "^((\\[)|(\\-)|(\\s{1})|(\\r)|(\\n)|(Results)|(Tests))(.*)$";
 		Pattern mavenLog = Pattern.compile(pattern);
-		pattern = "^Running(\\s+)(.*)$";
+		pattern = "^Running(\\s{1})(.*)$";
 		Pattern testLog = Pattern.compile(pattern);
 
+		String upperClass = "";
 		String method = "";
+		String acumulatedException = "";
+		boolean exception = false;
 		while (!data.isEmpty()) {
 			String line = data.get(0);
 			String id = String.format("%04d", identificator);
-			System.out.println(line);
-			Matcher matcher = targetLog.matcher(line);
-			Log log;
-			if (matcher.find()) {
-				log = new Log(id, project.getName(), testNumber, line, method, matcher.group(1), matcher.group(12),
-						matcher.group(5), matcher.group(20), matcher.group(26));
-			} else if (mavenLog.matcher(line).find()) {
-				matcher = mavenLog.matcher(line);
-				log = new Log();
+			Log log = new Log(id, project.getName(), testNumber, line, line);
+			Matcher target = targetLog.matcher(line);
+			Matcher maven = mavenLog.matcher(line);
+			Matcher test = testLog.matcher(line);
+			if (target.find()) {
+				System.out.println("Target log: " + line);
+				if (line.contains("##### Start")) {
+					method = target.group(26).split(":")[1].replaceAll(" ", "");
+					System.out.println("METHOD: " + method);
+				} else if (line.contains("##### Finish")) {
+					method = "";
+				}
+				log.setMethod(method);
+				log.setTimestamp(target.group(1));
+				log.setThread(target.group(12));
+				log.setLevel(target.group(5));
+				log.setLogger(upperClass + "-" + target.group(20));
+				log.setMessage(target.group(26));
+			} else if (maven.find()) {
+				System.out.println("Maven log: " + line);
+				if (line.indexOf("[") == 0) {
+					String level = line.split("]")[0].replace("[", "");
+					log.setLevel(level);
+					log.setMessage(line.replace("[" + level + "]", ""));
+				} else if (line.indexOf("Tests run:") == 0) {
+					upperClass = "";
+					if (line.contains("FAILURE")) {
+						exception = true;
+					}
+				} else if (exception) {
+					acumulatedException += line;
+				}
+			} else if (test.find()) {
+				System.out.println("Test log: " + line);
+				upperClass = line.split(" ")[1];
 			} else {
-				matcher = testLog.matcher(line);
-				log = new Log();
+				System.out.println("Exception log: " + line);
+				if (line.length() < 2) {
+					exception = false;
+					log.setLog(acumulatedException);
+					log.setMessage(acumulatedException);
+					acumulatedException = "";
+				} else 	if (exception) {
+					acumulatedException += line;
+				}
 			}
-			esLogService.save(log);
-			data.remove(0);
-			identificator++;
-		}
-	}
-	
-	/*public void parse(List<String> dirtyData, Project project, int lastId) throws Exception, IOException {
-	ArrayList<String> data = new ArrayList<>();
-	for (int i = 0; i < dirtyData.size(); i++) {
-		data.add(dirtyData.get(i).replaceAll("\n", ""));
-	}
-	int numExecs = project.getNum_execs();
-	data.add(0, "[INFO] Building project and starting unit test number " + numExecs + "...");
-	data.add("[INFO] Finishing unit test number " + numExecs + "...");
-
-	String testNumber = String.format("%02d", numExecs);
-	Integer identificator = lastId;
-	while (data.get(0).indexOf("[") == 0) {
-		String id = String.format("%04d", identificator);
-		String[] args = getArgsNormal(data.get(0));
-		Log log = new Log(id, project.getName(), testNumber, data.get(0), args[0], args[1]);
-		esLogService.save(log);
-		System.out.println(data.get(0));
-		data.remove(0);
-		identificator++;
-	}
-	while (data.get(0).indexOf("R") != 0) {
-		String id = String.format("%04d", identificator);
-		Log log = new Log(id, project.getName(), testNumber, data.get(0), data.get(0));
-		esLogService.save(log);
-		System.out.println(data.get(0));
-		data.remove(0);
-		identificator++;
-	}
-	String method = "";
-	while (data.get(0).length() != 0) {
-		if (data.get(0).indexOf("S") == 0) {
-			String id = String.format("%04d", identificator);
-			Log log = new Log(id, project.getName(), testNumber, data.get(0), data.get(0));
-			esLogService.save(log);
-			System.out.println(data.get(0));
-			method = data.get(0).split(" ")[1];
-			data.remove(0);
-			identificator++;
-		} else if (data.get(0).indexOf("2") == 0) {
-			String id = String.format("%04d", identificator);
-			String[] args = getArgsLogback(data.get(0));
-			Log log = new Log(id, project.getName(), testNumber, data.get(0), method, args[0], args[1], args[2],
-					args[3], args[4]);
-			esLogService.save(log);
-			System.out.println(data.get(0));
-			data.remove(0);
-			identificator++;
-		} else if (data.get(0).indexOf("[") == 0) {
-			data.remove(0);
-		} else {
-			method = "-";
-			String id = String.format("%04d", identificator);
-			Log log = new Log(id, project.getName(), testNumber, data.get(0), data.get(0));
-			esLogService.save(log);
-			System.out.println(data.get(0));
-			data.remove(0);
-			identificator++;
-		}
-	}
-	while (!data.isEmpty()) {
-		String id = String.format("%04d", identificator);
-		String[] args = getArgsNormal(data.get(0));
-		Log log = new Log(id, project.getName(), testNumber, data.get(0), args[0], args[1]);
-		esLogService.save(log);
-		System.out.println(data.get(0));
-		data.remove(0);
-		identificator++;
-	}
-}*/
-
-	private static String[] getArgsLogback(String string) {
-		String[] args = new String[5];
-		String[] data = string.split(" ");
-		args[0] = data[0] + " " + data[1];
-		args[1] = data[2].replace("[", "").replace("]", "");
-		args[2] = data[3];
-		args[3] = data[5];
-		args[4] = data[7];
-		for (int i = 8; i < data.length; i++) {
-			args[4] += " " + data[i];
-		}
-		return args;
-	}
-
-	private static String[] getArgsNormal(String string) {
-		String[] args = new String[5];
-		String[] data = string.split(" ");
-		args[0] = data[0].replace("[", "").replace("]", "");
-		if (data.length != 1) {
-			args[1] = data[1];
-			for (int i = 2; i < data.length; i++) {
-				args[1] += " " + data[i];
+			if (!exception) {
+				esLogService.save(log);
+				identificator++;
 			}
-		} else {
-			args[1] = "";
+			data.remove(0);
 		}
-		return args;
 	}
 
 	public List<String> getStreamByUrl(String url) throws IOException {
