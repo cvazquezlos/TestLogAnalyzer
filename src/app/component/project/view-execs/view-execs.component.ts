@@ -65,9 +65,10 @@ export class ViewExecsComponent implements OnInit {
   reloadTable(name: string) {
     this.elasticsearchService.loadExecutionsByProject(name).subscribe(response => {
       this.execsRowData = [];
+      console.log(response);
       for (let i = 0; i < response.length; i++) {
         let icon, classi: any;
-        if (response[i].status.split(' ')[1] === 'SUCCESS') {
+        if (response[i].status.indexOf('SUCCESS') !== -1) {
           icon = 'check_circle';
           classi = 'tc-green-700';
         } else {
@@ -81,7 +82,7 @@ export class ViewExecsComponent implements OnInit {
           'status': {
             'icon': icon,
             'class': classi,
-            'status': response[i].status.split(' ')[1]
+            'status': response[i].status
           },
           'DEBUG': response[i].debug,
           'INFO': response[i].info,
