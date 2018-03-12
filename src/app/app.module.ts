@@ -9,7 +9,6 @@ import {CovalentHighlightModule} from '@covalent/highlight';
 import {CovalentHttpModule} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
-import {DiffMatchPatchModule} from 'ng-diff-match-patch';
 import {BreadcrumbsModule} from 'ng2-breadcrumbs';
 import {CodemirrorModule} from 'ng2-codemirror';
 import {AppComponent} from './app.component';
@@ -61,7 +60,6 @@ const httpInterceptorProviders: Type<any>[] = [
     }),
     CovalentHighlightModule,
     CovalentMarkdownModule,
-    DiffMatchPatchModule,
     HttpClientModule,
     NgbModule.forRoot(),
     routing,

@@ -1,4 +1,4 @@
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {
   Component, ElementRef,
   Inject, OnInit,
@@ -107,7 +107,7 @@ export class ReportComparisonComponent implements OnInit {
       (this.mode === '1') && (logs[i].timestamp = '');
       (this.mode === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf() - (dateComparator).valueOf()).toString());
       result += (logs[i].timestamp + ' [' + logs[i].thread + '] ' + logs[i].level + ' ' + logs[i].logger + '' +
-        ' ' + logs[i].message) + '\n';
+        ' ' + logs[i].message) + '\r\n';
     }
     return result;
   }
@@ -199,12 +199,17 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   private readDiffer() {
-    let code = 0;
-    if ((this.comparatorText.split('\n').length) >= (this.comparedText.split('\n').length)) {
-      code = 0;
-    } else {
-      code = 1;
-    }
+    const headers: HttpHeaders = new HttpHeaders();
+    headers.append('Content-Type', 'text/plain');
+    const body = {text1: this.comparatorText, text2: this.comparedText};
+    this.http.post('http://localhost:8443/diff', JSON.stringify(body), {headers: headers, responseType: 'text'}).subscribe(
+      response => {
+        console.log(response);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
 }
