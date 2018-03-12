@@ -27,7 +27,6 @@ import {ViewExecsComponent} from './component/project/view-execs/view-execs.comp
 import {PublicComponent} from './component/public.component'
 import {ViewProjectsComponent} from './component/view-projects/view-projects.component';
 import {RequestInterceptor} from '../config/interceptor/request.interceptor';
-import {DiffService} from './service/diff.service';
 import {ElasticsearchService} from './service/elasticsearch.service';
 import {ExecsStatusService} from './service/execs-status.service';
 import {SharedModule} from './shared/shared.module';
@@ -69,7 +68,6 @@ const httpInterceptorProviders: Type<any>[] = [
     SharedModule
   ],
   providers: [
-    DiffService,
     ElasticsearchService,
     ExecsStatusService,
   ],

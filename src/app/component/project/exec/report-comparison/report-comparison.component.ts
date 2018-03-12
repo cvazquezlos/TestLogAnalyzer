@@ -10,11 +10,9 @@ import {
   MatDialogRef
 } from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
-import {DiffMatchPatchService} from 'ng-diff-match-patch/dist/diffMatchPatch.service';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
 import {Project} from '../../../../model/project.model';
-import {DiffService} from '../../../../service/diff.service';
 
 @Component({
   selector: 'app-report-comparison-settings',
@@ -55,7 +53,7 @@ export class ReportComparisonComponent implements OnInit {
   test: string;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient,
-              private dialog: MatDialog, private diffService: DiffService, private diffMPService: DiffMatchPatchService) {
+              private dialog: MatDialog) {
     this.comparisonInProgress = false;
   }
 
@@ -207,8 +205,6 @@ export class ReportComparisonComponent implements OnInit {
     } else {
       code = 1;
     }
-    const diff = this.diffService.createHTML(this.diffMPService.getDiff(this.comparatorText, this.comparedText));
-    return this.diffService.generateComparison(diff, code);
   }
 
 }
