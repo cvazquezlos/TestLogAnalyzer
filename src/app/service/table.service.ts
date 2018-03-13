@@ -24,6 +24,8 @@ export class TableService {
       line = this.openClosedTags(line);
       comparatorLine = this.cleanBetweenTags('<ins>', '</ins>', line, 0);
       comparedLine = this.cleanBetweenTags('<del>', '</del>', line, 1);
+      console.log(i + " " + comparatorLine);
+      console.log(i + " " + comparedLine);
       this.concatResults(i, comparatorLine, comparedLine);
       i++;
     });
@@ -36,6 +38,9 @@ export class TableService {
       uselessData = line.substring(line.indexOf(open) + 5, line.indexOf(close));
       line = line.replace(open + uselessData + close, '');
       (code === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
+    }
+    if (line.length < 2) {
+      (code === 0) ? (this.comparatorClass = 'added') : (this.comparedClass = 'added');
     }
     return line;
   }
