@@ -14,6 +14,8 @@ export class TableService {
 
   generateTable(diff: string): any[] {
     this.results = [];
+    this.comparatorClass = 'normal';
+    this.comparedClass = 'normal';
     const lines = diff.split('<br>');
     let comparedLine = '', comparatorLine = '';
     let i = 1;

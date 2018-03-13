@@ -86,7 +86,7 @@ export class ReportComparisonComponent implements OnInit {
           this.comparedText = this.generateOutput(comparedMethodLogs);
           methodsData.push({
             'name': methodMessage,
-            'logs': this.readDiffer()
+            'logs': await this.readDiffer()
           });
         }
         this.resultData.push({
@@ -199,17 +199,17 @@ export class ReportComparisonComponent implements OnInit {
     }
   }
 
-  private readDiffer() {
+  private async readDiffer() {
     const headers: HttpHeaders = new HttpHeaders();
     headers.append('Content-Type', 'text/plain');
     const body = {text1: this.comparatorText, text2: this.comparedText};
-    this.http.post('http://localhost:8443/diff', JSON.stringify(body), {headers: headers, responseType: 'text'}).subscribe(
-      response => {
-        return this.tableService.generateTable(response);
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    try {
+      const response = await this.http.post('http://localhost:8443/diff', JSON.stringify(body), {headers: headers, responseType: 'text'}).toPromise();
+      console.log(response);
+      return this.tableService.generateTable(response);
+    } catch (error) {
+      console.log(error);
+    }
+
   }
 }
