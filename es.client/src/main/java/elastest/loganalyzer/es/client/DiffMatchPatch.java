@@ -1343,11 +1343,11 @@ public class DiffMatchPatch {
           .replace(">", "&gt;").replace("\n", "&para;<br>");
       switch (aDiff.operation) {
       case INSERT:
-        html.append("<ins style=\"background:#e6ffe6;\">").append(text)
+        html.append("<ins>").append(text)
             .append("</ins>");
         break;
       case DELETE:
-        html.append("<del style=\"background:#ffe6e6;\">").append(text)
+        html.append("<del>").append(text)
             .append("</del>");
         break;
       case EQUAL:

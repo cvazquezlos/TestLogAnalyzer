@@ -13,6 +13,7 @@ import {ActivatedRoute} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
 import {Project} from '../../../../model/project.model';
+import {TableService} from '../../../../service/table.service';
 
 @Component({
   selector: 'app-report-comparison-settings',
@@ -53,7 +54,7 @@ export class ReportComparisonComponent implements OnInit {
   test: string;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient,
-              private dialog: MatDialog) {
+              private dialog: MatDialog, private tableService: TableService) {
     this.comparisonInProgress = false;
   }
 
@@ -204,12 +205,11 @@ export class ReportComparisonComponent implements OnInit {
     const body = {text1: this.comparatorText, text2: this.comparedText};
     this.http.post('http://localhost:8443/diff', JSON.stringify(body), {headers: headers, responseType: 'text'}).subscribe(
       response => {
-        console.log(response);
+        return this.tableService.generateTable(response);
       },
       error => {
         console.log(error);
       }
     );
   }
-
 }

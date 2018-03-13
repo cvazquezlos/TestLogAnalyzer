@@ -28,6 +28,7 @@ import {ViewProjectsComponent} from './component/view-projects/view-projects.com
 import {RequestInterceptor} from '../config/interceptor/request.interceptor';
 import {ElasticsearchService} from './service/elasticsearch.service';
 import {ExecsStatusService} from './service/execs-status.service';
+import {TableService} from './service/table.service';
 import {SharedModule} from './shared/shared.module';
 
 const httpInterceptorProviders: Type<any>[] = [
@@ -68,6 +69,7 @@ const httpInterceptorProviders: Type<any>[] = [
   providers: [
     ElasticsearchService,
     ExecsStatusService,
+    TableService
   ],
   bootstrap: [AppComponent],
   entryComponents: [ComparisonSettingsComponent]
