@@ -7,6 +7,7 @@ export class TableService {
   comparedClass: string;
   lastCloseTag: string;
   lastOpenTag: string;
+  oldData: string;
   results: any[];
 
   constructor() {
@@ -25,6 +26,8 @@ export class TableService {
     lines.forEach(line => {
       line = this.closeOpenedTags(line.replace('&para;', ''));
       line = this.openClosedTags(line);
+      console.log(i + ' ' + line);
+      console.log(line.length);
       comparatorLine = this.cleanBetweenTags('<ins>', '</ins>', line, 0);
       comparedLine = this.cleanBetweenTags('<del>', '</del>', line, 1);
       this.concatResults(i, comparatorLine, comparedLine);
@@ -106,11 +109,27 @@ export class TableService {
   }
 
   private solveResultErrors() {
+    this.oldData = '';
+    let entry = false;
     for (let i = 0; i < this.results.length; i++) {
       const result = this.results[i];
-      if ((result.com_p.content.indexOf('<del>') !== -1) && (result.com_p !== undefined)) {
+      let comparator = result.com_p.content;
+      console.log((i + 1) + ' ' + comparator);
+      if ((comparator.indexOf('<del>') !== -1) && (result.com_p !== undefined)) {
         result.com_p.class = 'delC';
+        let diffPart = comparator.substring(comparator.indexOf('<del>'), comparator.lastIndexOf('</del>') + 6);
+        if ((diffPart.length / comparator.length) > 0.75) {
+          if (comparator.indexOf('<span>') !== -1) {
+            this.oldData = comparator.substring(comparator.indexOf('<span>') + 6, comparator.indexOf('</span>'));
+            comparator = comparator.replace(this.oldData, '');
+            comparator = comparator.replace('<del>', '<del>' + this.oldData
+              .replace('<span>', '').replace('</span>', ''));
+          }
+        }
+        console.log((i + 1) + ' ' + comparator);
+        result.com_p.content = comparator;
       }
+      let compared = result.comp.content;
       if ((result.comp.content.indexOf('<ins>') !== -1) && (this.results[i].comp !== undefined)) {
         result.comp.class = 'insC';
       }
