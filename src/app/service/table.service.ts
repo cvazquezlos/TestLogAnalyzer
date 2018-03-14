@@ -13,22 +13,25 @@ export class TableService {
   }
 
   generateTable(diff: string): any[] {
+    console.log(diff);
     this.results = [];
     this.comparatorClass = 'normal';
     this.comparedClass = 'normal';
     const lines = diff.split('<br>');
+    lines.pop();
+    console.log(lines);
     let comparedLine = '', comparatorLine = '';
     let i = 1;
     lines.forEach(line => {
       line = this.closeOpenedTags(line.replace('&para;', ''));
       line = this.openClosedTags(line);
+      console.log(i + " " + line);
       comparatorLine = this.cleanBetweenTags('<ins>', '</ins>', line, 0);
       comparedLine = this.cleanBetweenTags('<del>', '</del>', line, 1);
-      console.log(i + " " + comparatorLine);
-      console.log(i + " " + comparedLine);
       this.concatResults(i, comparatorLine, comparedLine);
       i++;
     });
+    this.solveResultErrors();
     return this.results;
   }
 
@@ -37,7 +40,6 @@ export class TableService {
     while (line.indexOf(open) !== -1) {
       uselessData = line.substring(line.indexOf(open) + 5, line.indexOf(close));
       line = line.replace(open + uselessData + close, '');
-      (code === 0) ? (this.comparatorClass = 'delC') : (this.comparedClass = 'insC');
     }
     if (line.length < 2) {
       (code === 0) ? (this.comparatorClass = 'added') : (this.comparedClass = 'added');
@@ -102,5 +104,18 @@ export class TableService {
         break;
     }
     return line;
+  }
+
+  private solveResultErrors() {
+    for (let i = 0; i < this.results.length; i++) {
+      let result = this.results[i];
+      if ((result.com_p.content.indexOf('<del>') !== -1) && (result.com_p !== undefined)) {
+        result.com_p.class = 'delC';
+      }
+      if ((result.comp.content.indexOf('<ins>') !== -1) && (this.results[i].comp !== undefined)) {
+        result.comp.class = 'insC';
+      }
+      this.results[i] = result;
+    };
   }
 }

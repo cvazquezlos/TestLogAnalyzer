@@ -32,20 +32,17 @@ Component | What does it mean?
 %m%n | Log message.
 
 ### Content of pages
-#### Home
-In this page, you can select a test of an execution (or see the whole execution) and it will be displayed. In addition to the above mentioned, you can filtering the displayed results by Maven messages or not.
-![Home](./resources/media/README/release2page1.png)
+#### Projects
+In this page, you can create your own project so any test can be related to it.
+![Home](./resources/media/README/release3page1.png)
 
-#### Comparison
-In this page, you can select a test and compare executions of it.
-##### Normal comparison
-![Comparison](./resources/media/README/release2page2f1.png)
+#### Executions of project
+In this page, you can view the logs which is inside your created project.
+![Comparison](./resources/media/README/release3page2.png)
 
-##### Comparison with no timestamp
-![Comparison](./resources/media/README/release2page2f2.png)
+#### Comparison between logs of same project
+![Comparison](./resources/media/README/release3page3.png)
 
-##### Comparison with time-diff estimation.
-![Comparison](./resources/media/README/release2page2f3.png)
 
 ## Getting started with Spring Logs Generator
 Ensure `JAVA_HOME` environment variable is se and points to your JDK installation directory. Follow these steps:
