@@ -32,9 +32,11 @@ export class AddProjectComponent implements OnInit {
     this.urlTxt = '';
     this.urlXml = '';
     this.project = new Project();
+    this.project.assigned_ids = [];
     this.project.name = '';
     this.elasticsearchService.countProjects().subscribe(response => this.project.id = response);
     this.project.num_execs = 0;
+    this.project.recently_deleted = -1;
   }
 
   cancel() {

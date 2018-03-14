@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,10 +25,12 @@ import elastest.loganalyzer.es.client.model.Project;
 public class ExecutionParserService {
 
 	private final ESLogService esLogService;
+	private final ESProjectService esProjectService;
 
 	@Autowired
-	public ExecutionParserService(ESLogService esLogService) {
+	public ExecutionParserService(ESProjectService esProjectService, ESLogService esLogService) {
 		this.esLogService = esLogService;
+		this.esProjectService = esProjectService;
 	}
 
 	public void parse(List<String> dirtyData, Project project, int lastId) throws Exception, IOException {
@@ -35,12 +38,26 @@ public class ExecutionParserService {
 		for (int i = 0; i < dirtyData.size(); i++) {
 			data.add(dirtyData.get(i).replaceAll("\n", ""));
 		}
-		int numExecs = project.getNum_execs();
-		data.add(0, "[INFO] Building project and starting unit test number " + numExecs + "...");
-		data.add("[INFO] Finishing unit test number " + numExecs + "...");
+		
+		int testNo = 1;
+		int recently_deleted = project.getRecently_deleted();
+		ArrayList<Integer> assigned_ids = project.getAssigned_ids();
+		if (recently_deleted != -1) {
+			testNo = recently_deleted;
+			recently_deleted = -1;
+		} else if (assigned_ids.size() != 0) {
+			testNo = Collections.max(assigned_ids) + 1;
+		}
+		assigned_ids.add(testNo);
+		project.setAssigned_ids(assigned_ids);
+		project.setRecently_deleted(recently_deleted);
+		esProjectService.save(project);
+		
+		data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
+		data.add("[INFO] Finishing unit test number " + testNo + "...");
 
-		String testNumber = String.format("%02d", numExecs);
 		Integer identificator = lastId;
+		String testNumber = String.format("%02d", testNo);
 
 		String pattern = "^(((\\d+).)+)(\\s+)(\\w+)(\\s+)(\\S+)(\\s+)(\\S*)((\\S*)((\\w+)|((\\s+)(\\w+)))(\\S*))(\\S*)(\\s+)(((\\w+).)+)(\\s+)(\\S*)(\\s+)(.*)$";
 		Pattern targetLog = Pattern.compile(pattern);

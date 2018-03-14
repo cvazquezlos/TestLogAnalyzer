@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import elastest.loganalyzer.es.client.model.Execution;
 import elastest.loganalyzer.es.client.model.Log;
@@ -12,13 +11,13 @@ import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.service.ESLogService;
 import elastest.loganalyzer.es.client.service.ESProjectService;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/logs")
 public class LogResource {
+	
 	private final ESLogService esLogService;
 	private final ESProjectService esProjectService;
 
@@ -125,19 +124,22 @@ public class LogResource {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> post(@RequestBody Log log) {
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(esLogService.save(log))
-				.toUri();
-		return ResponseEntity.created(uri).build();
-	}
-
 	@RequestMapping(value = "/remove/test/{test}", method = RequestMethod.DELETE)
 	public String deleteByTestAndProject(@PathVariable int test,
 			@RequestParam(value = "project", required = true) String project) {
 		String testNo = String.format("%02d", test);
 		List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
 		Project target = esProjectService.findByName(project);
+		int idDeleted = Integer.valueOf(testNo);
+		target.setRecently_deleted(idDeleted);
+		ArrayList<Integer> assignedIds = target.getAssigned_ids();
+		for (int i = 0; i < assignedIds.size(); i++) {
+			if (assignedIds.get(i) == idDeleted) {
+				assignedIds.remove(i);
+				break;
+			}
+		}
+		target.setAssigned_ids(assignedIds);
 		target.setNum_execs(target.getNum_execs() - 1);
 		for (int i = 0; i < logs.size(); i++) {
 			esLogService.delete(logs.get(i));
