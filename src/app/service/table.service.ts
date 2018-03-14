@@ -14,20 +14,16 @@ export class TableService {
   }
 
   generateTable(diff: string): any[] {
-    console.log(diff);
     this.results = [];
     this.comparatorClass = 'normal';
     this.comparedClass = 'normal';
     const lines = diff.split('<br>');
     lines.pop();
-    console.log(lines);
     let comparedLine = '', comparatorLine = '';
     let i = 1;
     lines.forEach(line => {
       line = this.closeOpenedTags(line.replace('&para;', ''));
       line = this.openClosedTags(line);
-      console.log(i + ' ' + line);
-      console.log(line.length);
       comparatorLine = this.cleanBetweenTags('<ins>', '</ins>', line, 0);
       comparedLine = this.cleanBetweenTags('<del>', '</del>', line, 1);
       this.concatResults(i, comparatorLine, comparedLine);
@@ -110,29 +106,53 @@ export class TableService {
 
   private solveResultErrors() {
     this.oldData = '';
-    let entry = false;
+    let entry = false, entry2 = false, lastLength = 0, newLength = 0, oldDataC = '';
     for (let i = 0; i < this.results.length; i++) {
       const result = this.results[i];
       let comparator = result.com_p.content;
-      console.log((i + 1) + ' ' + comparator);
-      if ((comparator.indexOf('<del>') !== -1) && (result.com_p !== undefined)) {
-        result.com_p.class = 'delC';
+      if (((comparator.indexOf('<del>') !== -1) && (result.com_p !== undefined)) || (entry2)) {
+        newLength = comparator.length;
         let diffPart = comparator.substring(comparator.indexOf('<del>'), comparator.lastIndexOf('</del>') + 6);
-        if ((diffPart.length / comparator.length) > 0.75) {
+        result.com_p.class = 'delC';
+        if (((diffPart.length / comparator.length) > 0.75) && (!entry2)) {
           if (comparator.indexOf('<span>') !== -1) {
             this.oldData = comparator.substring(comparator.indexOf('<span>') + 6, comparator.indexOf('</span>'));
+            const cleanOldData = this.oldData.replace('<span>', '').replace('</span>', '');
             comparator = comparator.replace(this.oldData, '');
-            comparator = comparator.replace('<del>', '<del>' + this.oldData
-              .replace('<span>', '').replace('</span>', ''));
+            comparator = comparator.replace('<del>', '<del>' + cleanOldData);
+            result.comp.content = result.comp.content.replace(cleanOldData, '');
+            result.comp.class = 'added';
+            entry = true;
           }
         }
-        console.log((i + 1) + ' ' + comparator);
+        if ((newLength / lastLength) < 0.3) {
+          oldDataC = comparator;
+          comparator = '';
+          result.com_p.class = 'added';
+          entry2 = true;
+        } else if (entry2) {
+          comparator = oldDataC + comparator;
+          entry2 = false;
+          oldDataC = '';
+        }
         result.com_p.content = comparator;
+        lastLength = comparator.length;
+        console.log((i+1) + comparator);
       }
       let compared = result.comp.content;
       if ((result.comp.content.indexOf('<ins>') !== -1) && (this.results[i].comp !== undefined)) {
         result.comp.class = 'insC';
+        if ((compared.indexOf('<ins>') !== -1) && entry) {
+          entry = false;
+          const cleanOldData = this.oldData.replace('<span>', '').replace('</span>', '');
+          if (compared.indexOf(cleanOldData) === -1) {
+            compared = compared.replace('<ins>', '<ins>' + this.oldData
+              .replace('<span>', '').replace('</span>', ''));
+          }
+          this.oldData = '';
+        }
       }
+      result.comp.content = compared;
       this.results[i] = result;
     };
   }

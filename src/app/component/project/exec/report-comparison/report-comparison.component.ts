@@ -206,7 +206,6 @@ export class ReportComparisonComponent implements OnInit {
     try {
       const response = await this.http.post('http://localhost:8443/diff', JSON.stringify(body),
         {headers: headers, responseType: 'text'}).toPromise();
-      console.log(response);
       return this.tableService.generateTable(response);
     } catch (error) {
       console.log(error);
