@@ -112,7 +112,7 @@ export class TableService {
       let comparator = result.com_p.content;
       if (((comparator.indexOf('<del>') !== -1) && (result.com_p !== undefined)) || (entry2)) {
         newLength = comparator.length;
-        let diffPart = comparator.substring(comparator.indexOf('<del>'), comparator.lastIndexOf('</del>') + 6);
+        const diffPart = comparator.substring(comparator.indexOf('<del>'), comparator.lastIndexOf('</del>') + 6);
         result.com_p.class = 'delC';
         if (((diffPart.length / comparator.length) > 0.75) && (!entry2)) {
           if (comparator.indexOf('<span>') !== -1) {
@@ -137,7 +137,6 @@ export class TableService {
         }
         result.com_p.content = comparator;
         lastLength = comparator.length;
-        console.log((i+1) + comparator);
       }
       let compared = result.comp.content;
       if ((result.comp.content.indexOf('<ins>') !== -1) && (this.results[i].comp !== undefined)) {
