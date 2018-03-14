@@ -204,7 +204,8 @@ export class ReportComparisonComponent implements OnInit {
     headers.append('Content-Type', 'text/plain');
     const body = {text1: this.comparatorText, text2: this.comparedText};
     try {
-      const response = await this.http.post('http://localhost:8443/diff', JSON.stringify(body), {headers: headers, responseType: 'text'}).toPromise();
+      const response = await this.http.post('http://localhost:8443/diff', JSON.stringify(body),
+        {headers: headers, responseType: 'text'}).toPromise();
       console.log(response);
       return this.tableService.generateTable(response);
     } catch (error) {

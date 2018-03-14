@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class TableService {
@@ -25,7 +25,6 @@ export class TableService {
     lines.forEach(line => {
       line = this.closeOpenedTags(line.replace('&para;', ''));
       line = this.openClosedTags(line);
-      console.log(i + " " + line);
       comparatorLine = this.cleanBetweenTags('<ins>', '</ins>', line, 0);
       comparedLine = this.cleanBetweenTags('<del>', '</del>', line, 1);
       this.concatResults(i, comparatorLine, comparedLine);
@@ -108,7 +107,7 @@ export class TableService {
 
   private solveResultErrors() {
     for (let i = 0; i < this.results.length; i++) {
-      let result = this.results[i];
+      const result = this.results[i];
       if ((result.com_p.content.indexOf('<del>') !== -1) && (result.com_p !== undefined)) {
         result.com_p.class = 'delC';
       }
