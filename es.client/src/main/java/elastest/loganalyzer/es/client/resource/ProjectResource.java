@@ -51,6 +51,7 @@ public class ProjectResource {
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public int addLocation(@RequestBody Project project) {
+		project.setRecently_deleted(-1);
 		return esProjectService.save(project);
 	}
 

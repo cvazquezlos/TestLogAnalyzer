@@ -39,19 +39,20 @@ public class ExecutionParserService {
 			data.add(dirtyData.get(i).replaceAll("\n", ""));
 		}
 		
-		int testNo = 1;
+		System.out.println(project);
+		int num_execs = project.getNum_execs();
 		int recently_deleted = project.getRecently_deleted();
-		ArrayList<Integer> assigned_ids = project.getAssigned_ids();
+		int testNo = 1;
 		if (recently_deleted != -1) {
 			testNo = recently_deleted;
 			recently_deleted = -1;
-		} else if (assigned_ids.size() != 0) {
-			testNo = Collections.max(assigned_ids) + 1;
+		} else {
+			testNo = num_execs + 1;
 		}
-		assigned_ids.add(testNo);
-		project.setAssigned_ids(assigned_ids);
+		project.setNum_execs(num_execs + 1);
 		project.setRecently_deleted(recently_deleted);
 		esProjectService.save(project);
+		System.out.println(project);
 		
 		data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
 		data.add("[INFO] Finishing unit test number " + testNo + "...");

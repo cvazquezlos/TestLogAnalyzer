@@ -132,14 +132,6 @@ public class LogResource {
 		Project target = esProjectService.findByName(project);
 		int idDeleted = Integer.valueOf(testNo);
 		target.setRecently_deleted(idDeleted);
-		ArrayList<Integer> assignedIds = target.getAssigned_ids();
-		for (int i = 0; i < assignedIds.size(); i++) {
-			if (assignedIds.get(i) == idDeleted) {
-				assignedIds.remove(i);
-				break;
-			}
-		}
-		target.setAssigned_ids(assignedIds);
 		target.setNum_execs(target.getNum_execs() - 1);
 		for (int i = 0; i < logs.size(); i++) {
 			esLogService.delete(logs.get(i));

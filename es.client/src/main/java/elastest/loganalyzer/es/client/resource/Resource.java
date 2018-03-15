@@ -94,15 +94,16 @@ public class Resource {
 
 	@RequestMapping(value = "/file", method = RequestMethod.POST)
 	public String upload(@RequestBody MultipartFile file) {
+		System.out.println("Method called");
 		try {
 			if (file != null) {
 				if (file.getOriginalFilename().contains("txt")) {
+					System.out.println("1 condition");
 					List<String> data = executionParserService.getStreamByFile(file);
 					Project target = esProjectService.findByName(recentProject);
-					target.setNum_execs(target.getNum_execs() + 1);
-					esProjectService.save(target);
 					this.executionParserService.parse(data, target, Lists.newArrayList(esLogService.findAll()).size());
 				} else {
+					System.out.println("2 condition");
 					TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
 					InputStream inputStream = file.getInputStream();
 					InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
