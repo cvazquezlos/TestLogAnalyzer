@@ -33,13 +33,12 @@ public class ExecutionParserService {
 		this.esProjectService = esProjectService;
 	}
 
-	public void parse(List<String> dirtyData, Project project, int lastId) throws Exception, IOException {
+	public void parse(List<String> dirtyData, Project project, String type, int lastId) throws Exception, IOException {
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
 			data.add(dirtyData.get(i).replaceAll("\n", ""));
 		}
 		
-		System.out.println(project);
 		int num_execs = project.getNum_execs();
 		int recently_deleted = project.getRecently_deleted();
 		int testNo = 1;
@@ -52,7 +51,6 @@ public class ExecutionParserService {
 		project.setNum_execs(num_execs + 1);
 		project.setRecently_deleted(recently_deleted);
 		esProjectService.save(project);
-		System.out.println(project);
 		
 		data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
 		data.add("[INFO] Finishing unit test number " + testNo + "...");
@@ -74,7 +72,7 @@ public class ExecutionParserService {
 		while (!data.isEmpty()) {
 			String line = data.get(0);
 			String id = String.format("%04d", identificator);
-			Log log = new Log(id, project.getName(), testNumber, line, line);
+			Log log = new Log(id, line, line, project.getName(), testNumber, type);
 			Matcher target = targetLog.matcher(line);
 			Matcher maven = mavenLog.matcher(line);
 			Matcher test = testLog.matcher(line);

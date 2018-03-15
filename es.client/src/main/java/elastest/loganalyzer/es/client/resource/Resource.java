@@ -34,6 +34,7 @@ public class Resource {
 	private final Collection<String> loggedErrors = new ArrayList<String>();
 	private ConsoleLogger consoleLogger;
 	private static String recentProject;
+	private static String type;
 
 	@Autowired
 	public Resource(ESProjectService esProjectService, ExecutionParserService executionParserService,
@@ -101,7 +102,7 @@ public class Resource {
 					System.out.println("1 condition");
 					List<String> data = executionParserService.getStreamByFile(file);
 					Project target = esProjectService.findByName(recentProject);
-					this.executionParserService.parse(data, target, Lists.newArrayList(esLogService.findAll()).size());
+					this.executionParserService.parse(data, target, type, Lists.newArrayList(esLogService.findAll()).size());
 				} else {
 					System.out.println("2 condition");
 					TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
@@ -120,8 +121,10 @@ public class Resource {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(@RequestBody String name) {
-		recentProject = name;
+	public String update(@RequestBody String data) {
+		String[] content = data.split(":||:");
+		recentProject = content[0];
+		type = content[1];
 		return recentProject;
 	}
 
@@ -131,7 +134,7 @@ public class Resource {
 		Project target = esProjectService.findByName(recentProject);
 		target.setNum_execs(target.getNum_execs() + 1);
 		esProjectService.save(target);
-		this.executionParserService.parse(data, target, Lists.newArrayList(esLogService.findAll()).size());
+		this.executionParserService.parse(data, target, type, Lists.newArrayList(esLogService.findAll()).size());
 		return executionParserService.getStreamByUrl(url);
 	}
 }

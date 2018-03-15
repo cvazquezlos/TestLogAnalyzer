@@ -54,7 +54,7 @@ export class AddProjectComponent implements OnInit {
     this.elasticsearchService.postProject(this.project).subscribe(
       response => {
         let headers: HttpHeaders = new HttpHeaders();
-        this.http.post<string>('http://localhost:8443/files/update', JSON.stringify(this.project.name), {headers: headers}).subscribe(
+        this.http.post<string>('http://localhost:8443/files/update', JSON.stringify(this.project.name + ':||:test'), {headers: headers}).subscribe(
           result1 => {
             if (this.urlTxt !== 'Empty') {
               this.elasticsearchService.downloadUrl(this.urlTxt).subscribe(
