@@ -70,7 +70,7 @@ export class ElasticsearchService {
 
   async getLogsByProjectAsync(project: string, tab: string) {
     try {
-      let composedUrl = this.baseAPILogsUrl + '/project/' + project + '?tab=' + tab;
+      const composedUrl = this.baseAPILogsUrl + '/project/' + project + '?tab=' + tab;
       const response = await this.http.get<Execution[]>(composedUrl).toPromise();
       return response;
     } catch (error) {
@@ -79,7 +79,7 @@ export class ElasticsearchService {
   }
 
   getLogsByProject(project: string, tab: string) {
-    let composedUrl = this.baseAPILogsUrl + '/project/' + project + '?tab=' + tab;
+    const composedUrl = this.baseAPILogsUrl + '/project/' + project + '?tab=' + tab;
     return this.http.get<Execution[]>(composedUrl).map(
       response => response,
       error => error
@@ -108,7 +108,7 @@ export class ElasticsearchService {
   }
 
   deleteLogsByTest(test: string, project: string) {
-    let composedUrl = this.baseAPILogsUrl + '/remove/test/' + test + '?project=' + project;
+    const composedUrl = this.baseAPILogsUrl + '/remove/test/' + test + '?project=' + project;
     return this.http.delete<any>(composedUrl).map(
       response => response,
       error => error

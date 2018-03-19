@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../../model/project.model';
 import {ElasticsearchService} from '../../../service/elasticsearch.service';
-import {Tab} from "../../../model/tab.model";
+import {Tab} from '../../../model/tab.model';
 
 @Component({
   selector: 'app-add-exec',

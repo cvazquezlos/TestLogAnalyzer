@@ -30,7 +30,8 @@ export class ViewExecsComponent implements OnInit {
   project: Project = new Project();
   tabs: any[];
 
-  constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService, private router: Router, private breadcrumbs: BreadcrumbsService) {
+  constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService,
+              private router: Router, private breadcrumbs: BreadcrumbsService) {
   }
 
   addExec() {
@@ -73,7 +74,7 @@ export class ViewExecsComponent implements OnInit {
     const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);
     for (let i = 0; i < response0.length; i++) {
       const response1 = await this.elasticsearchService.getLogsByProjectAsync(this.project.name, response0[i].tab);
-      let executions = [];
+      const executions = [];
       for (let j = 0; j < response1.length; j++) {
         let icon, classi: any;
         if (response1[j].status.indexOf('SUCCESS') !== -1) {

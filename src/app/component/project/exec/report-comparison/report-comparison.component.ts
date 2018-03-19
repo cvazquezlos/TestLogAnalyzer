@@ -60,10 +60,8 @@ export class ReportComparisonComponent implements OnInit {
   private async generateComparison() {
     const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
       undefined);
-    console.log("OK 2");
     const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.execSelected,
       this.project, true, undefined);
-    console.log("OK 3");
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
       let loggerMessage: string;
