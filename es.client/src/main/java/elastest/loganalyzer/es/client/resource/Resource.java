@@ -101,6 +101,8 @@ public class Resource {
 
 	@RequestMapping(value = "/file", method = RequestMethod.POST)
 	public String upload(@RequestBody MultipartFile file) {
+		System.out.println(recentProject);
+		System.out.println(recentTab);
 		try {
 			if (file != null) {
 				if (file.getOriginalFilename().contains("txt")) {
@@ -134,12 +136,17 @@ public class Resource {
 		System.out.println(tab);
 		recentTab = tab.replaceAll("\"", "");
 		if (esTabService.findByTabAndProject(recentTab, recentProject) == null) {
+			System.out.println("Create " + recentTab);
 			Iterable<Tab> tabs = esTabService.findAll();
+			System.out.println(tabs);
 			int id = 0;
-			Iterator<Tab> iterator = tabs.iterator();
+			// A PARTTIR DE AQUÍ NO FUNCIONA.
+			id = Lists.newArrayList(tabs).size();
+			/*Iterator<Tab> iterator = tabs.iterator();
 			while (iterator.hasNext()) {
 				id += 1;
-			}
+			}*/
+			System.out.println(id);
 			esTabService.save(new Tab(id + 1, recentProject, recentTab));
 		}
 		return "\"" + recentTab + "\"";

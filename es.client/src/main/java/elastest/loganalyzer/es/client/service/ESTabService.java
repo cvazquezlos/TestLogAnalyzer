@@ -27,7 +27,6 @@ public class ESTabService {
 	}
 	
 	public Iterable<Tab> findAll() {
-		System.out.println(repository.findAll());
 		return repository.findAll();
 	}
 	

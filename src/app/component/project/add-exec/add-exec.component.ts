@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../../model/project.model';
 import {ElasticsearchService} from '../../../service/elasticsearch.service';
-import {Tab} from '../../../model/tab.model';
 
 @Component({
   selector: 'app-add-exec',
@@ -57,44 +56,42 @@ export class AddExecComponent implements OnInit {
 
   save() {
     this.code = 1;
-    this.elasticsearchService.postProject(this.project).subscribe(
-      a => {
-        this.elasticsearchService.postFileProject(this.project.name).subscribe(
-          b => {
-            this.elasticsearchService.postFileTab(this.targetTab).subscribe(
-              c => {
-                if (this.urlTxt !== 'Empty') {
-                  this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
-                    d => {
-                      this.code = 2;
-                      if (this.urlXml !== 'Empty') {
-                        this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
-                          e => e,
-                          error => console.log(error)
-                        )
-                      }
-                    },
-                    error => console.log(error)
-                  );
-                } else {
-                  if (this.fileTxt !== null) {
-                    this.elasticsearchService.postFileByUpload(this.fileTxt).subscribe(
-                      d => {
-                        this.code = 2;
-                        if (this.fileXml !== null) {
-                          this.elasticsearchService.postFileByUpload(this.fileXml).subscribe(
-                            e => e,
-                            error => console.log(error)
-                          )
-                        }
-                      },
+    console.log(this.project.name);
+    console.log(this.targetTab);
+    this.elasticsearchService.postFileProject(this.project.name).subscribe(
+      b => {
+        this.elasticsearchService.postFileTab(this.targetTab).subscribe(
+          c => {
+            if (this.urlTxt !== 'Empty') {
+              this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
+                d => {
+                  this.code = 2;
+                  if (this.urlXml !== 'Empty') {
+                    this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
+                      e => e,
                       error => console.log(error)
-                    );
+                    )
                   }
-                }
-              },
-              error => console.log(error)
-            );
+                },
+                error => console.log(error)
+              );
+            } else {
+              if (this.fileTxt !== null) {
+                console.log("Calling postfilebyupload");
+                this.elasticsearchService.postFileByUpload(this.fileTxt).subscribe(
+                  d => {
+                    this.code = 2;
+                    if (this.fileXml !== null) {
+                      this.elasticsearchService.postFileByUpload(this.fileXml).subscribe(
+                        e => e,
+                        error => console.log(error)
+                      )
+                    }
+                  },
+                  error => console.log(error)
+                );
+              }
+            }
           },
           error => console.log(error)
         );
