@@ -65,22 +65,23 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
-	public List<Execution> getByProject(@PathVariable String project) {
+	public List<Execution> getByProject(@PathVariable String project, 
+			@RequestParam(name = "tab", required = true) String tab) {
 		Project target = esProjectService.findByName(project);
 		List<Execution> execs = new ArrayList<Execution>();
 		for (int i = 0; i < target.getNum_execs(); i++) {
 			Execution execution = new Execution();
 			execution.setId(i + 1);
 			String test = String.format("%02d", i + 1);
-			List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(test, project);
+			List<Log> logs = esLogService.findByTabAndTestAndProjectOrderByIdAsc(tab, test, project);
 			execution.setEntries(logs.size());
 			Log selected = this.findLog(logs);
 			execution.setTimestamp(selected.getTimestamp());
-			execution.setDebug(esLogService.findByProjectAndTestAndLevel(test, project, "DEBUG"));
-			execution.setInfo(esLogService.findByProjectAndTestAndLevel(test, project, "INFO"));
-			execution.setWarning(esLogService.findByProjectAndTestAndLevel(test, project, "WARNING"));
-			execution.setError(esLogService.findByProjectAndTestAndLevel(test, project, "ERROR"));
-			logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(test, project, "BUILD");
+			execution.setDebug(esLogService.findByTabAndProjectAndTestAndLevel(tab, project, test, "DEBUG"));
+			execution.setInfo(esLogService.findByTabAndProjectAndTestAndLevel(tab, project, test, "INFO"));
+			execution.setWarning(esLogService.findByTabAndProjectAndTestAndLevel(tab, project, test, "WARNING"));
+			execution.setError(esLogService.findByTabAndProjectAndTestAndLevel(tab, project, test, "ERROR"));
+			logs = esLogService.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(tab, project, test, "BUILD");
 			for (int j = 0; j < logs.size(); j++) {
 				if (logs.get(j).getMessage().contains("BUILD ")) {
 					if (logs.get(j).getMessage().length() < 2) {
@@ -93,7 +94,9 @@ public class LogResource {
 					execution.setStatus("FAILURE");
 				}
 			}
-			execs.add(execution);
+			if (execution.getTimestamp() != null) {
+				execs.add(execution);
+			}
 		}
 		return execs;
 	}

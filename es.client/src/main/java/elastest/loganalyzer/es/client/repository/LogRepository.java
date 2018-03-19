@@ -22,11 +22,12 @@ public interface LogRepository extends ElasticsearchCrudRepository<Log, String> 
 
 	List<Log> findByProjectAndTestAndLevel(String project, String test, String level);
 
-	List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String project, String test, String message);
+	List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String project, String test,
+			String message);
 
 	List<Log> findByTestAndProjectAndThreadOrderByIdAsc(String testNo, String project, String thread);
-	
-	List<Log> findByTestAndProjectOrderByIdAsc(String test, String project);
+
+	List<Log> findByTabAndTestAndProjectOrderByIdAsc(String tab, String test, String project);
 
 	List<Log> findByTestOrderByIdAsc(String test);
 
@@ -35,5 +36,12 @@ public interface LogRepository extends ElasticsearchCrudRepository<Log, String> 
 
 	List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(String logger, String project,
 			String testNo, String method);
+
+	List<Log> findByTestAndProjectOrderByIdAsc(String testNo, String project);
+
+	List<Log> findByTabAndProjectAndTestAndLevel(String tab, String project, String test, String level);
+
+	List<Log> findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String tab, String project,
+			String test, String message);
 
 }

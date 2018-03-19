@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +32,7 @@ public class ExecutionParserService {
 		this.esProjectService = esProjectService;
 	}
 
-	public void parse(List<String> dirtyData, Project project, String type, int lastId) throws Exception, IOException {
+	public void parse(List<String> dirtyData, Project project, String tab, int lastId) throws Exception, IOException {
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
 			data.add(dirtyData.get(i).replaceAll("\n", ""));
@@ -72,7 +71,7 @@ public class ExecutionParserService {
 		while (!data.isEmpty()) {
 			String line = data.get(0);
 			String id = String.format("%04d", identificator);
-			Log log = new Log(id, line, line, project.getName(), testNumber, type);
+			Log log = new Log(id, line, line, project.getName(), tab, testNumber);
 			Matcher target = targetLog.matcher(line);
 			Matcher maven = mavenLog.matcher(line);
 			Matcher test = testLog.matcher(line);
