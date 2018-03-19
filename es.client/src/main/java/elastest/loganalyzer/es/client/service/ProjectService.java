@@ -10,12 +10,12 @@ import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.repository.ProjectRepository;
 
 @Service
-public class ESProjectService {
+public class ProjectService {
 
 	private final ProjectRepository repository;
 
 	@Autowired
-	public ESProjectService(ProjectRepository repository) {
+	public ProjectService(ProjectRepository repository) {
 		this.repository = repository;
 	}
 

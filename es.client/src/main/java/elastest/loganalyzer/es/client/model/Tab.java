@@ -5,13 +5,13 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 @Document(indexName = "tabs", type = "tabs")
 public class Tab {
-	
+
 	@Id
 	private int id;
 
 	private String project;
 	private String tab;
-	
+
 	public Tab() {
 	}
 

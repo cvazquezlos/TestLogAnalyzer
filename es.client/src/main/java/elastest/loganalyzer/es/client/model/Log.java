@@ -38,7 +38,7 @@ public class Log {
 		this.test = test;
 		this.timestamp = "-";
 	}
-	
+
 	public String getId() {
 		return id;
 	}

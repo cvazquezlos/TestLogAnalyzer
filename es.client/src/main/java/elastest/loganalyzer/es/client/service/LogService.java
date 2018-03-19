@@ -10,12 +10,12 @@ import elastest.loganalyzer.es.client.repository.LogRepository;
 import java.util.List;
 
 @Service
-public class ESLogService {
+public class LogService {
 
 	private final LogRepository repository;
 
 	@Autowired
-	public ESLogService(LogRepository repository) {
+	public LogService(LogRepository repository) {
 		this.repository = repository;
 	}
 

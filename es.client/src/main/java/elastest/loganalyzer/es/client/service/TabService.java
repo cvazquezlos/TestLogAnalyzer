@@ -9,12 +9,12 @@ import elastest.loganalyzer.es.client.model.Tab;
 import elastest.loganalyzer.es.client.repository.TabRepository;
 
 @Service
-public class ESTabService {
+public class TabService {
 
 	private final TabRepository repository;
 	
 	@Autowired
-	public ESTabService(TabRepository repository) {
+	public TabService(TabRepository repository) {
 		this.repository = repository;
 	}
 
