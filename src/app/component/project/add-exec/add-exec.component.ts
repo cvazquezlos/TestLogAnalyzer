@@ -1,9 +1,9 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../../model/project.model';
 import {ElasticsearchService} from '../../../service/elasticsearch.service';
+import {Tab} from "../../../model/tab.model";
 
 @Component({
   selector: 'app-add-exec',
@@ -18,11 +18,13 @@ export class AddExecComponent implements OnInit {
   fileTxt: File;
   fileXml: File;
   isFile: boolean;
-  project: Project;
+  project: Project = new Project();
+  tabs: string[] = ['test'];
+  targetTab: string;
   urlTxt: string;
   urlXml: string;
 
-  constructor(private http: HttpClient, private router: Router, private elasticsearchService: ElasticsearchService,
+  constructor(private router: Router, private elasticsearchService: ElasticsearchService,
               private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService) {
     this.code = 0;
     this.fileSelected = true;
@@ -41,9 +43,12 @@ export class AddExecComponent implements OnInit {
 
   ngOnInit() {
     const name = this.activatedRoute.snapshot.parent.params['project'];
-    this.elasticsearchService.getProjectByName(name).subscribe(response => {
+    this.elasticsearchService.getProjectByName(name).subscribe(
+      response => {
         this.project = response;
-      }
+        this.updateTabs();
+      },
+      error => console.log(error)
     );
     this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
       {label: name, url: '/projects/' + name, params: []},
@@ -53,64 +58,48 @@ export class AddExecComponent implements OnInit {
   save() {
     this.code = 1;
     this.elasticsearchService.postProject(this.project).subscribe(
-      response => {
-        let headers: HttpHeaders = new HttpHeaders();
-        this.http.post<string>('http://localhost:8443/files/update', JSON.stringify(this.project.name), {headers: headers}).subscribe(
-          result1 => {
-            if (this.urlTxt !== 'Empty') {
-              this.elasticsearchService.downloadUrl(this.urlTxt).subscribe(
-                result2 => {
-                  this.code = 2;
-                  if (this.urlXml !== 'Empty') {
-                    this.elasticsearchService.downloadUrl(this.urlXml).subscribe(
-                      result3 => {
+      a => {
+        this.elasticsearchService.postFileProject(this.project.name).subscribe(
+          b => {
+            this.elasticsearchService.postFileTab(this.targetTab).subscribe(
+              c => {
+                if (this.urlTxt !== 'Empty') {
+                  this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
+                    d => {
+                      this.code = 2;
+                      if (this.urlXml !== 'Empty') {
+                        this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
+                          e => e,
+                          error => console.log(error)
+                        )
                       }
+                    },
+                    error => console.log(error)
+                  );
+                } else {
+                  if (this.fileTxt !== null) {
+                    this.elasticsearchService.postFileByUpload(this.fileTxt).subscribe(
+                      d => {
+                        this.code = 2;
+                        if (this.fileXml !== null) {
+                          this.elasticsearchService.postFileByUpload(this.fileXml).subscribe(
+                            e => e,
+                            error => console.log(error)
+                          )
+                        }
+                      },
+                      error => console.log(error)
                     );
                   }
                 }
-              );
-            } else {
-              headers = new HttpHeaders();
-              headers.append('Content-Type', 'application/pdf');
-              const mainFormData = new FormData();
-              if (this.fileTxt !== null) {
-                mainFormData.append('file', this.fileTxt);
-                this.http.post<string>('http://localhost:8443/files/file', mainFormData, {headers: headers}).subscribe(
-                  result2 => {
-                    this.code = 2;
-                    if (this.fileXml !== null) {
-                      const secondaryFormData = new FormData();
-                      secondaryFormData.append('file', this.fileXml);
-                      this.http.post<string>('http://localhost:8443/files/file', secondaryFormData, {headers: headers}).subscribe(
-                        result3 => {
-                          this.code = 2;
-                        }
-                      );
-                    }
-                  }
-                );
-              } else {
-                mainFormData.append('file', this.fileXml);
-                this.http.post<string>('http://localhost:8443/files/file', mainFormData, {headers: headers}).subscribe(
-                  result2 => {
-                    this.code = 2;
-                    if (this.fileTxt !== null) {
-                      const secondaryFormData = new FormData();
-                      secondaryFormData.append('file', this.fileTxt);
-                      this.http.post<string>('http://localhost:8443/files/file', secondaryFormData, {headers: headers}).subscribe(
-                        result3 => {
-                          this.code = 2;
-                        }
-                      );
-                    }
-                  }
-                );
-              }
-            }
+              },
+              error => console.log(error)
+            );
           },
           error => console.log(error)
         );
-      }
+      },
+      error => console.log(error)
     );
   }
 
@@ -118,5 +107,14 @@ export class AddExecComponent implements OnInit {
     (file.name.includes('.txt')) ? (this.fileTxt = file) : (this.fileXml = file);
     this.urlTxt = 'Empty';
     this.urlXml = 'Empty';
+  }
+
+  private async updateTabs() {
+    const response = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);
+    this.tabs = [];
+    for (let i = 0; i < response.length; i++) {
+      this.tabs[i] = response[i].tab;
+    }
+    this.targetTab = this.tabs[0];
   }
 }

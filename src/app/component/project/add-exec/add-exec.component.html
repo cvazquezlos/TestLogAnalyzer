@@ -110,6 +110,16 @@
         </ng-template>
       </div>
       <ng-template #hideSave>
+        <div layout="row" layout-align="">
+          <mat-form-field>
+            <input matInput
+                   maxlength="20"
+                   placeholder="Name of the tab"
+                   required
+                   type="text"
+                   [(ngModel)]="targetTab">
+          </mat-form-field>
+        </div>
         <div layout="row" layout-align="center center">
           <button color="accent" mat-raised-button (click)="save()">Save
           </button>

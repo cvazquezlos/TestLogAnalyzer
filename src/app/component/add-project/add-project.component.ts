@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../model/project.model';
 import {ElasticsearchService} from '../../service/elasticsearch.service';
@@ -22,8 +21,7 @@ export class AddProjectComponent implements OnInit {
   urlTxt: string;
   urlXml: string;
 
-  constructor(private elasticsearchService: ElasticsearchService, private http: HttpClient, private router: Router,
-              private breadcrumbs: BreadcrumbsService) {
+  constructor(private elasticsearchService: ElasticsearchService, private router: Router, private breadcrumbs: BreadcrumbsService) {
     this.code = 0;
     this.fileSelected = true;
     this.fileTxt = null;
@@ -34,7 +32,7 @@ export class AddProjectComponent implements OnInit {
     this.project = new Project();
     this.project.assigned_ids = [];
     this.project.name = '';
-    this.elasticsearchService.countProjects().subscribe(response => this.project.id = response);
+    this.elasticsearchService.getCountOfProjects().subscribe(response => this.project.id = response);
     this.project.num_execs = 0;
     this.project.recently_deleted = -1;
   }
@@ -52,64 +50,48 @@ export class AddProjectComponent implements OnInit {
   save() {
     this.code = 1;
     this.elasticsearchService.postProject(this.project).subscribe(
-      response => {
-        let headers: HttpHeaders = new HttpHeaders();
-        this.http.post<string>('http://localhost:8443/files/update', JSON.stringify(this.project.name + ':||:test'), {headers: headers}).subscribe(
-          result1 => {
-            if (this.urlTxt !== 'Empty') {
-              this.elasticsearchService.downloadUrl(this.urlTxt).subscribe(
-                result2 => {
-                  this.code = 2;
-                  if (this.urlXml !== 'Empty') {
-                    this.elasticsearchService.downloadUrl(this.urlXml).subscribe(
-                      result3 => {
+      a => {
+        this.elasticsearchService.postFileProject(this.project.name).subscribe(
+          b => {
+            this.elasticsearchService.postFileTab('test').subscribe(
+              c => {
+                if (this.urlTxt !== 'Empty') {
+                  this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
+                    d => {
+                      this.code = 2;
+                      if (this.urlXml !== 'Empty') {
+                        this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
+                          e => e,
+                          error => console.log(error)
+                        )
                       }
+                    },
+                    error => console.log(error)
+                  );
+                } else {
+                  if (this.fileTxt !== null) {
+                    this.elasticsearchService.postFileByUpload(this.fileTxt).subscribe(
+                      d => {
+                        this.code = 2;
+                        if (this.fileXml !== null) {
+                          this.elasticsearchService.postFileByUpload(this.fileXml).subscribe(
+                            e => e,
+                            error => console.log(error)
+                          )
+                        }
+                      },
+                      error => console.log(error)
                     );
                   }
                 }
-              );
-            } else {
-              headers = new HttpHeaders();
-              headers.append('Content-Type', 'application/pdf');
-              const mainFormData = new FormData();
-              if (this.fileTxt !== null) {
-                mainFormData.append('file', this.fileTxt);
-                this.http.post<string>('http://localhost:8443/files/file', mainFormData, {headers: headers}).subscribe(
-                  result2 => {
-                    this.code = 2;
-                    if (this.fileXml !== null) {
-                      const secondaryFormData = new FormData();
-                      secondaryFormData.append('file', this.fileXml);
-                      this.http.post<string>('http://localhost:8443/files/file', secondaryFormData, {headers: headers}).subscribe(
-                        result3 => {
-                          this.code = 2;
-                        }
-                      );
-                    }
-                  }
-                );
-              } else {
-                mainFormData.append('file', this.fileXml);
-                this.http.post<string>('http://localhost:8443/files/file', mainFormData, {headers: headers}).subscribe(
-                  result2 => {
-                    this.code = 2;
-                    if (this.fileTxt !== null) {
-                      const secondaryFormData = new FormData();
-                      secondaryFormData.append('file', this.fileTxt);
-                      this.http.post<string>('http://localhost:8443/files/file', secondaryFormData, {headers: headers}).subscribe(
-                        result3 => {
-                          this.code = 2;
-                        }
-                      );
-                    }
-                  }
-                );
-              }
-            }
+              },
+              error => console.log(error)
+            );
           },
           error => console.log(error)
         );
-      }
+      },
+      error => console.log(error)
     );
   }
 
