@@ -33,6 +33,7 @@ public class ExecutionParserService {
 	}
 
 	public void parse(List<String> dirtyData, Project project, String tab, int lastId) throws Exception, IOException {
+		List<Log> logs = new ArrayList<Log>();
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
 			data.add(dirtyData.get(i).replaceAll("\n", ""));
@@ -118,11 +119,12 @@ public class ExecutionParserService {
 				}
 			}
 			if (!exception) {
-				esLogService.save(log);
+				logs.add(log);
 				identificator++;
 			}
 			data.remove(0);
 		}
+		esLogService.saveIterable(logs);
 	}
 
 	public List<String> getStreamByUrl(String url) throws IOException {

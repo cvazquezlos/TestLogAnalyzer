@@ -73,6 +73,10 @@ public class ESLogService {
 	public String save(Log log) {
 		return repository.save(log).getId();
 	}
+	
+	public Iterable<Log> saveIterable(Iterable<Log> logs) {
+		return repository.save(logs);
+	}
 
 	public List<Log> findByLoggerAndProjectAndTestAndMethodOrderByIdAsc(String logger, String project, String testNo,
 			String method) {

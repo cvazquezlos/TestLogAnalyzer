@@ -131,6 +131,7 @@ public class Resource {
 
 	@RequestMapping(value = "/tab", method = RequestMethod.POST)
 	public String updateTab(@RequestBody String tab) {
+		System.out.println(tab);
 		recentTab = tab.replaceAll("\"", "");
 		if (esTabService.findByTabAndProject(recentTab, recentProject) == null) {
 			Iterable<Tab> tabs = esTabService.findAll();
