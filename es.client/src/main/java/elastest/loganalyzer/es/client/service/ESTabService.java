@@ -22,6 +22,10 @@ public class ESTabService {
 		repository.delete(type);
 	}
 	
+	public void deleteIterable(Iterable<Tab> tabs) {
+		repository.delete(tabs);
+	}
+	
 	public Iterable<Tab> findAll() {
 		System.out.println(repository.findAll());
 		return repository.findAll();

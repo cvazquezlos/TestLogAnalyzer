@@ -131,14 +131,11 @@ public class LogResource {
 	public String deleteByTestAndProject(@PathVariable int test,
 			@RequestParam(value = "project", required = true) String project) {
 		String testNo = String.format("%02d", test);
-		List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
 		Project target = esProjectService.findByName(project);
 		int idDeleted = Integer.valueOf(testNo);
 		target.setRecently_deleted(idDeleted);
 		target.setNum_execs(target.getNum_execs() - 1);
-		for (int i = 0; i < logs.size(); i++) {
-			esLogService.delete(logs.get(i));
-		}
+		esLogService.deleteIterable(esLogService.findByTestAndProjectOrderByIdAsc(testNo, project));
 		esProjectService.save(target);
 		return "200";
 	}

@@ -22,6 +22,10 @@ public class ESLogService {
 	public void delete(Log log) {
 		repository.delete(log);
 	}
+	
+	public void deleteIterable(Iterable<Log> logs) {
+		repository.delete(logs);
+	}
 
 	public Iterable<Log> findAll() {
 		return repository.findAll();

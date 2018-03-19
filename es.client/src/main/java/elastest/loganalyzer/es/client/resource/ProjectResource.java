@@ -62,14 +62,8 @@ public class ProjectResource {
 	@RequestMapping(value = "/remove/id/{id}", method = RequestMethod.DELETE)
 	public Project delete(@PathVariable int id) {
 		Project deleted = esProjectService.findOne(id);
-		List<Log> logs = esLogService.findByProject(deleted.getName());
-		for (int i = 0; i < logs.size(); i++) {
-			esLogService.delete(logs.get(i));
-		}
-		List<Tab> tabs = esTabService.findByProject(deleted.getName());
-		for (int i = 0; i < tabs.size(); i++) {
-			esTabService.delete(tabs.get(i));
-		}
+		esLogService.deleteIterable(esLogService.findByProject(deleted.getName()));
+		esTabService.deleteIterable(esTabService.findByProject(deleted.getName()));
 		esProjectService.delete(deleted);
 		return deleted;
 	}
