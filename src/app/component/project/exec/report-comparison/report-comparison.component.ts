@@ -59,9 +59,9 @@ export class ReportComparisonComponent implements OnInit {
 
   private async generateComparison() {
     const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
-      undefined);
+      false);
     const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.execSelected,
-      this.project, true, undefined);
+      this.project, true, false);
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
       let loggerMessage: string;
@@ -71,9 +71,9 @@ export class ReportComparisonComponent implements OnInit {
         const currentLogger = loggerMessage.split(' ')[1];
         const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
         const comparatorLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          this.test);
+          this.test, undefined);
         const comparedLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          '' + this.execSelected);
+          '' + this.execSelected, undefined);
         const methodsData = [];
         for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
           this.comparatorText = '';
@@ -135,7 +135,8 @@ export class ReportComparisonComponent implements OnInit {
       if (loggers[i].split(' ').length === 2) {
         const logger = loggers[i].split(' ')[1];
         const partialLogger = logger.split('.')[logger.split('.').length - 1];
-        const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test, '');
+        const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
+          undefined);
         const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
           const cleanMethod = methods[j].replace('(', '').replace(')', '');

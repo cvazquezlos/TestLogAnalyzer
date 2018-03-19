@@ -50,8 +50,10 @@ export class ElasticsearchService {
   async getLogsByLoggerAsync(logger: string, project: string, test: string, method?: string) {
     try {
       let composedUrl = this.baseAPILogsUrl + '/logger/' + logger + '?project=' + project + '&test=' + test;
-      (composedUrl += '&method=' + method) && (method !== '');
-      console.log(composedUrl);
+      if (method !== undefined) {
+        composedUrl += '&method=' + method;
+      }
+      console.log(composedUrl + ':' + method);
       const response = await this.http.get<any[]>(composedUrl).toPromise();
       return response;
     } catch (error) {

@@ -56,8 +56,6 @@ export class AddExecComponent implements OnInit {
 
   save() {
     this.code = 1;
-    console.log(this.project.name);
-    console.log(this.targetTab);
     this.elasticsearchService.postFileProject(this.project.name).subscribe(
       b => {
         this.elasticsearchService.postFileTab(this.targetTab).subscribe(
@@ -77,7 +75,6 @@ export class AddExecComponent implements OnInit {
               );
             } else {
               if (this.fileTxt !== null) {
-                console.log("Calling postfilebyupload");
                 this.elasticsearchService.postFileByUpload(this.fileTxt).subscribe(
                   d => {
                     this.code = 2;
