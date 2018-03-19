@@ -3,13 +3,14 @@ package elastest.loganalyzer.es.client.model;
 public class Execution {
 
 	private int id;
-	private String timestamp;
-	private int entries;
-	private String status;
+
 	private int debug;
-	private int info;
-	private int warning;
+	private int entries;
 	private int error;
+	private int info;
+	private String status;
+	private String timestamp;
+	private int warning;
 
 	public Execution() {
 	}
@@ -35,12 +36,12 @@ public class Execution {
 		this.id = id;
 	}
 
-	public String getTimestamp() {
-		return timestamp;
+	public int getDebug() {
+		return debug;
 	}
 
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
+	public void setDebug(int debug) {
+		this.debug = debug;
 	}
 
 	public int getEntries() {
@@ -51,20 +52,12 @@ public class Execution {
 		this.entries = entries;
 	}
 
-	public String getStatus() {
-		return status;
+	public int getError() {
+		return error;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public int getDebug() {
-		return debug;
-	}
-
-	public void setDebug(int debug) {
-		this.debug = debug;
+	public void setError(int error) {
+		this.error = error;
 	}
 
 	public int getInfo() {
@@ -75,6 +68,22 @@ public class Execution {
 		this.info = info;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+
 	public int getWarning() {
 		return warning;
 	}
@@ -83,11 +92,9 @@ public class Execution {
 		this.warning = warning;
 	}
 
-	public int getError() {
-		return error;
-	}
-
-	public void setError(int error) {
-		this.error = error;
+	@Override
+	public String toString() {
+		return "Execution [id=" + id + ", debug=" + debug + ", entries=" + entries + ", error=" + error + ", info="
+				+ info + ", status=" + status + ", timestamp=" + timestamp + ", warning=" + warning + "]";
 	}
 }

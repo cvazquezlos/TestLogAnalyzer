@@ -24,23 +24,38 @@ import elastest.loganalyzer.es.client.model.Project;
 public class ExecutionParserService {
 
 	private final ESLogService esLogService;
+	private final ESProjectService esProjectService;
 
 	@Autowired
-	public ExecutionParserService(ESLogService esLogService) {
+	public ExecutionParserService(ESProjectService esProjectService, ESLogService esLogService) {
 		this.esLogService = esLogService;
+		this.esProjectService = esProjectService;
 	}
 
-	public void parse(List<String> dirtyData, Project project, int lastId) throws Exception, IOException {
+	public void parse(List<String> dirtyData, Project project, String tab, int lastId) throws Exception, IOException {
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
 			data.add(dirtyData.get(i).replaceAll("\n", ""));
 		}
-		int numExecs = project.getNum_execs();
-		data.add(0, "[INFO] Building project and starting unit test number " + numExecs + "...");
-		data.add("[INFO] Finishing unit test number " + numExecs + "...");
+		
+		int num_execs = project.getNum_execs();
+		int recently_deleted = project.getRecently_deleted();
+		int testNo = 1;
+		if (recently_deleted != -1) {
+			testNo = recently_deleted;
+			recently_deleted = -1;
+		} else {
+			testNo = num_execs + 1;
+		}
+		project.setNum_execs(num_execs + 1);
+		project.setRecently_deleted(recently_deleted);
+		esProjectService.save(project);
+		
+		data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
+		data.add("[INFO] Finishing unit test number " + testNo + "...");
 
-		String testNumber = String.format("%02d", numExecs);
 		Integer identificator = lastId;
+		String testNumber = String.format("%02d", testNo);
 
 		String pattern = "^(((\\d+).)+)(\\s+)(\\w+)(\\s+)(\\S+)(\\s+)(\\S*)((\\S*)((\\w+)|((\\s+)(\\w+)))(\\S*))(\\S*)(\\s+)(((\\w+).)+)(\\s+)(\\S*)(\\s+)(.*)$";
 		Pattern targetLog = Pattern.compile(pattern);
@@ -56,7 +71,7 @@ public class ExecutionParserService {
 		while (!data.isEmpty()) {
 			String line = data.get(0);
 			String id = String.format("%04d", identificator);
-			Log log = new Log(id, project.getName(), testNumber, line, line);
+			Log log = new Log(id, line, line, project.getName(), tab, testNumber);
 			Matcher target = targetLog.matcher(line);
 			Matcher maven = mavenLog.matcher(line);
 			Matcher test = testLog.matcher(line);

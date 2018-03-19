@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.model.Project;
+import elastest.loganalyzer.es.client.model.Tab;
 import elastest.loganalyzer.es.client.service.ESLogService;
 import elastest.loganalyzer.es.client.service.ESProjectService;
+import elastest.loganalyzer.es.client.service.ESTabService;
 
 @RestController
 @RequestMapping("/projects")
@@ -22,11 +24,13 @@ public class ProjectResource {
 
 	private final ESLogService esLogService;
 	private final ESProjectService esProjectService;
+	private final ESTabService esTabService;
 
 	@Autowired
-	public ProjectResource(ESProjectService esProjectService, ESLogService esLogService) {
+	public ProjectResource(ESLogService esLogService, ESProjectService esProjectService, ESTabService esTabService) {
 		this.esLogService = esLogService;
 		this.esProjectService = esProjectService;
+		this.esTabService = esTabService;
 	}
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -51,15 +55,20 @@ public class ProjectResource {
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public int addLocation(@RequestBody Project project) {
+		project.setRecently_deleted(-1);
 		return esProjectService.save(project);
 	}
 
-	@RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/remove/id/{id}", method = RequestMethod.DELETE)
 	public Project delete(@PathVariable int id) {
 		Project deleted = esProjectService.findOne(id);
 		List<Log> logs = esLogService.findByProject(deleted.getName());
 		for (int i = 0; i < logs.size(); i++) {
 			esLogService.delete(logs.get(i));
+		}
+		List<Tab> tabs = esTabService.findByProject(deleted.getName());
+		for (int i = 0; i < tabs.size(); i++) {
+			esTabService.delete(tabs.get(i));
 		}
 		esProjectService.delete(deleted);
 		return deleted;

@@ -1,8 +1,5 @@
 import {HttpClientModule} from '@angular/common/http';
-import {
-  NgModule,
-  Type
-} from '@angular/core';
+import {NgModule, Type} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CovalentHighlightModule} from '@covalent/highlight';
@@ -17,8 +14,8 @@ import {AddProjectComponent} from './component/add-project/add-project.component
 import {AddExecComponent} from './component/project/add-exec/add-exec.component';
 import {ExecComponent} from './component/project/exec/exec.component';
 import {
-  ReportComparisonComponent,
-  ComparisonSettingsComponent
+  ComparisonSettingsComponent,
+  ReportComparisonComponent
 } from './component/project/exec/report-comparison/report-comparison.component';
 import {ViewExecComponent} from './component/project/exec/view-exec/view-exec.component';
 import {ProjectComponent} from './component/project/project.component';
@@ -27,7 +24,6 @@ import {PublicComponent} from './component/public.component'
 import {ViewProjectsComponent} from './component/view-projects/view-projects.component';
 import {RequestInterceptor} from '../config/interceptor/request.interceptor';
 import {ElasticsearchService} from './service/elasticsearch.service';
-import {ExecsStatusService} from './service/execs-status.service';
 import {TableService} from './service/table.service';
 import {SharedModule} from './shared/shared.module';
 
@@ -51,15 +47,15 @@ const httpInterceptorProviders: Type<any>[] = [
   ],
   imports: [
     BreadcrumbsModule,
-    BrowserModule,
     BrowserAnimationsModule,
+    BrowserModule,
     CodemirrorModule,
+    CovalentHighlightModule,
     CovalentHttpModule.forRoot({
       interceptors: [{
         interceptor: RequestInterceptor, paths: ['**'],
       }],
     }),
-    CovalentHighlightModule,
     CovalentMarkdownModule,
     HttpClientModule,
     NgbModule.forRoot(),
@@ -68,7 +64,6 @@ const httpInterceptorProviders: Type<any>[] = [
   ],
   providers: [
     ElasticsearchService,
-    ExecsStatusService,
     TableService
   ],
   bootstrap: [AppComponent],

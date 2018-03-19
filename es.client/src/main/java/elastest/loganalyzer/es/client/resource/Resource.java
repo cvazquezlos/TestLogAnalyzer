@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.plugin.surefire.log.api.ConsoleLogger;
@@ -20,26 +21,32 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.common.collect.Lists;
 
 import elastest.loganalyzer.es.client.model.Project;
+import elastest.loganalyzer.es.client.model.Tab;
 import elastest.loganalyzer.es.client.service.ESLogService;
 import elastest.loganalyzer.es.client.service.ESProjectService;
+import elastest.loganalyzer.es.client.service.ESTabService;
 import elastest.loganalyzer.es.client.service.ExecutionParserService;
+
+import static java.lang.Math.toIntExact;
 
 @RestController
 @RequestMapping("/files")
 public class Resource {
 
-	private final ESProjectService esProjectService;
-	private final ESLogService esLogService;
-	private final ExecutionParserService executionParserService;
-	private final Collection<String> loggedErrors = new ArrayList<String>();
 	private ConsoleLogger consoleLogger;
+	private final Collection<String> loggedErrors = new ArrayList<String>();
+	private final ESLogService esLogService;
+	private final ESProjectService esProjectService;
+	private final ESTabService esTabService;
+	private final ExecutionParserService executionParserService;
 	private static String recentProject;
+	private static String recentTab;
 
 	@Autowired
-	public Resource(ESProjectService esProjectService, ExecutionParserService executionParserService,
-			ESLogService esLogService) {
-		this.esProjectService = esProjectService;
+	public Resource(ESLogService esLogService, ESProjectService esProjectService, ESTabService esTypeService, ExecutionParserService executionParserService) {
 		this.esLogService = esLogService;
+		this.esProjectService = esProjectService;
+		this.esTabService = esTypeService;
 		this.executionParserService = executionParserService;
 	}
 
@@ -99,9 +106,7 @@ public class Resource {
 				if (file.getOriginalFilename().contains("txt")) {
 					List<String> data = executionParserService.getStreamByFile(file);
 					Project target = esProjectService.findByName(recentProject);
-					target.setNum_execs(target.getNum_execs() + 1);
-					esProjectService.save(target);
-					this.executionParserService.parse(data, target, Lists.newArrayList(esLogService.findAll()).size());
+					this.executionParserService.parse(data, target, recentTab, Lists.newArrayList(esLogService.findAll()).size());
 				} else {
 					TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
 					InputStream inputStream = file.getInputStream();
@@ -118,10 +123,25 @@ public class Resource {
 		}
 	}
 
-	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(@RequestBody String name) {
-		recentProject = name;
-		return recentProject;
+	@RequestMapping(value = "/project", method = RequestMethod.POST)
+	public String updateProject(@RequestBody String project) {
+		recentProject = project.replaceAll("\"", "");
+		return "\"" + recentProject + "\"";
+	}
+
+	@RequestMapping(value = "/tab", method = RequestMethod.POST)
+	public String updateTab(@RequestBody String tab) {
+		recentTab = tab.replaceAll("\"", "");
+		if (esTabService.findByTabAndProject(recentTab, recentProject) == null) {
+			Iterable<Tab> tabs = esTabService.findAll();
+			int id = 0;
+			Iterator<Tab> iterator = tabs.iterator();
+			while (iterator.hasNext()) {
+				id += 1;
+			}
+			esTabService.save(new Tab(id + 1, recentProject, recentTab));
+		}
+		return "\"" + recentTab + "\"";
 	}
 
 	@RequestMapping(value = "/url", method = RequestMethod.POST)
@@ -130,7 +150,7 @@ public class Resource {
 		Project target = esProjectService.findByName(recentProject);
 		target.setNum_execs(target.getNum_execs() + 1);
 		esProjectService.save(target);
-		this.executionParserService.parse(data, target, Lists.newArrayList(esLogService.findAll()).size());
+		this.executionParserService.parse(data, target, recentTab, Lists.newArrayList(esLogService.findAll()).size());
 		return executionParserService.getStreamByUrl(url);
 	}
 }

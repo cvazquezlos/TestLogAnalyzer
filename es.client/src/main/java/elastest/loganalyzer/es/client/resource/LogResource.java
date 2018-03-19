@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import elastest.loganalyzer.es.client.model.Execution;
 import elastest.loganalyzer.es.client.model.Log;
@@ -12,13 +11,13 @@ import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.service.ESLogService;
 import elastest.loganalyzer.es.client.service.ESProjectService;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/logs")
 public class LogResource {
+	
 	private final ESLogService esLogService;
 	private final ESProjectService esProjectService;
 
@@ -66,22 +65,23 @@ public class LogResource {
 	}
 
 	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
-	public List<Execution> getByProject(@PathVariable String project) {
+	public List<Execution> getByProject(@PathVariable String project, 
+			@RequestParam(name = "tab", required = true) String tab) {
 		Project target = esProjectService.findByName(project);
 		List<Execution> execs = new ArrayList<Execution>();
 		for (int i = 0; i < target.getNum_execs(); i++) {
 			Execution execution = new Execution();
 			execution.setId(i + 1);
 			String test = String.format("%02d", i + 1);
-			List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(test, project);
+			List<Log> logs = esLogService.findByTabAndTestAndProjectOrderByIdAsc(tab, test, project);
 			execution.setEntries(logs.size());
 			Log selected = this.findLog(logs);
 			execution.setTimestamp(selected.getTimestamp());
-			execution.setDebug(esLogService.findByProjectAndTestAndLevel(test, project, "DEBUG"));
-			execution.setInfo(esLogService.findByProjectAndTestAndLevel(test, project, "INFO"));
-			execution.setWarning(esLogService.findByProjectAndTestAndLevel(test, project, "WARNING"));
-			execution.setError(esLogService.findByProjectAndTestAndLevel(test, project, "ERROR"));
-			logs = esLogService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(test, project, "BUILD");
+			execution.setDebug(esLogService.findByTabAndProjectAndTestAndLevel(tab, project, test, "DEBUG"));
+			execution.setInfo(esLogService.findByTabAndProjectAndTestAndLevel(tab, project, test, "INFO"));
+			execution.setWarning(esLogService.findByTabAndProjectAndTestAndLevel(tab, project, test, "WARNING"));
+			execution.setError(esLogService.findByTabAndProjectAndTestAndLevel(tab, project, test, "ERROR"));
+			logs = esLogService.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(tab, project, test, "BUILD");
 			for (int j = 0; j < logs.size(); j++) {
 				if (logs.get(j).getMessage().contains("BUILD ")) {
 					if (logs.get(j).getMessage().length() < 2) {
@@ -94,7 +94,9 @@ public class LogResource {
 					execution.setStatus("FAILURE");
 				}
 			}
-			execs.add(execution);
+			if (execution.getTimestamp() != null) {
+				execs.add(execution);
+			}
 		}
 		return execs;
 	}
@@ -125,19 +127,14 @@ public class LogResource {
 		}
 	}
 
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> post(@RequestBody Log log) {
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(esLogService.save(log))
-				.toUri();
-		return ResponseEntity.created(uri).build();
-	}
-
 	@RequestMapping(value = "/remove/test/{test}", method = RequestMethod.DELETE)
 	public String deleteByTestAndProject(@PathVariable int test,
 			@RequestParam(value = "project", required = true) String project) {
 		String testNo = String.format("%02d", test);
 		List<Log> logs = esLogService.findByTestAndProjectOrderByIdAsc(testNo, project);
 		Project target = esProjectService.findByName(project);
+		int idDeleted = Integer.valueOf(testNo);
+		target.setRecently_deleted(idDeleted);
 		target.setNum_execs(target.getNum_execs() - 1);
 		for (int i = 0; i < logs.size(); i++) {
 			esLogService.delete(logs.get(i));

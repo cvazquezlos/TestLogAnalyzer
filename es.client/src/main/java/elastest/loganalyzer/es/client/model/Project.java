@@ -7,18 +7,20 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class Project {
 
 	@Id
-	private int id;
+	private int id;	
 
 	private String name;
 	private int num_execs;
+	private int recently_deleted;
 
 	public Project() {
 	}
 
-	public Project(int id, String name, int num_execs) {
+	public Project(int id, String name, int num_execs, int recently_deleted) {
 		this.id = id;
 		this.name = name;
 		this.num_execs = num_execs;
+		this.recently_deleted = recently_deleted;
 	}
 
 	public int getId() {
@@ -28,7 +30,7 @@ public class Project {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -43,5 +45,19 @@ public class Project {
 
 	public void setNum_execs(int num_execs) {
 		this.num_execs = num_execs;
+	}
+
+	public int getRecently_deleted() {
+		return recently_deleted;
+	}
+
+	public void setRecently_deleted(int recently_deleted) {
+		this.recently_deleted = recently_deleted;
+	}
+
+	@Override
+	public String toString() {
+		return "Project [id=" + id + ", name=" + name + ", num_execs=" + num_execs + ", recently_deleted="
+				+ recently_deleted + "]";
 	}
 }

@@ -27,8 +27,8 @@ export class ViewExecsComponent implements OnInit {
     {name: 'ERROR', label: 'ERROR', width: 100},
     {name: 'options', label: 'Options', width: 150}
   ];
-  execsRowData: any[] = [];
   project: Project = new Project();
+  tabs: any[];
 
   constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService,
               private router: Router, private breadcrumbs: BreadcrumbsService) {
@@ -41,55 +41,68 @@ export class ViewExecsComponent implements OnInit {
   delete(row: any) {
     this.deleteInProgress = true;
     this.execDeleting = row.id;
-    this.elasticsearchService.deleteExec(row.id, this.project.name).subscribe(response => {
-      this.reloadTable(this.project.name);
-      this.deleteInProgress = false;
-      this.execDeleting = '';
-    })
+    this.elasticsearchService.deleteLogsByTest(row.id, this.project.name).subscribe(
+      response => {
+        this.reloadTabContent();
+        this.deleteInProgress = false;
+        this.execDeleting = '';
+      },
+      error => console.log(error)
+    )
   }
 
   goTo(row: any) {
-      this.router.navigate(['./', row.id], {relativeTo: this.activatedRoute});
+    this.router.navigate(['./', row.id], {relativeTo: this.activatedRoute});
   }
 
   ngOnInit() {
     const name = this.activatedRoute.snapshot.params['project'];
     this.elasticsearchService.getProjectByName(name).subscribe(response => {
         this.project = response;
-        this.reloadTable(name);
+        this.reloadTabContent();
       }
     );
-    this.breadcrumbs.store([{label: 'Home', url: '/', params: []}, {label: name, url: '/projects/' + name, params: []}]);
+    this.breadcrumbs.store([{label: 'Home', url: '/', params: []}, {
+      label: name,
+      url: '/projects/' + name,
+      params: []
+    }]);
   }
 
-  reloadTable(name: string) {
-    this.elasticsearchService.loadExecutionsByProject(name).subscribe(response => {
-      this.execsRowData = [];
-      console.log(response);
-      for (let i = 0; i < response.length; i++) {
+  async reloadTabContent() {
+    this.tabs = [];
+    const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);
+    for (let i = 0; i < response0.length; i++) {
+      const response1 = await this.elasticsearchService.getLogsByProjectAsync(this.project.name, response0[i].tab);
+      const executions = [];
+      for (let j = 0; j < response1.length; j++) {
         let icon, classi: any;
-        if (response[i].status.indexOf('SUCCESS') !== -1) {
-          icon = 'check_circle';
+        if (response1[j].status.indexOf('SUCCESS') !== -1) {
+          icon = 'check-circle';
           classi = 'tc-green-700';
         } else {
           icon = 'error';
           classi = 'tc-red-700';
         }
-        this.execsRowData[i] = {
-          'id': response[i].id,
-          'startdate': response[i].timestamp,
-          'entries': response[i].entries,
+        executions[j] = {
+          'id': response1[j].id,
+          'startdate': response1[j].timestamp,
+          'entries': response1[j].entries,
           'status': {
             'icon': icon,
             'class': classi,
-            'status': response[i].status
+            'status': response1[j].status
           },
-          'DEBUG': response[i].debug,
-          'INFO': response[i].info,
-          'WARNING': response[i].warning,
-          'ERROR': response[i].error
+          'DEBUG': response1[j].debug,
+          'INFO': response1[j].info,
+          'WARNING': response1[j].warning,
+          'ERROR': response1[j].error
         }
       }
-    });
+      this.tabs[i] = {
+        'name': response0[i].tab,
+        'executions': executions
+      };
+    }
   }
 }

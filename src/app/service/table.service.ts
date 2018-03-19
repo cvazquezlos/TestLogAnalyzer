@@ -153,6 +153,6 @@ export class TableService {
       }
       result.comp.content = compared;
       this.results[i] = result;
-    };
+    }
   }
 }

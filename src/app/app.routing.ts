@@ -11,15 +11,18 @@ import {ViewProjectsComponent} from './component/view-projects/view-projects.com
 
 export const appRoutes: Routes = [
   {path: '', redirectTo: 'projects', pathMatch: 'full'},
-  {path: 'projects', component: PublicComponent,
+  {
+    path: 'projects', component: PublicComponent,
     children: [
       {path: '', component: ViewProjectsComponent},
       {path: 'add', component: AddProjectComponent},
-      {path: ':project', component: ProjectComponent,
+      {
+        path: ':project', component: ProjectComponent,
         children: [
           {path: '', component: ViewExecsComponent},
           {path: 'add', component: AddExecComponent},
-          {path: ':exec', component: ExecComponent,
+          {
+            path: ':exec', component: ExecComponent,
             children: [
               {path: '', component: ViewExecComponent},
               {path: 'report', component: ReportComparisonComponent}
@@ -31,8 +34,6 @@ export const appRoutes: Routes = [
   }
 ];
 
-export const appRoutingProviders: any[] = [
-
-];
+export const appRoutingProviders: any[] = [];
 
 export const routing = RouterModule.forRoot(appRoutes);

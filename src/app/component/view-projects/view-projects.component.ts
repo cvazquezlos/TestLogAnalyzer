@@ -34,7 +34,7 @@ export class ViewProjectsComponent implements OnInit {
   delete(project: Project) {
     this.deleteInProgress = true;
     this.projectDeleting = project.name;
-    this.elasticsearchService.deleteProject(project.id).subscribe(response => {
+    this.elasticsearchService.deleteProjectById(project.id).subscribe(response => {
       this.reloadTable();
       this.deleteInProgress = false;
       this.projectDeleting = '';
@@ -51,7 +51,7 @@ export class ViewProjectsComponent implements OnInit {
 
   reloadTable() {
     this.exec = true;
-    this.elasticsearchService.getProjects().subscribe(response => {
+    this.elasticsearchService.getProjectsAll().subscribe(response => {
       this.projectsRowData = [];
       for (let i = 0; i < response.length; i++) {
         this.projectsRowData[i] = {
