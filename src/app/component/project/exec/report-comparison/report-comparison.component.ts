@@ -1,4 +1,3 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {
   Component, ElementRef,
   Inject, OnInit,
@@ -12,7 +11,7 @@ import {
 import {ActivatedRoute} from '@angular/router';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
-import {Project} from '../../../../model/project.model';
+import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 import {TableService} from '../../../../service/table.service';
 
 @Component({
@@ -53,14 +52,18 @@ export class ReportComparisonComponent implements OnInit {
   resultData: any[] = [];
   test: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private http: HttpClient,
-              private dialog: MatDialog, private tableService: TableService) {
+  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
+              private tableService: TableService, private elasticsearchService: ElasticsearchService) {
     this.comparisonInProgress = false;
   }
 
   private async generateComparison() {
-    const comparatorLoggers = await this.getLoggers(this.test);
-    const comparedLoggers = await this.getLoggers('' + this.execSelected);
+    const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
+      undefined);
+    console.log("OK 2");
+    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.execSelected,
+      this.project, true, undefined);
+    console.log("OK 3");
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
       let loggerMessage: string;
@@ -69,8 +72,10 @@ export class ReportComparisonComponent implements OnInit {
       if (loggerMessage.split(' ').length === 2) {
         const currentLogger = loggerMessage.split(' ')[1];
         const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
-        const comparatorLoggerMethod = await this.getMethodsByPartialLogger(this.test, partialLogger);
-        const comparedLoggerMethod = await this.getMethodsByPartialLogger('' + this.execSelected, partialLogger);
+        const comparatorLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
+          this.test);
+        const comparedLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
+          '' + this.execSelected);
         const methodsData = [];
         for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
           this.comparatorText = '';
@@ -78,10 +83,13 @@ export class ReportComparisonComponent implements OnInit {
           let methodMessage: string;
           (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
             : (methodMessage = comparedLoggerMethod[j]);
-          const comparatorMethodLogs = await this.getLogs(this.test, partialLogger, methodMessage.replace('(', '')
+          console.log(methodMessage);
+          const comparatorMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
+            this.test, methodMessage.replace('(', '')
             .replace(')', ''));
-          const comparedMethodLogs = await this.getLogs('' + this.execSelected, partialLogger, methodMessage
-            .replace('(', '').replace(')', ''));
+          const comparedMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
+            '' + this.execSelected, methodMessage.replace('(', '')
+            .replace(')', ''));
           this.comparatorText = this.generateOutput(comparatorMethodLogs);
           this.comparedText = this.generateOutput(comparedMethodLogs);
           methodsData.push({
@@ -106,7 +114,8 @@ export class ReportComparisonComponent implements OnInit {
     let result = '';
     for (let i = 0; i < logs.length; i++) {
       (this.mode === '1') && (logs[i].timestamp = '');
-      (this.mode === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf() - (dateComparator).valueOf()).toString());
+      (this.mode === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf() - (dateComparator).valueOf())
+        .toString());
       result += (logs[i].timestamp + ' [' + logs[i].thread + '] ' + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\r\n';
     }
@@ -122,21 +131,25 @@ export class ReportComparisonComponent implements OnInit {
       {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
     this.ready = false;
     this.classesL = [];
-    const loggers = await this.getLoggers(this.test);
+    const loggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
+      false);
     for (let i = 0; i < loggers.length; i++) {
       if (loggers[i].split(' ').length === 2) {
         const logger = loggers[i].split(' ')[1];
         const partialLogger = logger.split('.')[logger.split('.').length - 1];
-        const methods = await this.getMethodsByPartialLogger(this.test, partialLogger);
+        const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test, '');
         const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
+          const cleanMethod = methods[j].replace('(', '').replace(')', '');
+          console.log(cleanMethod);
           methodsData.push({
             'name': methods[j],
-            'logs': await this.getLogs(this.test, partialLogger, methods[j].replace('(', '').replace(')', ''))
+            'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
+              cleanMethod)
           });
         }
         this.classesL.push({
-          'name': loggers[i],
+          'name': loggers[i].split(' ')[1],
           'methods': methodsData
         });
       }
@@ -145,7 +158,7 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   openComparisonDialog() {
-    this.http.get<Project>('http://localhost:8443/projects/name/' + this.project).subscribe(
+    this.elasticsearchService.getProjectByName(this.project).subscribe(
       response => {
         const avaibleExecs = [];
         for (let i = 0; i < response.num_execs; i++) {
@@ -165,51 +178,13 @@ export class ReportComparisonComponent implements OnInit {
             this.generateComparison();
           }
         );
-      }
+      },
+      error => console.log(error)
     );
   }
 
-  private async getLoggers(test: string) {
-    try {
-      const response = await this.http.get<string[]>('http://localhost:8443/logs/test/' + test + '?project=' + this.project
-        + '&classes=true').toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  private async getLogs(test: string, partialLogger: string, method: string) {
-    try {
-      const response = await this.http.get<Log[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
-        + '&test=' + test + '&method=' + method).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  private async getMethodsByPartialLogger(test: string, partialLogger: string) {
-    try {
-      const response = await this.http.get<string[]>('http://localhost:8443/logs/logger/' + partialLogger + '?project=' + this.project
-        + '&test=' + test).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   private async readDiffer() {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Content-Type', 'text/plain');
-    const body = {text1: this.comparatorText, text2: this.comparedText};
-    try {
-      const response = await this.http.post('http://localhost:8443/diff', JSON.stringify(body),
-        {headers: headers, responseType: 'text'}).toPromise();
-      return this.tableService.generateTable(response);
-    } catch (error) {
-      console.log(error);
-    }
-
+    const response = await this.elasticsearchService.postDiff(this.comparatorText, this.comparedText);
+    return this.tableService.generateTable(response);
   }
 }

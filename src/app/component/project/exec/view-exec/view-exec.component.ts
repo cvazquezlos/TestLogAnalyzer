@@ -1,9 +1,8 @@
-import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
-import {Log} from '../../../../model/log.model';
+import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 
 @Component({
   selector: 'app-view-exec',
@@ -25,8 +24,8 @@ export class ViewExecComponent implements OnInit {
   project: string;
   test: string;
 
-  constructor(private activatedRoute: ActivatedRoute, private http: HttpClient, private breadcrumbs: BreadcrumbsService,
-              private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService,
+              private router: Router, private elasticsearchService: ElasticsearchService) {
   }
 
   goTo() {
@@ -48,19 +47,21 @@ export class ViewExecComponent implements OnInit {
   }
 
   reloadTable() {
-    this.http.get<Log[]>('http://localhost:8443/logs/test/' + this.test + '?project=' + this.project + '&classes=' +
-      'false&maven=' + this.mavenMessages).subscribe(response => {
-      this.logsRowData = [];
-      for (let i = 0; i < response.length; i++) {
-        this.logsRowData[i] = {
-          'id': response[i].id,
-          'timestamp': response[i].timestamp,
-          'thread': response[i].thread,
-          'level': response[i].level,
-          'message': response[i].message
+    this.elasticsearchService.getLogsByTest(this.test, this.project, false, this.mavenMessages).subscribe(
+      response => {
+        this.logsRowData = [];
+        for (let i = 0; i < response.length; i++) {
+          this.logsRowData[i] = {
+            'id': response[i].id,
+            'timestamp': response[i].timestamp,
+            'thread': response[i].thread,
+            'level': response[i].level,
+            'message': response[i].message
+          }
         }
-      }
-    });
+      },
+      error => console.log(error)
+    );
   }
 
 }
