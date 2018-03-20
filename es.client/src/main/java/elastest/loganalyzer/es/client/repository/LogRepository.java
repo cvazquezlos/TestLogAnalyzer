@@ -17,16 +17,18 @@ public interface LogRepository extends ElasticsearchCrudRepository<Log, String> 
 	List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String project, String test,
 			String message);
 
-	List<Log> findByTestAndProjectAndThreadOrderByIdAsc(String testNo, String project, String thread);
+	List<Log> findByTestAndProjectAndThreadOrderByIdAsc(String test, String project, String thread);
 
 	List<Log> findByTabAndTestAndProjectOrderByIdAsc(String tab, String test, String project);
 
 	List<Log> findByTestOrderByIdAsc(String test);
 
 	List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(String logger, String project,
-			String testNo, String method);
+			String test, String method);
 
-	List<Log> findByTestAndProjectOrderByIdAsc(String testNo, String project);
+	List<Log> findByTestAndProjectOrderByIdAsc(String test, String project);
+	
+	List<Log> findByTabAndProject(String tab, String project);
 
 	List<Log> findByTabAndProjectAndTestAndLevelOrderByIdAsc(String tab, String project, String test, String level);
 

@@ -18,8 +18,8 @@ public class TabService {
 		this.repository = repository;
 	}
 
-	public void delete(Tab type) {
-		repository.delete(type);
+	public void delete(Tab tab) {
+		repository.delete(tab);
 	}
 
 	public void deleteIterable(Iterable<Tab> tabs) {
@@ -35,7 +35,6 @@ public class TabService {
 	}
 
 	public Tab findByTabAndProject(String tab, String project) {
-		System.out.println(repository.findByTabAndProject(tab, project));
 		return repository.findByTabAndProject(tab, project);
 	}
 

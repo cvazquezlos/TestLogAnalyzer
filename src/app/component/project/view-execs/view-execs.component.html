@@ -18,6 +18,12 @@
   <mat-card-content>
     <mat-tab-group>
       <mat-tab *ngFor="let tab of tabs" label="{{tab.name}}">
+        <ng-template mat-tab-label>
+          {{tab.name}}
+          <button mat-icon-button (click)="deleteTab(tab.name)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </ng-template>
         <td-data-table [clickable]="true"
                        [data]="tab.executions"
                        [columns]="execsData"

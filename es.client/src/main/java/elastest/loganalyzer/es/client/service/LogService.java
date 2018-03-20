@@ -60,6 +60,10 @@ public class LogService {
 	public List<Log> findByTestAndProjectAndThreadOrderByIdAsc(String test, String project, String thread) {
 		return repository.findByTestAndProjectAndThreadOrderByIdAsc(test, project, thread);
 	}
+	
+	public List<Log> findByTabAndProject(String tab, String project) {
+		return repository.findByTabAndProject(tab, project);
+	}
 
 	public List<Log> findByTabAndTestAndProjectOrderByIdAsc(String tab, String test, String project) {
 		return repository.findByTabAndTestAndProjectOrderByIdAsc(tab, test, project);

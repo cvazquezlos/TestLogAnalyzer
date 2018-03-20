@@ -51,6 +51,13 @@ export class ViewExecsComponent implements OnInit {
     )
   }
 
+  deleteTab(name: string) {
+    this.elasticsearchService.deleteTagByName(name, this.project.name).subscribe(
+      response => this.reloadTabContent(),
+      error => console.log(error)
+    );
+  }
+
   goTo(row: any) {
     this.router.navigate(['./', row.id], {relativeTo: this.activatedRoute});
   }

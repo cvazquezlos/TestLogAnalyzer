@@ -163,6 +163,15 @@ export class ElasticsearchService {
     }
   }
 
+  deleteTagByName(name: string, project: string) {
+    const composedUrl = this.baseAPITabsUrl + '/remove/name/' + name + '?project=' + project;
+    console.log(composedUrl);
+    return this.http.delete<Tab>(composedUrl).map(
+      response => response,
+      error => error
+    );
+  }
+
   async postDiff(text1: string, text2: string) {
     try {
       const body = {text1: text1, text2: text2};
