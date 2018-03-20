@@ -34,7 +34,6 @@ export class ElasticsearchService {
       if (method !== undefined) {
         composedUrl += '&method=' + method;
       }
-      console.log(composedUrl + ':' + method);
       const response = await this.http.get<any[]>(composedUrl).toPromise();
       return response;
     } catch (error) {
@@ -54,7 +53,6 @@ export class ElasticsearchService {
 
   async getLogsByTestAsync(test: string, project: string, classes: boolean, maven?: boolean) {
     try {
-      console.log(maven);
       let composedUrl = this.baseAPILogsUrl + '/test/' + test + '?project=' + project + '&classes=' + classes;
       (composedUrl += '&maven=' + maven) && (maven);
       const response = await this.http.get<any[]>(composedUrl).toPromise();

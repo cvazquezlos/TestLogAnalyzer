@@ -9,7 +9,7 @@ import elastest.loganalyzer.es.client.model.Tab;
 
 @Repository
 public interface TabRepository extends ElasticsearchCrudRepository<Tab, Integer> {
-	
+
 	Tab findByTab(String tab);
 
 	List<Tab> findByProject(String project);
