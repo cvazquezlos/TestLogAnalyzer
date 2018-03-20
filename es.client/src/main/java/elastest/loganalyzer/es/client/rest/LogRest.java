@@ -60,10 +60,10 @@ public class LogRest {
 			execution.setEntries(logs.size());
 			Log selected = this.findLog(logs);
 			execution.setTimestamp(selected.getTimestamp());
-			execution.setDebug(logService.findByTabAndProjectAndTestAndLevel(tab, project, test, "DEBUG"));
-			execution.setInfo(logService.findByTabAndProjectAndTestAndLevel(tab, project, test, "INFO"));
-			execution.setWarning(logService.findByTabAndProjectAndTestAndLevel(tab, project, test, "WARNING"));
-			execution.setError(logService.findByTabAndProjectAndTestAndLevel(tab, project, test, "ERROR"));
+			execution.setDebug(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "DEBUG"));
+			execution.setInfo(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "INFO"));
+			execution.setWarning(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "WARNING"));
+			execution.setError(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "ERROR"));
 			logs = logService.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(tab, project, test,
 					"BUILD");
 			for (int j = 0; j < logs.size(); j++) {
@@ -91,7 +91,7 @@ public class LogRest {
 			@RequestParam(value = "maven", required = false) boolean maven) {
 		String testNo = String.format("%02d", test);
 		if (classes) {
-			List<Log> logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(testNo, project,
+			List<Log> logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(project, testNo,
 					"Running");
 			List<String> classL = new ArrayList<String>();
 			for (Log log : logs) {

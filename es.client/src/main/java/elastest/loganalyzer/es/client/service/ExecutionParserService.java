@@ -124,7 +124,7 @@ public class ExecutionParserService {
 			}
 			data.remove(0);
 		}
-		esLogService.saveIterable(logs);
+		esLogService.save(logs);
 	}
 
 	public List<String> getStreamByUrl(String url) throws IOException {
