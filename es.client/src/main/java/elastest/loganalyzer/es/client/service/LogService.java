@@ -22,7 +22,7 @@ public class LogService {
 	public void delete(Log log) {
 		repository.delete(log);
 	}
-	
+
 	public void deleteIterable(Iterable<Log> logs) {
 		repository.delete(logs);
 	}
@@ -77,7 +77,7 @@ public class LogService {
 	public String save(Log log) {
 		return repository.save(log).getId();
 	}
-	
+
 	public Iterable<Log> saveIterable(Iterable<Log> logs) {
 		return repository.save(logs);
 	}
@@ -104,6 +104,7 @@ public class LogService {
 
 	public List<Log> findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String tab, String project,
 			String test, String partialMessage) {
-		return repository.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(tab, project, test, partialMessage);
+		return repository.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(tab, project, test,
+				partialMessage);
 	}
 }

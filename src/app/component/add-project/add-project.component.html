@@ -113,7 +113,7 @@
           <ng-template #notSelected>
             <span class="md-title">URL</span>
           </ng-template>
-          and its content will be saved.
+          and its content will be saved inside of the <span class="md-title">test</span> (default) tab.
           <br><br>
           <div *ngIf="(code == 1) || (code == 2); else hideSave">
             <ng-template tdLoading [tdLoadingUntil]="code != 1" tdLoadingStrategy="overlay" tdLoadingType="linear">
