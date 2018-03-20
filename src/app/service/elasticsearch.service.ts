@@ -21,30 +21,11 @@ export class ElasticsearchService {
   constructor(private http: HttpClient) {
   }
 
-  // DIRECT ELASTICSEARCH FAST REQUESTS
   getCountOfProjects() {
     return this.http.get<CountFormat>(this.baseELASTICSEARCHUrl + 'projects/_count').map(
       response => response.count,
       error => error
     )
-  }
-
-  // LOG REQUESTS
-  getLogById(id: string) {
-    return this.http.get<Log>(this.baseAPILogsUrl + '/id/' + id).map(
-      response => response,
-      error => error
-    );
-  }
-
-  getLogsByLevel(level: string, page?: string, size?: string) {
-    let composedUrl = this.baseAPILogsUrl + '/level/' + level;
-    (composedUrl += '?page=' + page) && (page);
-    (composedUrl += '&size=' + size) && (size);
-    return this.http.get<Log[]>(composedUrl).map(
-      response => response,
-      error => error
-    );
   }
 
   async getLogsByLoggerAsync(logger: string, project: string, test: string, method?: string) {
@@ -53,21 +34,11 @@ export class ElasticsearchService {
       if (method !== undefined) {
         composedUrl += '&method=' + method;
       }
-      console.log(composedUrl + ':' + method);
       const response = await this.http.get<any[]>(composedUrl).toPromise();
       return response;
     } catch (error) {
       console.log(error);
     }
-  }
-
-  getLogsByLogger(logger: string, project: string, test: string, method?: string) {
-    let composedUrl = this.baseAPILogsUrl + '/logger/' + logger + '?project=' + project + '&test=' + test;
-    (composedUrl += '&method=' + method) && (method);
-    return this.http.get<Log[]>(composedUrl).map(
-      response => response,
-      error => error
-    );
   }
 
   async getLogsByProjectAsync(project: string, tab: string) {
@@ -80,17 +51,8 @@ export class ElasticsearchService {
     }
   }
 
-  getLogsByProject(project: string, tab: string) {
-    const composedUrl = this.baseAPILogsUrl + '/project/' + project + '?tab=' + tab;
-    return this.http.get<Execution[]>(composedUrl).map(
-      response => response,
-      error => error
-    );
-  }
-
   async getLogsByTestAsync(test: string, project: string, classes: boolean, maven?: boolean) {
     try {
-      console.log(maven);
       let composedUrl = this.baseAPILogsUrl + '/test/' + test + '?project=' + project + '&classes=' + classes;
       (composedUrl += '&maven=' + maven) && (maven);
       const response = await this.http.get<any[]>(composedUrl).toPromise();
@@ -117,16 +79,8 @@ export class ElasticsearchService {
     );
   }
 
-  // PROJECT REQUESTS
   getProjectsAll() {
     return this.http.get<Project[]>(this.baseAPIProjectsUrl + '/all').map(
-      response => response,
-      error => error
-    );
-  }
-
-  getProjectById(id: number) {
-    return this.http.get<Project>(this.baseAPIProjectsUrl + '/id/' + id).map(
       response => response,
       error => error
     );
@@ -159,7 +113,6 @@ export class ElasticsearchService {
     );
   }
 
-  // MEDIA REQUESTS
   postFileByUpload(file: File) {
     const body = new FormData();
     body.append('file', file);
@@ -201,7 +154,6 @@ export class ElasticsearchService {
     );
   }
 
-  // TAB REQUESTS
   async getTabsByProjectAsync(project: string) {
     try {
       const response = await this.http.get<Tab[]>(this.baseAPITabsUrl + '/project/' + project).toPromise();
@@ -211,14 +163,6 @@ export class ElasticsearchService {
     }
   }
 
-  getTabsByProject(project: string) {
-    return this.http.get<Tab[]>(this.baseAPITabsUrl + '/project/' + project).map(
-      response => response,
-      error => error
-    );
-  }
-
-  // DIFF MATCH PATCH REQUESTS
   async postDiff(text1: string, text2: string) {
     try {
       const body = {text1: text1, text2: text2};

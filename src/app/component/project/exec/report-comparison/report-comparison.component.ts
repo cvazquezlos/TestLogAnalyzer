@@ -81,7 +81,6 @@ export class ReportComparisonComponent implements OnInit {
           let methodMessage: string;
           (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
             : (methodMessage = comparedLoggerMethod[j]);
-          console.log(methodMessage);
           const comparatorMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
             this.test, methodMessage.replace('(', '')
             .replace(')', ''));
@@ -140,7 +139,6 @@ export class ReportComparisonComponent implements OnInit {
         const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
           const cleanMethod = methods[j].replace('(', '').replace(')', '');
-          console.log(cleanMethod);
           methodsData.push({
             'name': methods[j],
             'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,

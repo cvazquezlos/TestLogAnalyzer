@@ -23,11 +23,11 @@ import elastest.loganalyzer.es.client.model.Project;
 @Service
 public class ExecutionParserService {
 
-	private final ESLogService esLogService;
-	private final ESProjectService esProjectService;
+	private final LogService esLogService;
+	private final ProjectService esProjectService;
 
 	@Autowired
-	public ExecutionParserService(ESProjectService esProjectService, ESLogService esLogService) {
+	public ExecutionParserService(ProjectService esProjectService, LogService esLogService) {
 		this.esLogService = esLogService;
 		this.esProjectService = esProjectService;
 	}
@@ -38,7 +38,7 @@ public class ExecutionParserService {
 		for (int i = 0; i < dirtyData.size(); i++) {
 			data.add(dirtyData.get(i).replaceAll("\n", ""));
 		}
-		
+
 		int num_execs = project.getNum_execs();
 		int recently_deleted = project.getRecently_deleted();
 		int testNo = 1;
@@ -51,7 +51,7 @@ public class ExecutionParserService {
 		project.setNum_execs(num_execs + 1);
 		project.setRecently_deleted(recently_deleted);
 		esProjectService.save(project);
-		
+
 		data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
 		data.add("[INFO] Finishing unit test number " + testNo + "...");
 
@@ -114,7 +114,7 @@ public class ExecutionParserService {
 					log.setLog(acumulatedException);
 					log.setMessage(acumulatedException);
 					acumulatedException = "";
-				} else 	if (exception) {
+				} else if (exception) {
 					acumulatedException += line;
 				}
 			}
@@ -124,7 +124,7 @@ public class ExecutionParserService {
 			}
 			data.remove(0);
 		}
-		esLogService.saveIterable(logs);
+		esLogService.save(logs);
 	}
 
 	public List<String> getStreamByUrl(String url) throws IOException {

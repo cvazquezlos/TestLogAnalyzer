@@ -1,4 +1,4 @@
-package elastest.loganalyzer.es.client.resource;
+package elastest.loganalyzer.es.client.rest;
 
 import java.util.List;
 
@@ -9,22 +9,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import elastest.loganalyzer.es.client.model.Tab;
-import elastest.loganalyzer.es.client.service.ESTabService;
+import elastest.loganalyzer.es.client.service.TabService;
 
 @RestController
 @RequestMapping("/tabs")
-public class TabResource {
-	
-	private final ESTabService esTabService;
-	
+public class TabRest {
+
+	private final TabService tabService;
+
 	@Autowired
-	public TabResource(ESTabService esTabService) {
-		this.esTabService = esTabService;
+	public TabRest(TabService tabService) {
+		this.tabService = tabService;
 	}
-	
+
 	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
 	public List<Tab> getAll(@PathVariable String project) {
-		return esTabService.findByProject(project);
+		return tabService.findByProject(project);
 	}
-	
+
 }

@@ -1,10 +1,9 @@
-package elastest.loganalyzer.es.client.resource;
+package elastest.loganalyzer.es.client.rest;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.plugin.surefire.log.api.ConsoleLogger;
@@ -22,64 +21,47 @@ import com.google.common.collect.Lists;
 
 import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.model.Tab;
-import elastest.loganalyzer.es.client.service.ESLogService;
-import elastest.loganalyzer.es.client.service.ESProjectService;
-import elastest.loganalyzer.es.client.service.ESTabService;
+import elastest.loganalyzer.es.client.service.LogService;
+import elastest.loganalyzer.es.client.service.ProjectService;
+import elastest.loganalyzer.es.client.service.TabService;
 import elastest.loganalyzer.es.client.service.ExecutionParserService;
-
-import static java.lang.Math.toIntExact;
 
 @RestController
 @RequestMapping("/files")
-public class Resource {
+public class FileRest {
 
 	private ConsoleLogger consoleLogger;
 	private final Collection<String> loggedErrors = new ArrayList<String>();
-	private final ESLogService esLogService;
-	private final ESProjectService esProjectService;
-	private final ESTabService esTabService;
 	private final ExecutionParserService executionParserService;
+	private final LogService logService;
+	private final ProjectService projectService;
+	private final TabService tabService;
 	private static String recentProject;
 	private static String recentTab;
 
 	@Autowired
-	public Resource(ESLogService esLogService, ESProjectService esProjectService, ESTabService esTypeService, ExecutionParserService executionParserService) {
-		this.esLogService = esLogService;
-		this.esProjectService = esProjectService;
-		this.esTabService = esTypeService;
+	public FileRest(ExecutionParserService executionParserService, LogService logService, ProjectService projectService,
+			TabService tabService) {
 		this.executionParserService = executionParserService;
+		this.logService = logService;
+		this.projectService = projectService;
+		this.tabService = tabService;
 	}
 
 	@Before
 	public void instantiateLogger() {
 		consoleLogger = new ConsoleLogger() {
-			public boolean isDebugEnabled() {
-				return true;
-			}
-
 			@Override
 			public void debug(String message) {
-			}
-
-			public boolean isInfoEnabled() {
-				return true;
 			}
 
 			@Override
 			public void info(String message) {
 			}
 
-			public boolean isWarnEnabled() {
-				return true;
-			}
-
 			@Override
 			public void warning(String message) {
 				loggedErrors.add(message);
-			}
-
-			public boolean isErrorEnabled() {
-				return true;
 			}
 
 			@Override
@@ -105,8 +87,9 @@ public class Resource {
 			if (file != null) {
 				if (file.getOriginalFilename().contains("txt")) {
 					List<String> data = executionParserService.getStreamByFile(file);
-					Project target = esProjectService.findByName(recentProject);
-					this.executionParserService.parse(data, target, recentTab, Lists.newArrayList(esLogService.findAll()).size());
+					Project target = projectService.findByName(recentProject);
+					this.executionParserService.parse(data, target, recentTab,
+							Lists.newArrayList(logService.findAll()).size());
 				} else {
 					TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
 					InputStream inputStream = file.getInputStream();
@@ -132,11 +115,11 @@ public class Resource {
 	@RequestMapping(value = "/tab", method = RequestMethod.POST)
 	public String updateTab(@RequestBody String tab) {
 		recentTab = tab.replaceAll("\"", "");
-		if (esTabService.findByTabAndProject(recentTab, recentProject) == null) {
-			Iterable<Tab> tabs = esTabService.findAll();
+		if (tabService.findByTabAndProject(recentTab, recentProject) == null) {
+			Iterable<Tab> tabs = tabService.findAll();
 			int id = 0;
 			id = Lists.newArrayList(tabs).size();
-			esTabService.save(new Tab(id + 1, recentProject, recentTab));
+			tabService.save(new Tab(id + 1, recentProject, recentTab));
 		}
 		return "\"" + recentTab + "\"";
 	}
@@ -144,10 +127,10 @@ public class Resource {
 	@RequestMapping(value = "/url", method = RequestMethod.POST)
 	public List<String> uploadFile(@RequestBody String url) throws Exception {
 		List<String> data = executionParserService.getStreamByUrl(url);
-		Project target = esProjectService.findByName(recentProject);
+		Project target = projectService.findByName(recentProject);
 		target.setNum_execs(target.getNum_execs() + 1);
-		esProjectService.save(target);
-		this.executionParserService.parse(data, target, recentTab, Lists.newArrayList(esLogService.findAll()).size());
+		projectService.save(target);
+		this.executionParserService.parse(data, target, recentTab, Lists.newArrayList(logService.findAll()).size());
 		return executionParserService.getStreamByUrl(url);
 	}
 }

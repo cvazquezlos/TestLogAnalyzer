@@ -1,4 +1,4 @@
-package elastest.loganalyzer.es.client.resource;
+package elastest.loganalyzer.es.client.rest;
 
 import java.util.LinkedList;
 
@@ -14,10 +14,10 @@ import elastest.loganalyzer.es.client.DiffMatchPatch.Diff;
 
 @RestController
 @RequestMapping("/diff")
-public class DiffMatchPatchResource {
+public class DiffMatchPatchRest {
 
 	private final DiffMatchPatch dmp = new DiffMatchPatch();
-	
+
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public String get(@RequestBody String body) throws JSONException {
 		JSONObject obj = new JSONObject(body);
