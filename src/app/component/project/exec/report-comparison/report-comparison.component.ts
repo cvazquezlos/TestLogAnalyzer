@@ -87,6 +87,7 @@ export class ReportComparisonComponent implements OnInit {
           const comparedMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
             '' + this.execSelected, methodMessage.replace('(', '')
             .replace(')', ''));
+
           this.comparatorText = this.generateOutput(comparatorMethodLogs);
           this.comparedText = this.generateOutput(comparedMethodLogs);
           methodsData.push({
@@ -104,15 +105,21 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   private generateOutput(logs: Log[]) {
-    let dateComparator: any;
-    if (this.mode === '2') {
-      dateComparator = new Date(logs[0].timestamp);
-    }
     let result = '';
+    let comparatorDate = new Date();
+    if (logs[0] === undefined) {
+      return result;
+    }
+    for (let i = 0; i < logs.length; i++) {
+      logs[i].timestamp = logs[i].timestamp.substring(0, 23);
+    }
+    if (this.mode === '2') {
+      comparatorDate = new Date(logs[0].timestamp);
+    }
     for (let i = 0; i < logs.length; i++) {
       (this.mode === '1') && (logs[i].timestamp = '');
-      (this.mode === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf() - (dateComparator).valueOf())
-        .toString());
+      (this.mode === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
+        - (comparatorDate).valueOf()).toString());
       result += (logs[i].timestamp + ' [' + logs[i].thread + '] ' + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\r\n';
     }

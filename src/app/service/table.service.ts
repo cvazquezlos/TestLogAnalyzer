@@ -27,6 +27,8 @@ export class TableService {
       comparatorLine = this.cleanBetweenTags('<ins>', '</ins>', line, 0);
       comparedLine = this.cleanBetweenTags('<del>', '</del>', line, 1);
       this.concatResults(i, comparatorLine, comparedLine);
+      console.log(i + ' ' + comparatorLine);
+      console.log(i + ' ' + comparedLine);
       i++;
     });
     this.solveResultErrors();
@@ -130,7 +132,7 @@ export class TableService {
           comparator = '';
           result.com_p.class = 'added';
           entry2 = true;
-        } else if (entry2) {
+        } else if (entry2 && (comparator.length > 0)) {
           comparator = oldDataC + comparator;
           entry2 = false;
           oldDataC = '';
