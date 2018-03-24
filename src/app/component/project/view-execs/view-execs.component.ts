@@ -56,7 +56,7 @@ export class ViewExecsComponent implements OnInit {
       response => {},
       error => console.log(error)
     );
-    setTimeout(()=>{
+    setTimeout(() => {
       this.reloadTabContent();
       }, 400);
   }
