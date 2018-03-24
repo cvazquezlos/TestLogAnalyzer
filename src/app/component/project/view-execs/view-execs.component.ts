@@ -51,11 +51,14 @@ export class ViewExecsComponent implements OnInit {
     )
   }
 
-  deleteTab(name: string) {
+  async deleteTab(name: string) {
     this.elasticsearchService.deleteTagByName(name, this.project.name).subscribe(
-      response => this.reloadTabContent(),
+      response => {},
       error => console.log(error)
     );
+    setTimeout(()=>{
+      this.reloadTabContent();
+      }, 400);
   }
 
   goTo(row: any) {

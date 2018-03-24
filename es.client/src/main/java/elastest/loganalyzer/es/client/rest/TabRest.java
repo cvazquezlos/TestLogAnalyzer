@@ -35,9 +35,8 @@ public class TabRest {
 	public Tab deleteByTab(@PathVariable String name,
 			@RequestParam(name = "project", required = true) String project) {
 		Tab target = tabService.findByTabAndProject(name, project);
-		System.out.println(target);
-		logService.deleteIterable(logService.findByTabAndProject(name, project));
 		tabService.delete(target);
+		logService.deleteIterable(logService.findByTabAndProject(name, project));
 		return target;
 	}
 
