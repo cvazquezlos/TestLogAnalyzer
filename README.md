@@ -33,15 +33,27 @@ Component | What does it mean?
 
 ### Content of pages
 #### Projects
-In this page, you can create your own project so any test can be related to it.
-![Home](./resources/media/README/release3page1.png)
+##### Home
+All projects created are displayed. You can access to the executions of a concrete project or delete it. If you delete a project, all its executions will be deleted too.
+![Projects](https://image.ibb.co/howVbc/release3page1.png)
+
+##### Create project
+A new project can be created and the user must provide at least one execution.
+![CreateProject](https://image.ibb.co/dDfqbc/release3page2.png)
 
 #### Executions of project
-In this page, you can view the logs which is inside your created project.
-![Comparison](./resources/media/README/release3page2.png)
+##### Executions
+For a target project, this page displays all its executions grouped by tabs.
+![Executions](https://image.ibb.co/kJp59x/release3page3.png)
 
-#### Comparison between logs of same project
-![Comparison](./resources/media/README/release3page3.png)
+#### Logs of execution
+##### Logs
+For a target execution, this page displays all its logs.
+![Logs](https://image.ibb.co/eX8MhH/release3page4.png)
+
+##### Comparison
+The user just has to select 
+![Comparison](https://image.ibb.co/dtNQ9x/release3page5.png)
 
 
 ## Getting started with Spring Logs Generator
