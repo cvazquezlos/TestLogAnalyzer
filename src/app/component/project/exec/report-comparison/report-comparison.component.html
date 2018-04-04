@@ -1,7 +1,17 @@
 <mat-card>
   <mat-card-title>
     <div layout="row">
-      <span *ngIf="test != undefined">Reporting of execution number {{test}}</span>
+      <div>
+        <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0)"><b>Raw</b>
+        </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(1)"><b>By test</b>
+      </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(2)"><b>Just errors</b>
+      </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(3)"><b>Hide Maven</b></button>
+      </div>
+      <div>
+        <button mat-raised-button class="iconBtn-lg" color="accent"><b>Complete</b></button>&nbsp;&nbsp;<button
+        mat-raised-button class="iconBtn-lg" color="accent"><b>No timestamp</b>
+      </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent"><b>Time diff</b></button>
+      </div>
       <span flex></span>
       <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
               [routerLink]="['/projects/', project, test]">
@@ -33,20 +43,28 @@
       </ng-template>
     </div>
     <ng-template #notComparing>
-      <ng-template ngFor let-item [ngForOf]="classesL" >
-        <h3>{{item.name}}</h3>
-        <ng-template ngFor let-itemm [ngForOf]="item.methods">
-          <h5>{{itemm.name}}</h5>
-          <table class="diff-table">
-            <tbody>
+      <div *ngIf="viewMode == 0 || viewMode == 3">
+        <tr *ngFor="let log of classesL; index as i">
+          <td class="index">{{i}}.</td>
+          <td>{{log.log}}</td>
+        </tr>
+      </div>
+      <div *ngIf="viewMode == 1">
+        <ng-template ngFor let-item [ngForOf]="classesL">
+          <h3>{{item.name}}</h3>
+          <ng-template ngFor let-itemm [ngForOf]="item.methods">
+            <h5>{{itemm.name}}</h5>
+            <table class="diff-table">
+              <tbody>
               <tr *ngFor="let log of itemm.logs; index as i">
                 <td class="index">{{i}}.</td>
                 <td>{{log.timestamp}} [{{log.thread}}] {{log.level}} {{log.logger}} - {{log.message}}</td>
               </tr>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </ng-template>
         </ng-template>
-      </ng-template>
+      </div>
     </ng-template>
   </mat-card-content>
 </mat-card>

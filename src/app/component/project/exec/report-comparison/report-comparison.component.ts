@@ -51,6 +51,7 @@ export class ReportComparisonComponent implements OnInit {
   ready: boolean;
   resultData: any[] = [];
   test: string;
+  viewMode: number;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
               private tableService: TableService, private elasticsearchService: ElasticsearchService) {
@@ -133,32 +134,7 @@ export class ReportComparisonComponent implements OnInit {
       {label: this.project, url: '/projects/' + this.project, params: []},
       {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []},
       {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
-    this.ready = false;
     this.classesL = [];
-    const loggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
-      false);
-    for (let i = 0; i < loggers.length; i++) {
-      if (loggers[i].split(' ').length === 2) {
-        const logger = loggers[i].split(' ')[1];
-        const partialLogger = logger.split('.')[logger.split('.').length - 1];
-        const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
-          undefined);
-        const methodsData = [];
-        for (let j = 0; j < methods.length; j++) {
-          const cleanMethod = methods[j].replace('(', '').replace(')', '');
-          methodsData.push({
-            'name': methods[j],
-            'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
-              cleanMethod)
-          });
-        }
-        this.classesL.push({
-          'name': loggers[i].split(' ')[1],
-          'methods': methodsData
-        });
-      }
-    }
-    this.ready = true;
   }
 
   openComparisonDialog() {
@@ -185,6 +161,67 @@ export class ReportComparisonComponent implements OnInit {
       },
       error => console.log(error)
     );
+  }
+
+  updateViewMode(mode: number) {
+    this.viewMode = mode;
+    switch (this.viewMode) {
+      case 0:
+        this.viewRaw(true);
+        break;
+      case 1:
+        this.viewByMethods();
+        break;
+      case 2:
+
+        break;
+      case 3:
+        this.viewRaw(false);
+        break;
+    }
+  }
+
+  private async viewByMethods() {
+    this.ready = false;
+    this.classesL = [];
+    const loggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
+      false);
+    for (let i = 0; i < loggers.length; i++) {
+      if (loggers[i].split(' ').length === 2) {
+        const logger = loggers[i].split(' ')[1];
+        const partialLogger = logger.split('.')[logger.split('.').length - 1];
+        const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
+          undefined);
+        const methodsData = [];
+        for (let j = 0; j < methods.length; j++) {
+          const cleanMethod = methods[j].replace('(', '').replace(')', '');
+          methodsData.push({
+            'name': methods[j],
+            'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
+              cleanMethod)
+          });
+        }
+        this.classesL.push({
+          'name': loggers[i].split(' ')[1],
+          'methods': methodsData
+        });
+      }
+    }
+    console.log(this.classesL);
+    this.ready = true;
+  }
+
+  private async viewRaw(maven: boolean) {
+    this.ready = false;
+    this.classesL = [];
+    const logs = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, false, maven);
+    for (let i = 0; i < logs.length; i++) {
+      this.classesL.push({
+        'log': logs[i].log
+      });
+    }
+    console.log(this.classesL);
+    this.ready = true;
   }
 
   private async readDiffer() {
