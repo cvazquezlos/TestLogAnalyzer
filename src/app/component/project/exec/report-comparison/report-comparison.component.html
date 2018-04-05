@@ -1,5 +1,4 @@
-<mat-toolbar class="toolbar-view-comp">
-  <mat-toolbar-row>
+<mat-card class="toolbar-view-comp">
       <div>
         <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0)"><b>Raw</b>
         </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(1)"><b>By test</b>
@@ -18,9 +17,8 @@
       <button mat-raised-button class="iconBtn-lg" color="accent" (click)="openComparisonDialog()">
         <mat-icon>equalizer</mat-icon>
       </button>&nbsp;
-  </mat-toolbar-row>
-</mat-toolbar>
-<mat-card style="margin-top: 100px;">
+</mat-card>
+<mat-card style="margin-top: 88px;">
   <mat-card-content>
     <div *ngIf="comparisonInProgress; else notComparing">
       <ng-template ngFor let-class [ngForOf]="resultData">
@@ -47,7 +45,7 @@
           <td>{{log.log}}</td>
         </tr>
       </div>
-      <div *ngIf="viewMode == 1">
+      <div *ngIf="viewMode == 1 || viewMode == 2">
         <ng-template ngFor let-item [ngForOf]="classesL">
           <h3>{{item.name}}</h3>
           <ng-template ngFor let-itemm [ngForOf]="item.methods">

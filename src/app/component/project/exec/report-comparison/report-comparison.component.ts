@@ -173,7 +173,7 @@ export class ReportComparisonComponent implements OnInit {
         this.viewByMethods();
         break;
       case 2:
-
+        this.viewByMethods(true);
         break;
       case 3:
         this.viewRaw(false);
@@ -181,7 +181,7 @@ export class ReportComparisonComponent implements OnInit {
     }
   }
 
-  private async viewByMethods() {
+  private async viewByMethods(clean?: boolean) {
     this.ready = false;
     this.classesL = [];
     const loggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
@@ -194,12 +194,14 @@ export class ReportComparisonComponent implements OnInit {
           undefined);
         const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
-          const cleanMethod = methods[j].replace('(', '').replace(')', '');
-          methodsData.push({
-            'name': methods[j],
-            'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
-              cleanMethod)
-          });
+          if (methods[j] !== '') {
+            const cleanMethod = methods[j].replace('(', '').replace(')', '');
+            methodsData.push({
+              'name': methods[j],
+              'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
+                cleanMethod)
+            });
+          }
         }
         this.classesL.push({
           'name': loggers[i].split(' ')[1],
@@ -207,7 +209,7 @@ export class ReportComparisonComponent implements OnInit {
         });
       }
     }
-    console.log(this.classesL);
+    (clean) && (this.cleanSuccess());
     this.ready = true;
   }
 
@@ -220,8 +222,11 @@ export class ReportComparisonComponent implements OnInit {
         'log': logs[i].log
       });
     }
-    console.log(this.classesL);
     this.ready = true;
+  }
+
+  private cleanSuccess() {
+    console.log(this.classesL);
   }
 
   private async readDiffer() {
