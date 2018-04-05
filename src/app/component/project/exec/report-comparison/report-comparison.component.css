@@ -144,3 +144,11 @@
 .comp-title {
   font-size: x-large;
 }
+
+.toolbar-view-comp {
+  margin-top: 8px;
+  margin-right: 8px;
+  margin-left: 8px;
+  background-color: white;
+  position: fixed;
+}

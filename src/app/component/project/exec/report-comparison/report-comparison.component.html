@@ -1,6 +1,5 @@
-<mat-card>
-  <mat-card-title>
-    <div layout="row">
+<mat-toolbar class="toolbar-view-comp">
+  <mat-toolbar-row>
       <div>
         <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0)"><b>Raw</b>
         </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(1)"><b>By test</b>
@@ -12,7 +11,6 @@
         mat-raised-button class="iconBtn-lg" color="accent"><b>No timestamp</b>
       </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent"><b>Time diff</b></button>
       </div>
-      <span flex></span>
       <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
               [routerLink]="['/projects/', project, test]">
         <mat-icon>arrow_back</mat-icon>
@@ -20,9 +18,9 @@
       <button mat-raised-button class="iconBtn-lg" color="accent" (click)="openComparisonDialog()">
         <mat-icon>equalizer</mat-icon>
       </button>&nbsp;
-    </div>
-  </mat-card-title>
-  <mat-divider></mat-divider>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-card style="margin-top: 100px;">
   <mat-card-content>
     <div *ngIf="comparisonInProgress; else notComparing">
       <ng-template ngFor let-class [ngForOf]="resultData">
