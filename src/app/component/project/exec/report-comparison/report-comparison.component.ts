@@ -13,6 +13,7 @@ import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
 import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 import {TableService} from '../../../../service/table.service';
+import {ITdDataTableColumn} from "@covalent/core";
 
 @Component({
   selector: 'app-report-comparison-settings',
@@ -42,20 +43,76 @@ export class ReportComparisonComponent implements OnInit {
   @ViewChild('process') process: ElementRef;
 
   classesL: any[];
+  classesLc: any[];
   comparatorText = '';
   comparedText = '';
   comparisonInProgress: boolean;
+  deleteInProgress: boolean;
+  execDeleting: string;
   execSelected: number;
+  execsData: ITdDataTableColumn[] = [
+    {name: 'id', label: 'Id', width: 100},
+    {name: 'startdate', label: 'Start date', width: 300},
+    {name: 'entries', label: 'Entries', width: 100},
+    {name: 'status', label: 'Status'},
+    {name: 'DEBUG', label: 'DEBUG', width: 100},
+    {name: 'INFO', label: 'INFO', width: 100},
+    {name: 'WARNING', label: 'WARNING', width: 100},
+    {name: 'ERROR', label: 'ERROR', width: 100},
+    {name: 'options', label: 'Options', width: 150}
+  ];
   mode: string;
   project: string;
   ready: boolean;
   resultData: any[] = [];
+  tabs: any[];
   test: string;
   viewMode: number;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
               private tableService: TableService, private elasticsearchService: ElasticsearchService) {
     this.comparisonInProgress = false;
+  }
+
+  async reloadTabContent() {
+    this.tabs = [];
+    const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project);
+    for (let i = 0; i < response0.length; i++) {
+      const response1 = await this.elasticsearchService.getLogsByProjectAsync(this.project, response0[i].tab);
+      const executions = [];
+      for (let j = 0; j < response1.length; j++) {
+        let icon, classi: any;
+        if (response1[j].status.indexOf('SUCCESS') !== -1) {
+          icon = 'check-circle';
+          classi = 'tc-green-700';
+        } else {
+          icon = 'error';
+          classi = 'tc-red-700';
+        }
+        executions[j] = {
+          'id': response1[j].id,
+          'startdate': response1[j].timestamp,
+          'entries': response1[j].entries,
+          'status': {
+            'icon': icon,
+            'class': classi,
+            'status': response1[j].status
+          },
+          'DEBUG': response1[j].debug,
+          'INFO': response1[j].info,
+          'WARNING': response1[j].warning,
+          'ERROR': response1[j].error
+        }
+      }
+      this.tabs[i] = {
+        'name': response0[i].tab,
+        'executions': executions
+      };
+    }
+  }
+
+  private async generateComparisonData() {
+    this.updateViewMode(1, this.viewMode);
   }
 
   private async generateComparison() {
@@ -135,6 +192,9 @@ export class ReportComparisonComponent implements OnInit {
       {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []},
       {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
     this.classesL = [];
+    this.updateViewMode(0, 0);
+    this.generateComparisonData();
+    this.reloadTabContent();
   }
 
   openComparisonDialog() {
@@ -163,27 +223,27 @@ export class ReportComparisonComponent implements OnInit {
     );
   }
 
-  updateViewMode(mode: number) {
+  updateViewMode(comp: number, mode: number) {
     this.viewMode = mode;
     switch (this.viewMode) {
       case 0:
-        this.viewRaw(true);
+        this.viewRaw(comp, true);
         break;
       case 1:
-        this.viewByMethods();
+        this.viewByMethods(comp);
         break;
       case 2:
-        this.viewByMethods(true);
+        this.viewByMethods(comp, true);
         break;
       case 3:
-        this.viewRaw(false);
+        this.viewRaw(comp, false);
         break;
     }
   }
 
-  private async viewByMethods(clean?: boolean) {
+  private async viewByMethods(mode: number, clean?: boolean) {
     this.ready = false;
-    this.classesL = [];
+    (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const loggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
       false);
     for (let i = 0; i < loggers.length; i++) {
@@ -203,24 +263,20 @@ export class ReportComparisonComponent implements OnInit {
             });
           }
         }
-        this.classesL.push({
-          'name': loggers[i].split(' ')[1],
-          'methods': methodsData
-        });
+        (mode === 0) ? (this.classesL.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}))
+          : (this.classesLc.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}));
       }
     }
     (clean) && (this.cleanSuccess());
     this.ready = true;
   }
 
-  private async viewRaw(maven: boolean) {
+  private async viewRaw(mode: number, maven: boolean) {
     this.ready = false;
-    this.classesL = [];
+    (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const logs = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, false, maven);
     for (let i = 0; i < logs.length; i++) {
-      this.classesL.push({
-        'log': logs[i].log
-      });
+      (mode === 0) ? (this.classesL.push({'log': logs[i].log})) : (this.classesLc.push({'log': logs[i].log}));
     }
     this.ready = true;
   }

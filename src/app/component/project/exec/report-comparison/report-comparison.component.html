@@ -1,22 +1,77 @@
 <mat-card class="toolbar-view-comp">
-      <div>
-        <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0)"><b>Raw</b>
-        </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(1)"><b>By test</b>
-      </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(2)"><b>Just errors</b>
-      </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(3)"><b>Hide Maven</b></button>
-      </div>
-      <div>
-        <button mat-raised-button class="iconBtn-lg" color="accent"><b>Complete</b></button>&nbsp;&nbsp;<button
-        mat-raised-button class="iconBtn-lg" color="accent"><b>No timestamp</b>
-      </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent"><b>Time diff</b></button>
-      </div>
-      <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
-              [routerLink]="['/projects/', project, test]">
-        <mat-icon>arrow_back</mat-icon>
-      </button>&nbsp;
-      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="openComparisonDialog()">
-        <mat-icon>equalizer</mat-icon>
-      </button>&nbsp;
+  <div style="display: flex">
+    <div>
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 0)"><b>Raw</b>
+      </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 1)"><b>By test</b>
+    </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 2)"><b>Just errors</b>
+    </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 3)"><b>Hide Maven</b></button>
+    </div>
+    <div>
+      <button mat-raised-button class="iconBtn-lg" color="accent"><b>Complete</b></button>&nbsp;&nbsp;<button
+      mat-raised-button class="iconBtn-lg" color="accent"><b>No timestamp</b>
+    </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent"><b>Time diff</b></button>&nbsp;&nbsp;<button><mat-icon>keyboard_arrow_down</mat-icon></button>
+    </div>
+    <span flex></span>
+    <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
+            [routerLink]="['/projects/', project, test]">
+      <mat-icon>arrow_back</mat-icon>
+    </button>&nbsp;
+    <button mat-raised-button class="iconBtn-lg" color="accent" (click)="openComparisonDialog()">
+      <mat-icon>equalizer</mat-icon>
+    </button>&nbsp;
+  </div>
+  <div>
+    <br>
+    <mat-divider></mat-divider>
+    <mat-tab-group>
+      <mat-tab *ngFor="let tab of tabs" label="{{tab.name}}">
+        <ng-template mat-tab-label>
+          {{tab.name}}
+          <button mat-icon-button (click)="deleteTab(tab.name)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </ng-template>
+        <td-data-table [clickable]="true"
+                       [data]="tab.executions"
+                       [columns]="execsData"
+                       [sortable]="false">
+          <ng-template *ngFor="let column of execsData" tdDataTableTemplate="{{column.name}}" let-value="value"
+                       let-row="row">
+            <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
+          </ng-template>
+          <ng-template tdDataTableTemplate="status" let-value="value">
+            <mat-icon [ngClass]="value.class">{{value.icon}}</mat-icon>&nbsp;&nbsp;{{value.status}}
+          </ng-template>
+          <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
+            <div *ngIf="(deleteInProgress && (row.id === execDeleting)); else notDeleting">
+              <div class="iconBtn-lg">
+                <mat-spinner [diameter]="25"></mat-spinner>
+              </div>
+            </div>
+            <ng-template #notDeleting>
+              <div layout="row">
+                <button class="iconBtn-lg"
+                        mat-button
+                        stopRowClick
+                        title="Delete execution"
+                        (click)="delete(row)"
+                        [disabled]="(row.id !== execDeleting) && deleteInProgress">
+                  <mat-icon [ngClass]="{'tc-grey-300': (row.id !== execDeleting) && deleteInProgress}">delete</mat-icon>
+                </button>
+                <button class="iconBtn-lg"
+                        mat-button
+                        stopRowClick
+                        title="View execution"
+                        (click)="goTo(row)">
+                  <mat-icon>remove_red_eye</mat-icon>
+                </button>
+              </div>
+            </ng-template>
+          </ng-template>
+        </td-data-table>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
 </mat-card>
 <mat-card style="margin-top: 88px;">
   <mat-card-content>

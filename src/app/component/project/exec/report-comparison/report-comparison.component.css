@@ -152,7 +152,6 @@
   background-color: white;
   position: fixed;
   width: 100%;
-  display: flex;
   padding: 16px;
   z-index: 1;
 }
