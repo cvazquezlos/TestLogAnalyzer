@@ -9,11 +9,11 @@ import {
   MatDialogRef
 } from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
+import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
 import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 import {TableService} from '../../../../service/table.service';
-import {ITdDataTableColumn} from "@covalent/core";
 
 @Component({
   selector: 'app-report-comparison-settings',
@@ -62,7 +62,7 @@ export class ReportComparisonComponent implements OnInit {
     {name: 'ERROR', label: 'ERROR', width: 100}
   ];
   hideExecSelection: boolean;
-  mode: string = '0';
+  mode = '0';
   project: string;
   selected: any[] = [];
   ready: boolean;
