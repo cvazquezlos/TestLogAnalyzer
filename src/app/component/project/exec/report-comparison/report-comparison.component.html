@@ -26,6 +26,9 @@
         <mat-icon *ngIf="hideExecSelection == false">keyboard_arrow_down</mat-icon>
         <mat-icon *ngIf="hideExecSelection == true">keyboard_arrow_up</mat-icon>
       </button>
+      <button *ngIf="comparisonInProgress" mat-icon-button color="accent" (click)="comparisonInProgress = false">
+        <mat-icon>wrap_text</mat-icon>
+      </button>
       <span flex></span>
       <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
               [routerLink]="['/projects/', project, test]">
