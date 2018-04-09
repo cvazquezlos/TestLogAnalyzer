@@ -47,6 +47,7 @@ export class ReportComparisonComponent implements OnInit {
   comparatorText = '';
   comparedText = '';
   comparisonInProgress: boolean;
+  comparisonMode: number;
   deleteInProgress: boolean;
   execDeleting: string;
   execSelected: number;
@@ -58,11 +59,12 @@ export class ReportComparisonComponent implements OnInit {
     {name: 'DEBUG', label: 'DEBUG', width: 100},
     {name: 'INFO', label: 'INFO', width: 100},
     {name: 'WARNING', label: 'WARNING', width: 100},
-    {name: 'ERROR', label: 'ERROR', width: 100},
-    {name: 'options', label: 'Options', width: 150}
+    {name: 'ERROR', label: 'ERROR', width: 100}
   ];
-  mode: string;
+  hideExecSelection: boolean;
+  mode: string = '0';
   project: string;
+  selected: any[] = [];
   ready: boolean;
   resultData: any[] = [];
   tabs: any[];
@@ -72,6 +74,14 @@ export class ReportComparisonComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
               private tableService: TableService, private elasticsearchService: ElasticsearchService) {
     this.comparisonInProgress = false;
+    this.hideExecSelection = false;
+  }
+
+  selectEvent(event: any) {
+    this.selected[0] = event.row;
+    if (this.comparisonInProgress) {
+
+    }
   }
 
   async reloadTabContent() {
@@ -89,19 +99,23 @@ export class ReportComparisonComponent implements OnInit {
           icon = 'error';
           classi = 'tc-red-700';
         }
-        executions[j] = {
-          'id': response1[j].id,
-          'startdate': response1[j].timestamp,
-          'entries': response1[j].entries,
-          'status': {
-            'icon': icon,
-            'class': classi,
-            'status': response1[j].status
-          },
-          'DEBUG': response1[j].debug,
-          'INFO': response1[j].info,
-          'WARNING': response1[j].warning,
-          'ERROR': response1[j].error
+        if (this.test !== (response1[j].id + '')) {
+          executions.push({
+            'id': response1[j].id,
+            'startdate': response1[j].timestamp,
+            'entries': response1[j].entries,
+            'status': {
+              'icon': icon,
+              'class': classi,
+              'status': response1[j].status
+            },
+            'DEBUG': response1[j].debug,
+            'INFO': response1[j].info,
+            'WARNING': response1[j].warning,
+            'ERROR': response1[j].error
+          });
+        } else {
+          this.selected[0] = executions[executions.length - 1];
         }
       }
       this.tabs[i] = {
@@ -111,12 +125,8 @@ export class ReportComparisonComponent implements OnInit {
     }
   }
 
-  private async generateComparisonData() {
-    this.updateViewMode(1, this.viewMode);
-  }
-
   private async generateComparison() {
-    const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
+    /*const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
       false);
     const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.execSelected,
       this.project, true, false);
@@ -158,8 +168,8 @@ export class ReportComparisonComponent implements OnInit {
           'methods': methodsData
         });
       }
-      (i === 0) && (this.comparisonInProgress = true);
     }
+    this.comparisonInProgress = true*/
   }
 
   private generateOutput(logs: Log[]) {
@@ -169,7 +179,10 @@ export class ReportComparisonComponent implements OnInit {
       return result;
     }
     for (let i = 0; i < logs.length; i++) {
-      logs[i].timestamp = logs[i].timestamp.substring(0, 23);
+      (logs[i].timestamp !== '-') ? (logs[i].timestamp = logs[i].timestamp.substring(0, 23)) : (logs[i].timestamp = '');
+      (logs[i].thread !== '-') ? (logs[i].thread = ' [' + logs[i].thread + '] ') : (logs[i].thread = '');
+      (logs[i].level !== '-') ? (logs[i].level = logs[i].level) : (logs[i].level = '');
+      (logs[i].logger !== '-') ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
     }
     if (this.mode === '2') {
       comparatorDate = new Date(logs[0].timestamp);
@@ -178,7 +191,7 @@ export class ReportComparisonComponent implements OnInit {
       (this.mode === '1') && (logs[i].timestamp = '');
       (this.mode === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
         - (comparatorDate).valueOf()).toString());
-      result += (logs[i].timestamp + ' [' + logs[i].thread + '] ' + logs[i].level + ' ' + logs[i].logger + '' +
+      result += (logs[i].timestamp + logs[i].thread + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\r\n';
     }
     return result;
@@ -192,8 +205,8 @@ export class ReportComparisonComponent implements OnInit {
       {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []},
       {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
     this.classesL = [];
+    this.classesLc = [];
     this.updateViewMode(0, 0);
-    this.generateComparisonData();
     this.reloadTabContent();
   }
 
@@ -223,22 +236,102 @@ export class ReportComparisonComponent implements OnInit {
     );
   }
 
-  updateViewMode(comp: number, mode: number) {
+  async updateComparisonMode(mode: number) {
+    this.comparisonMode = mode;
+    switch (this.viewMode) {
+      case 0:
+        await this.generateRawComparison();
+        break;
+      case 1:
+        await this.generateMethodsComparison();
+        break;
+      case 2:
+        await this.generateMethodsComparison();
+        break;
+      case 3:
+        await this.generateRawComparison();
+        break;
+    }
+  }
+
+  async updateViewMode(comp: number, mode: number) {
     this.viewMode = mode;
     switch (this.viewMode) {
       case 0:
-        this.viewRaw(comp, true);
+        await this.viewRaw(comp, true);
         break;
       case 1:
-        this.viewByMethods(comp);
+        await this.viewByMethods(comp);
         break;
       case 2:
-        this.viewByMethods(comp, true);
+        await this.viewByMethods(comp, true);
         break;
       case 3:
-        this.viewRaw(comp, false);
+        await this.viewRaw(comp, false);
         break;
     }
+  }
+
+  private async generateRawComparison() {
+    this.comparisonInProgress = false;
+    await this.updateViewMode(1, this.viewMode);
+    this.resultData = [];
+    this.comparatorText = '';
+    this.comparatorText = this.generateOutput(this.classesL);
+    this.comparedText = '';
+    this.comparedText = this.generateOutput(this.classesLc);
+    this.resultData[0] = {
+      'logs': await this.readDiffer()
+    };
+    this.comparisonInProgress = true;
+  }
+
+  private async generateMethodsComparison() {
+    this.comparisonInProgress = false;
+    const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
+      false);
+    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.execSelected,
+      this.project, true, false);
+    this.resultData = [];
+    for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
+      let loggerMessage: string;
+      (comparatorLoggers.length > comparedLoggers.length) ? (loggerMessage = comparatorLoggers[i])
+        : (loggerMessage = comparedLoggers[i]);
+      if (loggerMessage.split(' ').length === 2) {
+        const currentLogger = loggerMessage.split(' ')[1];
+        const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
+        const comparatorLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
+          this.test, undefined);
+        const comparedLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
+          '' + this.execSelected, undefined);
+        const methodsData = [];
+        for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
+          this.comparatorText = '';
+          this.comparedText = '';
+          let methodMessage: string;
+          (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
+            : (methodMessage = comparedLoggerMethod[j]);
+          const comparatorMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
+            this.test, methodMessage.replace('(', '')
+              .replace(')', ''));
+          const comparedMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
+            '' + this.execSelected, methodMessage.replace('(', '')
+              .replace(')', ''));
+
+          this.comparatorText = this.generateOutput(comparatorMethodLogs);
+          this.comparedText = this.generateOutput(comparedMethodLogs);
+          methodsData.push({
+            'name': methodMessage,
+            'logs': await this.readDiffer()
+          });
+        }
+        this.resultData.push({
+          'name': currentLogger,
+          'methods': methodsData
+        });
+      }
+    }
+    this.comparisonInProgress = true;
   }
 
   private async viewByMethods(mode: number, clean?: boolean) {
@@ -267,22 +360,18 @@ export class ReportComparisonComponent implements OnInit {
           : (this.classesLc.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}));
       }
     }
-    (clean) && (this.cleanSuccess());
     this.ready = true;
   }
 
   private async viewRaw(mode: number, maven: boolean) {
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
-    const logs = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, false, maven);
+    const logs = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
+      : (this.selected[0].id), this.project, false, maven);
     for (let i = 0; i < logs.length; i++) {
-      (mode === 0) ? (this.classesL.push({'log': logs[i].log})) : (this.classesLc.push({'log': logs[i].log}));
+      (mode === 0) ? (this.classesL.push(logs[i])) : (this.classesLc.push(logs[i]));
     }
     this.ready = true;
-  }
-
-  private cleanSuccess() {
-    console.log(this.classesL);
   }
 
   private async readDiffer() {

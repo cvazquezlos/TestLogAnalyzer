@@ -1,40 +1,56 @@
 <mat-card class="toolbar-view-comp">
-  <div style="display: flex">
-    <div>
-      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 0)"><b>Raw</b>
-      </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 1)"><b>By test</b>
-    </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 2)"><b>Just errors</b>
-    </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 3)"><b>Hide Maven</b></button>
-    </div>
-    <div>
-      <button mat-raised-button class="iconBtn-lg" color="accent"><b>Complete</b></button>&nbsp;&nbsp;<button
-      mat-raised-button class="iconBtn-lg" color="accent"><b>No timestamp</b>
-    </button>&nbsp;&nbsp;<button mat-raised-button class="iconBtn-lg" color="accent"><b>Time diff</b></button>&nbsp;&nbsp;<button><mat-icon>keyboard_arrow_down</mat-icon></button>
-    </div>
-    <span flex></span>
-    <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
-            [routerLink]="['/projects/', project, test]">
-      <mat-icon>arrow_back</mat-icon>
-    </button>&nbsp;
-    <button mat-raised-button class="iconBtn-lg" color="accent" (click)="openComparisonDialog()">
-      <mat-icon>equalizer</mat-icon>
-    </button>&nbsp;
+  <div layout="row">
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 0)">
+        <b>Raw</b>
+      </button>&nbsp;&nbsp;
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 1)">
+        <b>By test</b>
+      </button>&nbsp;&nbsp;
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 2)">
+        <b>Just errors</b>
+      </button>&nbsp;&nbsp;
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateViewMode(0, 3)">
+        <b>Hide Maven</b>
+      </button>
+
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateComparisonMode(0)">
+        <b>Complete</b>
+      </button>&nbsp;&nbsp;
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateComparisonMode(1)">
+        <b>No timestamp</b>
+      </button>&nbsp;&nbsp;
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="updateComparisonMode(2)">
+        <b>Time diff</b>
+      </button>&nbsp;&nbsp;
+      <button mat-icon-button color="accent" (click)="hideExecSelection = !hideExecSelection">
+        <mat-icon *ngIf="hideExecSelection == false">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="hideExecSelection == true">keyboard_arrow_up</mat-icon>
+      </button>
+      <span flex></span>
+      <button *ngIf="test != undefined" mat-raised-button class="iconBtn-lg" color="accent"
+              [routerLink]="['/projects/', project, test]">
+        <mat-icon>arrow_back</mat-icon>
+      </button>&nbsp;
+      <button mat-raised-button class="iconBtn-lg" color="accent" (click)="openComparisonDialog()">
+        <mat-icon>equalizer</mat-icon>
+      </button>&nbsp;
   </div>
-  <div>
+  <div *ngIf="hideExecSelection" class="table-selection">
     <br>
     <mat-divider></mat-divider>
-    <mat-tab-group>
+    <mat-tab-group style="height: 150px">
       <mat-tab *ngFor="let tab of tabs" label="{{tab.name}}">
         <ng-template mat-tab-label>
           {{tab.name}}
-          <button mat-icon-button (click)="deleteTab(tab.name)">
-            <mat-icon>close</mat-icon>
-          </button>
         </ng-template>
         <td-data-table [clickable]="true"
-                       [data]="tab.executions"
                        [columns]="execsData"
-                       [sortable]="false">
+                       [data]="tab.executions"
+                       [multiple]="false"
+                       [selectable]="true"
+                       [sortable]="false"
+                       (rowSelect)="selectEvent($event)"
+                       [(ngModel)]="selected">
           <ng-template *ngFor="let column of execsData" tdDataTableTemplate="{{column.name}}" let-value="value"
                        let-row="row">
             <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
@@ -76,22 +92,36 @@
 <mat-card style="margin-top: 88px;">
   <mat-card-content>
     <div *ngIf="comparisonInProgress; else notComparing">
-      <ng-template ngFor let-class [ngForOf]="resultData">
-        <h3>{{class.name}}</h3>
-        <ng-template ngFor let-method [ngForOf]="class.methods">
-          <h5>{{method.name}}</h5>
-          <table class="diff-table">
-            <tbody>
-            <tr *ngFor="let result of method.logs">
-              <td [innerHTML]="result.index_p" class="index" style="width: 1%"></td>
-              <td [innerHTML]="result.com_p.content" [class]="result.com_p.class" style="width: 49%"></td>
-              <td [innerHTML]="result.indexp" class="index" style="width: 1%"></td>
-              <td [innerHTML]="result.comp.content" [class]="result.comp.class" style="width: 49%"></td>
-            </tr>
-            </tbody>
-          </table>
+      <div *ngIf="comparisonMode == 0">
+        <table class="diff-table">
+          <tbody>
+          <tr *ngFor="let result of resultData[0].logs">
+            <td [innerHTML]="result.index_p" class="index" style="width: 1%"></td>
+            <td [innerHTML]="result.com_p.content" [class]="result.com_p.class" style="width: 49%"></td>
+            <td [innerHTML]="result.indexp" class="index" style="width: 1%"></td>
+            <td [innerHTML]="result.comp.content" [class]="result.comp.class" style="width: 49%"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="comparisonMode==1">
+        <ng-template ngFor let-class [ngForOf]="resultData">
+          <h3>{{class.name}}</h3>
+          <ng-template ngFor let-method [ngForOf]="class.methods">
+            <h5>{{method.name}}</h5>
+            <table class="diff-table">
+              <tbody>
+              <tr *ngFor="let result of method.logs">
+                <td [innerHTML]="result.index_p" class="index" style="width: 1%"></td>
+                <td [innerHTML]="result.com_p.content" [class]="result.com_p.class" style="width: 49%"></td>
+                <td [innerHTML]="result.indexp" class="index" style="width: 1%"></td>
+                <td [innerHTML]="result.comp.content" [class]="result.comp.class" style="width: 49%"></td>
+              </tr>
+              </tbody>
+            </table>
+          </ng-template>
         </ng-template>
-      </ng-template>
+      </div>
     </div>
     <ng-template #notComparing>
       <div *ngIf="viewMode == 0 || viewMode == 3">

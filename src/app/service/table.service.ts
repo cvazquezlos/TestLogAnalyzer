@@ -27,8 +27,6 @@ export class TableService {
       comparatorLine = this.cleanBetweenTags('<ins>', '</ins>', line, 0);
       comparedLine = this.cleanBetweenTags('<del>', '</del>', line, 1);
       this.concatResults(i, comparatorLine, comparedLine);
-      console.log(i + ' ' + comparatorLine);
-      console.log(i + ' ' + comparedLine);
       i++;
     });
     this.solveResultErrors();

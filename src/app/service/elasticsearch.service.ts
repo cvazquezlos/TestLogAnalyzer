@@ -181,6 +181,7 @@ export class ElasticsearchService {
         headers: headers,
         responseType: 'text'
       }).toPromise();
+      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
