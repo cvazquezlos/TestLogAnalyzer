@@ -125,53 +125,6 @@ export class ReportComparisonComponent implements OnInit {
     }
   }
 
-  private async generateComparison() {
-    /*const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
-      false);
-    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.execSelected,
-      this.project, true, false);
-    this.resultData = [];
-    for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
-      let loggerMessage: string;
-      (comparatorLoggers.length > comparedLoggers.length) ? (loggerMessage = comparatorLoggers[i])
-        : (loggerMessage = comparedLoggers[i]);
-      if (loggerMessage.split(' ').length === 2) {
-        const currentLogger = loggerMessage.split(' ')[1];
-        const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
-        const comparatorLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          this.test, undefined);
-        const comparedLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          '' + this.execSelected, undefined);
-        const methodsData = [];
-        for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
-          this.comparatorText = '';
-          this.comparedText = '';
-          let methodMessage: string;
-          (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
-            : (methodMessage = comparedLoggerMethod[j]);
-          const comparatorMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-            this.test, methodMessage.replace('(', '')
-            .replace(')', ''));
-          const comparedMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-            '' + this.execSelected, methodMessage.replace('(', '')
-            .replace(')', ''));
-
-          this.comparatorText = this.generateOutput(comparatorMethodLogs);
-          this.comparedText = this.generateOutput(comparedMethodLogs);
-          methodsData.push({
-            'name': methodMessage,
-            'logs': await this.readDiffer()
-          });
-        }
-        this.resultData.push({
-          'name': currentLogger,
-          'methods': methodsData
-        });
-      }
-    }
-    this.comparisonInProgress = true*/
-  }
-
   private generateOutput(logs: Log[]) {
     let result = '';
     let comparatorDate = new Date();
@@ -184,12 +137,12 @@ export class ReportComparisonComponent implements OnInit {
       (logs[i].level !== '-') ? (logs[i].level = logs[i].level) : (logs[i].level = '');
       (logs[i].logger !== '-') ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
     }
-    if (this.mode === '2') {
+    if ((this.comparisonMode + '') === '2') {
       comparatorDate = new Date(logs[0].timestamp);
     }
     for (let i = 0; i < logs.length; i++) {
-      (this.mode === '1') && (logs[i].timestamp = '');
-      (this.mode === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
+      ((this.comparisonMode + '') === '1') && (logs[i].timestamp = '');
+      ((this.comparisonMode + '') === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
         - (comparatorDate).valueOf()).toString());
       result += (logs[i].timestamp + logs[i].thread + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\r\n';
@@ -208,32 +161,6 @@ export class ReportComparisonComponent implements OnInit {
     this.classesLc = [];
     this.updateViewMode(0, 0);
     this.reloadTabContent();
-  }
-
-  openComparisonDialog() {
-    this.elasticsearchService.getProjectByName(this.project).subscribe(
-      response => {
-        const avaibleExecs = [];
-        for (let i = 0; i < response.num_execs; i++) {
-          if ((+this.test !== (i + 1)) && (!avaibleExecs.includes(i + 1))) {
-            avaibleExecs.push(i + 1);
-          }
-        }
-        const dialogRef = this.dialog.open(ComparisonSettingsComponent, {
-          data: {execSelected: this.execSelected, mode: this.mode, avaible: avaibleExecs},
-          height: '310px',
-          width: '600px',
-        });
-        dialogRef.afterClosed().subscribe(
-          result => {
-            this.execSelected = result.execSelected;
-            this.mode = '' + result.mode;
-            this.generateComparison();
-          }
-        );
-      },
-      error => console.log(error)
-    );
   }
 
   async updateComparisonMode(mode: number) {
@@ -269,6 +196,9 @@ export class ReportComparisonComponent implements OnInit {
       case 3:
         await this.viewRaw(comp, false);
         break;
+    }
+    if (this.comparisonInProgress) {
+      this.updateComparisonMode(this.comparisonMode);
     }
   }
 
