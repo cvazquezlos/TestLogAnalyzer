@@ -1,36 +1,14 @@
 import {
   Component, ElementRef,
-  Inject, OnInit,
-  ViewChild
+  OnInit, ViewChild
 } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogRef
-} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
 import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 import {TableService} from '../../../../service/table.service';
-
-@Component({
-  selector: 'app-report-comparison-settings',
-  templateUrl: './comparison-settings/comparison-settings.component.html',
-  styleUrls: ['./comparison-settings/comparison-settings.component.css']
-})
-
-export class ComparisonSettingsComponent {
-
-  constructor(public dialogRef: MatDialogRef<ComparisonSettingsComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-  }
-
-  onNoClick() {
-    this.dialogRef.close();
-  }
-
-}
 
 @Component({
   selector: 'app-report-comparison',
@@ -47,10 +25,10 @@ export class ReportComparisonComponent implements OnInit {
   comparatorText = '';
   comparedText = '';
   comparisonInProgress: boolean;
+  comparisonButtonsClasses = ["primary", "primary", "primary"];
   comparisonMode: number;
   deleteInProgress: boolean;
   execDeleting: string;
-  execSelected: number;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 100},
     {name: 'startdate', label: 'Start date', width: 300},
@@ -62,67 +40,19 @@ export class ReportComparisonComponent implements OnInit {
     {name: 'ERROR', label: 'ERROR', width: 100}
   ];
   hideExecSelection: boolean;
-  mode = '0';
   project: string;
   selected: any[] = [];
   ready: boolean;
   resultData: any[] = [];
   tabs: any[];
   test: string;
+  viewButtonsClasses = ["accent", "primary", "primary", "primary"];
   viewMode: number;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
               private tableService: TableService, private elasticsearchService: ElasticsearchService) {
     this.comparisonInProgress = false;
     this.hideExecSelection = false;
-  }
-
-  selectEvent(event: any) {
-    this.selected[0] = event.row;
-    if (this.comparisonInProgress) {
-
-    }
-  }
-
-  async reloadTabContent() {
-    this.tabs = [];
-    const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project);
-    for (let i = 0; i < response0.length; i++) {
-      const response1 = await this.elasticsearchService.getLogsByProjectAsync(this.project, response0[i].tab);
-      const executions = [];
-      for (let j = 0; j < response1.length; j++) {
-        let icon, classi: any;
-        if (response1[j].status.indexOf('SUCCESS') !== -1) {
-          icon = 'check-circle';
-          classi = 'tc-green-700';
-        } else {
-          icon = 'error';
-          classi = 'tc-red-700';
-        }
-        if (this.test !== (response1[j].id + '')) {
-          executions.push({
-            'id': response1[j].id,
-            'startdate': response1[j].timestamp,
-            'entries': response1[j].entries,
-            'status': {
-              'icon': icon,
-              'class': classi,
-              'status': response1[j].status
-            },
-            'DEBUG': response1[j].debug,
-            'INFO': response1[j].info,
-            'WARNING': response1[j].warning,
-            'ERROR': response1[j].error
-          });
-        } else {
-          this.selected[0] = executions[executions.length - 1];
-        }
-      }
-      this.tabs[i] = {
-        'name': response0[i].tab,
-        'executions': executions
-      };
-    }
   }
 
   private generateOutput(logs: Log[]) {
@@ -155,12 +85,52 @@ export class ReportComparisonComponent implements OnInit {
     this.project = this.activatedRoute.snapshot.parent.parent.params['project'];
     this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
       {label: this.project, url: '/projects/' + this.project, params: []},
-      {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []},
-      {label: 'Reporting', url: '/projects/' + this.project + '/' + this.test + '/report', params: []}]);
+      {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []}]);
     this.classesL = [];
     this.classesLc = [];
     this.updateViewMode(0, 0);
     this.reloadTabContent();
+  }
+
+  async reloadTabContent() {
+    this.tabs = [];
+    const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project);
+    for (let i = 0; i < response0.length; i++) {
+      const response1 = await this.elasticsearchService.getLogsByProjectAsync(this.project, response0[i].tab);
+      const executions = [];
+      for (let j = 0; j < response1.length; j++) {
+        let icon, classi: any;
+        if (response1[j].status.indexOf('SUCCESS') !== -1) {
+          icon = 'check_circle';
+          classi = 'tc-green-700';
+        } else {
+          icon = 'error';
+          classi = 'tc-red-700';
+        }
+        if (this.test !== (response1[j].id + '')) {
+          executions.push({
+            'id': response1[j].id,
+            'startdate': response1[j].timestamp,
+            'entries': response1[j].entries,
+            'status': {
+              'icon': icon,
+              'class': classi,
+              'status': response1[j].status
+            },
+            'DEBUG': response1[j].debug,
+            'INFO': response1[j].info,
+            'WARNING': response1[j].warning,
+            'ERROR': response1[j].error
+          });
+        } else {
+          this.selected[0] = executions[executions.length - 1];
+        }
+      }
+      this.tabs[i] = {
+        'name': response0[i].tab,
+        'executions': executions
+      };
+    }
   }
 
   async updateComparisonMode(mode: number) {
@@ -179,10 +149,12 @@ export class ReportComparisonComponent implements OnInit {
         await this.generateRawComparison();
         break;
     }
+    this.resetComparisonButtonsClasses();
   }
 
   async updateViewMode(comp: number, mode: number) {
     this.viewMode = mode;
+    this.resetViewButtonsClasses();
     switch (this.viewMode) {
       case 0:
         await this.viewRaw(comp, true);
@@ -202,25 +174,23 @@ export class ReportComparisonComponent implements OnInit {
     }
   }
 
-  private async generateRawComparison() {
+  disableComparison() {
     this.comparisonInProgress = false;
-    await this.updateViewMode(1, this.viewMode);
-    this.resultData = [];
-    this.comparatorText = '';
-    this.comparatorText = this.generateOutput(this.classesL);
-    this.comparedText = '';
-    this.comparedText = this.generateOutput(this.classesLc);
-    this.resultData[0] = {
-      'logs': await this.readDiffer()
-    };
-    this.comparisonInProgress = true;
+    this.resetComparisonButtonsClasses();
+  }
+
+  selectEvent(event: any) {
+    this.selected[0] = event.row;
+    if (this.comparisonInProgress) {
+
+    }
   }
 
   private async generateMethodsComparison() {
     this.comparisonInProgress = false;
     const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
       false);
-    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.execSelected,
+    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.selected[0].id,
       this.project, true, false);
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
@@ -233,7 +203,7 @@ export class ReportComparisonComponent implements OnInit {
         const comparatorLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
           this.test, undefined);
         const comparedLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          '' + this.execSelected, undefined);
+          '' + this.selected[0].id, undefined);
         const methodsData = [];
         for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
           this.comparatorText = '';
@@ -245,7 +215,7 @@ export class ReportComparisonComponent implements OnInit {
             this.test, methodMessage.replace('(', '')
               .replace(')', ''));
           const comparedMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-            '' + this.execSelected, methodMessage.replace('(', '')
+            '' + this.selected[0].id, methodMessage.replace('(', '')
               .replace(')', ''));
 
           this.comparatorText = this.generateOutput(comparatorMethodLogs);
@@ -262,6 +232,25 @@ export class ReportComparisonComponent implements OnInit {
       }
     }
     this.comparisonInProgress = true;
+  }
+
+  private async generateRawComparison() {
+    this.comparisonInProgress = false;
+    await this.updateViewMode(1, this.viewMode);
+    this.resultData = [];
+    this.comparatorText = '';
+    this.comparatorText = this.generateOutput(this.classesL);
+    this.comparedText = '';
+    this.comparedText = this.generateOutput(this.classesLc);
+    this.resultData[0] = {
+      'logs': await this.readDiffer()
+    };
+    this.comparisonInProgress = true;
+  }
+
+  private async readDiffer() {
+    const response = await this.elasticsearchService.postDiff(this.comparatorText, this.comparedText);
+    return this.tableService.generateTable(response);
   }
 
   private async viewByMethods(mode: number, clean?: boolean) {
@@ -304,8 +293,19 @@ export class ReportComparisonComponent implements OnInit {
     this.ready = true;
   }
 
-  private async readDiffer() {
-    const response = await this.elasticsearchService.postDiff(this.comparatorText, this.comparedText);
-    return this.tableService.generateTable(response);
+  private resetComparisonButtonsClasses() {
+    for (let i = 0; i < this.comparisonButtonsClasses.length; i++) {
+      this.comparisonButtonsClasses[i] = "primary";
+    }
+    if (this.comparisonInProgress) {
+      this.comparisonButtonsClasses[this.comparisonMode] = "accent";
+    }
+  }
+
+  private resetViewButtonsClasses() {
+    for (let i = 0; i < this.viewButtonsClasses.length; i++) {
+      this.viewButtonsClasses[i] = "primary";
+    }
+    this.viewButtonsClasses[this.viewMode] = "accent";
   }
 }

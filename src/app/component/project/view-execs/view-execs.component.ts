@@ -88,7 +88,7 @@ export class ViewExecsComponent implements OnInit {
       for (let j = 0; j < response1.length; j++) {
         let icon, classi: any;
         if (response1[j].status.indexOf('SUCCESS') !== -1) {
-          icon = 'check-circle';
+          icon = 'check_circle';
           classi = 'tc-green-700';
         } else {
           icon = 'error';
