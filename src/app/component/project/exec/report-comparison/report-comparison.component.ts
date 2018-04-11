@@ -62,10 +62,10 @@ export class ReportComparisonComponent implements OnInit {
       return result;
     }
     for (let i = 0; i < logs.length; i++) {
-      (logs[i].timestamp !== '-') ? (logs[i].timestamp = logs[i].timestamp.substring(0, 23)) : (logs[i].timestamp = '');
-      (logs[i].thread !== '-') ? (logs[i].thread = ' [' + logs[i].thread + '] ') : (logs[i].thread = '');
-      (logs[i].level !== '-') ? (logs[i].level = logs[i].level) : (logs[i].level = '');
-      (logs[i].logger !== '-') ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
+      (logs[i].timestamp.length > 2) ? (logs[i].timestamp = logs[i].timestamp.substring(0, 23)) : (logs[i].timestamp = '');
+      (logs[i].thread.length > 2) ? ((logs[i].thread.indexOf('[') === -1) && (logs[i].thread = ' [' + logs[i].thread + '] ')) : (logs[i].thread = '');
+      (logs[i].level.length > 2) ? (logs[i].level = logs[i].level) : (logs[i].level = '');
+      (logs[i].logger.length > 2) ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
     }
     if ((this.comparisonMode + '') === '2') {
       comparatorDate = new Date(logs[0].timestamp);
