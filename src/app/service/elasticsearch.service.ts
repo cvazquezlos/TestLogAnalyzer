@@ -113,15 +113,17 @@ export class ElasticsearchService {
     );
   }
 
-  postFileByUpload(file: File) {
-    const body = new FormData();
-    body.append('file', file);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/pdf');
-    return this.http.post(this.baseAPIFilesUrl + '/file', body, {headers: headers}).map(
-      response => response,
-      error => error
-    );
+  async postFileByUpload(file: File) {
+    try {
+      const body = new FormData();
+      body.append('file', file);
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'application/pdf');
+      const response = await this.http.post(this.baseAPIFilesUrl + '/file', body, {headers: headers}).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   postFileByUrl(url: string) {

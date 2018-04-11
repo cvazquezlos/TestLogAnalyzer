@@ -19,6 +19,7 @@ export class AddProjectComponent implements OnInit {
   filesXml: File[];
   isFile: boolean;
   project: Project;
+  targetTab = 'test';
   urlTxt: string;
   urlXml: string;
 
@@ -48,42 +49,35 @@ export class AddProjectComponent implements OnInit {
       {label: 'Add project', url: '/projects/add', params: []}])
   }
 
-  save() {
+  async save() {
     this.code = 1;
     this.elasticsearchService.postProject(this.project).subscribe(
       a => {
         this.elasticsearchService.postFileProject(this.project.name).subscribe(
           b => {
-            this.elasticsearchService.postFileTab('test').subscribe(
-              c => {
-                if (this.urlTxt !== 'Empty') {
-                  this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
-                    d => {
-                      this.code = 2;
-                      if (this.urlXml !== 'Empty') {
+            this.elasticsearchService.postFileTab(this.targetTab).subscribe(
+              async c => {
+                switch (this.currentTab) {
+                  case 0:
+                    for (let file of this.filesTxt) {
+                      await this.elasticsearchService.postFileByUpload(file);
+                    }
+                    for (let file of this.filesXml) {
+                      await this.elasticsearchService.postFileByUpload(file);
+                    }
+                    break;
+                  case 1:
+                    this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
+                      d => {
+                        this.code = 2;
                         this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
                           e => e,
                           error => console.log(error)
-                        )
-                      }
-                    },
-                    error => console.log(error)
-                  );
-                } else {
-                  if (this.fileTxt !== null) {
-                    this.elasticsearchService.postFileByUpload(this.fileTxt).subscribe(
-                      d => {
-                        this.code = 2;
-                        if (this.fileXml !== null) {
-                          this.elasticsearchService.postFileByUpload(this.fileXml).subscribe(
-                            e => e,
-                            error => console.log(error)
-                          )
-                        }
+                        );
                       },
                       error => console.log(error)
                     );
-                  }
+                    break;
                 }
               },
               error => console.log(error)

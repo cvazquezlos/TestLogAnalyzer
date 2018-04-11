@@ -58,7 +58,7 @@
                 <td-file-upload #xmlFileUpload
                                 accept=".xml"
                                 multiple
-                                required 
+                                required
                                 (cancel)="cancel()"
                                 (select)="update($event)"
                                 (update)="update($event)">
@@ -97,6 +97,7 @@
                            name="URL of .xml file"
                            onclick="this.select()"
                            placeholder="URL of .xml file"
+                           required
                            type="text"
                            [(ngModel)]="urlXml">
                   </mat-form-field>
@@ -116,7 +117,7 @@
           <ng-template #notSelected>
             <span class="md-title">URL</span>
           </ng-template>
-          and its content will be saved inside of the <span class="md-title">test</span> (default) tab.
+          and its content will be saved inside of the <input class="tab-input" [(ngModel)]="targetTab"> tab.
           <br><br>
           <div *ngIf="(code == 1) || (code == 2); else hideSave">
             <ng-template tdLoading [tdLoadingUntil]="code != 1" tdLoadingStrategy="overlay" tdLoadingType="linear">
