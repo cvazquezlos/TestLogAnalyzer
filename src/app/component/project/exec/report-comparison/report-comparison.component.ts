@@ -25,7 +25,7 @@ export class ReportComparisonComponent implements OnInit {
   comparatorText = '';
   comparedText = '';
   comparisonInProgress: boolean;
-  comparisonButtonsClasses = ["primary", "primary", "primary"];
+  comparisonButtonsClasses = ['primary', 'primary', 'primary'];
   comparisonMode: number;
   deleteInProgress: boolean;
   execDeleting: string;
@@ -46,7 +46,7 @@ export class ReportComparisonComponent implements OnInit {
   resultData: any[] = [];
   tabs: any[];
   test: string;
-  viewButtonsClasses = ["accent", "primary", "primary", "primary"];
+  viewButtonsClasses = ['accent', 'primary', 'primary', 'primary'];
   viewMode: number;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
@@ -63,7 +63,8 @@ export class ReportComparisonComponent implements OnInit {
     }
     for (let i = 0; i < logs.length; i++) {
       (logs[i].timestamp.length > 2) ? (logs[i].timestamp = logs[i].timestamp.substring(0, 23)) : (logs[i].timestamp = '');
-      (logs[i].thread.length > 2) ? ((logs[i].thread.indexOf('[') === -1) && (logs[i].thread = ' [' + logs[i].thread + '] ')) : (logs[i].thread = '');
+      (logs[i].thread.length > 2) ? ((logs[i].thread.indexOf('[') === -1) && (logs[i].thread = ' ['
+        + logs[i].thread + '] ')) : (logs[i].thread = '');
       (logs[i].level.length > 2) ? (logs[i].level = logs[i].level) : (logs[i].level = '');
       (logs[i].logger.length > 2) ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
     }
@@ -236,6 +237,7 @@ export class ReportComparisonComponent implements OnInit {
 
   private async generateRawComparison() {
     this.comparisonInProgress = false;
+    await this.updateViewMode(0, this.viewMode);
     await this.updateViewMode(1, this.viewMode);
     this.resultData = [];
     this.comparatorText = '';
@@ -295,17 +297,17 @@ export class ReportComparisonComponent implements OnInit {
 
   private resetComparisonButtonsClasses() {
     for (let i = 0; i < this.comparisonButtonsClasses.length; i++) {
-      this.comparisonButtonsClasses[i] = "primary";
+      this.comparisonButtonsClasses[i] = 'primary';
     }
     if (this.comparisonInProgress) {
-      this.comparisonButtonsClasses[this.comparisonMode] = "accent";
+      this.comparisonButtonsClasses[this.comparisonMode] = 'accent';
     }
   }
 
   private resetViewButtonsClasses() {
     for (let i = 0; i < this.viewButtonsClasses.length; i++) {
-      this.viewButtonsClasses[i] = "primary";
+      this.viewButtonsClasses[i] = 'primary';
     }
-    this.viewButtonsClasses[this.viewMode] = "accent";
+    this.viewButtonsClasses[this.viewMode] = 'accent';
   }
 }
