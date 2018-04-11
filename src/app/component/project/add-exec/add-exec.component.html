@@ -11,7 +11,7 @@
   </mat-card-title>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <mat-tab-group>
+    <mat-tab-group (selectedIndexChange)="currentTab = $event">
       <mat-tab label="Choose files">
         <div layout="row">
           <div flex="50">
