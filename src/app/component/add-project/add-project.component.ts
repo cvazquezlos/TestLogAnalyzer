@@ -51,47 +51,35 @@ export class AddProjectComponent implements OnInit {
 
   async save() {
     this.code = 1;
-    this.elasticsearchService.postProject(this.project).subscribe(
-      a => {
-        this.elasticsearchService.postFileProject(this.project.name).subscribe(
-          b => {
-            this.elasticsearchService.postFileTab(this.targetTab).subscribe(
-              async c => {
-                switch (this.currentTab) {
-                  case 0:
-                    for (let file of this.filesTxt) {
-                      await this.elasticsearchService.postFileByUpload(file);
-                    }
-                    for (let file of this.filesXml) {
-                      await this.elasticsearchService.postFileByUpload(file);
-                    }
-                    break;
-                  case 1:
-                    this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
-                      d => {
-                        this.code = 2;
-                        this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
-                          e => e,
-                          error => console.log(error)
-                        );
-                      },
-                      error => console.log(error)
-                    );
-                    break;
-                }
-              },
+    await this.elasticsearchService.postProject(this.project);
+    await this.elasticsearchService.postFileProject(this.project.name);
+    await this.elasticsearchService.postFileTab(this.targetTab);
+    switch (this.currentTab) {
+      case 0:
+        this.code = 2;
+        for (let file of this.filesTxt) {
+          await this.elasticsearchService.postFileByUpload(file);
+        }
+        for (let file of this.filesXml) {
+          await this.elasticsearchService.postFileByUpload(file);
+        }
+        break;
+      case 1:
+        this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
+          a => {
+            this.code = 2;
+            this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
+              b => b,
               error => console.log(error)
             );
           },
           error => console.log(error)
         );
-      },
-      error => console.log(error)
-    );
+        break;
+    }
   }
 
   update(files: File[]) {
-    console.log(files);
     (files[0].name.includes('.txt')) ? (this.filesTxt = files) : (this.filesXml = files);
     this.urlTxt = 'Empty';
     this.urlXml = 'Empty';

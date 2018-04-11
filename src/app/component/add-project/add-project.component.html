@@ -67,6 +67,7 @@
                   <ng-template td-file-input-label>
                     <mat-icon>attach_file</mat-icon>
                     Choose multiple .xml files...
+                    <span [hidden]="!txtFileUpload?.required">*</span>
                   </ng-template>
                 </td-file-upload>
               </div>

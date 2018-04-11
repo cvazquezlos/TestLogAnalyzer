@@ -93,17 +93,21 @@ export class ElasticsearchService {
     );
   }
 
-  postProject(project: Project) {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    headers.append('X-Requested-With', 'XMLHttpRequest');
-    const object = {
-      id: project.id,
-      name: project.name,
-      'num_execs': project.num_execs
-    };
-    return this.http.post(this.baseAPIProjectsUrl, object, {headers: headers})
-      .map(response => response);
+  async postProject(project: Project) {
+    try {
+      const headers: HttpHeaders = new HttpHeaders();
+      headers.append('Content-Type', 'application/json');
+      headers.append('X-Requested-With', 'XMLHttpRequest');
+      const object = {
+        id: project.id,
+        name: project.name,
+        'num_execs': project.num_execs
+      };
+      const response = this.http.post(this.baseAPIProjectsUrl, object, {headers: headers}).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   deleteProjectById(id: number) {
@@ -136,24 +140,28 @@ export class ElasticsearchService {
     );
   }
 
-  postFileProject(project: string) {
-    const body = JSON.stringify(project);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'text/plain');
-    return this.http.post(this.baseAPIFilesUrl + '/project', body, {headers: headers}).map(
-      response => response,
-      error => error
-    );
+  async postFileProject(project: string) {
+    try {
+      const body = JSON.stringify(project);
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'text/plain');
+      const response = this.http.post(this.baseAPIFilesUrl + '/project', body, {headers: headers}).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  postFileTab(tab: string) {
-    const body = JSON.stringify(tab);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'text/plain');
-    return this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers}).map(
-      response => response,
-      error => error
-    );
+  async postFileTab(tab: string) {
+    try {
+      const body = JSON.stringify(tab);
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'text/plain');
+      const response = this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers});
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getTabsByProjectAsync(project: string) {
