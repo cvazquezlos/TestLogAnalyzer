@@ -13,9 +13,10 @@ import {ElasticsearchService} from '../../service/elasticsearch.service';
 export class AddProjectComponent implements OnInit {
 
   code: number;
+  currentTab = 0;
   fileSelected: boolean;
-  fileTxt: File;
-  fileXml: File;
+  filesTxt: File[];
+  filesXml: File[];
   isFile: boolean;
   project: Project;
   urlTxt: string;
@@ -24,8 +25,8 @@ export class AddProjectComponent implements OnInit {
   constructor(private elasticsearchService: ElasticsearchService, private router: Router, private breadcrumbs: BreadcrumbsService) {
     this.code = 0;
     this.fileSelected = true;
-    this.fileTxt = null;
-    this.fileXml = null;
+    this.filesTxt = null;
+    this.filesXml = null;
     this.isFile = true;
     this.urlTxt = '';
     this.urlXml = '';
@@ -95,8 +96,9 @@ export class AddProjectComponent implements OnInit {
     );
   }
 
-  update(file: File) {
-    (file.name.includes('.txt')) ? (this.fileTxt = file) : (this.fileXml = file);
+  update(files: File[]) {
+    console.log(files);
+    (files[0].name.includes('.txt')) ? (this.filesTxt = files) : (this.filesXml = files);
     this.urlTxt = 'Empty';
     this.urlXml = 'Empty';
   }
