@@ -3,6 +3,15 @@
   padding: 0 15px !important;
 }
 
+.toolbar-text {
+  vertical-align: middle;
+  margin-bottom: 0px;
+}
+
+.toolbar-text-container {
+  line-height: 40px;
+}
+
 .diff-table {
   font-family: "Inconsolata", "Consolas", "Monaco";
   font-size: 0.9em;
@@ -24,6 +33,7 @@
   display: inline-block;
   font-size: 1.3em;
 }
+
 .title-icon {
   color: white;
 }
@@ -119,12 +129,12 @@
 }
 
 .method-selected {
-  background: rgba(0,0,0,.32);
-  color: hsla(0,0%,100%,.87);
+  background: rgba(0, 0, 0, .32);
+  color: hsla(0, 0%, 100%, .87);
 }
 
 .method-selected mat-icon {
-  color: hsla(0,0%,100%,.87);
+  color: hsla(0, 0%, 100%, .87);
 }
 
 .hide {
@@ -143,4 +153,35 @@
 
 .comp-title {
   font-size: x-large;
+}
+
+.toolbar-view-comp {
+  margin-top: 8px;
+  margin-left: 8px;
+  margin-right: 8px;
+  background-color: white;
+  position: fixed;
+  width: calc(100% - 2.063em);
+  padding: 16px;
+  z-index: 1;
+}
+
+.iconBtn {
+  min-width: initial !important;
+  padding: 0 !important;
+}
+
+.table-selection {
+}
+
+.pad-top {
+  padding-top: 10px;
+}
+
+.divider-vertical {
+  border-top-width: 0;
+  border-right-width: 1px;
+  border-right-color: #E0E0E0;
+  border-right-style: solid;
+  height: 40px;
 }

@@ -27,11 +27,11 @@ export class TableService {
       comparatorLine = this.cleanBetweenTags('<ins>', '</ins>', line, 0);
       comparedLine = this.cleanBetweenTags('<del>', '</del>', line, 1);
       this.concatResults(i, comparatorLine, comparedLine);
-      console.log(i + ' ' + comparatorLine);
-      console.log(i + ' ' + comparedLine);
       i++;
     });
-    this.solveResultErrors();
+    this.solveUselessDiffs();
+    this.solveBasicTableColors();
+    // this.solveResultErrors();
     return this.results;
   }
 
@@ -104,6 +104,48 @@ export class TableService {
         break;
     }
     return line;
+  }
+
+  private solveBasicTableColors() {
+    for (let i = 0; i < this.results.length; i++) {
+      const result = this.results[i];
+      if ((result.com_p.content.indexOf('<del>') !== -1) && (result.com_p !== undefined)) {
+        result.com_p.class = 'delC';
+        result.comp.class = 'added';
+      }
+      if ((result.comp.content.indexOf('<ins>') !== -1) && (result.comp !== undefined)) {
+        result.comp.class = 'insC';
+        if (result.com_p.class !== 'delC') {
+          result.com_p.class = 'added';
+        }
+      }
+      this.results[i] = result;
+    }
+  }
+
+  private solveUselessDiffs() {
+    for (let i = 0; i < this.results.length; i++) {
+      const result = this.results[i];
+      let comparator = result.com_p.content;
+      if (comparator.indexOf('<del>') === comparator.lastIndexOf('<del>') && (comparator.indexOf('<del>') === 0)) {
+        const content = comparator.substring(comparator.indexOf('<del>') + 5, comparator.indexOf('</del>'));
+        if (/^[^A-Za-z0-9]*$/g.test(content)) {
+          comparator = '';
+          result.comp.class = 'normal';
+        }
+      }
+      result.com_p.content = comparator;
+      let compared = result.comp.content;
+      if (comparator.indexOf('<ins>') === comparator.lastIndexOf('<ins>') && (compared.indexOf('<ins>') === 0)) {
+        const content = compared.substring(compared.indexOf('<ins>') + 5, compared.indexOf('</ins>'));
+        if (/^[^A-Za-z0-9]*$/g.test(content)) {
+          compared = '';
+          result.com_p.class = 'normal';
+        }
+      }
+      result.comp.content = compared;
+      this.results[i] = result;
+    }
   }
 
   private solveResultErrors() {

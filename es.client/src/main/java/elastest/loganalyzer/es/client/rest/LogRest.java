@@ -62,7 +62,7 @@ public class LogRest {
 			execution.setTimestamp(selected.getTimestamp());
 			execution.setDebug(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "DEBUG"));
 			execution.setInfo(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "INFO"));
-			execution.setWarning(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "WARNING"));
+			execution.setWarning(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "WARN"));
 			execution.setError(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "ERROR"));
 			logs = logService.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(tab, project, test,
 					"BUILD");
