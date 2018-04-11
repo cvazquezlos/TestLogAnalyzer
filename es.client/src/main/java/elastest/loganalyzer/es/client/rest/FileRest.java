@@ -95,7 +95,7 @@ public class FileRest {
 					InputStream inputStream = file.getInputStream();
 					InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
 					List<ReportTestSuite> tests = parser.parse(inputStreamReader);
-					System.out.println(tests);
+					System.out.println(tests.get(0));
 				}
 			} else {
 				System.out.println("Fail");
