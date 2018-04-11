@@ -31,7 +31,7 @@ export class TableService {
     });
     this.solveUselessDiffs();
     this.solveBasicTableColors();
-    //this.solveResultErrors();
+    // this.solveResultErrors();
     return this.results;
   }
 
@@ -111,9 +111,13 @@ export class TableService {
       const result = this.results[i];
       if ((result.com_p.content.indexOf('<del>') !== -1) && (result.com_p !== undefined)) {
         result.com_p.class = 'delC';
+        result.comp.class = 'added';
       }
       if ((result.comp.content.indexOf('<ins>') !== -1) && (result.comp !== undefined)) {
         result.comp.class = 'insC';
+        if (result.com_p.class !== 'delC') {
+          result.com_p.class = 'added';
+        }
       }
       this.results[i] = result;
     }
