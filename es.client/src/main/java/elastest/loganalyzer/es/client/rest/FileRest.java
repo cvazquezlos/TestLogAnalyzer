@@ -120,7 +120,6 @@ public class FileRest {
 							System.out.println("      Name: " + testcases.get(j).getName());
 						}
 					}
-					System.out.println(tests);
 				}
 			} else {
 				System.out.println("Fail");

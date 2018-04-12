@@ -58,6 +58,7 @@ export class AddExecComponent implements OnInit {
   async save() {
     this.code = 1;
     await this.elasticsearchService.postFileProject(this.project.name);
+    console.log(this.targetTab);
     await this.elasticsearchService.postFileTab(this.targetTab);
     switch (this.currentTab) {
       case 0:
@@ -96,6 +97,7 @@ export class AddExecComponent implements OnInit {
     for (let i = 0; i < response.length; i++) {
       this.tabs[i] = response[i].tab;
     }
+    console.log(this.tabs);
     this.targetTab = this.tabs[0];
   }
 }

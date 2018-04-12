@@ -82,7 +82,6 @@ export class ViewExecsComponent implements OnInit {
   async reloadTabContent() {
     this.tabs = [];
     const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);
-    console.log(this.project.name);
     console.log(response0);
     for (let i = 0; i < response0.length; i++) {
       const response1 = await this.elasticsearchService.getLogsByProjectAsync(this.project.name, response0[i].tab);
