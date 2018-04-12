@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.maven.plugin.surefire.log.api.ConsoleLogger;
+import org.apache.maven.plugins.surefire.report.ReportTestCase;
 import org.apache.maven.plugins.surefire.report.ReportTestSuite;
 import org.apache.maven.plugins.surefire.report.TestSuiteXmlParser;
 import org.junit.Before;
@@ -95,7 +96,31 @@ public class FileRest {
 					InputStream inputStream = file.getInputStream();
 					InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
 					List<ReportTestSuite> tests = parser.parse(inputStreamReader);
-					System.out.println(tests.get(0));
+					for (int i = 0; i < tests.size(); i++) {
+						System.out.println("Classs name: " + tests.get(i).getFullClassName());
+						System.out.println("Name: " + tests.get(i).getName());
+						System.out.println("Errors: " + tests.get(i).getNumberOfErrors());
+						System.out.println("Failures: " + tests.get(i).getNumberOfFailures());
+						System.out.println("Flakes: " + tests.get(i).getNumberOfFlakes());
+						System.out.println("Skipped: " + tests.get(i).getNumberOfSkipped());
+						System.out.println("Tests: " + tests.get(i).getNumberOfTests());
+						System.out.println("Package name: " + tests.get(i).getPackageName());
+						System.out.println("Time elapsed: " + tests.get(i).getTimeElapsed());
+						System.out.println("Tests cases: " + tests.get(i).getTestCases());
+						List<ReportTestCase> testcases = tests.get(i).getTestCases();
+						for (int j = 0; j < testcases.size(); j++) {
+							System.out.println("   TEST " + j);
+							System.out.println("      Class name: " + testcases.get(j).getClassName());
+							System.out.println("      Failure detail: " + testcases.get(j).getFailureDetail());
+							System.out.println("      Error line: " + testcases.get(j).getFailureErrorLine());
+							System.out.println("      Failure message: " + testcases.get(j).getFailureMessage());
+							System.out.println("      Failure type: " + testcases.get(j).getFailureType());
+							System.out.println("      Full class name: " + testcases.get(j).getFullClassName());
+							System.out.println("      Time: " + testcases.get(j).getTime());
+							System.out.println("      Name: " + testcases.get(j).getName());
+						}
+					}
+					System.out.println(tests);
 				}
 			} else {
 				System.out.println("Fail");

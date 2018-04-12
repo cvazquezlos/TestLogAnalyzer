@@ -146,6 +146,7 @@ export class ElasticsearchService {
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'text/plain');
       const response = this.http.post(this.baseAPIFilesUrl + '/project', body, {headers: headers}).toPromise();
+      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
@@ -154,12 +155,16 @@ export class ElasticsearchService {
 
   async postFileTab(tab: string) {
     try {
+      console.log(tab);
       const body = JSON.stringify(tab);
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'text/plain');
-      const response = this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers});
+      const response = this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers}).toPromise();
+      console.log("NOT ERROR");
+      console.log(response);
       return response;
     } catch (error) {
+      console.log("ERROR");
       console.log(error);
     }
   }

@@ -57,7 +57,6 @@ export class AddExecComponent implements OnInit {
 
   async save() {
     this.code = 1;
-    await this.elasticsearchService.postProject(this.project);
     await this.elasticsearchService.postFileProject(this.project.name);
     await this.elasticsearchService.postFileTab(this.targetTab);
     switch (this.currentTab) {
