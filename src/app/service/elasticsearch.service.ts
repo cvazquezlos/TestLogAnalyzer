@@ -32,7 +32,6 @@ export class ElasticsearchService {
     try {
       const response = await this.http.get<Execution[]>(this.baseAPIExecutionsUrl + '/project/' + project + '?tab='
         + tab).toPromise();
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
@@ -137,7 +136,6 @@ export class ElasticsearchService {
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'text/plain');
       const response = this.http.post(this.baseAPIFilesUrl + '/project', body, {headers: headers}).toPromise();
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
@@ -146,16 +144,12 @@ export class ElasticsearchService {
 
   async postFileTab(tab: string) {
     try {
-      console.log(tab);
       const body = JSON.stringify(tab);
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'text/plain');
       const response = this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers}).toPromise();
-      console.log("NOT ERROR");
-      console.log(response);
       return response;
     } catch (error) {
-      console.log("ERROR");
       console.log(error);
     }
   }
@@ -171,7 +165,6 @@ export class ElasticsearchService {
 
   deleteTagByName(name: any, project: string) {
     const composedUrl = this.baseAPITabsUrl + '/name/' + name + '?project=' + project;
-    console.log(composedUrl);
     return this.http.delete(composedUrl).map(
       response => response,
       error => error
@@ -187,7 +180,6 @@ export class ElasticsearchService {
         headers: headers,
         responseType: 'text'
       }).toPromise();
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);
