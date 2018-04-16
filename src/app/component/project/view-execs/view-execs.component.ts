@@ -26,6 +26,7 @@ export class ViewExecsComponent implements OnInit {
     {name: 'flakes', label: 'FLAKES', width: 100},
     {name: 'skipped', label: 'SKIPPED', width: 100},
     {name: 'tests', label: 'tests', width: 70},
+    {name: 'test_id', label: 'test id', width: 70},
     {name: 'time_elapsed', label: 'Time elapsed'},
     {name: 'options', label: 'Options', width: 150}
   ];
@@ -64,7 +65,7 @@ export class ViewExecsComponent implements OnInit {
   }
 
   goTo(row: any) {
-    this.router.navigate(['./', row.id], {relativeTo: this.activatedRoute});
+    this.router.navigate(['./', row.test_id], {relativeTo: this.activatedRoute});
   }
 
   ngOnInit() {
@@ -110,6 +111,7 @@ export class ViewExecsComponent implements OnInit {
           'flakes': response1[j].flakes,
           'skipped': response1[j].skipped,
           'tests': response1[j].tests,
+          'test_id': response1[j].test_id,
           'time_elapsed': response1[j].time_elapsed + ' seconds'
         }
       }
