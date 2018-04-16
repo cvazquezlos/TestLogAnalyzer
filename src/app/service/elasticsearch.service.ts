@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {CountFormat} from '../model/count-format.model';
 import {Execution} from '../model/execution.model';
-import {Log} from '../model/log.model';
 import {Project} from '../model/project.model';
 import {Tab} from '../model/tab.model';
 
@@ -11,6 +10,7 @@ import {Tab} from '../model/tab.model';
 export class ElasticsearchService {
 
   baseAPIUrl = 'http://localhost:8443/';
+  baseAPIExecutionsUrl = this.baseAPIUrl + 'executions';
   baseAPILogsUrl = this.baseAPIUrl + 'logs';
   baseAPIDiffMatchPatchUrl = this.baseAPIUrl + 'diff';
   baseAPIFilesUrl = this.baseAPIUrl + 'files';
@@ -28,6 +28,24 @@ export class ElasticsearchService {
     )
   }
 
+  async getExecutionsByProjectAndTabAsync(project: string, tab: string) {
+    try {
+      const response = await this.http.get<Execution[]>(this.baseAPIExecutionsUrl + '/project/' + project + '?tab='
+        + tab).toPromise();
+      console.log(response);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  deleteExecutionById(id: string) {
+    return this.http.delete(this.baseAPIExecutionsUrl + '/id/' + id).map(
+      response => response,
+      error => error
+    );
+  }
+
   async getLogsByLoggerAsync(logger: string, project: string, test: string, method?: string) {
     try {
       let composedUrl = this.baseAPILogsUrl + '/logger/' + logger + '?project=' + project + '&test=' + test;
@@ -35,16 +53,6 @@ export class ElasticsearchService {
         composedUrl += '&method=' + method;
       }
       const response = await this.http.get<any[]>(composedUrl).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getLogsByProjectAsync(project: string, tab: string) {
-    try {
-      const composedUrl = this.baseAPILogsUrl + '/project/' + project + '?tab=' + tab;
-      const response = await this.http.get<Execution[]>(composedUrl).toPromise();
       return response;
     } catch (error) {
       console.log(error);
@@ -60,23 +68,6 @@ export class ElasticsearchService {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  getLogsByTest(test: string, project: string, classes: boolean, maven?: boolean) {
-    let composedUrl = this.baseAPILogsUrl + '/test/' + test + '?project=' + project + '&classes=' + classes;
-    (composedUrl += '&maven=' + maven) && (maven);
-    return this.http.get<Log[]>(composedUrl).map(
-      response => response,
-      error => error
-    );
-  }
-
-  deleteLogsByTest(test: string, project: string) {
-    const composedUrl = this.baseAPILogsUrl + '/remove/test/' + test + '?project=' + project;
-    return this.http.delete<any>(composedUrl).map(
-      response => response,
-      error => error
-    );
   }
 
   getProjectsAll() {
@@ -178,10 +169,16 @@ export class ElasticsearchService {
     }
   }
 
-  deleteTagByName(name: string, project: string) {
-    const composedUrl = this.baseAPITabsUrl + '/remove/name/' + name + '?project=' + project;
-    console.log(composedUrl);
-    return this.http.delete<Tab>(composedUrl).map(
+  deleteTagByName(tab: any, project: string) {
+    console.log(tab);
+    for (let i = 0; i < tab.executions; i++) {
+      this.deleteExecutionById(tab.executions[i].id).subscribe(
+        response => response,
+        error => error
+      );
+    }
+    const composedUrl = this.baseAPITabsUrl + '/name/' + tab.name + '?project=' + project;
+    return this.http.delete(composedUrl).map(
       response => response,
       error => error
     );

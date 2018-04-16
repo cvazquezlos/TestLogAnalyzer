@@ -30,14 +30,17 @@ export class ReportComparisonComponent implements OnInit {
   deleteInProgress: boolean;
   execDeleting: string;
   execsData: ITdDataTableColumn[] = [
-    {name: 'id', label: 'Id', width: 100},
-    {name: 'startdate', label: 'Start date', width: 300},
+    {name: 'id', label: 'Id', width: 60},
+    {name: 'startdate', label: 'Start date', width: 240},
     {name: 'entries', label: 'Entries', width: 100},
     {name: 'status', label: 'Status'},
-    {name: 'DEBUG', label: 'DEBUG', width: 100},
-    {name: 'INFO', label: 'INFO', width: 100},
-    {name: 'WARNING', label: 'WARNING', width: 100},
-    {name: 'ERROR', label: 'ERROR', width: 100}
+    {name: 'errors', label: 'ERRORS', width: 100},
+    {name: 'failures', label: 'FAILURES', width: 100},
+    {name: 'flakes', label: 'FLAKES', width: 100},
+    {name: 'skipped', label: 'SKIPPED', width: 100},
+    {name: 'tests', label: 'tests', width: 70},
+    {name: 'time_elapsed', label: 'Time elapsed'},
+    {name: 'options', label: 'Options', width: 150}
   ];
   hideExecSelection: boolean;
   project: string;
@@ -97,7 +100,7 @@ export class ReportComparisonComponent implements OnInit {
     this.tabs = [];
     const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project);
     for (let i = 0; i < response0.length; i++) {
-      const response1 = await this.elasticsearchService.getLogsByProjectAsync(this.project, response0[i].tab);
+      const response1 = await this.elasticsearchService.getExecutionsByProjectAndTabAsync(this.project, response0[i].tab);
       const executions = [];
       for (let j = 0; j < response1.length; j++) {
         let icon, classi: any;
@@ -111,17 +114,19 @@ export class ReportComparisonComponent implements OnInit {
         if (this.test !== (response1[j].id + '')) {
           executions.push({
             'id': response1[j].id,
-            'startdate': response1[j].timestamp,
+            'startdate': response1[j].start_date,
             'entries': response1[j].entries,
             'status': {
               'icon': icon,
               'class': classi,
               'status': response1[j].status
             },
-            'DEBUG': response1[j].debug,
-            'INFO': response1[j].info,
-            'WARNING': response1[j].warning,
-            'ERROR': response1[j].error
+            'errors': response1[j].errors,
+            'failures': response1[j].failures,
+            'flakes': response1[j].flakes,
+            'skipped': response1[j].skipped,
+            'tests': response1[j].tests,
+            'time_elapsed': response1[j].time_elapsed + ' seconds'
           });
         } else {
           this.selected[0] = executions[executions.length - 1];
@@ -130,7 +135,7 @@ export class ReportComparisonComponent implements OnInit {
       this.tabs[i] = {
         'name': response0[i].tab,
         'executions': executions
-      };
+      }
     }
   }
 

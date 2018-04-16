@@ -40,7 +40,6 @@ export class AddExecComponent implements OnInit {
     this.urlXml = '';
   }
 
-
   ngOnInit() {
     const name = this.activatedRoute.snapshot.parent.params['project'];
     this.elasticsearchService.getProjectByName(name).subscribe(
@@ -58,16 +57,13 @@ export class AddExecComponent implements OnInit {
   async save() {
     this.code = 1;
     await this.elasticsearchService.postFileProject(this.project.name);
-    console.log(this.targetTab);
     await this.elasticsearchService.postFileTab(this.targetTab);
     switch (this.currentTab) {
       case 0:
         this.code = 2;
-        for (const file of this.filesTxt) {
-          await this.elasticsearchService.postFileByUpload(file);
-        }
-        for (const file of this.filesXml) {
-          await this.elasticsearchService.postFileByUpload(file);
+        for (let i = 0; i < this.filesTxt.length; i++) {
+          await this.elasticsearchService.postFileByUpload(this.filesTxt[i]);
+          await this.elasticsearchService.postFileByUpload(this.filesXml[i]);
         }
         break;
       case 1:

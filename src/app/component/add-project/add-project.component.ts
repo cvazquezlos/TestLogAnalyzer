@@ -57,11 +57,9 @@ export class AddProjectComponent implements OnInit {
     switch (this.currentTab) {
       case 0:
         this.code = 2;
-        for (const file of this.filesTxt) {
-          await this.elasticsearchService.postFileByUpload(file);
-        }
-        for (const file of this.filesXml) {
-          await this.elasticsearchService.postFileByUpload(file);
+        for (let i = 0; i < this.filesTxt.length; i++) {
+          await this.elasticsearchService.postFileByUpload(this.filesTxt[i]);
+          await this.elasticsearchService.postFileByUpload(this.filesXml[i]);
         }
         break;
       case 1:
