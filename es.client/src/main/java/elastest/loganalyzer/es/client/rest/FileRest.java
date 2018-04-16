@@ -106,7 +106,6 @@ public class FileRest {
 							test.getNumberOfErrors(), test.getNumberOfFailures(), test.getNumberOfFlakes(),
 							recentProject, test.getNumberOfSkipped(), "", "UNKNOWN", recentTab, test.getNumberOfTests(),
 							testNumber, test.getTestCases(), test.getTimeElapsed());
-					System.out.println(execution);
 					List<Log> logs = logService.findByTabAndTestAndProjectOrderByIdAsc(recentTab, testNumber,
 							recentProject);
 					execution.setEntries(logs.size());
@@ -121,7 +120,6 @@ public class FileRest {
 							}
 						}
 					}
-					System.out.println(execution);
 					executionService.save(execution);
 				}
 			} else {

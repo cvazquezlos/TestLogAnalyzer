@@ -169,15 +169,9 @@ export class ElasticsearchService {
     }
   }
 
-  deleteTagByName(tab: any, project: string) {
-    console.log(tab);
-    for (let i = 0; i < tab.executions; i++) {
-      this.deleteExecutionById(tab.executions[i].id).subscribe(
-        response => response,
-        error => error
-      );
-    }
-    const composedUrl = this.baseAPITabsUrl + '/name/' + tab.name + '?project=' + project;
+  deleteTagByName(name: any, project: string) {
+    const composedUrl = this.baseAPITabsUrl + '/name/' + name + '?project=' + project;
+    console.log(composedUrl);
     return this.http.delete(composedUrl).map(
       response => response,
       error => error

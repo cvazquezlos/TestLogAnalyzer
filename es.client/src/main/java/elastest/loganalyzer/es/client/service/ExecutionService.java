@@ -25,6 +25,10 @@ public class ExecutionService {
 	public void deleteById(int id) {
 		repository.delete(id);
 	}
+	
+	public void deleteIterable(List<Execution> executions) {
+		repository.delete(executions);
+	}
 
 	public Iterable<Execution> findAll() {
 		return repository.findAll();
