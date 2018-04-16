@@ -11,13 +11,14 @@
   </mat-card-title>
   <mat-divider></mat-divider>
   <mat-card-content>
-    <mat-tab-group>
+    <mat-tab-group (selectedIndexChange)="currentTab = $event">
       <mat-tab label="Choose files">
         <div layout="row">
           <div flex="50">
             <p>Choose the file which contains the logs of the execution...</p>
             <td-file-upload #txtFileUpload
                             accept=".txt"
+                            multiple
                             required
                             (cancel)="cancel()"
                             (select)="update($event)"
@@ -38,6 +39,8 @@
             <p>Choose the file which contains the Surfire data...</p>
             <td-file-upload #xmlFileUpload
                             accept=".xml"
+                            multiple
+                            required
                             (cancel)="cancel()"
                             (select)="update($event)"
                             (update)="update($event)">

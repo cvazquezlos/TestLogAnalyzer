@@ -13,9 +13,10 @@ import {ElasticsearchService} from '../../../service/elasticsearch.service';
 export class AddExecComponent implements OnInit {
 
   code: number;
+  currentTab = 0;
   fileSelected: boolean;
-  fileTxt: File;
-  fileXml: File;
+  filesTxt: File[];
+  filesXml: File[];
   isFile: boolean;
   project: Project = new Project();
   tabs: string[] = ['test'];
@@ -27,8 +28,8 @@ export class AddExecComponent implements OnInit {
               private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService) {
     this.code = 0;
     this.fileSelected = true;
-    this.fileTxt = null;
-    this.fileXml = null;
+    this.filesTxt = null;
+    this.filesXml = null;
     this.isFile = true;
     this.urlTxt = '';
     this.urlXml = '';
@@ -38,7 +39,6 @@ export class AddExecComponent implements OnInit {
     this.urlTxt = '';
     this.urlXml = '';
   }
-
 
   ngOnInit() {
     const name = this.activatedRoute.snapshot.parent.params['project'];
@@ -54,51 +54,35 @@ export class AddExecComponent implements OnInit {
       {label: 'Add exec', url: '/projects/' + name + '/add', params: []}]);
   }
 
-  save() {
+  async save() {
     this.code = 1;
-    this.elasticsearchService.postFileProject(this.project.name).subscribe(
-      b => {
-        this.elasticsearchService.postFileTab(this.targetTab).subscribe(
-          c => {
-            if (this.urlTxt !== 'Empty') {
-              this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
-                d => {
-                  this.code = 2;
-                  if (this.urlXml !== 'Empty') {
-                    this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
-                      e => e,
-                      error => console.log(error)
-                    )
-                  }
-                },
-                error => console.log(error)
-              );
-            } else {
-              if (this.fileTxt !== null) {
-                this.elasticsearchService.postFileByUpload(this.fileTxt).subscribe(
-                  d => {
-                    this.code = 2;
-                    if (this.fileXml !== null) {
-                      this.elasticsearchService.postFileByUpload(this.fileXml).subscribe(
-                        e => e,
-                        error => console.log(error)
-                      )
-                    }
-                  },
-                  error => console.log(error)
-                );
-              }
-            }
+    await this.elasticsearchService.postFileProject(this.project.name);
+    await this.elasticsearchService.postFileTab(this.targetTab);
+    switch (this.currentTab) {
+      case 0:
+        this.code = 2;
+        for (let i = 0; i < this.filesTxt.length; i++) {
+          await this.elasticsearchService.postFileByUpload(this.filesTxt[i]);
+          await this.elasticsearchService.postFileByUpload(this.filesXml[i]);
+        }
+        break;
+      case 1:
+        this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
+          a => {
+            this.code = 2;
+            this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
+              b => b,
+              error => console.log(error)
+            );
           },
           error => console.log(error)
         );
-      },
-      error => console.log(error)
-    );
+        break;
+    }
   }
 
-  update(file: File) {
-    (file.name.includes('.txt')) ? (this.fileTxt = file) : (this.fileXml = file);
+  update(files: File[]) {
+    (files[0].name.includes('.txt')) ? (this.filesTxt = files) : (this.filesXml = files);
     this.urlTxt = 'Empty';
     this.urlXml = 'Empty';
   }
@@ -109,6 +93,7 @@ export class AddExecComponent implements OnInit {
     for (let i = 0; i < response.length; i++) {
       this.tabs[i] = response[i].tab;
     }
+    console.log(this.tabs);
     this.targetTab = this.tabs[0];
   }
 }

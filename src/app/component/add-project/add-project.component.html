@@ -29,13 +29,14 @@
       </mat-step>
       <mat-step>
         <ng-template matStepLabel>Select a way to import the first execution of this project.</ng-template>
-        <mat-tab-group>
+        <mat-tab-group (selectedIndexChange)="currentTab = $event">
           <mat-tab label="Choose files">
             <div layout="row">
               <div flex="50">
                 <p>Choose the file which contains the logs of the execution...</p>
                 <td-file-upload #txtFileUpload
                                 accept=".txt"
+                                multiple
                                 required
                                 (cancel)="cancel()"
                                 (select)="update($event)"
@@ -44,7 +45,7 @@
                   <span>{{txtFileUpload.value?.name}}</span>
                   <ng-template td-file-input-label>
                     <mat-icon>attach_file</mat-icon>
-                    Choose a .txt file...
+                    Choose multiple .txt files...
                     <span [hidden]="!txtFileUpload?.required">*</span>
                   </ng-template>
                 </td-file-upload>
@@ -56,6 +57,8 @@
                 <p>Choose the file which contains the Surfire data...</p>
                 <td-file-upload #xmlFileUpload
                                 accept=".xml"
+                                multiple
+                                required
                                 (cancel)="cancel()"
                                 (select)="update($event)"
                                 (update)="update($event)">
@@ -63,7 +66,8 @@
                   <span>{{xmlFileUpload.value?.name}}</span>
                   <ng-template td-file-input-label>
                     <mat-icon>attach_file</mat-icon>
-                    Choose a .xml file...
+                    Choose multiple .xml files...
+                    <span [hidden]="!txtFileUpload?.required">*</span>
                   </ng-template>
                 </td-file-upload>
               </div>
@@ -94,6 +98,7 @@
                            name="URL of .xml file"
                            onclick="this.select()"
                            placeholder="URL of .xml file"
+                           required
                            type="text"
                            [(ngModel)]="urlXml">
                   </mat-form-field>
@@ -113,7 +118,7 @@
           <ng-template #notSelected>
             <span class="md-title">URL</span>
           </ng-template>
-          and its content will be saved inside of the <span class="md-title">test</span> (default) tab.
+          and its content will be saved inside of the <input class="tab-input" [(ngModel)]="targetTab"> tab.
           <br><br>
           <div *ngIf="(code == 1) || (code == 2); else hideSave">
             <ng-template tdLoading [tdLoadingUntil]="code != 1" tdLoadingStrategy="overlay" tdLoadingType="linear">

@@ -32,7 +32,7 @@ public class ExecutionParserService {
 		this.esProjectService = esProjectService;
 	}
 
-	public void parse(List<String> dirtyData, Project project, String tab, int lastId) throws Exception, IOException {
+	public String parse(List<String> dirtyData, Project project, String tab, int lastId) throws Exception, IOException {
 		List<Log> logs = new ArrayList<Log>();
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
@@ -125,6 +125,7 @@ public class ExecutionParserService {
 			data.remove(0);
 		}
 		esLogService.save(logs);
+		return testNumber;
 	}
 
 	public List<String> getStreamByUrl(String url) throws IOException {

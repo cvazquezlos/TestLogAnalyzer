@@ -3,7 +3,6 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import {CountFormat} from '../model/count-format.model';
 import {Execution} from '../model/execution.model';
-import {Log} from '../model/log.model';
 import {Project} from '../model/project.model';
 import {Tab} from '../model/tab.model';
 
@@ -11,6 +10,7 @@ import {Tab} from '../model/tab.model';
 export class ElasticsearchService {
 
   baseAPIUrl = 'http://localhost:8443/';
+  baseAPIExecutionsUrl = this.baseAPIUrl + 'executions';
   baseAPILogsUrl = this.baseAPIUrl + 'logs';
   baseAPIDiffMatchPatchUrl = this.baseAPIUrl + 'diff';
   baseAPIFilesUrl = this.baseAPIUrl + 'files';
@@ -28,6 +28,23 @@ export class ElasticsearchService {
     )
   }
 
+  async getExecutionsByProjectAndTabAsync(project: string, tab: string) {
+    try {
+      const response = await this.http.get<Execution[]>(this.baseAPIExecutionsUrl + '/project/' + project + '?tab='
+        + tab).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  deleteExecutionById(id: string) {
+    return this.http.delete(this.baseAPIExecutionsUrl + '/id/' + id).map(
+      response => response,
+      error => error
+    );
+  }
+
   async getLogsByLoggerAsync(logger: string, project: string, test: string, method?: string) {
     try {
       let composedUrl = this.baseAPILogsUrl + '/logger/' + logger + '?project=' + project + '&test=' + test;
@@ -35,16 +52,6 @@ export class ElasticsearchService {
         composedUrl += '&method=' + method;
       }
       const response = await this.http.get<any[]>(composedUrl).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getLogsByProjectAsync(project: string, tab: string) {
-    try {
-      const composedUrl = this.baseAPILogsUrl + '/project/' + project + '?tab=' + tab;
-      const response = await this.http.get<Execution[]>(composedUrl).toPromise();
       return response;
     } catch (error) {
       console.log(error);
@@ -62,23 +69,6 @@ export class ElasticsearchService {
     }
   }
 
-  getLogsByTest(test: string, project: string, classes: boolean, maven?: boolean) {
-    let composedUrl = this.baseAPILogsUrl + '/test/' + test + '?project=' + project + '&classes=' + classes;
-    (composedUrl += '&maven=' + maven) && (maven);
-    return this.http.get<Log[]>(composedUrl).map(
-      response => response,
-      error => error
-    );
-  }
-
-  deleteLogsByTest(test: string, project: string) {
-    const composedUrl = this.baseAPILogsUrl + '/remove/test/' + test + '?project=' + project;
-    return this.http.delete<any>(composedUrl).map(
-      response => response,
-      error => error
-    );
-  }
-
   getProjectsAll() {
     return this.http.get<Project[]>(this.baseAPIProjectsUrl + '/all').map(
       response => response,
@@ -93,17 +83,21 @@ export class ElasticsearchService {
     );
   }
 
-  postProject(project: Project) {
-    const headers: HttpHeaders = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    headers.append('X-Requested-With', 'XMLHttpRequest');
-    const object = {
-      id: project.id,
-      name: project.name,
-      'num_execs': project.num_execs
-    };
-    return this.http.post(this.baseAPIProjectsUrl, object, {headers: headers})
-      .map(response => response);
+  async postProject(project: Project) {
+    try {
+      const headers: HttpHeaders = new HttpHeaders();
+      headers.append('Content-Type', 'application/json');
+      headers.append('X-Requested-With', 'XMLHttpRequest');
+      const object = {
+        id: project.id,
+        name: project.name,
+        'num_execs': project.num_execs
+      };
+      const response = this.http.post(this.baseAPIProjectsUrl, object, {headers: headers}).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   deleteProjectById(id: number) {
@@ -113,15 +107,17 @@ export class ElasticsearchService {
     );
   }
 
-  postFileByUpload(file: File) {
-    const body = new FormData();
-    body.append('file', file);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/pdf');
-    return this.http.post(this.baseAPIFilesUrl + '/file', body, {headers: headers}).map(
-      response => response,
-      error => error
-    );
+  async postFileByUpload(file: File) {
+    try {
+      const body = new FormData();
+      body.append('file', file);
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'application/pdf');
+      const response = await this.http.post(this.baseAPIFilesUrl + '/file', body, {headers: headers}).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   postFileByUrl(url: string) {
@@ -134,24 +130,28 @@ export class ElasticsearchService {
     );
   }
 
-  postFileProject(project: string) {
-    const body = JSON.stringify(project);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'text/plain');
-    return this.http.post(this.baseAPIFilesUrl + '/project', body, {headers: headers}).map(
-      response => response,
-      error => error
-    );
+  async postFileProject(project: string) {
+    try {
+      const body = JSON.stringify(project);
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'text/plain');
+      const response = this.http.post(this.baseAPIFilesUrl + '/project', body, {headers: headers}).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  postFileTab(tab: string) {
-    const body = JSON.stringify(tab);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'text/plain');
-    return this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers}).map(
-      response => response,
-      error => error
-    );
+  async postFileTab(tab: string) {
+    try {
+      const body = JSON.stringify(tab);
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'text/plain');
+      const response = this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers}).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getTabsByProjectAsync(project: string) {
@@ -163,10 +163,9 @@ export class ElasticsearchService {
     }
   }
 
-  deleteTagByName(name: string, project: string) {
-    const composedUrl = this.baseAPITabsUrl + '/remove/name/' + name + '?project=' + project;
-    console.log(composedUrl);
-    return this.http.delete<Tab>(composedUrl).map(
+  deleteTagByName(name: any, project: string) {
+    const composedUrl = this.baseAPITabsUrl + '/name/' + name + '?project=' + project;
+    return this.http.delete(composedUrl).map(
       response => response,
       error => error
     );
@@ -181,7 +180,6 @@ export class ElasticsearchService {
         headers: headers,
         responseType: 'text'
       }).toPromise();
-      console.log(response);
       return response;
     } catch (error) {
       console.log(error);

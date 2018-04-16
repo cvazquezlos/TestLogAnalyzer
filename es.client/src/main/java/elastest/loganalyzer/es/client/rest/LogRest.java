@@ -3,7 +3,6 @@ package elastest.loganalyzer.es.client.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import elastest.loganalyzer.es.client.model.Execution;
 import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.service.LogService;
@@ -47,44 +46,6 @@ public class LogRest {
 		}
 	}
 
-	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
-	public List<Execution> getByProject(@PathVariable String project,
-			@RequestParam(name = "tab", required = true) String tab) {
-		Project target = projectService.findByName(project);
-		List<Execution> execs = new ArrayList<Execution>();
-		for (int i = 0; i < target.getNum_execs(); i++) {
-			Execution execution = new Execution();
-			execution.setId(i + 1);
-			String test = String.format("%02d", i + 1);
-			List<Log> logs = logService.findByTabAndTestAndProjectOrderByIdAsc(tab, test, project);
-			execution.setEntries(logs.size());
-			Log selected = this.findLog(logs);
-			execution.setTimestamp(selected.getTimestamp());
-			execution.setDebug(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "DEBUG"));
-			execution.setInfo(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "INFO"));
-			execution.setWarning(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "WARN"));
-			execution.setError(logService.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, "ERROR"));
-			logs = logService.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(tab, project, test,
-					"BUILD");
-			for (int j = 0; j < logs.size(); j++) {
-				if (logs.get(j).getMessage().contains("BUILD ")) {
-					if (logs.get(j).getMessage().length() < 2) {
-						execution.setStatus("UNKNOWN");
-					} else {
-						execution.setStatus(logs.get(j).getMessage());
-					}
-					break;
-				} else {
-					execution.setStatus("FAILURE");
-				}
-			}
-			if (execution.getTimestamp() != null) {
-				execs.add(execution);
-			}
-		}
-		return execs;
-	}
-
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
 	public List<?> getByTest(@PathVariable int test, @RequestParam(value = "project", required = true) String project,
 			@RequestParam(value = "classes", required = true) boolean classes,
@@ -122,14 +83,5 @@ public class LogRest {
 		logService.deleteIterable(logService.findByTestAndProjectOrderByIdAsc(testNo, project));
 		projectService.save(target);
 		return "200";
-	}
-
-	private Log findLog(List<Log> logs) {
-		for (int i = 0; i < logs.size(); i++) {
-			if (logs.get(i).getTimestamp().indexOf("20") == 0) {
-				return logs.get(i);
-			}
-		}
-		return new Log();
 	}
 }

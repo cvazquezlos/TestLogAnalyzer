@@ -1,31 +1,52 @@
 package elastest.loganalyzer.es.client.model;
 
+import java.util.List;
+
+import org.apache.maven.plugins.surefire.report.ReportTestCase;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+
+@Document(indexName = "executions", type = "executions")
 public class Execution {
 
+	@Id
 	private int id;
 
-	private int debug;
 	private int entries;
-	private int error;
-	private int info;
+	private int errors;
+	private int failures;
+	private int flakes;
+	private String project;
+	private int skipped;
+	private String start_date;
 	private String status;
-	private String timestamp;
-	private int warning;
+	private String tab;
+	private int tests;
+	private String test_id;
+	private List<ReportTestCase> testcases;
+	private float time_elapsed;
 
 	public Execution() {
 	}
 
-	public Execution(int id, String timestamp, int entries, String status, int debug, int info, int warning,
-			int error) {
+	public Execution(int id, int entries, int errors, int failures, int flakes, String project, int skipped,
+			String start_date, String status, String tab, int tests, String test_id, List<ReportTestCase> testcases,
+			float time_elapsed) {
 		super();
 		this.id = id;
-		this.timestamp = timestamp;
 		this.entries = entries;
+		this.errors = errors;
+		this.failures = failures;
+		this.flakes = flakes;
+		this.project = project;
+		this.skipped = skipped;
+		this.start_date = start_date;
 		this.status = status;
-		this.debug = debug;
-		this.info = info;
-		this.warning = warning;
-		this.error = error;
+		this.tab = tab;
+		this.tests = tests;
+		this.test_id = test_id;
+		this.testcases = testcases;
+		this.time_elapsed = time_elapsed;
 	}
 
 	public int getId() {
@@ -36,14 +57,6 @@ public class Execution {
 		this.id = id;
 	}
 
-	public int getDebug() {
-		return debug;
-	}
-
-	public void setDebug(int debug) {
-		this.debug = debug;
-	}
-
 	public int getEntries() {
 		return entries;
 	}
@@ -52,20 +65,52 @@ public class Execution {
 		this.entries = entries;
 	}
 
-	public int getError() {
-		return error;
+	public int getErrors() {
+		return errors;
 	}
 
-	public void setError(int error) {
-		this.error = error;
+	public void setErrors(int errors) {
+		this.errors = errors;
 	}
 
-	public int getInfo() {
-		return info;
+	public int getFailures() {
+		return failures;
 	}
 
-	public void setInfo(int info) {
-		this.info = info;
+	public void setFailures(int failures) {
+		this.failures = failures;
+	}
+
+	public int getFlakes() {
+		return flakes;
+	}
+
+	public void setFlakes(int flakes) {
+		this.flakes = flakes;
+	}
+
+	public String getProject() {
+		return project;
+	}
+
+	public void setProject(String project) {
+		this.project = project;
+	}
+
+	public int getSkipped() {
+		return skipped;
+	}
+
+	public void setSkipped(int skipped) {
+		this.skipped = skipped;
+	}
+
+	public String getStart_date() {
+		return start_date;
+	}
+
+	public void setStart_date(String start_date) {
+		this.start_date = start_date;
 	}
 
 	public String getStatus() {
@@ -76,25 +121,43 @@ public class Execution {
 		this.status = status;
 	}
 
-	public String getTimestamp() {
-		return timestamp;
+	public String getTab() {
+		return tab;
 	}
 
-	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
+	public void setTab(String tab) {
+		this.tab = tab;
 	}
 
-	public int getWarning() {
-		return warning;
+	public int getTests() {
+		return tests;
 	}
 
-	public void setWarning(int warning) {
-		this.warning = warning;
+	public void setTests(int tests) {
+		this.tests = tests;
 	}
 
-	@Override
-	public String toString() {
-		return "Execution [id=" + id + ", debug=" + debug + ", entries=" + entries + ", error=" + error + ", info="
-				+ info + ", status=" + status + ", timestamp=" + timestamp + ", warning=" + warning + "]";
+	public String getTest_id() {
+		return test_id;
+	}
+
+	public void setTest_id(String test_id) {
+		this.test_id = test_id;
+	}
+
+	public List<ReportTestCase> getTestcases() {
+		return testcases;
+	}
+
+	public void setTestcases(List<ReportTestCase> testcases) {
+		this.testcases = testcases;
+	}
+
+	public float getTime_elapsed() {
+		return time_elapsed;
+	}
+
+	public void setTime_elapsed(float time_elapsed) {
+		this.time_elapsed = time_elapsed;
 	}
 }

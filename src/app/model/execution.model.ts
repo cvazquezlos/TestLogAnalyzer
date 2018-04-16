@@ -1,10 +1,15 @@
 export interface Execution {
   id: number;
-  timestamp: string;
   entries: number;
+  errors: number;
+  failures: number;
+  flakes: number;
+  test_id: string;
+  project: string;
+  skipped: number;
+  start_date: string;
   status: string;
-  debug: number;
-  info: number;
-  warning: number;
-  error: number;
+  tests: number;
+  testcases: any[];
+  time_elapsed: number;
 }

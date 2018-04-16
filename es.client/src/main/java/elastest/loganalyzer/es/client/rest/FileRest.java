@@ -19,20 +19,25 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.common.collect.Lists;
 
+import elastest.loganalyzer.es.client.model.Execution;
+import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.model.Tab;
 import elastest.loganalyzer.es.client.service.LogService;
 import elastest.loganalyzer.es.client.service.ProjectService;
 import elastest.loganalyzer.es.client.service.TabService;
 import elastest.loganalyzer.es.client.service.ExecutionParserService;
+import elastest.loganalyzer.es.client.service.ExecutionService;
 
 @RestController
 @RequestMapping("/files")
 public class FileRest {
 
 	private ConsoleLogger consoleLogger;
+	private String testNumber;
 	private final Collection<String> loggedErrors = new ArrayList<String>();
 	private final ExecutionParserService executionParserService;
+	private final ExecutionService executionService;
 	private final LogService logService;
 	private final ProjectService projectService;
 	private final TabService tabService;
@@ -40,9 +45,10 @@ public class FileRest {
 	private static String recentTab;
 
 	@Autowired
-	public FileRest(ExecutionParserService executionParserService, LogService logService, ProjectService projectService,
-			TabService tabService) {
+	public FileRest(ExecutionParserService executionParserService, ExecutionService executionService,
+			LogService logService, ProjectService projectService, TabService tabService) {
 		this.executionParserService = executionParserService;
+		this.executionService = executionService;
 		this.logService = logService;
 		this.projectService = projectService;
 		this.tabService = tabService;
@@ -88,14 +94,33 @@ public class FileRest {
 				if (file.getOriginalFilename().contains("txt")) {
 					List<String> data = executionParserService.getStreamByFile(file);
 					Project target = projectService.findByName(recentProject);
-					this.executionParserService.parse(data, target, recentTab,
+					testNumber = this.executionParserService.parse(data, target, recentTab,
 							Lists.newArrayList(logService.findAll()).size());
 				} else {
 					TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
 					InputStream inputStream = file.getInputStream();
 					InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
 					List<ReportTestSuite> tests = parser.parse(inputStreamReader);
-					System.out.println(tests);
+					ReportTestSuite test = tests.get(0);
+					Execution execution = new Execution(Lists.newArrayList(executionService.findAll()).size(), 999,
+							test.getNumberOfErrors(), test.getNumberOfFailures(), test.getNumberOfFlakes(),
+							recentProject, test.getNumberOfSkipped(), "", "UNKNOWN", recentTab, test.getNumberOfTests(),
+							testNumber, test.getTestCases(), test.getTimeElapsed());
+					List<Log> logs = logService.findByTabAndTestAndProjectOrderByIdAsc(recentTab, testNumber,
+							recentProject);
+					execution.setEntries(logs.size());
+					execution.setStart_date(this.findLogWhoseTimestampIsUseful(logs));
+					logs = logService.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentTab,
+							recentProject, testNumber, "BUILD");
+					for (int j = 0; j < logs.size(); j++) {
+						if (logs.get(j).getMessage().contains("BUILD ")) {
+							if (logs.get(j).getMessage().length() > 2) {
+								execution.setStatus(logs.get(j).getMessage());
+								break;
+							}
+						}
+					}
+					executionService.save(execution);
 				}
 			} else {
 				System.out.println("Fail");
@@ -132,5 +157,14 @@ public class FileRest {
 		projectService.save(target);
 		this.executionParserService.parse(data, target, recentTab, Lists.newArrayList(logService.findAll()).size());
 		return executionParserService.getStreamByUrl(url);
+	}
+
+	private String findLogWhoseTimestampIsUseful(List<Log> logs) {
+		for (int i = 0; i < logs.size(); i++) {
+			if (logs.get(i).getTimestamp().length() > 3) {
+				return logs.get(i).getTimestamp();
+			}
+		}
+		return "";
 	}
 }
