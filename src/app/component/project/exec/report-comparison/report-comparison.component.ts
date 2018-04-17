@@ -95,10 +95,6 @@ export class ReportComparisonComponent implements OnInit {
     this.classesLc = [];
     this.updateViewMode(0, 0);
     this.reloadTabContent();
-    this.elasticsearchService.getExecutionByTest(this.test).subscribe(
-      response => console.log(response),
-      error => console.log(error)
-    );
   }
 
   async reloadTabContent() {
@@ -292,7 +288,48 @@ export class ReportComparisonComponent implements OnInit {
           : (this.classesLc.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}));
       }
     }
+    (clean) && (this.cleanContent(mode));
     this.ready = true;
+  }
+
+  private async cleanContent(mode: number) {
+    let auxC;
+    (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
+    const execution = await this.elasticsearchService.getExecutionByTestAsync(this.test);
+    var testcases = [];
+    for (let i = 0; i < execution.testcases.length; i++) {
+      var name = execution.testcases[i].name;
+      testcases.push(name.substring(0, name.indexOf('(')) + ',' + (execution.testcases[i].failureDetail !== null));
+    }
+    let aux;
+    for (let i = 0; i < auxC.length; i++) {
+      aux = [];
+      var failedMethods = [];
+      for (let j = 0; j < auxC[i].methods.length; j++) {
+        if (!this.index(testcases, auxC[i].methods[j].name)) {
+          // Aditional functionality
+        } else {
+          failedMethods.push(auxC[i].methods[j]);
+        }
+      }
+      if (failedMethods.length > 0) {
+        aux.push({
+          'name': auxC[i].name,
+          'methods': failedMethods
+        });
+      }
+    }
+    (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
+  }
+
+  private index(testcases: string[], method: string): boolean {
+    for (let i = 0; i < testcases.length; i++) {
+      const elements = testcases[i].split(',');
+      if ((elements[0] === method) && (elements[1]) === 'true') {
+        return true;
+      }
+    }
+    return false;
   }
 
   private async viewRaw(mode: number, maven: boolean) {

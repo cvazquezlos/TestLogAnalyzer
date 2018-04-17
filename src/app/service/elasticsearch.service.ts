@@ -38,11 +38,13 @@ export class ElasticsearchService {
     }
   }
 
-  getExecutionByTest(test_id: string) {
-    return this.http.get<Execution>(this.baseAPIExecutionsUrl + '/test/' + test_id).map(
-      response => response,
-      error => error
-    );
+  async getExecutionByTestAsync(test_id: string) {
+    try {
+      const response = await this.http.get<Execution>(this.baseAPIExecutionsUrl + '/test/' + test_id).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   deleteExecutionById(id: string) {
