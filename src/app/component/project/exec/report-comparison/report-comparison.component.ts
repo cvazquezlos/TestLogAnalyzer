@@ -39,7 +39,7 @@ export class ReportComparisonComponent implements OnInit {
     {name: 'flakes', label: 'FLAKES', width: 100},
     {name: 'skipped', label: 'SKIPPED', width: 100},
     {name: 'tests', label: 'tests', width: 70},
-    {name: 'test_id', label: 'test id', width: 70},
+    {name: 'test', label: 'test id', width: 70},
     {name: 'time_elapsed', label: 'Time elapsed'},
     {name: 'options', label: 'Options', width: 150}
   ];
@@ -95,6 +95,10 @@ export class ReportComparisonComponent implements OnInit {
     this.classesLc = [];
     this.updateViewMode(0, 0);
     this.reloadTabContent();
+    this.elasticsearchService.getExecutionByTest(this.test).subscribe(
+      response => console.log(response),
+      error => console.log(error)
+    );
   }
 
   async reloadTabContent() {
@@ -112,7 +116,7 @@ export class ReportComparisonComponent implements OnInit {
           icon = 'error';
           classi = 'tc-red-700';
         }
-        if (this.test !== (response1[j].test_id + '')) {
+        if (this.test !== (response1[j].test + '')) {
           executions.push({
             'id': response1[j].id,
             'startdate': response1[j].start_date,
@@ -127,7 +131,7 @@ export class ReportComparisonComponent implements OnInit {
             'flakes': response1[j].flakes,
             'skipped': response1[j].skipped,
             'tests': response1[j].tests,
-            'test_id': response1[j].test_id,
+            'test': response1[j].test,
             'time_elapsed': response1[j].time_elapsed + ' seconds'
           });
         } else {
@@ -198,7 +202,7 @@ export class ReportComparisonComponent implements OnInit {
     this.comparisonInProgress = false;
     const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
       false);
-    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.selected[0].test_id,
+    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.selected[0].test,
       this.project, true, false);
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
@@ -211,7 +215,7 @@ export class ReportComparisonComponent implements OnInit {
         const comparatorLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
           this.test, undefined);
         const comparedLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          '' + this.selected[0].test_id, undefined);
+          '' + this.selected[0].test, undefined);
         const methodsData = [];
         for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
           this.comparatorText = '';
@@ -223,7 +227,7 @@ export class ReportComparisonComponent implements OnInit {
             this.test, methodMessage.replace('(', '')
               .replace(')', ''));
           const comparedMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-            '' + this.selected[0].test_id, methodMessage.replace('(', '')
+            '' + this.selected[0].test, methodMessage.replace('(', '')
               .replace(')', ''));
 
           this.comparatorText = this.generateOutput(comparatorMethodLogs);
@@ -295,7 +299,7 @@ export class ReportComparisonComponent implements OnInit {
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const logs = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
-      : (this.selected[0].test_id), this.project, false, maven);
+      : (this.selected[0].test), this.project, false, maven);
     for (let i = 0; i < logs.length; i++) {
       (mode === 0) ? (this.classesL.push(logs[i])) : (this.classesLc.push(logs[i]));
     }

@@ -1,3 +1,5 @@
+import {TestCase} from './test-case.model';
+
 export interface Execution {
   id: number;
   entries: number;
@@ -10,6 +12,7 @@ export interface Execution {
   start_date: string;
   status: string;
   tests: number;
-  testcases: any[];
+  test: string;
+  testcases: TestCase[];
   time_elapsed: number;
 }
