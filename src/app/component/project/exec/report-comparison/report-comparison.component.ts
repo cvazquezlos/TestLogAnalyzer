@@ -143,6 +143,7 @@ export class ReportComparisonComponent implements OnInit {
 
   async updateComparisonMode(mode: number) {
     this.comparisonMode = mode;
+    console.log(this.viewMode);
     switch (this.viewMode) {
       case 0:
         await this.generateRawComparison();
@@ -296,15 +297,15 @@ export class ReportComparisonComponent implements OnInit {
     let auxC;
     (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
     const execution = await this.elasticsearchService.getExecutionByTestAsync(this.test);
-    var testcases = [];
+    const testcases = [];
     for (let i = 0; i < execution.testcases.length; i++) {
-      var name = execution.testcases[i].name;
+      const name = execution.testcases[i].name;
       testcases.push(name.substring(0, name.indexOf('(')) + ',' + (execution.testcases[i].failureDetail !== null));
     }
     let aux;
     for (let i = 0; i < auxC.length; i++) {
       aux = [];
-      var failedMethods = [];
+      const failedMethods = [];
       for (let j = 0; j < auxC[i].methods.length; j++) {
         if (!this.index(testcases, auxC[i].methods[j].name)) {
           // Aditional functionality
