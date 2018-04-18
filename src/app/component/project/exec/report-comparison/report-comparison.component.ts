@@ -74,7 +74,8 @@ export class ReportComparisonComponent implements OnInit {
     }
     for (let i = 0; i < logs.length; i++) {
       ((this.comparisonMode + '') === '1') && (logs[i].timestamp = '');
-      (((this.comparisonMode + '') === '2') && (logs[i].timestamp.length > 2)) ? (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
+      (((this.comparisonMode + '') === '2') && (logs[i].timestamp.length > 2))
+        ? (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
         - (comparatorDate).valueOf()).toString()) : (logs[i].timestamp = '');
       result += (logs[i].timestamp + logs[i].thread + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\r\n';
@@ -281,6 +282,7 @@ export class ReportComparisonComponent implements OnInit {
 
   private async readDiffer() {
     const response = await this.elasticsearchService.postDiff(this.comparatorText, this.comparedText);
+    console.log(response);
     return this.tableService.generateTable(response);
   }
 
@@ -343,6 +345,7 @@ export class ReportComparisonComponent implements OnInit {
         });
       }
     }
+    console.log(aux);
     (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
   }
 
