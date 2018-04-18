@@ -70,12 +70,12 @@ export class ReportComparisonComponent implements OnInit {
       (logs[i].logger.length > 2) ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
     }
     if ((this.comparisonMode + '') === '2') {
-      comparatorDate = new Date(logs[0].timestamp);
+      comparatorDate = new Date(this.findValidTimestamp(logs));
     }
     for (let i = 0; i < logs.length; i++) {
       ((this.comparisonMode + '') === '1') && (logs[i].timestamp = '');
-      ((this.comparisonMode + '') === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
-        - (comparatorDate).valueOf()).toString());
+      (((this.comparisonMode + '') === '2') && (logs[i].timestamp.length > 2)) ? (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
+        - (comparatorDate).valueOf()).toString()) : (logs[i].timestamp = '');
       result += (logs[i].timestamp + logs[i].thread + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\r\n';
     }
@@ -318,6 +318,15 @@ export class ReportComparisonComponent implements OnInit {
       }
     }
     (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
+  }
+
+  private findValidTimestamp(logs: Log[]): string {
+    for (let i = 0; i < logs.length; i++) {
+      if (logs[i].timestamp.length > 2) {
+        return logs[i].timestamp;
+      }
+    }
+    return '';
   }
 
   private index(testcases: string[], method: string): boolean {
