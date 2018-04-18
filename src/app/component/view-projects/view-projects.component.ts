@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn, TdMediaService} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../model/project.model';

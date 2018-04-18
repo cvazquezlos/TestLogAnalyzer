@@ -1,7 +1,4 @@
-import {
-  Component, ElementRef,
-  OnInit, ViewChild
-} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
@@ -73,12 +70,13 @@ export class ReportComparisonComponent implements OnInit {
       (logs[i].logger.length > 2) ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
     }
     if ((this.comparisonMode + '') === '2') {
-      comparatorDate = new Date(logs[0].timestamp);
+      comparatorDate = new Date(this.findValidTimestamp(logs));
     }
     for (let i = 0; i < logs.length; i++) {
       ((this.comparisonMode + '') === '1') && (logs[i].timestamp = '');
-      ((this.comparisonMode + '') === '2') && (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
-        - (comparatorDate).valueOf()).toString());
+      (((this.comparisonMode + '') === '2') && (logs[i].timestamp.length > 2))
+        ? (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
+        - (comparatorDate).valueOf()).toString()) : (logs[i].timestamp = '');
       result += (logs[i].timestamp + logs[i].thread + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\r\n';
     }
@@ -143,7 +141,6 @@ export class ReportComparisonComponent implements OnInit {
 
   async updateComparisonMode(mode: number) {
     this.comparisonMode = mode;
-    console.log(this.viewMode);
     switch (this.viewMode) {
       case 0:
         await this.generateRawComparison();
@@ -152,7 +149,7 @@ export class ReportComparisonComponent implements OnInit {
         await this.generateMethodsComparison();
         break;
       case 2:
-        await this.generateMethodsComparison();
+        await this.generateFailMethodsComparison();
         break;
       case 3:
         await this.generateRawComparison();
@@ -193,6 +190,31 @@ export class ReportComparisonComponent implements OnInit {
     if (this.comparisonInProgress) {
 
     }
+  }
+
+  private async generateFailMethodsComparison() {
+    this.comparisonInProgress = false;
+    await this.updateViewMode(0, this.viewMode);
+    await this.updateViewMode(1, this.viewMode);
+    this.resultData = [];
+    this.comparatorText = '';
+    for (let i = 0; i < this.classesL.length; i++) {
+      this.comparatorText += this.classesL[i].name + '\r\n';
+      for (let j = 0; j < this.classesL[i].methods.length; j++) {
+        this.comparatorText += this.classesL[i].methods[j].name + '\r\n' + this.generateOutput(this.classesL[i].methods[j].logs);
+      }
+    }
+    this.comparedText = '';
+    for (let i = 0; i < this.classesLc.length; i++) {
+      this.comparedText += this.classesLc[i].name + '\r\n';
+      for (let j = 0; j < this.classesLc[i].methods.length; j++) {
+        this.comparedText += this.classesLc[i].methods[j].name + '\r\n' + this.generateOutput(this.classesLc[i].methods[j].logs);
+      }
+    }
+    this.resultData[0] = {
+      'logs': await this.readDiffer()
+    };
+    this.comparisonInProgress = true;
   }
 
   private async generateMethodsComparison() {
@@ -260,6 +282,7 @@ export class ReportComparisonComponent implements OnInit {
 
   private async readDiffer() {
     const response = await this.elasticsearchService.postDiff(this.comparatorText, this.comparedText);
+    console.log(response);
     return this.tableService.generateTable(response);
   }
 
@@ -289,14 +312,16 @@ export class ReportComparisonComponent implements OnInit {
           : (this.classesLc.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}));
       }
     }
-    (clean) && (this.cleanContent(mode));
+    (clean) && (await this.cleanContent(mode));
     this.ready = true;
   }
 
   private async cleanContent(mode: number) {
-    let auxC;
+    let auxC = [];
     (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
-    const execution = await this.elasticsearchService.getExecutionByTestAsync(this.test);
+    (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
+    const execution = await this.elasticsearchService.getExecutionByTestAsync((mode === 0) ? (this.test)
+      : (this.selected[0].test + ''));
     const testcases = [];
     for (let i = 0; i < execution.testcases.length; i++) {
       const name = execution.testcases[i].name;
@@ -320,7 +345,17 @@ export class ReportComparisonComponent implements OnInit {
         });
       }
     }
+    console.log(aux);
     (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
+  }
+
+  private findValidTimestamp(logs: Log[]): string {
+    for (let i = 0; i < logs.length; i++) {
+      if (logs[i].timestamp.length > 2) {
+        return logs[i].timestamp;
+      }
+    }
+    return '';
   }
 
   private index(testcases: string[], method: string): boolean {

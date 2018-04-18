@@ -93,7 +93,6 @@ export class AddExecComponent implements OnInit {
     for (let i = 0; i < response.length; i++) {
       this.tabs[i] = response[i].tab;
     }
-    console.log(this.tabs);
     this.targetTab = this.tabs[0];
   }
 }

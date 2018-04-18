@@ -19,13 +19,16 @@
     <div class="toolbar-text-container">
       <p class="text-18 text-center height-auto toolbar-text">Comparison</p>
     </div>&nbsp;&nbsp;
-    <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[0]}}" (click)="updateComparisonMode(0)">
+    <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[0]}}"
+            (click)="updateComparisonMode(0)">
       <b>Complete</b>
     </button>&nbsp;&nbsp;
-    <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[1]}}" (click)="updateComparisonMode(1)">
+    <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[1]}}"
+            (click)="updateComparisonMode(1)">
       <b>No timestamp</b>
     </button>&nbsp;&nbsp;
-    <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[2]}}" (click)="updateComparisonMode(2)">
+    <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[2]}}"
+            (click)="updateComparisonMode(2)">
       <b>Time diff</b>
     </button>&nbsp;&nbsp;
     <button mat-icon-button color="accent" (click)="hideExecSelection = !hideExecSelection">
@@ -98,7 +101,7 @@
 <mat-card style="margin-top: 88px;">
   <mat-card-content>
     <div *ngIf="comparisonInProgress; else notComparing">
-      <table *ngIf="viewMode == 0 || viewMode == 3" class="diff-table">
+      <table *ngIf="viewMode == 0 || viewMode == 3 || viewMode == 2" class="diff-table">
         <tbody>
         <tr *ngFor="let result of resultData[0].logs">
           <td [innerHTML]="result.index_p" class="index" style="width: 1%"></td>
@@ -108,7 +111,7 @@
         </tr>
         </tbody>
       </table>
-      <div *ngIf="viewMode == 1 || viewMode == 2">
+      <div *ngIf="viewMode == 1">
         <ng-template ngFor let-class [ngForOf]="resultData">
           <h3>{{class.name}}</h3>
           <ng-template ngFor let-method [ngForOf]="class.methods">

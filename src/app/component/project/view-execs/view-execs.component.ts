@@ -4,7 +4,6 @@ import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Project} from '../../../model/project.model';
 import {ElasticsearchService} from '../../../service/elasticsearch.service';
-import {Tab} from '../../../model/tab.model';
 
 @Component({
   selector: 'app-view-execs',
@@ -61,7 +60,7 @@ export class ViewExecsComponent implements OnInit {
     );
     setTimeout(() => {
       this.reloadTabContent();
-      }, 400);
+    }, 400);
   }
 
   goTo(row: any) {
