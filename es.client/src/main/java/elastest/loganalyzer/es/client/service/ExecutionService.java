@@ -42,6 +42,10 @@ public class ExecutionService {
 		return repository.findByProjectAndTabOrderById(project, tab);
 	}
 	
+	public Execution findByTestId(String test) {
+		return repository.findByTest(test);
+	}
+	
 	public Execution findOne(int id) {
 		return repository.findOne(id);
 	}

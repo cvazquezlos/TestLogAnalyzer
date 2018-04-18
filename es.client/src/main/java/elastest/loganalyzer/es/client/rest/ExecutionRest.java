@@ -32,10 +32,15 @@ public class ExecutionRest {
 		return executionService.findByProjectAndTabOrderById(project, tab);
 	}
 	
+	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
+	public Execution getByTest(@PathVariable String test) {
+		return executionService.findByTestId(test);
+	}
+	
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
 	public void deleteById(@PathVariable int id) {
 		Execution execution = executionService.findOne(id);
-		logService.deleteIterable(logService.findByTestOrderByIdAsc(execution.getTest_id()));
+		logService.deleteIterable(logService.findByTestOrderByIdAsc(execution.getTest()));
 		executionService.delete(execution);
 	}
 }

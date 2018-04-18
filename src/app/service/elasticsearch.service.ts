@@ -38,6 +38,15 @@ export class ElasticsearchService {
     }
   }
 
+  async getExecutionByTestAsync(test_id: string) {
+    try {
+      const response = await this.http.get<Execution>(this.baseAPIExecutionsUrl + '/test/' + test_id).toPromise();
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   deleteExecutionById(id: string) {
     return this.http.delete(this.baseAPIExecutionsUrl + '/id/' + id).map(
       response => response,

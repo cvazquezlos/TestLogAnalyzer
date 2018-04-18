@@ -39,6 +39,7 @@ export class ReportComparisonComponent implements OnInit {
     {name: 'flakes', label: 'FLAKES', width: 100},
     {name: 'skipped', label: 'SKIPPED', width: 100},
     {name: 'tests', label: 'tests', width: 70},
+    {name: 'test', label: 'test id', width: 70},
     {name: 'time_elapsed', label: 'Time elapsed'},
     {name: 'options', label: 'Options', width: 150}
   ];
@@ -111,7 +112,7 @@ export class ReportComparisonComponent implements OnInit {
           icon = 'error';
           classi = 'tc-red-700';
         }
-        if (this.test !== (response1[j].id + '')) {
+        if (this.test !== (response1[j].test + '')) {
           executions.push({
             'id': response1[j].id,
             'startdate': response1[j].start_date,
@@ -126,6 +127,7 @@ export class ReportComparisonComponent implements OnInit {
             'flakes': response1[j].flakes,
             'skipped': response1[j].skipped,
             'tests': response1[j].tests,
+            'test': response1[j].test,
             'time_elapsed': response1[j].time_elapsed + ' seconds'
           });
         } else {
@@ -141,6 +143,7 @@ export class ReportComparisonComponent implements OnInit {
 
   async updateComparisonMode(mode: number) {
     this.comparisonMode = mode;
+    console.log(this.viewMode);
     switch (this.viewMode) {
       case 0:
         await this.generateRawComparison();
@@ -196,7 +199,7 @@ export class ReportComparisonComponent implements OnInit {
     this.comparisonInProgress = false;
     const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
       false);
-    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.selected[0].id,
+    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.selected[0].test,
       this.project, true, false);
     this.resultData = [];
     for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
@@ -209,7 +212,7 @@ export class ReportComparisonComponent implements OnInit {
         const comparatorLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
           this.test, undefined);
         const comparedLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          '' + this.selected[0].id, undefined);
+          '' + this.selected[0].test, undefined);
         const methodsData = [];
         for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
           this.comparatorText = '';
@@ -221,7 +224,7 @@ export class ReportComparisonComponent implements OnInit {
             this.test, methodMessage.replace('(', '')
               .replace(')', ''));
           const comparedMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-            '' + this.selected[0].id, methodMessage.replace('(', '')
+            '' + this.selected[0].test, methodMessage.replace('(', '')
               .replace(')', ''));
 
           this.comparatorText = this.generateOutput(comparatorMethodLogs);
@@ -286,14 +289,55 @@ export class ReportComparisonComponent implements OnInit {
           : (this.classesLc.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}));
       }
     }
+    (clean) && (this.cleanContent(mode));
     this.ready = true;
+  }
+
+  private async cleanContent(mode: number) {
+    let auxC;
+    (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
+    const execution = await this.elasticsearchService.getExecutionByTestAsync(this.test);
+    const testcases = [];
+    for (let i = 0; i < execution.testcases.length; i++) {
+      const name = execution.testcases[i].name;
+      testcases.push(name.substring(0, name.indexOf('(')) + ',' + (execution.testcases[i].failureDetail !== null));
+    }
+    let aux;
+    for (let i = 0; i < auxC.length; i++) {
+      aux = [];
+      const failedMethods = [];
+      for (let j = 0; j < auxC[i].methods.length; j++) {
+        if (!this.index(testcases, auxC[i].methods[j].name)) {
+          // Aditional functionality
+        } else {
+          failedMethods.push(auxC[i].methods[j]);
+        }
+      }
+      if (failedMethods.length > 0) {
+        aux.push({
+          'name': auxC[i].name,
+          'methods': failedMethods
+        });
+      }
+    }
+    (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
+  }
+
+  private index(testcases: string[], method: string): boolean {
+    for (let i = 0; i < testcases.length; i++) {
+      const elements = testcases[i].split(',');
+      if ((elements[0] === method) && (elements[1]) === 'true') {
+        return true;
+      }
+    }
+    return false;
   }
 
   private async viewRaw(mode: number, maven: boolean) {
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const logs = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
-      : (this.selected[0].id), this.project, false, maven);
+      : (this.selected[0].test), this.project, false, maven);
     for (let i = 0; i < logs.length; i++) {
       (mode === 0) ? (this.classesL.push(logs[i])) : (this.classesLc.push(logs[i]));
     }

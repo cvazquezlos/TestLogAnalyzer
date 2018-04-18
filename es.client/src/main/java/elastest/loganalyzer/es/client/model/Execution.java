@@ -22,7 +22,7 @@ public class Execution {
 	private String status;
 	private String tab;
 	private int tests;
-	private String test_id;
+	private String test;
 	private List<ReportTestCase> testcases;
 	private float time_elapsed;
 
@@ -30,7 +30,7 @@ public class Execution {
 	}
 
 	public Execution(int id, int entries, int errors, int failures, int flakes, String project, int skipped,
-			String start_date, String status, String tab, int tests, String test_id, List<ReportTestCase> testcases,
+			String start_date, String status, String tab, int tests, String test, List<ReportTestCase> testcases,
 			float time_elapsed) {
 		super();
 		this.id = id;
@@ -44,7 +44,7 @@ public class Execution {
 		this.status = status;
 		this.tab = tab;
 		this.tests = tests;
-		this.test_id = test_id;
+		this.test = test;
 		this.testcases = testcases;
 		this.time_elapsed = time_elapsed;
 	}
@@ -137,12 +137,12 @@ public class Execution {
 		this.tests = tests;
 	}
 
-	public String getTest_id() {
-		return test_id;
+	public String getTest() {
+		return test;
 	}
 
-	public void setTest_id(String test_id) {
-		this.test_id = test_id;
+	public void setTest(String test) {
+		this.test = test;
 	}
 
 	public List<ReportTestCase> getTestcases() {
