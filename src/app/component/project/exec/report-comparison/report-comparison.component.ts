@@ -1,7 +1,4 @@
-import {
-  Component, ElementRef,
-  OnInit, ViewChild
-} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {ActivatedRoute} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';

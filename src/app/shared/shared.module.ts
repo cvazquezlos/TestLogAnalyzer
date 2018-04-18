@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {FormsModule,
-  ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {
   CovalentCommonModule,
   CovalentDataTableModule,
   CovalentDialogsModule,
+  CovalentExpansionPanelModule,
   CovalentFileModule,
   CovalentLayoutModule,
   CovalentLoadingModule,
@@ -17,8 +17,7 @@ import {
   CovalentPagingModule,
   CovalentSearchModule,
   CovalentStepsModule,
-  CovalentVirtualScrollModule,
-  CovalentExpansionPanelModule
+  CovalentVirtualScrollModule
 } from '@covalent/core';
 import {
   MatAutocompleteModule,
@@ -36,26 +35,25 @@ import {
   MatInputModule,
   MatListModule,
   MatMenuModule,
+  MatNativeDateModule,
   MatPaginatorModule,
   MatProgressBarModule,
   MatProgressSpinnerModule,
   MatPseudoCheckboxModule,
   MatRadioModule,
+  MatRippleModule,
   MatSelectModule,
   MatSidenavModule,
   MatSliderModule,
   MatSlideToggleModule,
   MatSnackBarModule,
   MatSortModule,
+  MatStepperModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule,
-  MatStepperModule
+  MatTooltipModule
 } from '@angular/material';
-import {
-  MatNativeDateModule,
-  MatRippleModule} from '@angular/material';
 
 const FLEX_LAYOUT_MODULES: any[] = [
   FlexLayoutModule,
@@ -127,9 +125,7 @@ const COVALENT_MODULES: any[] = [
     COVALENT_MODULES,
     FLEX_LAYOUT_MODULES,
   ],
-  declarations: [
-
-  ],
+  declarations: [],
   exports: [
     ANGULAR_MODULES,
     MATERIAL_MODULES,
@@ -137,4 +133,5 @@ const COVALENT_MODULES: any[] = [
     FLEX_LAYOUT_MODULES,
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}
