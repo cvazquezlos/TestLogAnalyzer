@@ -10,10 +10,13 @@ D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\model\Project.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\rest\DiffMatchPatchRest.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\rest\FileRest.java
+D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\rest\ExecutionRest.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\service\ExecutionParserService.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\EsConfiguration.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\repository\ProjectRepository.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\repository\LogRepository.java
+D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\service\ExecutionService.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\model\Tab.java
+D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\repository\ExecutionRepository.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\model\Log.java
 D:\Usuarios\cvazquezlos\GitHub\TestLogAnalyzer\es.client\src\main\java\elastest\loganalyzer\es\client\DiffMatchPatch.java
