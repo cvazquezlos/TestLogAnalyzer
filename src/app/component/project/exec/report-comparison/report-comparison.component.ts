@@ -40,7 +40,8 @@ export class ReportComparisonComponent implements OnInit {
     {name: 'time_elapsed', label: 'Time elapsed'},
     {name: 'options', label: 'Options', width: 150}
   ];
-  hideExecSelection: boolean;
+  showExecSelection: boolean;
+  showSelectionMessage = false;
   project: string;
   selected: any[] = [];
   ready: boolean;
@@ -53,7 +54,7 @@ export class ReportComparisonComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
               private tableService: TableService, private elasticsearchService: ElasticsearchService) {
     this.comparisonInProgress = false;
-    this.hideExecSelection = false;
+    this.showExecSelection = false;
   }
 
   private generateOutput(logs: Log[]) {
@@ -141,21 +142,26 @@ export class ReportComparisonComponent implements OnInit {
 
   async updateComparisonMode(mode: number) {
     this.comparisonMode = mode;
-    switch (this.viewMode) {
-      case 0:
-        await this.generateRawComparison();
-        break;
-      case 1:
-        await this.generateMethodsComparison();
-        break;
-      case 2:
-        await this.generateFailMethodsComparison();
-        break;
-      case 3:
-        await this.generateRawComparison();
-        break;
+    if (this.selected[0] === undefined) {
+      this.showSelectionMessage = true;
+      this.showExecSelection = true;
+    } else {
+      switch (this.viewMode) {
+        case 0:
+          await this.generateRawComparison();
+          break;
+        case 1:
+          await this.generateMethodsComparison();
+          break;
+        case 2:
+          await this.generateFailMethodsComparison();
+          break;
+        case 3:
+          await this.generateRawComparison();
+          break;
+      }
+      this.resetComparisonButtonsClasses();
     }
-    this.resetComparisonButtonsClasses();
   }
 
   async updateViewMode(comp: number, mode: number) {
@@ -188,7 +194,11 @@ export class ReportComparisonComponent implements OnInit {
   selectEvent(event: any) {
     this.selected[0] = event.row;
     if (this.comparisonInProgress) {
-
+      this.updateComparisonMode(this.comparisonMode);
+    }
+    if (this.showSelectionMessage) {
+      this.showSelectionMessage = false;
+      this.updateComparisonMode(this.comparisonMode);
     }
   }
 
