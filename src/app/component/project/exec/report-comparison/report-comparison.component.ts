@@ -75,9 +75,10 @@ export class ReportComparisonComponent implements OnInit {
     }
     for (let i = 0; i < logs.length; i++) {
       ((this.comparisonMode + '') === '1') && (logs[i].timestamp = '');
-      (((this.comparisonMode + '') === '2') && (logs[i].timestamp.length > 2))
-        ? (logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
-        - (comparatorDate).valueOf()).toString()) : (logs[i].timestamp = '');
+      if (((this.comparisonMode + '') === '2') && (logs[i].timestamp.length > 2)) {
+        logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
+          - (comparatorDate).valueOf()).toString();
+      }
       result += (logs[i].timestamp + logs[i].thread + logs[i].level + ' ' + logs[i].logger + '' +
         ' ' + logs[i].message) + '\r\n';
     }
