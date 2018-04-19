@@ -199,7 +199,40 @@ export class ReportComparisonComponent implements OnInit {
     if (this.showSelectionMessage) {
       this.showSelectionMessage = false;
       this.updateComparisonMode(this.comparisonMode);
+      this.showExecSelection = false;
     }
+  }
+
+  private async cleanContent(mode: number) {
+    let auxC = [];
+    (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
+    (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
+    const execution = await this.elasticsearchService.getExecutionByTestAsync((mode === 0) ? (this.test)
+      : (this.selected[0].test + ''));
+    const testcases = [];
+    for (let i = 0; i < execution.testcases.length; i++) {
+      const name = execution.testcases[i].name;
+      testcases.push(name.substring(0, name.indexOf('(')) + ',' + (execution.testcases[i].failureDetail !== null));
+    }
+    let aux;
+    for (let i = 0; i < auxC.length; i++) {
+      aux = [];
+      const failedMethods = [];
+      for (let j = 0; j < auxC[i].methods.length; j++) {
+        if (!this.index(testcases, auxC[i].methods[j].name)) {
+          // Aditional functionality
+        } else {
+          failedMethods.push(auxC[i].methods[j]);
+        }
+      }
+      if (failedMethods.length > 0) {
+        aux.push({
+          'name': auxC[i].name,
+          'methods': failedMethods
+        });
+      }
+    }
+    (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
   }
 
   private async generateFailMethodsComparison() {
@@ -292,7 +325,6 @@ export class ReportComparisonComponent implements OnInit {
 
   private async readDiffer() {
     const response = await this.elasticsearchService.postDiff(this.comparatorText, this.comparedText);
-    console.log(response);
     return this.tableService.generateTable(response);
   }
 
@@ -326,37 +358,15 @@ export class ReportComparisonComponent implements OnInit {
     this.ready = true;
   }
 
-  private async cleanContent(mode: number) {
-    let auxC = [];
-    (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
+  private async viewRaw(mode: number, maven: boolean) {
+    this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
-    const execution = await this.elasticsearchService.getExecutionByTestAsync((mode === 0) ? (this.test)
-      : (this.selected[0].test + ''));
-    const testcases = [];
-    for (let i = 0; i < execution.testcases.length; i++) {
-      const name = execution.testcases[i].name;
-      testcases.push(name.substring(0, name.indexOf('(')) + ',' + (execution.testcases[i].failureDetail !== null));
+    const logs = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
+      : (this.selected[0].test), this.project, false, maven);
+    for (let i = 0; i < logs.length; i++) {
+      (mode === 0) ? (this.classesL.push(logs[i])) : (this.classesLc.push(logs[i]));
     }
-    let aux;
-    for (let i = 0; i < auxC.length; i++) {
-      aux = [];
-      const failedMethods = [];
-      for (let j = 0; j < auxC[i].methods.length; j++) {
-        if (!this.index(testcases, auxC[i].methods[j].name)) {
-          // Aditional functionality
-        } else {
-          failedMethods.push(auxC[i].methods[j]);
-        }
-      }
-      if (failedMethods.length > 0) {
-        aux.push({
-          'name': auxC[i].name,
-          'methods': failedMethods
-        });
-      }
-    }
-    console.log(aux);
-    (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
+    this.ready = true;
   }
 
   private findValidTimestamp(logs: Log[]): string {
@@ -376,17 +386,6 @@ export class ReportComparisonComponent implements OnInit {
       }
     }
     return false;
-  }
-
-  private async viewRaw(mode: number, maven: boolean) {
-    this.ready = false;
-    (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
-    const logs = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
-      : (this.selected[0].test), this.project, false, maven);
-    for (let i = 0; i < logs.length; i++) {
-      (mode === 0) ? (this.classesL.push(logs[i])) : (this.classesLc.push(logs[i]));
-    }
-    this.ready = true;
   }
 
   private resetComparisonButtonsClasses() {
