@@ -12,6 +12,10 @@
   line-height: 40px;
 }
 
+h3, h5 {
+  font-family: "Inconsolata", "Consolas", "Monaco";
+}
+
 .diff-table {
   font-family: "Inconsolata", "Consolas", "Monaco";
   font-size: 0.9em;

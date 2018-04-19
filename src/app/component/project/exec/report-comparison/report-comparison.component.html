@@ -7,10 +7,10 @@
       <b>Raw</b>
     </button>&nbsp;&nbsp;
     <button mat-raised-button class="iconBtn-lg" color="{{viewButtonsClasses[1]}}" (click)="updateViewMode(0, 1)">
-      <b>By test</b>
+      <b>All tests</b>
     </button>&nbsp;&nbsp;
     <button mat-raised-button class="iconBtn-lg" color="{{viewButtonsClasses[2]}}" (click)="updateViewMode(0, 2)">
-      <b>Just errors</b>
+      <b>Unsuccessful tests</b>
     </button>&nbsp;&nbsp;
     <button mat-raised-button class="iconBtn-lg" color="{{viewButtonsClasses[3]}}" (click)="updateViewMode(0, 3)">
       <b>Hide Maven</b>
@@ -31,9 +31,9 @@
             (click)="updateComparisonMode(2)">
       <b>Time diff</b>
     </button>&nbsp;&nbsp;
-    <button mat-icon-button color="accent" (click)="hideExecSelection = !hideExecSelection">
-      <mat-icon *ngIf="hideExecSelection == false">keyboard_arrow_down</mat-icon>
-      <mat-icon *ngIf="hideExecSelection == true">keyboard_arrow_up</mat-icon>
+    <button mat-icon-button color="accent" (click)="showExecSelection = !showExecSelection">
+      <mat-icon *ngIf="showExecSelection == false">keyboard_arrow_down</mat-icon>
+      <mat-icon *ngIf="showExecSelection == true">keyboard_arrow_up</mat-icon>
     </button>
     <button *ngIf="comparisonInProgress" mat-icon-button color="accent" (click)="disableComparison()">
       <mat-icon>wrap_text</mat-icon>
@@ -44,9 +44,12 @@
       <mat-icon>arrow_back</mat-icon>
     </button>
   </div>
-  <div *ngIf="hideExecSelection" class="table-selection">
+  <div *ngIf="showExecSelection" class="table-selection">
     <br>
     <mat-divider></mat-divider>
+    <div *ngIf="showSelectionMessage">
+      <td-message label="Error!" sublabel="You must select an execution to compare with." color="warn" icon="error"></td-message>
+    </div>
     <mat-tab-group style="height: 150px">
       <mat-tab *ngFor="let tab of tabs" label="{{tab.name}}">
         <ng-template mat-tab-label>
@@ -132,10 +135,14 @@
     </div>
     <ng-template #notComparing>
       <div *ngIf="viewMode == 0 || viewMode == 3">
-        <tr *ngFor="let log of classesL; index as i">
-          <td class="index">{{i}}.</td>
-          <td>{{log.log}}</td>
-        </tr>
+        <table class="diff-table">
+          <tbody>
+            <tr *ngFor="let log of classesL; index as i">
+              <td class="index">{{i}}.</td>
+              <td>{{log.log}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div *ngIf="viewMode == 1 || viewMode == 2">
         <ng-template ngFor let-item [ngForOf]="classesL">
@@ -150,8 +157,12 @@
               </tr>
               </tbody>
             </table>
+            <br>
           </ng-template>
         </ng-template>
+        <div *ngIf="classesL.length == 0">
+          <td-message label="Info" sublabel="The execution has not unsuccessful methods." color="blue" icon="info"></td-message>
+        </div>
       </div>
     </ng-template>
   </mat-card-content>
