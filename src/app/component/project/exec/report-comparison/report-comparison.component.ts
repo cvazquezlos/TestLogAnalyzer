@@ -152,7 +152,7 @@ export class ReportComparisonComponent implements OnInit {
           await this.generateRawComparison();
           break;
         case 1:
-          await this.generateMethodsComparison();
+          await this.generateFailMethodsComparison();
           break;
         case 2:
           await this.generateFailMethodsComparison();
@@ -173,7 +173,7 @@ export class ReportComparisonComponent implements OnInit {
         await this.viewRaw(comp, true);
         break;
       case 1:
-        await this.viewByMethods(comp);
+        await this.viewByMethods(comp, false);
         break;
       case 2:
         await this.viewByMethods(comp, true);
@@ -330,24 +330,25 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   private async viewByMethods(mode: number, clean?: boolean) {
+    console.log(mode);
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
-    const loggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
-      false);
+    const loggers = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
+      : (this.selected[0].test), this.project,true, false);
     for (let i = 0; i < loggers.length; i++) {
       if (loggers[i].split(' ').length === 2) {
         const logger = loggers[i].split(' ')[1];
         const partialLogger = logger.split('.')[logger.split('.').length - 1];
-        const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
-          undefined);
+        const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, (mode === 0)
+          ? (this.test) : (this.selected[0].test),undefined);
         const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
           if (methods[j] !== '') {
             const cleanMethod = methods[j].replace('(', '').replace(')', '');
             methodsData.push({
               'name': methods[j],
-              'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, this.test,
-                cleanMethod)
+              'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, (mode === 0)
+                ? (this.test) : (this.selected[0].test), cleanMethod)
             });
           }
         }
@@ -356,6 +357,8 @@ export class ReportComparisonComponent implements OnInit {
       }
     }
     (clean) && (await this.cleanContent(mode));
+    console.log(this.classesL);
+    console.log(this.classesLc);
     this.ready = true;
   }
 
