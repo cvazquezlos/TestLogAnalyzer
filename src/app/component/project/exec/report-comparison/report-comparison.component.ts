@@ -248,7 +248,7 @@ export class ReportComparisonComponent implements OnInit {
     await this.updateViewMode(1, this.viewMode);
     for (let i = 0; i < this.classesL.length; i++) {
       if (comparisonDictionary[this.classesL[i].name] === undefined) {
-        let methods = [];
+        const methods = [];
         for (let j = 0; j < this.classesL[i].methods.length; j++) {
          methods.push({
            'name': this.classesL[i].methods[j].name,
@@ -279,7 +279,7 @@ export class ReportComparisonComponent implements OnInit {
         }
         comparisonDictionary[this.classesLc[i].name] = targetClass;
       } else {
-        let methodsC = [];
+        const methodsC = [];
         for (let j = 0; j < this.classesLc[i].methods.length; j++) {
           methodsC.push({
             'methodsC': this.classesLc[i].methods[j].name,
