@@ -101,7 +101,7 @@
     </mat-tab-group>
   </div>
 </mat-card>
-<mat-card style="margin-top: 88px;">
+<mat-card style="margin-top: 88px; margin-bottom: 50px">
   <mat-card-content>
     <div *ngIf="comparisonInProgress; else notComparing">
       <table *ngIf="viewMode == 0 || viewMode == 3" class="diff-table">
@@ -167,3 +167,19 @@
     </ng-template>
   </mat-card-content>
 </mat-card>
+<div class="status-feedback">
+  <div *ngIf="comparisonInProgress; else showBasicMessage">
+    <div class="half-part" style="float: left">
+      <td-message *ngIf="status.includes('FAILURE')" label="Build failure" sublabel="This execution contains some errors so the build had failed." color="warn" icon="error"><br></td-message>
+      <td-message *ngIf="!status.includes('FAILURE')" label="Build success" sublabel="This execution has finished successfully." color="green" icon="check_circle"></td-message>
+    </div>
+    <div class="half-part" style="float: right; border-left: 2px white">
+      <td-message *ngIf="selected[0].status.status.includes('FAILURE')" label="Build failure" sublabel="This execution contains some errors so the build had failed." color="warn" icon="error"><br></td-message>
+      <td-message *ngIf="!selected[0].status.status.includes('FAILURE')" label="Build success" sublabel="This execution has finished successfully." color="green" icon="check_circle"></td-message>
+    </div>
+  </div>
+  <ng-template #showBasicMessage>
+    <td-message *ngIf="status.includes('FAILURE')" label="Build failure" sublabel="This execution contains some errors so the build had failed." color="warn" icon="error"><br></td-message>
+    <td-message *ngIf="!status.includes('FAILURE')" label="Build success" sublabel="This execution has finished successfully." color="green" icon="check_circle"></td-message>
+  </ng-template>
+</div>

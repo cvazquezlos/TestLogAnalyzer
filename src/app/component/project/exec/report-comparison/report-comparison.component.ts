@@ -23,7 +23,7 @@ export class ReportComparisonComponent implements OnInit {
   classesLc: any[];
   comparatorText = '';
   comparedText = '';
-  comparisonInProgress: boolean;
+  comparisonInProgress = false;
   comparisonButtonsClasses = ['primary', 'primary', 'primary'];
   comparisonMode: number;
   deleteInProgress: boolean;
@@ -46,6 +46,7 @@ export class ReportComparisonComponent implements OnInit {
   showSelectionMessage = false;
   project: string;
   selected: any[] = [];
+  status = 'BUILD FAILURE';
   ready: boolean;
   resultData: any[] = [];
   tabs: any[];
@@ -97,6 +98,8 @@ export class ReportComparisonComponent implements OnInit {
     this.classesLc = [];
     this.updateViewMode(0, 0);
     this.reloadTabContent();
+    const result = await this.elasticsearchService.getExecutionByTestAsync(this.test);
+    this.status = result.status;
   }
 
   async reloadTabContent() {
@@ -238,31 +241,6 @@ export class ReportComparisonComponent implements OnInit {
     (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
   }
 
-  private async generateFailMethodsComparison() {
-    this.comparisonInProgress = false;
-    await this.updateViewMode(0, this.viewMode);
-    await this.updateViewMode(1, this.viewMode);
-    this.resultData = [];
-    this.comparatorText = '';
-    for (let i = 0; i < this.classesL.length; i++) {
-      this.comparatorText += this.classesL[i].name + '\r\n';
-      for (let j = 0; j < this.classesL[i].methods.length; j++) {
-        this.comparatorText += this.classesL[i].methods[j].name + '\r\n' + this.generateOutput(this.classesL[i].methods[j].logs);
-      }
-    }
-    this.comparedText = '';
-    for (let i = 0; i < this.classesLc.length; i++) {
-      this.comparedText += this.classesLc[i].name + '\r\n';
-      for (let j = 0; j < this.classesLc[i].methods.length; j++) {
-        this.comparedText += this.classesLc[i].methods[j].name + '\r\n' + this.generateOutput(this.classesLc[i].methods[j].logs);
-      }
-    }
-    this.resultData[0] = {
-      'logs': await this.readDiffer()
-    };
-    this.comparisonInProgress = true;
-  }
-
   private async generateMethodsComparison() {
     this.comparisonInProgress = false;
     var comparisonDictionary: { [name: string] : ClassC } = {};
@@ -358,7 +336,6 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   private async viewByMethods(mode: number, clean?: boolean) {
-    console.log(mode);
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const loggers = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
@@ -385,8 +362,6 @@ export class ReportComparisonComponent implements OnInit {
       }
     }
     (clean) && (await this.cleanContent(mode));
-    console.log(this.classesL);
-    console.log(this.classesLc);
     this.ready = true;
   }
 
