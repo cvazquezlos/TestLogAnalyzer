@@ -157,7 +157,7 @@ export class ReportComparisonComponent implements OnInit {
           await this.generateMethodsComparison();
           break;
         case 2:
-          await this.generateFailMethodsComparison();
+          await this.generateMethodsComparison();
           break;
         case 3:
           await this.generateRawComparison();
