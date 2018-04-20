@@ -6,6 +6,8 @@ import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
 import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 import {TableService} from '../../../../service/table.service';
+import {ClassC} from "../../../../model/classc.model";
+import {TestC} from "../../../../model/testc.model";
 
 @Component({
   selector: 'app-report-comparison',
@@ -152,7 +154,7 @@ export class ReportComparisonComponent implements OnInit {
           await this.generateRawComparison();
           break;
         case 1:
-          await this.generateFailMethodsComparison();
+          await this.generateMethodsComparison();
           break;
         case 2:
           await this.generateFailMethodsComparison();
@@ -263,48 +265,74 @@ export class ReportComparisonComponent implements OnInit {
 
   private async generateMethodsComparison() {
     this.comparisonInProgress = false;
-    const comparatorLoggers = await this.elasticsearchService.getLogsByTestAsync(this.test, this.project, true,
-      false);
-    const comparedLoggers = await this.elasticsearchService.getLogsByTestAsync('' + this.selected[0].test,
-      this.project, true, false);
-    this.resultData = [];
-    for (let i = 0; i < Math.max(comparatorLoggers.length, comparedLoggers.length); i++) {
-      let loggerMessage: string;
-      (comparatorLoggers.length > comparedLoggers.length) ? (loggerMessage = comparatorLoggers[i])
-        : (loggerMessage = comparedLoggers[i]);
-      if (loggerMessage.split(' ').length === 2) {
-        const currentLogger = loggerMessage.split(' ')[1];
-        const partialLogger = currentLogger.split('.')[currentLogger.split('.').length - 1];
-        const comparatorLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          this.test, undefined);
-        const comparedLoggerMethod = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-          '' + this.selected[0].test, undefined);
-        const methodsData = [];
-        for (let j = 0; j < Math.max(comparatorLoggerMethod.length, comparedLoggerMethod.length); j++) {
-          this.comparatorText = '';
-          this.comparedText = '';
-          let methodMessage: string;
-          (comparatorLoggerMethod.length > comparedLoggerMethod.length) ? (methodMessage = comparatorLoggerMethod[j])
-            : (methodMessage = comparedLoggerMethod[j]);
-          const comparatorMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-            this.test, methodMessage.replace('(', '')
-              .replace(')', ''));
-          const comparedMethodLogs = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project,
-            '' + this.selected[0].test, methodMessage.replace('(', '')
-              .replace(')', ''));
-
-          this.comparatorText = this.generateOutput(comparatorMethodLogs);
-          this.comparedText = this.generateOutput(comparedMethodLogs);
-          methodsData.push({
-            'name': methodMessage,
-            'logs': await this.readDiffer()
+    var comparisonDictionary: { [name: string] : ClassC } = {};
+    await this.updateViewMode(0, this.viewMode);
+    await this.updateViewMode(1, this.viewMode);
+    for (let i = 0; i < this.classesL.length; i++) {
+      if (comparisonDictionary[this.classesL[i].name] === undefined) {
+        var methods = [];
+        for (let j = 0; j < this.classesL[i].methods.length; j++) {
+         methods.push({
+           'name': this.classesL[i].methods[j].name,
+           'comparator': this.generateOutput(this.classesL[i].methods[j].logs),
+           'compared': ''
+         });
+        }
+        comparisonDictionary[this.classesL[i].name] = {
+          'name': this.classesL[i].name,
+          'tests': methods
+        }
+      }
+    }
+    for (let i = 0; i < this.classesLc.length; i++)  {
+      if (comparisonDictionary[this.classesLc[i].name] !== undefined) {
+        var targetClass = comparisonDictionary[this.classesLc[i].name];
+        for (let j = 0; j < this.classesLc[i].methods.length; j++) {
+          const position = this.containsTest(targetClass.tests, this.classesLc[i].methods[j]);
+          if (position !== -1) {
+            targetClass.tests[position].compared = this.generateOutput(this.classesLc[i].methods[j].logs);
+          } else {
+            targetClass.tests.push({
+              'name': this.classesLc[i].methods[j].name,
+              'comparator': '',
+              'compared': this.generateOutput(this.classesLc[i].methods[j].logs)
+            });
+          }
+        }
+        comparisonDictionary[this.classesLc[i].name] = targetClass;
+      } else {
+        var methods = [];
+        for (let j = 0; j < this.classesLc[i].methods.length; j++) {
+          methods.push({
+            'name': this.classesLc[i].methods[j].name,
+            'comparator': '',
+            'compared': this.generateOutput(this.classesLc[i].methods[j].logs)
           });
         }
-        this.resultData.push({
-          'name': currentLogger,
-          'methods': methodsData
+        comparisonDictionary[this.classesLc[i].name] = {
+          'name': this.classesLc[i].name,
+          'tests': methods
+        }
+      }
+    }
+    this.resultData = [];
+    for (let classC in comparisonDictionary) {
+      const value = comparisonDictionary[classC];
+      var methods = [];
+      this.comparatorText = '';
+      this.comparedText = '';
+      for (let i = 0; i < value.tests.length; i++) {
+        this.comparatorText = value.tests[i].comparator;
+        this.comparedText = value.tests[i].compared;
+        methods.push({
+          'name': value.tests[i].name,
+          'logs': await this.readDiffer()
         });
       }
+      this.resultData.push({
+        'name': value.name,
+        'methods': methods
+      });
     }
     this.comparisonInProgress = true;
   }
@@ -371,6 +399,15 @@ export class ReportComparisonComponent implements OnInit {
       (mode === 0) ? (this.classesL.push(logs[i])) : (this.classesLc.push(logs[i]));
     }
     this.ready = true;
+  }
+
+  private containsTest(tests: TestC[], test: TestC): number {
+    for (let i = 0; i < tests.length; i++) {
+      if (tests[i].name === test.name) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   private findValidTimestamp(logs: Log[]): string {

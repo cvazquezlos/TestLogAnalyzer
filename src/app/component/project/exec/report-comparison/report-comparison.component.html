@@ -104,7 +104,7 @@
 <mat-card style="margin-top: 88px;">
   <mat-card-content>
     <div *ngIf="comparisonInProgress; else notComparing">
-      <table *ngIf="viewMode == 0 || viewMode == 3 || viewMode == 2 || viewMode == 1" class="diff-table">
+      <table *ngIf="viewMode == 0 || viewMode == 3 || viewMode == 2" class="diff-table">
         <tbody>
         <tr *ngFor="let result of resultData[0].logs">
           <td [innerHTML]="result.index_p" class="index" style="width: 1%"></td>
@@ -114,7 +114,7 @@
         </tr>
         </tbody>
       </table>
-      <div *ngIf="viewMode == 12">
+      <div *ngIf="viewMode == 1">
         <ng-template ngFor let-class [ngForOf]="resultData">
           <h3>{{class.name}}</h3>
           <ng-template ngFor let-method [ngForOf]="class.methods">
