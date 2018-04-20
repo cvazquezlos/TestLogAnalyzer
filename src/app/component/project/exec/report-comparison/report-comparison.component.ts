@@ -6,8 +6,8 @@ import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
 import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 import {TableService} from '../../../../service/table.service';
-import {ClassC} from "../../../../model/classc.model";
-import {TestC} from "../../../../model/testc.model";
+import {ClassC} from '../../../../model/classc.model';
+import {TestC} from '../../../../model/testc.model';
 
 @Component({
   selector: 'app-report-comparison',
@@ -243,12 +243,12 @@ export class ReportComparisonComponent implements OnInit {
 
   private async generateMethodsComparison() {
     this.comparisonInProgress = false;
-    var comparisonDictionary: { [name: string] : ClassC } = {};
+    const comparisonDictionary: { [name: string]: ClassC } = {};
     await this.updateViewMode(0, this.viewMode);
     await this.updateViewMode(1, this.viewMode);
     for (let i = 0; i < this.classesL.length; i++) {
       if (comparisonDictionary[this.classesL[i].name] === undefined) {
-        var methods = [];
+        let methods = [];
         for (let j = 0; j < this.classesL[i].methods.length; j++) {
          methods.push({
            'name': this.classesL[i].methods[j].name,
@@ -264,7 +264,7 @@ export class ReportComparisonComponent implements OnInit {
     }
     for (let i = 0; i < this.classesLc.length; i++)  {
       if (comparisonDictionary[this.classesLc[i].name] !== undefined) {
-        var targetClass = comparisonDictionary[this.classesLc[i].name];
+        const targetClass = comparisonDictionary[this.classesLc[i].name];
         for (let j = 0; j < this.classesLc[i].methods.length; j++) {
           const position = this.containsTest(targetClass.tests, this.classesLc[i].methods[j]);
           if (position !== -1) {
@@ -279,38 +279,40 @@ export class ReportComparisonComponent implements OnInit {
         }
         comparisonDictionary[this.classesLc[i].name] = targetClass;
       } else {
-        var methods = [];
+        let methodsC = [];
         for (let j = 0; j < this.classesLc[i].methods.length; j++) {
-          methods.push({
-            'name': this.classesLc[i].methods[j].name,
+          methodsC.push({
+            'methodsC': this.classesLc[i].methods[j].name,
             'comparator': '',
             'compared': this.generateOutput(this.classesLc[i].methods[j].logs)
           });
         }
         comparisonDictionary[this.classesLc[i].name] = {
           'name': this.classesLc[i].name,
-          'tests': methods
+          'tests': methodsC
         }
       }
     }
     this.resultData = [];
-    for (let classC in comparisonDictionary) {
-      const value = comparisonDictionary[classC];
-      var methods = [];
-      this.comparatorText = '';
-      this.comparedText = '';
-      for (let i = 0; i < value.tests.length; i++) {
-        this.comparatorText = value.tests[i].comparator;
-        this.comparedText = value.tests[i].compared;
-        methods.push({
-          'name': value.tests[i].name,
-          'logs': await this.readDiffer()
+    for (const classC in comparisonDictionary) {
+      if (comparisonDictionary.hasOwnProperty(classC)) {
+        const value = comparisonDictionary[classC];
+        const methodsData = [];
+        this.comparatorText = '';
+        this.comparedText = '';
+        for (let i = 0; i < value.tests.length; i++) {
+          this.comparatorText = value.tests[i].comparator;
+          this.comparedText = value.tests[i].compared;
+          methodsData.push({
+            'name': value.tests[i].name,
+            'logs': await this.readDiffer()
+          });
+        }
+        this.resultData.push({
+          'name': value.name,
+          'methods': methodsData
         });
       }
-      this.resultData.push({
-        'name': value.name,
-        'methods': methods
-      });
     }
     this.comparisonInProgress = true;
   }
@@ -339,13 +341,13 @@ export class ReportComparisonComponent implements OnInit {
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const loggers = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
-      : (this.selected[0].test), this.project,true, false);
+      : (this.selected[0].test), this.project, true, false);
     for (let i = 0; i < loggers.length; i++) {
       if (loggers[i].split(' ').length === 2) {
         const logger = loggers[i].split(' ')[1];
         const partialLogger = logger.split('.')[logger.split('.').length - 1];
         const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, (mode === 0)
-          ? (this.test) : (this.selected[0].test),undefined);
+          ? (this.test) : (this.selected[0].test), undefined);
         const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
           if (methods[j] !== '') {
