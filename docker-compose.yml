@@ -11,10 +11,18 @@ services:
     volumes:
       - elk-data:/var/lib/elasticsearch
 
-  loganalyzer:
-    image: cvazquezlos/loganalyzer:2.0.0
+  elasticsearch-client:
+    image: cvazquezlos/elasticsearch-client:2.4.6
     depends_on:
       - elasticsearch
+    ports:
+      - 8443:8443
+
+  loganalyzer:
+    image: cvazquezlos/testloganalyzer:4.0
+    depends_on:
+      - elasticsearch
+      - elasticsearch-client
     ports:
       - 4200:4200
 
