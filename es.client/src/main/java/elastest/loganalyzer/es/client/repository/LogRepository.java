@@ -27,7 +27,7 @@ public interface LogRepository extends ElasticsearchCrudRepository<Log, String> 
 			String test, String method);
 
 	List<Log> findByTestAndProjectOrderByIdAsc(String test, String project);
-	
+
 	List<Log> findByTabAndProject(String tab, String project);
 
 	List<Log> findByTabAndProjectAndTestAndLevelOrderByIdAsc(String tab, String project, String test, String level);

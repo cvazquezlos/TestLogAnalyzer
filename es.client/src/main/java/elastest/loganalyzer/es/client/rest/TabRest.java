@@ -33,7 +33,7 @@ public class TabRest {
 	public List<Tab> getAll(@PathVariable String project) {
 		return tabService.findByProject(project);
 	}
-	
+
 	@RequestMapping(value = "/name/{name}", method = RequestMethod.DELETE)
 	public void deleteByTab(@PathVariable String name,
 			@RequestParam(name = "project", required = true) String project) {
@@ -43,5 +43,5 @@ public class TabRest {
 		logService.deleteIterable(logService.findByTabAndProject(name, project));
 		executionService.deleteIterable(executionService.findByProjectAndTabOrderById(project, name));
 	}
-	
+
 }

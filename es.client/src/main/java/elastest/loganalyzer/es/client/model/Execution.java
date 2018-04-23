@@ -160,4 +160,12 @@ public class Execution {
 	public void setTime_elapsed(float time_elapsed) {
 		this.time_elapsed = time_elapsed;
 	}
+
+	@Override
+	public String toString() {
+		return "Execution [id=" + id + ", entries=" + entries + ", errors=" + errors + ", failures=" + failures
+				+ ", flakes=" + flakes + ", project=" + project + ", skipped=" + skipped + ", start_date=" + start_date
+				+ ", status=" + status + ", tab=" + tab + ", tests=" + tests + ", test=" + test + ", testcases="
+				+ testcases + ", time_elapsed=" + time_elapsed + "]";
+	}
 }

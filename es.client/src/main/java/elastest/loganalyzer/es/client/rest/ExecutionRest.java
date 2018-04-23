@@ -16,27 +16,27 @@ import elastest.loganalyzer.es.client.service.LogService;
 @RestController
 @RequestMapping("/executions")
 public class ExecutionRest {
-	
+
 	private final ExecutionService executionService;
 	private final LogService logService;
-	
+
 	@Autowired
 	public ExecutionRest(ExecutionService executionService, LogService logService) {
 		this.executionService = executionService;
 		this.logService = logService;
 	}
-	
+
 	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
 	public List<Execution> getByProject(@PathVariable String project,
 			@RequestParam(name = "tab", required = true) String tab) {
 		return executionService.findByProjectAndTabOrderById(project, tab);
 	}
-	
+
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
 	public Execution getByTest(@PathVariable String test) {
 		return executionService.findByTestId(test);
 	}
-	
+
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
 	public void deleteById(@PathVariable int id) {
 		Execution execution = executionService.findOne(id);
