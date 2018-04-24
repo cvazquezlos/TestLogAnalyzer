@@ -14,11 +14,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @ComponentScan("elastest.loganalyzer.es.client")
 @PropertySource("classpath:application.properties")
 @EnableElasticsearchRepositories(basePackages = "elastest/loganalyzer/es/client/repository")
+@EnableWebMvc
 public class EsConfiguration {
 
 	@Bean
