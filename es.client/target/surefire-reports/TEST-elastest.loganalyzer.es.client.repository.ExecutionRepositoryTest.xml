@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="1.841" tests="6" errors="0" skipped="0" failures="1">
+<testsuite name="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="2.536" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jre1.8.0_161\bin"/>
@@ -26,7 +26,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 10"/>
-    <property name="classworlds.conf" value="D:\Usuarios\cvazquezlos\Workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf5980130842010326944.tmp"/>
+    <property name="classworlds.conf" value="D:\Usuarios\cvazquezlos\Workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf476265143773985040.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.library.path" value="C:\Program Files\Java\jre1.8.0_161\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/Program Files/Java/jre1.8.0_161/bin/server;C:/Program Files/Java/jre1.8.0_161/bin;C:/Program Files/Java/jre1.8.0_161/lib/amd64;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;JAVA_HOME;D:\Archivos de Programa\nodejs\;D:\Archivos de Programa\Brackets\command;C:\Windows\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;D:\Archivos de Programa\Apache\maven\bin;C:\Program Files\Git\cmd;C:\Users\Usuario\AppData\Local\Microsoft\WindowsApps;C:\Users\Usuario\AppData\Local\GitHubDesktop\bin;C:\Users\Usuario\AppData\Roaming\npm;D:\Archivos de Programa\Docker Toolbox;D:\Usuarios\cvazquezlos\Documents\sts-bundle\sts-3.9.2.RELEASE;;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -60,18 +60,10 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="ShouldCountSuccessfully" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0"/>
-  <testcase name="ShouldFindAnyValueByProject" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0"/>
-  <testcase name="ShouldDeleteById" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.468"/>
-  <testcase name="ShouldDontExist" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.236">
-    <failure type="java.lang.AssertionError:">java.lang.AssertionError: null
-	at org.junit.Assert.fail(Assert.java:86)
-	at org.junit.Assert.assertTrue(Assert.java:41)
-	at org.junit.Assert.assertFalse(Assert.java:64)
-	at org.junit.Assert.assertFalse(Assert.java:74)
-	at elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest.ShouldDontExist(ExecutionRepositoryTest.java:135)
-</failure>
-  </testcase>
-  <testcase name="ShouldReturnAddedId" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.475"/>
-  <testcase name="ShouldFindAnyValueByProjectAndTab" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.662"/>
+  <testcase name="ShouldCountSuccessfully" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.081"/>
+  <testcase name="ShouldFindAnyValueByProject" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.602"/>
+  <testcase name="ShouldDeleteById" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.424"/>
+  <testcase name="ShouldDontExist" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.409"/>
+  <testcase name="ShouldReturnAddedId" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.389"/>
+  <testcase name="ShouldFindAnyValueByProjectAndTab" classname="elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest" time="0.631"/>
 </testsuite>

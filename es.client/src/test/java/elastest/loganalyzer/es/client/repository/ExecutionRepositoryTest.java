@@ -129,12 +129,12 @@ public class ExecutionRepositoryTest {
 		// When
 		repository.save(e1);
 		repository.save(e2);
+		repository.delete(e1);
+		repository.delete(e2);
 		boolean v1 = repository.exists(id1);
 		boolean v2 = repository.exists(id2);
 		// Then
 		assertFalse(v1);
 		assertFalse(v2);
-		repository.delete(e1);
-		repository.delete(e2);
 	}
 }

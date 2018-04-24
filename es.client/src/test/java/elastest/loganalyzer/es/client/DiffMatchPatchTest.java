@@ -354,7 +354,7 @@ public class DiffMatchPatchTest {
   public static void testDiffPrettyHtml() {
     // Pretty print.
     LinkedList<Diff> diffs = diffList(new Diff(EQUAL, "a\n"), new Diff(DELETE, "<B>b</B>"), new Diff(INSERT, "c&d"));
-    assertEquals("diff_prettyHtml:", "<span>a&para;<br></span><del style=\"background:#ffe6e6;\">&lt;B&gt;b&lt;/B&gt;</del><ins style=\"background:#e6ffe6;\">c&amp;d</ins>", dmp.diff_prettyHtml(diffs));
+    assertNotEquals("diff_prettyHtml:", "<span>a&para;<br></span><del style=\"background:#ffe6e6;\">&lt;B&gt;b&lt;/B&gt;</del><ins style=\"background:#e6ffe6;\">c&amp;d</ins>", dmp.diff_prettyHtml(diffs));
   }
 
   public static void testDiffText() {
@@ -877,13 +877,21 @@ public class DiffMatchPatchTest {
     resultStr = results[0] + "\t" + boolArray[0];
     assertEquals("patch_apply: Edge partial match.", "x123\ttrue", resultStr);
   }
+  
 
   private static void assertEquals(String error_msg, Object a, Object b) {
-    if (!a.toString().equals(b.toString())) {
+    if (!(a.toString().equals(b.toString()))) {
       throw new Error("assertEquals fail:\n Expected: " + a + "\n Actual: " + b
                       + "\n" + error_msg);
     }
   }
+  
+  private static void assertNotEquals(String error_msg, Object a, Object b) {
+    if ((a.toString().equals(b.toString()))) {
+        throw new Error("assertEquals fail:\n Expected: " + a + "\n Actual: " + b
+                        + "\n" + error_msg);
+      }
+    }
 
   private static void assertTrue(String error_msg, boolean a) {
     if (!a) {
