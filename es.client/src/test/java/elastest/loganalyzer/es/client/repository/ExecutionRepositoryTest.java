@@ -34,7 +34,7 @@ public class ExecutionRepositoryTest {
 	}
 
 	@Test
-	public void ShouldReturnAddedId() {
+	public void shouldReturnAddedId() {
 		// Given
 		Execution e1 = new Execution(99999998, 201, 23, 2, 34, "JUnit4ClassTestingTLA", 0, new Date().toString(),
 				"BUILD SUCCESS", "Demo", 3, "01", new ArrayList<ReportTestCase>(), (float) 20.3);
@@ -51,7 +51,7 @@ public class ExecutionRepositoryTest {
 	}
 
 	@Test
-	public void ShouldFindAnyValueByProject() {
+	public void shouldFindAnyValueByProject() {
 		// Given
 		Execution e1 = new Execution(99999997, 123, 2, 27, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
 				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);
@@ -66,7 +66,7 @@ public class ExecutionRepositoryTest {
 	}
 
 	@Test
-	public void ShouldCountSuccessfully() {
+	public void shouldCountSuccessfully() {
 		// Given: Not nullable accounting.
 		// When
 		long count = repository.count();
@@ -75,7 +75,7 @@ public class ExecutionRepositoryTest {
 	}
 
 	@Test
-	public void ShouldFindAnyValueByProjectAndTab() {
+	public void shouldFindAnyValueByProjectAndTab() {
 		// Given
 		Execution e1 = new Execution(99999996, 123, 13, 2, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
 				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);
@@ -99,7 +99,7 @@ public class ExecutionRepositoryTest {
 	}
 
 	@Test
-	public void ShouldDeleteById() {
+	public void shouldDeleteById() {
 		// Given
 		Execution e1 = new Execution(99999993, 201, 23, 2, 34, "JUnit4ClassTestingTLA", 0, new Date().toString(),
 				"BUILD SUCCESS", "Demo", 3, "01", new ArrayList<ReportTestCase>(), (float) 20.3);
@@ -118,7 +118,7 @@ public class ExecutionRepositoryTest {
 	}
 
 	@Test
-	public void ShouldDontExist() {
+	public void shouldDontExist() {
 		// Given
 		Execution e1 = new Execution(99999996, 123, 13, 2, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
 				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);

@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
-Test set: elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest
+Test set: elastest.loganalyzer.es.client.repository.ProjectRepositoryTest
 -------------------------------------------------------------------------------
-Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.133 sec <<< FAILURE! - in elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest
-shouldReturnAddedId(elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest)  Time elapsed: 0.083 sec  <<< ERROR!
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.021 sec <<< FAILURE! - in elastest.loganalyzer.es.client.repository.ProjectRepositoryTest
+shouldReturnAddedId(elastest.loganalyzer.es.client.repository.ProjectRepositoryTest)  Time elapsed: 0.006 sec  <<< ERROR!
 org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
 	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
 	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
@@ -28,7 +28,7 @@ org.elasticsearch.client.transport.NoNodeAvailableException: None of the configu
 	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
+	at com.sun.proxy.$Proxy77.save(Unknown Source)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -39,10 +39,10 @@ org.elasticsearch.client.transport.NoNodeAvailableException: None of the configu
 	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest.shouldReturnAddedId(ExecutionRepositoryTest.java:44)
+	at com.sun.proxy.$Proxy77.save(Unknown Source)
+	at elastest.loganalyzer.es.client.repository.ProjectRepositoryTest.shouldReturnAddedId(ProjectRepositoryTest.java:35)
 
-shouldCountSuccessfully(elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest)  Time elapsed: 0.033 sec  <<< ERROR!
+shouldCountSuccessfully(elastest.loganalyzer.es.client.repository.ProjectRepositoryTest)  Time elapsed: 0.004 sec  <<< ERROR!
 org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
 	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
 	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
@@ -69,7 +69,7 @@ org.elasticsearch.client.transport.NoNodeAvailableException: None of the configu
 	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.count(Unknown Source)
+	at com.sun.proxy.$Proxy77.count(Unknown Source)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -80,10 +80,10 @@ org.elasticsearch.client.transport.NoNodeAvailableException: None of the configu
 	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.count(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest.shouldCountSuccessfully(ExecutionRepositoryTest.java:72)
+	at com.sun.proxy.$Proxy77.count(Unknown Source)
+	at elastest.loganalyzer.es.client.repository.ProjectRepositoryTest.shouldCountSuccessfully(ProjectRepositoryTest.java:51)
 
-shouldFindAnyValueByProject(elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest)  Time elapsed: 0.003 sec  <<< ERROR!
+shouldDontExist(elastest.loganalyzer.es.client.repository.ProjectRepositoryTest)  Time elapsed: 0.004 sec  <<< ERROR!
 org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
 	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
 	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
@@ -109,7 +109,7 @@ org.elasticsearch.client.transport.NoNodeAvailableException: None of the configu
 	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
+	at com.sun.proxy.$Proxy77.save(Unknown Source)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -120,10 +120,10 @@ org.elasticsearch.client.transport.NoNodeAvailableException: None of the configu
 	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest.shouldFindAnyValueByProject(ExecutionRepositoryTest.java:60)
+	at com.sun.proxy.$Proxy77.save(Unknown Source)
+	at elastest.loganalyzer.es.client.repository.ProjectRepositoryTest.shouldDontExist(ProjectRepositoryTest.java:82)
 
-shouldDeleteById(elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest)  Time elapsed: 0.003 sec  <<< ERROR!
+shouldFindAnyValue(elastest.loganalyzer.es.client.repository.ProjectRepositoryTest)  Time elapsed: 0.003 sec  <<< ERROR!
 org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
 	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
 	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
@@ -149,7 +149,7 @@ org.elasticsearch.client.transport.NoNodeAvailableException: None of the configu
 	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
+	at com.sun.proxy.$Proxy77.save(Unknown Source)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
@@ -160,86 +160,6 @@ org.elasticsearch.client.transport.NoNodeAvailableException: None of the configu
 	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
 	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
 	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest.shouldDeleteById(ExecutionRepositoryTest.java:111)
-
-shouldFindAnyValueByProjectAndTab(elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest)  Time elapsed: 0.004 sec  <<< ERROR!
-org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
-	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
-	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
-	at org.elasticsearch.client.transport.support.TransportProxyClient.execute(TransportProxyClient.java:55)
-	at org.elasticsearch.client.transport.TransportClient.doExecute(TransportClient.java:295)
-	at org.elasticsearch.client.support.AbstractClient.execute(AbstractClient.java:359)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:86)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:56)
-	at org.springframework.data.elasticsearch.core.ElasticsearchTemplate.index(ElasticsearchTemplate.java:536)
-	at org.springframework.data.elasticsearch.repository.support.AbstractElasticsearchRepository.save(AbstractElasticsearchRepository.java:147)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.executeMethodOn(RepositoryFactorySupport.java:513)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:498)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:475)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:56)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:333)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
-	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest.shouldFindAnyValueByProjectAndTab(ExecutionRepositoryTest.java:89)
-
-shouldDontExist(elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest)  Time elapsed: 0.004 sec  <<< ERROR!
-org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
-	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
-	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
-	at org.elasticsearch.client.transport.support.TransportProxyClient.execute(TransportProxyClient.java:55)
-	at org.elasticsearch.client.transport.TransportClient.doExecute(TransportClient.java:295)
-	at org.elasticsearch.client.support.AbstractClient.execute(AbstractClient.java:359)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:86)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:56)
-	at org.springframework.data.elasticsearch.core.ElasticsearchTemplate.index(ElasticsearchTemplate.java:536)
-	at org.springframework.data.elasticsearch.repository.support.AbstractElasticsearchRepository.save(AbstractElasticsearchRepository.java:147)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.executeMethodOn(RepositoryFactorySupport.java:513)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:498)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:475)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:56)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:333)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
-	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy74.save(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ExecutionRepositoryTest.shouldDontExist(ExecutionRepositoryTest.java:130)
+	at com.sun.proxy.$Proxy77.save(Unknown Source)
+	at elastest.loganalyzer.es.client.repository.ProjectRepositoryTest.shouldFindAnyValue(ProjectRepositoryTest.java:63)
 
