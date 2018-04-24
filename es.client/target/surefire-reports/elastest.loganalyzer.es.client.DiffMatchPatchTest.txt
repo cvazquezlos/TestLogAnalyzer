@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: elastest.loganalyzer.es.client.DiffMatchPatchTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 9.249 sec <<< FAILURE! - in elastest.loganalyzer.es.client.DiffMatchPatchTest
+main(elastest.loganalyzer.es.client.DiffMatchPatchTest)  Time elapsed: 0.107 sec  <<< ERROR!
+java.lang.Error: assertEquals fail:
+ Expected: <span>a&para;<br></span><del style="background:#ffe6e6;">&lt;B&gt;b&lt;/B&gt;</del><ins style="background:#e6ffe6;">c&amp;d</ins>
+ Actual: <span>a&para;<br></span><del>&lt;B&gt;b&lt;/B&gt;</del><ins>c&amp;d</ins>
+diff_prettyHtml:
+	at elastest.loganalyzer.es.client.DiffMatchPatchTest.assertEquals(DiffMatchPatchTest.java:883)
+	at elastest.loganalyzer.es.client.DiffMatchPatchTest.testDiffPrettyHtml(DiffMatchPatchTest.java:357)
+	at elastest.loganalyzer.es.client.DiffMatchPatchTest.main(DiffMatchPatchTest.java:954)
+
