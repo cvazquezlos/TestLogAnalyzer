@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.017" tests="4" errors="4" skipped="0" failures="0">
+<testsuite name="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="1.49" tests="4" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jre1.8.0_161\bin"/>
@@ -26,7 +26,7 @@
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="user.variant" value=""/>
     <property name="os.name" value="Windows 10"/>
-    <property name="classworlds.conf" value="D:\Usuarios\cvazquezlos\Workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf7182070059365379186.tmp"/>
+    <property name="classworlds.conf" value="D:\Usuarios\cvazquezlos\Workspace\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf660042936930030395.tmp"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
     <property name="java.library.path" value="C:\Program Files\Java\jre1.8.0_161\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/Program Files/Java/jre1.8.0_161/bin/server;C:/Program Files/Java/jre1.8.0_161/bin;C:/Program Files/Java/jre1.8.0_161/lib/amd64;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;JAVA_HOME;D:\Archivos de Programa\nodejs\;D:\Archivos de Programa\Brackets\command;C:\Windows\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps;D:\Archivos de Programa\Apache\maven\bin;C:\Program Files\Git\cmd;C:\Users\Usuario\AppData\Local\Microsoft\WindowsApps;C:\Users\Usuario\AppData\Local\GitHubDesktop\bin;C:\Users\Usuario\AppData\Roaming\npm;D:\Archivos de Programa\Docker Toolbox;D:\Usuarios\cvazquezlos\Documents\sts-bundle\sts-3.9.2.RELEASE;;."/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -60,176 +60,8 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="shouldReturnAddedId" classname="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.006">
-    <error message="None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]" type="org.elasticsearch.client.transport.NoNodeAvailableException">org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
-	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
-	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
-	at org.elasticsearch.client.transport.support.TransportProxyClient.execute(TransportProxyClient.java:55)
-	at org.elasticsearch.client.transport.TransportClient.doExecute(TransportClient.java:295)
-	at org.elasticsearch.client.support.AbstractClient.execute(AbstractClient.java:359)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:86)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:56)
-	at org.springframework.data.elasticsearch.core.ElasticsearchTemplate.index(ElasticsearchTemplate.java:536)
-	at org.springframework.data.elasticsearch.repository.support.AbstractElasticsearchRepository.save(AbstractElasticsearchRepository.java:147)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.executeMethodOn(RepositoryFactorySupport.java:513)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:498)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:475)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:56)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy77.save(Unknown Source)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:333)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
-	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy77.save(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ProjectRepositoryTest.shouldReturnAddedId(ProjectRepositoryTest.java:35)
-</error>
-    <system-out><![CDATA[2018-04-24 13:12:49.654  INFO 1324 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [elastest.loganalyzer.es.client.repository.ProjectRepositoryTest], using SpringBootContextLoader
-2018-04-24 13:12:49.654  INFO 1324 --- [           main] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [elastest.loganalyzer.es.client.repository.ProjectRepositoryTest]: no resource found for suffixes {-context.xml, Context.groovy}.
-2018-04-24 13:12:49.655  INFO 1324 --- [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [elastest.loganalyzer.es.client.repository.ProjectRepositoryTest]: ProjectRepositoryTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2018-04-24 13:12:49.658  INFO 1324 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration elastest.loganalyzer.es.client.App for test class elastest.loganalyzer.es.client.repository.ProjectRepositoryTest
-2018-04-24 13:12:49.665  INFO 1324 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
-2018-04-24 13:12:49.671  INFO 1324 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@66e827a8, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@5bb911c1, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@6a55594b, org.springframework.test.context.support.DirtiesContextTestExecutionListener@632b305d, org.springframework.test.context.transaction.TransactionalTestExecutionListener@44598ef7, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@57fdb8a4, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@17222c11, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@2db15f70, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@25974207, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@1f15e689, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@195113de, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@3ebc955b]
-]]></system-out>
-  </testcase>
-  <testcase name="shouldCountSuccessfully" classname="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.004">
-    <error message="None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]" type="org.elasticsearch.client.transport.NoNodeAvailableException">org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
-	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
-	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
-	at org.elasticsearch.client.transport.support.TransportProxyClient.execute(TransportProxyClient.java:55)
-	at org.elasticsearch.client.transport.TransportClient.doExecute(TransportClient.java:295)
-	at org.elasticsearch.client.support.AbstractClient.execute(AbstractClient.java:359)
-	at org.elasticsearch.action.count.CountRequestBuilder.execute(CountRequestBuilder.java:158)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:56)
-	at org.springframework.data.elasticsearch.core.ElasticsearchTemplate.doCount(ElasticsearchTemplate.java:467)
-	at org.springframework.data.elasticsearch.core.ElasticsearchTemplate.count(ElasticsearchTemplate.java:446)
-	at org.springframework.data.elasticsearch.repository.support.AbstractElasticsearchRepository.count(AbstractElasticsearchRepository.java:141)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.executeMethodOn(RepositoryFactorySupport.java:513)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:498)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:475)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:56)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy77.count(Unknown Source)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:333)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
-	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy77.count(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ProjectRepositoryTest.shouldCountSuccessfully(ProjectRepositoryTest.java:51)
-</error>
-  </testcase>
-  <testcase name="shouldDontExist" classname="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.004">
-    <error message="None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]" type="org.elasticsearch.client.transport.NoNodeAvailableException">org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
-	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
-	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
-	at org.elasticsearch.client.transport.support.TransportProxyClient.execute(TransportProxyClient.java:55)
-	at org.elasticsearch.client.transport.TransportClient.doExecute(TransportClient.java:295)
-	at org.elasticsearch.client.support.AbstractClient.execute(AbstractClient.java:359)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:86)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:56)
-	at org.springframework.data.elasticsearch.core.ElasticsearchTemplate.index(ElasticsearchTemplate.java:536)
-	at org.springframework.data.elasticsearch.repository.support.AbstractElasticsearchRepository.save(AbstractElasticsearchRepository.java:147)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.executeMethodOn(RepositoryFactorySupport.java:513)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:498)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:475)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:56)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy77.save(Unknown Source)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:333)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
-	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy77.save(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ProjectRepositoryTest.shouldDontExist(ProjectRepositoryTest.java:82)
-</error>
-  </testcase>
-  <testcase name="shouldFindAnyValue" classname="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.003">
-    <error message="None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]" type="org.elasticsearch.client.transport.NoNodeAvailableException">org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available: [{#transport#-1}{localhost}{127.0.0.1:9300}]
-	at org.elasticsearch.client.transport.TransportClientNodesService.ensureNodesAreAvailable(TransportClientNodesService.java:326)
-	at org.elasticsearch.client.transport.TransportClientNodesService.execute(TransportClientNodesService.java:223)
-	at org.elasticsearch.client.transport.support.TransportProxyClient.execute(TransportProxyClient.java:55)
-	at org.elasticsearch.client.transport.TransportClient.doExecute(TransportClient.java:295)
-	at org.elasticsearch.client.support.AbstractClient.execute(AbstractClient.java:359)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:86)
-	at org.elasticsearch.action.ActionRequestBuilder.execute(ActionRequestBuilder.java:56)
-	at org.springframework.data.elasticsearch.core.ElasticsearchTemplate.index(ElasticsearchTemplate.java:536)
-	at org.springframework.data.elasticsearch.repository.support.AbstractElasticsearchRepository.save(AbstractElasticsearchRepository.java:147)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.executeMethodOn(RepositoryFactorySupport.java:513)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.doInvoke(RepositoryFactorySupport.java:498)
-	at org.springframework.data.repository.core.support.RepositoryFactorySupport$QueryExecutorMethodInterceptor.invoke(RepositoryFactorySupport.java:475)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:56)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.data.repository.core.support.SurroundingTransactionDetectorMethodInterceptor.invoke(SurroundingTransactionDetectorMethodInterceptor.java:57)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy77.save(Unknown Source)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:333)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
-	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:136)
-	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
-	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:213)
-	at com.sun.proxy.$Proxy77.save(Unknown Source)
-	at elastest.loganalyzer.es.client.repository.ProjectRepositoryTest.shouldFindAnyValue(ProjectRepositoryTest.java:63)
-</error>
-  </testcase>
+  <testcase name="shouldReturnAddedId" classname="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.578"/>
+  <testcase name="shouldCountSuccessfully" classname="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.004"/>
+  <testcase name="shouldDontExist" classname="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.348"/>
+  <testcase name="shouldFindAnyValue" classname="elastest.loganalyzer.es.client.repository.ProjectRepositoryTest" time="0.56"/>
 </testsuite>

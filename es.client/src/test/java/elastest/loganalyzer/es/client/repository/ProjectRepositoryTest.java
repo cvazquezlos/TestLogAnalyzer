@@ -59,7 +59,7 @@ public class ProjectRepositoryTest {
 		Project p1 = new Project(99999999, "JUnit4ClassTestingTLA1", 2, -1);
 		Project p2 = new Project(99999998, "JUnit4ClassTestingTLA2", 6, -1);
 		Project p3 = new Project(99999997, "JUnit4ClassTestingTLA3", 1, -1);
-		String project = "JUnit4ClassTestingLA1";
+		String project = "JUnit4ClassTestingTLA1";
 		repository.save(p1);
 		repository.save(p2);
 		repository.save(p3);
@@ -69,6 +69,9 @@ public class ProjectRepositoryTest {
 		assertNotEquals(returnedValue.toString(), p2.toString());
 		assertNotEquals(returnedValue.toString(), p3.toString());
 		assertEquals(returnedValue.toString(), p1.toString());
+		repository.delete(p1);
+		repository.delete(p2);
+		repository.delete(p3);
 	}
 	
 	@Test
