@@ -7,6 +7,6 @@ import elastest.loganalyzer.es.client.model.Project;
 
 @Repository
 public interface ProjectRepository extends ElasticsearchCrudRepository<Project, Integer> {
-	
+
 	Project findByName(String name);
 }

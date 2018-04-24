@@ -17,7 +17,7 @@ public class LogService {
 	public LogService(LogRepository repository) {
 		this.repository = repository;
 	}
-	
+
 	public void deleteIterable(Iterable<Log> logs) {
 		repository.delete(logs);
 	}
@@ -28,8 +28,8 @@ public class LogService {
 
 	public List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(String logger,
 			String project, String test, String method) {
-		return repository.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project,
-				test, method);
+		return repository.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project, test,
+				method);
 	}
 
 	public List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestOrderByIdAsc(String logger, String project,
@@ -60,7 +60,7 @@ public class LogService {
 	public List<Log> findByTestAndProjectAndThreadOrderByIdAsc(String test, String project, String thread) {
 		return repository.findByTestAndProjectAndThreadOrderByIdAsc(test, project, thread);
 	}
-	
+
 	public List<Log> findByTabAndProject(String tab, String project) {
 		return repository.findByTabAndProject(tab, project);
 	}
