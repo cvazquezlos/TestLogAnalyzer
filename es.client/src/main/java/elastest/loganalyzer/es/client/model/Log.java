@@ -15,7 +15,6 @@ public class Log {
 	private String message;
 	private String method;
 	private String project;
-	private String tab;
 	private String thread;
 	private String test;
 	private String timestamp;
@@ -25,7 +24,7 @@ public class Log {
 		this.method = "-";
 	}
 
-	public Log(String id, String log, String message, String project, String tab, String test) {
+	public Log(String id, String log, String message, String project, String test) {
 		this.id = id;
 		this.level = "-";
 		this.log = log;
@@ -33,7 +32,6 @@ public class Log {
 		this.message = message;
 		this.method = "-";
 		this.project = project;
-		this.tab = tab;
 		this.thread = "-";
 		this.test = test;
 		this.timestamp = "-";
@@ -95,14 +93,6 @@ public class Log {
 		this.project = project;
 	}
 
-	public String getTab() {
-		return tab;
-	}
-
-	public void setTab(String tab) {
-		this.tab = tab;
-	}
-
 	public String getThread() {
 		return thread;
 	}
@@ -130,7 +120,7 @@ public class Log {
 	@Override
 	public String toString() {
 		return "Log [id=" + id + ", level=" + level + ", log=" + log + ", logger=" + logger + ", message=" + message
-				+ ", method=" + method + ", project=" + project + ", tab=" + tab + ", thread=" + thread + ", test="
+				+ ", method=" + method + ", project=" + project + ", thread=" + thread + ", test="
 				+ test + ", timestamp=" + timestamp + "]";
 	}
 }

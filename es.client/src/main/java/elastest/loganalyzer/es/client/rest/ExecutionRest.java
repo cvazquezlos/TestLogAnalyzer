@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import elastest.loganalyzer.es.client.model.Execution;
@@ -27,9 +26,8 @@ public class ExecutionRest {
 	}
 
 	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
-	public List<Execution> getByProject(@PathVariable String project,
-			@RequestParam(name = "tab", required = true) String tab) {
-		return executionService.findByProjectAndTabOrderById(project, tab);
+	public List<Execution> getByProject(@PathVariable String project) {
+		return executionService.findByProjectOrderById(project);
 	}
 
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)

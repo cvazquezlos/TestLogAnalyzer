@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.service.LogService;
 import elastest.loganalyzer.es.client.service.ProjectService;
-import elastest.loganalyzer.es.client.service.TabService;
 
 @RestController
 @RequestMapping("/projects")
@@ -22,13 +21,11 @@ public class ProjectRest {
 
 	private final LogService logService;
 	private final ProjectService projectService;
-	private final TabService tabService;
 
 	@Autowired
-	public ProjectRest(LogService logService, ProjectService projectService, TabService tabService) {
+	public ProjectRest(LogService logService, ProjectService projectService) {
 		this.logService = logService;
 		this.projectService = projectService;
-		this.tabService = tabService;
 	}
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
@@ -56,7 +53,6 @@ public class ProjectRest {
 	public Project delete(@PathVariable int id) {
 		Project deleted = projectService.findOne(id);
 		logService.deleteIterable(logService.findByProject(deleted.getName()));
-		tabService.deleteIterable(tabService.findByProject(deleted.getName()));
 		projectService.delete(deleted);
 		return deleted;
 	}

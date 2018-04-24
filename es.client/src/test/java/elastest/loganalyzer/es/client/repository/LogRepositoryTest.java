@@ -31,9 +31,9 @@ public class LogRepositoryTest {
 		// Given
 		Log l1 = new Log("99999998",
 				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "Demo", "01");
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
 		Log l2 = new Log("99999999", "2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
-				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "Demo", "01");
+				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
 		// When
 		Log returnedValue1 = repository.save(l1);
 		Log returnedValue2 = repository.save(l2);
@@ -49,9 +49,9 @@ public class LogRepositoryTest {
 		// Given
 		Log l1 = new Log("99999998",
 				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "Demo", "01");
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
 		Log l2 = new Log("99999999", "2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
-				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "Demo", "01");
+				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
 		// When
 		repository.save(l1);
 		repository.save(l2);
@@ -75,15 +75,14 @@ public class LogRepositoryTest {
 		// Given
 		Log l1 = new Log("99999998",
 				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "Demo", "01");
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
 		Log l2 = new Log("99999999", "2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
-				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "Demo", "01");
-		String tab = "Demo";
+				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
 		String project = "JUnit4ClassTestingTLA";
 		repository.save(l1);
 		repository.save(l2);
 		// When
-		List<Log> logs = repository.findByTabAndProject(tab, project);
+		List<Log> logs = repository.findByProject(project);
 		// Then
 		assertNotNull(logs);
 		assertEquals(logs.size(), 2);
@@ -96,7 +95,7 @@ public class LogRepositoryTest {
 		// Given
 		Log l1 = new Log("99999998",
 				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "Demo", "01");
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
 		String id = "99999998";
 		repository.save(l1);
 		// When
@@ -111,9 +110,9 @@ public class LogRepositoryTest {
 		// Given
 		Log l1 = new Log("99999998",
 				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "Demo", "01");
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
 		Log l2 = new Log("99999999", "2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
-				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "Demo", "01");
+				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
 		String id1 = "99999998";
 		String id2 = "99999999";
 		// When

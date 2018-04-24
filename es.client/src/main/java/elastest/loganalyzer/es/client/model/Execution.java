@@ -20,7 +20,6 @@ public class Execution {
 	private int skipped;
 	private String start_date;
 	private String status;
-	private String tab;
 	private int tests;
 	private String test;
 	private List<ReportTestCase> testcases;
@@ -30,8 +29,7 @@ public class Execution {
 	}
 
 	public Execution(int id, int entries, int errors, int failures, int flakes, String project, int skipped,
-			String start_date, String status, String tab, int tests, String test, List<ReportTestCase> testcases,
-			float time_elapsed) {
+			String start_date, String status, int tests, String test, List<ReportTestCase> testcases, float time_elapsed) {
 		super();
 		this.id = id;
 		this.entries = entries;
@@ -42,7 +40,6 @@ public class Execution {
 		this.skipped = skipped;
 		this.start_date = start_date;
 		this.status = status;
-		this.tab = tab;
 		this.tests = tests;
 		this.test = test;
 		this.testcases = testcases;
@@ -121,14 +118,6 @@ public class Execution {
 		this.status = status;
 	}
 
-	public String getTab() {
-		return tab;
-	}
-
-	public void setTab(String tab) {
-		this.tab = tab;
-	}
-
 	public int getTests() {
 		return tests;
 	}
@@ -165,7 +154,7 @@ public class Execution {
 	public String toString() {
 		return "Execution [id=" + id + ", entries=" + entries + ", errors=" + errors + ", failures=" + failures
 				+ ", flakes=" + flakes + ", project=" + project + ", skipped=" + skipped + ", start_date=" + start_date
-				+ ", status=" + status + ", tab=" + tab + ", tests=" + tests + ", test=" + test + ", testcases="
-				+ testcases + ", time_elapsed=" + time_elapsed + "]";
+				+ ", status=" + status + ", tests=" + tests + ", test=" + test + ", testcases=" + testcases 
+				+ ", time_elapsed=" + time_elapsed + "]";
 	}
 }

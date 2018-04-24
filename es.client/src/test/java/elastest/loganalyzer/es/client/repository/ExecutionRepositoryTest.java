@@ -37,9 +37,9 @@ public class ExecutionRepositoryTest {
 	public void shouldReturnAddedId() {
 		// Given
 		Execution e1 = new Execution(99999998, 201, 23, 2, 34, "JUnit4ClassTestingTLA", 0, new Date().toString(),
-				"BUILD SUCCESS", "Demo", 3, "01", new ArrayList<ReportTestCase>(), (float) 20.3);
+				"BUILD SUCCESS", 3, "01", new ArrayList<ReportTestCase>(), (float) 20.3);
 		Execution e2 = new Execution(99999999, 43, 3, 4, 0, "JUnit4ClassTestingTLA", 3, new Date().toString(),
-				"BUILD FAILURE", "Demo", 2, "01", new ArrayList<ReportTestCase>(), (float) 603.2);
+				"BUILD FAILURE", 2, "01", new ArrayList<ReportTestCase>(), (float) 603.2);
 		// When
 		Execution returnedValue1 = repository.save(e1);
 		Execution returnedValue2 = repository.save(e2);
@@ -54,7 +54,7 @@ public class ExecutionRepositoryTest {
 	public void shouldFindAnyValueByProject() {
 		// Given
 		Execution e1 = new Execution(99999997, 123, 2, 27, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
-				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);
+				"BUILD UNKNOWN", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);
 		String project = "JUnit4ClassTestingTLA";
 		// When
 		repository.save(e1);
@@ -78,18 +78,17 @@ public class ExecutionRepositoryTest {
 	public void shouldFindAnyValueByProjectAndTab() {
 		// Given
 		Execution e1 = new Execution(99999996, 123, 13, 2, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
-				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);
+				"BUILD UNKNOWN", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);
 		Execution e2 = new Execution(99999995, 34, 20, 59, 6, "JUnit4ClassTestingTLA", 3, new Date().toString(),
-				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 80.6);
+				"BUILD UNKNOWN", 3, "02", new ArrayList<ReportTestCase>(), (float) 80.6);
 		Execution e3 = new Execution(99999994, 305, 45, 30, 2, "JUnit4ClassTestingTLA", 0, new Date().toString(),
-				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 2.0);
+				"BUILD UNKNOWN", 3, "02", new ArrayList<ReportTestCase>(), (float) 2.0);
 		String project = "JUnit4ClassTestingTLA";
-		String tab = "Demo";
 		// When
 		repository.save(e1);
 		repository.save(e2);
 		repository.save(e3);
-		List<Execution> executions = repository.findByProjectAndTabOrderById(project, tab);
+		List<Execution> executions = repository.findByProjectOrderById(project);
 		// Then
 		assertNotNull(executions);
 		assertEquals(executions.size(), 3);
@@ -102,9 +101,9 @@ public class ExecutionRepositoryTest {
 	public void shouldDeleteById() {
 		// Given
 		Execution e1 = new Execution(99999993, 201, 23, 2, 34, "JUnit4ClassTestingTLA", 0, new Date().toString(),
-				"BUILD SUCCESS", "Demo", 3, "01", new ArrayList<ReportTestCase>(), (float) 20.3);
+				"BUILD SUCCESS", 3, "01", new ArrayList<ReportTestCase>(), (float) 20.3);
 		Execution e2 = new Execution(99999992, 43, 3, 4, 0, "JUnit4ClassTestingTLA", 3, new Date().toString(),
-				"BUILD FAILURE", "Demo", 2, "01", new ArrayList<ReportTestCase>(), (float) 603.2);
+				"BUILD FAILURE", 2, "01", new ArrayList<ReportTestCase>(), (float) 603.2);
 		int id1 = 99999993;
 		int id2 = 99999992;
 		// When
@@ -121,9 +120,9 @@ public class ExecutionRepositoryTest {
 	public void shouldDontExist() {
 		// Given
 		Execution e1 = new Execution(99999996, 123, 13, 2, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
-				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);
+				"BUILD UNKNOWN", 3, "02", new ArrayList<ReportTestCase>(), (float) 0.3);
 		Execution e2 = new Execution(99999995, 34, 20, 59, 6, "JUnit4ClassTestingTLA", 3, new Date().toString(),
-				"BUILD UNKNOWN", "Demo", 3, "02", new ArrayList<ReportTestCase>(), (float) 80.6);
+				"BUILD UNKNOWN", 3, "02", new ArrayList<ReportTestCase>(), (float) 80.6);
 		int id1 = 99999996;
 		int id2 = 99999995;
 		// When

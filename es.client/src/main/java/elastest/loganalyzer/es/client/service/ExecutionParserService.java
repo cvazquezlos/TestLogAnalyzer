@@ -32,7 +32,7 @@ public class ExecutionParserService {
 		this.esProjectService = esProjectService;
 	}
 
-	public String parse(List<String> dirtyData, Project project, String tab, int lastId) throws Exception, IOException {
+	public String parse(List<String> dirtyData, Project project, int lastId) throws Exception, IOException {
 		List<Log> logs = new ArrayList<Log>();
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
@@ -72,7 +72,7 @@ public class ExecutionParserService {
 		while (!data.isEmpty()) {
 			String line = data.get(0);
 			String id = String.format("%04d", identificator);
-			Log log = new Log(id, line, line, project.getName(), tab, testNumber);
+			Log log = new Log(id, line, line, project.getName(), testNumber);
 			Matcher target = targetLog.matcher(line);
 			Matcher maven = mavenLog.matcher(line);
 			Matcher test = testLog.matcher(line);

@@ -22,10 +22,8 @@ import com.google.common.collect.Lists;
 import elastest.loganalyzer.es.client.model.Execution;
 import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.model.Project;
-import elastest.loganalyzer.es.client.model.Tab;
 import elastest.loganalyzer.es.client.service.LogService;
 import elastest.loganalyzer.es.client.service.ProjectService;
-import elastest.loganalyzer.es.client.service.TabService;
 import elastest.loganalyzer.es.client.service.ExecutionParserService;
 import elastest.loganalyzer.es.client.service.ExecutionService;
 
@@ -40,18 +38,15 @@ public class FileRest {
 	private final ExecutionService executionService;
 	private final LogService logService;
 	private final ProjectService projectService;
-	private final TabService tabService;
 	private static String recentProject;
-	private static String recentTab;
 
 	@Autowired
 	public FileRest(ExecutionParserService executionParserService, ExecutionService executionService,
-			LogService logService, ProjectService projectService, TabService tabService) {
+			LogService logService, ProjectService projectService) {
 		this.executionParserService = executionParserService;
 		this.executionService = executionService;
 		this.logService = logService;
 		this.projectService = projectService;
-		this.tabService = tabService;
 	}
 
 	@Before
@@ -94,8 +89,7 @@ public class FileRest {
 				if (file.getOriginalFilename().contains("txt")) {
 					List<String> data = executionParserService.getStreamByFile(file);
 					Project target = projectService.findByName(recentProject);
-					testNumber = this.executionParserService.parse(data, target, recentTab,
-							Lists.newArrayList(logService.findAll()).size());
+					testNumber = this.executionParserService.parse(data, target, Lists.newArrayList(logService.findAll()).size());
 				} else {
 					TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
 					InputStream inputStream = file.getInputStream();
@@ -104,14 +98,12 @@ public class FileRest {
 					ReportTestSuite test = tests.get(0);
 					Execution execution = new Execution(Lists.newArrayList(executionService.findAll()).size(), 999,
 							test.getNumberOfErrors(), test.getNumberOfFailures(), test.getNumberOfFlakes(),
-							recentProject, test.getNumberOfSkipped(), "", "UNKNOWN", recentTab, test.getNumberOfTests(),
+							recentProject, test.getNumberOfSkipped(), "", "UNKNOWN", test.getNumberOfTests(),
 							testNumber, test.getTestCases(), test.getTimeElapsed());
-					List<Log> logs = logService.findByTabAndTestAndProjectOrderByIdAsc(recentTab, testNumber,
-							recentProject);
+					List<Log> logs = logService.findByTestAndProjectOrderByIdAsc(testNumber, recentProject);
 					execution.setEntries(logs.size());
 					execution.setStart_date(this.findLogWhoseTimestampIsUseful(logs));
-					logs = logService.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentTab,
-							recentProject, testNumber, "BUILD");
+					logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentProject, testNumber, "BUILD");
 					for (int j = 0; j < logs.size(); j++) {
 						if (logs.get(j).getMessage().contains("BUILD ")) {
 							if (logs.get(j).getMessage().length() > 2) {
@@ -137,25 +129,13 @@ public class FileRest {
 		return "\"" + recentProject + "\"";
 	}
 
-	@RequestMapping(value = "/tab", method = RequestMethod.POST)
-	public String updateTab(@RequestBody String tab) {
-		recentTab = tab.replaceAll("\"", "");
-		if (tabService.findByTabAndProject(recentTab, recentProject) == null) {
-			Iterable<Tab> tabs = tabService.findAll();
-			int id = 0;
-			id = Lists.newArrayList(tabs).size();
-			tabService.save(new Tab(id + 1, recentProject, recentTab));
-		}
-		return "\"" + recentTab + "\"";
-	}
-
 	@RequestMapping(value = "/url", method = RequestMethod.POST)
 	public List<String> uploadFile(@RequestBody String url) throws Exception {
 		List<String> data = executionParserService.getStreamByUrl(url);
 		Project target = projectService.findByName(recentProject);
 		target.setNum_execs(target.getNum_execs() + 1);
 		projectService.save(target);
-		this.executionParserService.parse(data, target, recentTab, Lists.newArrayList(logService.findAll()).size());
+		this.executionParserService.parse(data, target, Lists.newArrayList(logService.findAll()).size());
 		return executionParserService.getStreamByUrl(url);
 	}
 
