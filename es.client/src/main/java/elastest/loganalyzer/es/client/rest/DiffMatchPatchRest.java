@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,16 +17,16 @@ import elastest.loganalyzer.es.client.DiffMatchPatch.Diff;
 
 @RestController
 @EnableWebMvc
-@RequestMapping("/diff")
+@RequestMapping("/api/diff")
 public class DiffMatchPatchRest {
 
 	private final DiffMatchPatch dmp = new DiffMatchPatch();
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public String get(@RequestBody String body) throws JSONException {
+	public ResponseEntity<String> postByDiffs(@RequestBody String body) throws JSONException {
 		JSONObject obj = new JSONObject(body);
 		LinkedList<Diff> d = dmp.diff_main(obj.getString("text1"), obj.getString("text2"));
 		dmp.diff_cleanupSemantic(d);
-		return dmp.diff_prettyHtml(d);
+		return new ResponseEntity<>(dmp.diff_prettyHtml(d), HttpStatus.OK);
 	}
 }

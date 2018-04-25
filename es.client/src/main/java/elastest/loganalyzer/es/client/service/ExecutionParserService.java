@@ -32,7 +32,7 @@ public class ExecutionParserService {
 		this.esProjectService = esProjectService;
 	}
 
-	public String parse(List<String> dirtyData, Project project, int lastId) throws Exception, IOException {
+	public String parse(List<String> dirtyData, Project project, int lastId, String testNo) throws Exception, IOException {
 		List<Log> logs = new ArrayList<Log>();
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
@@ -41,13 +41,6 @@ public class ExecutionParserService {
 
 		int num_execs = project.getNum_execs();
 		int recently_deleted = project.getRecently_deleted();
-		int testNo = 1;
-		if (recently_deleted != -1) {
-			testNo = recently_deleted;
-			recently_deleted = -1;
-		} else {
-			testNo = num_execs + 1;
-		}
 		project.setNum_execs(num_execs + 1);
 		project.setRecently_deleted(recently_deleted);
 		esProjectService.save(project);
@@ -56,7 +49,7 @@ public class ExecutionParserService {
 		data.add("[INFO] Finishing unit test number " + testNo + "...");
 
 		Integer identificator = lastId;
-		String testNumber = String.format("%02d", testNo);
+		String testNumber = testNo;
 
 		String pattern = "^(((\\d+).)+)(\\s+)(\\w+)(\\s+)(\\S+)(\\s+)(\\S*)((\\S*)((\\w+)|((\\s+)(\\w+)))(\\S*))(\\S*)(\\s+)(((\\w+).)+)(\\s+)(\\S*)(\\s+)(.*)$";
 		Pattern targetLog = Pattern.compile(pattern);

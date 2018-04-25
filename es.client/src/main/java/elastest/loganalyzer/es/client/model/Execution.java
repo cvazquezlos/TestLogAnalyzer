@@ -1,5 +1,6 @@
 package elastest.loganalyzer.es.client.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.plugins.surefire.report.ReportTestCase;
@@ -21,15 +22,27 @@ public class Execution {
 	private String start_date;
 	private String status;
 	private int tests;
-	private String test;
 	private List<ReportTestCase> testcases;
 	private float time_elapsed;
 
 	public Execution() {
 	}
+	
+	public Execution(int id) {
+		super();
+		this.id = id;
+		this.errors = 0;
+		this.failures = 0;
+		this.flakes = 0;
+		this.skipped = 0;
+		this.tests = 0;
+		this.test = "";
+		this.testcases = new ArrayList<ReportTestCase>();
+		this.time_elapsed = 0.0f;
+	}
 
 	public Execution(int id, int entries, int errors, int failures, int flakes, String project, int skipped,
-			String start_date, String status, int tests, String test, List<ReportTestCase> testcases, float time_elapsed) {
+			String start_date, String status, int tests, List<ReportTestCase> testcases, float time_elapsed) {
 		super();
 		this.id = id;
 		this.entries = entries;
@@ -41,7 +54,6 @@ public class Execution {
 		this.start_date = start_date;
 		this.status = status;
 		this.tests = tests;
-		this.test = test;
 		this.testcases = testcases;
 		this.time_elapsed = time_elapsed;
 	}
@@ -126,14 +138,6 @@ public class Execution {
 		this.tests = tests;
 	}
 
-	public String getTest() {
-		return test;
-	}
-
-	public void setTest(String test) {
-		this.test = test;
-	}
-
 	public List<ReportTestCase> getTestcases() {
 		return testcases;
 	}
@@ -154,7 +158,7 @@ public class Execution {
 	public String toString() {
 		return "Execution [id=" + id + ", entries=" + entries + ", errors=" + errors + ", failures=" + failures
 				+ ", flakes=" + flakes + ", project=" + project + ", skipped=" + skipped + ", start_date=" + start_date
-				+ ", status=" + status + ", tests=" + tests + ", test=" + test + ", testcases=" + testcases 
+				+ ", status=" + status + ", tests=" + tests + ", testcases=" + testcases 
 				+ ", time_elapsed=" + time_elapsed + "]";
 	}
 }

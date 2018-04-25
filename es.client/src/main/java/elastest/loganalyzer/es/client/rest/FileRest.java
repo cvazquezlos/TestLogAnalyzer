@@ -7,10 +7,13 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.maven.plugin.surefire.log.api.ConsoleLogger;
+import org.apache.maven.plugins.surefire.report.ReportTestCase;
 import org.apache.maven.plugins.surefire.report.ReportTestSuite;
 import org.apache.maven.plugins.surefire.report.TestSuiteXmlParser;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,26 +31,23 @@ import elastest.loganalyzer.es.client.service.ExecutionParserService;
 import elastest.loganalyzer.es.client.service.ExecutionService;
 
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/api/files")
 public class FileRest {
 
 	private ConsoleLogger consoleLogger;
+	private Execution execution;
 	private String testNumber;
 	private final Collection<String> loggedErrors = new ArrayList<String>();
-	private final ExecutionParserService executionParserService;
-	private final ExecutionService executionService;
-	private final LogService logService;
-	private final ProjectService projectService;
 	private static String recentProject;
 
 	@Autowired
-	public FileRest(ExecutionParserService executionParserService, ExecutionService executionService,
-			LogService logService, ProjectService projectService) {
-		this.executionParserService = executionParserService;
-		this.executionService = executionService;
-		this.logService = logService;
-		this.projectService = projectService;
-	}
+	private ExecutionParserService executionParserService;
+	@Autowired
+	private ExecutionService executionService;
+	@Autowired
+	private LogService logService;
+	@Autowired
+	private ProjectService projectService;
 
 	@Before
 	public void instantiateLogger() {
@@ -83,54 +83,70 @@ public class FileRest {
 	}
 
 	@RequestMapping(value = "/file", method = RequestMethod.POST)
-	public String upload(@RequestBody MultipartFile file) {
+	public ResponseEntity<String> postByUpload(@RequestBody List<MultipartFile> files) {
 		try {
-			if (file != null) {
-				if (file.getOriginalFilename().contains("txt")) {
-					List<String> data = executionParserService.getStreamByFile(file);
-					Project target = projectService.findByName(recentProject);
-					testNumber = this.executionParserService.parse(data, target, Lists.newArrayList(logService.findAll()).size());
-				} else {
-					TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
-					InputStream inputStream = file.getInputStream();
-					InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-					List<ReportTestSuite> tests = parser.parse(inputStreamReader);
-					ReportTestSuite test = tests.get(0);
-					Execution execution = new Execution(Lists.newArrayList(executionService.findAll()).size(), 999,
-							test.getNumberOfErrors(), test.getNumberOfFailures(), test.getNumberOfFlakes(),
-							recentProject, test.getNumberOfSkipped(), "", "UNKNOWN", test.getNumberOfTests(),
-							testNumber, test.getTestCases(), test.getTimeElapsed());
-					List<Log> logs = logService.findByTestAndProjectOrderByIdAsc(testNumber, recentProject);
-					execution.setEntries(logs.size());
-					execution.setStart_date(this.findLogWhoseTimestampIsUseful(logs));
-					logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentProject, testNumber, "BUILD");
-					for (int j = 0; j < logs.size(); j++) {
-						if (logs.get(j).getMessage().contains("BUILD ")) {
-							if (logs.get(j).getMessage().length() > 2) {
-								execution.setStatus(logs.get(j).getMessage());
-								break;
+			if (files == null) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			} else {
+				while (!files.isEmpty()) {
+					MultipartFile file = files.get(0);
+					if (file == null) {
+						files.remove(0);
+						continue;
+					} else {
+						if (file.getOriginalFilename().contains("txt")) {
+							List<String> data = executionParserService.getStreamByFile(file);
+							Project target = projectService.findByName(recentProject);
+							this.executionParserService.parse(data, target, Lists.newArrayList(logService.findAll()).size(), String.format("%02d", this.execution.getId()));
+						} else {
+							TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
+							InputStream inputStream = file.getInputStream();
+							InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+							List<ReportTestSuite> tests = parser.parse(inputStreamReader);
+							for (int i = 0; i < tests.size(); i++) {
+								this.execution.setErrors(this.execution.getErrors() + tests.get(i).getNumberOfErrors());
+								this.execution.setFailures(this.execution.getFailures() + tests.get(i).getNumberOfFailures());
+								this.execution.setFlakes(this.execution.getFlakes() + tests.get(i).getNumberOfFlakes());
+								this.execution.setSkipped(this.execution.getSkipped() + tests.get(i).getNumberOfSkipped());
+								this.execution.setTests(this.execution.getTests() + tests.get(i).getNumberOfTests());
+								List<ReportTestCase> testcases = this.execution.getTestcases();
+								testcases.addAll(tests.get(i).getTestCases());
+								this.execution.setTestcases(testcases);
+								this.execution.setTime_elapsed(this.execution.getTime_elapsed() + tests.get(i).getTimeElapsed());
 							}
 						}
 					}
-					executionService.save(execution);
 				}
-			} else {
-				System.out.println("Fail");
+				List<Log> logs = logService.findByTestAndProjectOrderByIdAsc(String.format("%02d", this.execution.getId()), recentProject);
+				this.execution.setEntries(logs.size());
+				this.execution.setStart_date(this.findLogWhoseTimestampIsUseful(logs));
+				logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentProject,
+						testNumber, "BUILD");
+				for (int j = 0; j < logs.size(); j++) {
+					if (logs.get(j).getMessage().contains("BUILD ")) {
+						if (logs.get(j).getMessage().length() > 2) {
+							this.execution.setStatus(logs.get(j).getMessage());
+							break;
+						}
+					}
+				}
 			}
-			return "200";
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			return "400";
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	@RequestMapping(value = "/project", method = RequestMethod.POST)
-	public String updateProject(@RequestBody String project) {
+	@RequestMapping(value = "", method = RequestMethod.POST)
+	public String postProject(@RequestBody String project) {
 		recentProject = project.replaceAll("\"", "");
+		this.execution = new Execution(Lists.newArrayList(executionService.findAll()).size() + 1);
+		this.execution.setProject(this.recentProject);
 		return "\"" + recentProject + "\"";
 	}
 
 	@RequestMapping(value = "/url", method = RequestMethod.POST)
-	public List<String> uploadFile(@RequestBody String url) throws Exception {
+	public List<String> postByUrl(@RequestBody String url) throws Exception {
 		List<String> data = executionParserService.getStreamByUrl(url);
 		Project target = projectService.findByName(recentProject);
 		target.setNum_execs(target.getNum_execs() + 1);
