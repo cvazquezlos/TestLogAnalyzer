@@ -10,12 +10,11 @@ import {Tab} from '../model/tab.model';
 export class ElasticsearchService {
 
   baseAPIUrl = 'http://localhost:8443/';
-  baseAPIExecutionsUrl = this.baseAPIUrl + 'executions';
-  baseAPILogsUrl = this.baseAPIUrl + 'logs';
-  baseAPIDiffMatchPatchUrl = this.baseAPIUrl + 'diff';
-  baseAPIFilesUrl = this.baseAPIUrl + 'files';
-  baseAPIProjectsUrl = this.baseAPIUrl + 'projects';
-  baseAPITabsUrl = this.baseAPIUrl + 'tabs';
+  baseAPIExecutionsUrl = this.baseAPIUrl + 'api/executions';
+  baseAPILogsUrl = this.baseAPIUrl + 'api/logs';
+  baseAPIDiffMatchPatchUrl = this.baseAPIUrl + 'api/diff';
+  baseAPIFilesUrl = this.baseAPIUrl + 'api/files';
+  baseAPIProjectsUrl = this.baseAPIUrl + 'api/projects';
   baseELASTICSEARCHUrl = 'http://localhost:9200/';
 
   constructor(private http: HttpClient) {
@@ -110,7 +109,7 @@ export class ElasticsearchService {
   }
 
   deleteProjectById(id: number) {
-    return this.http.delete(this.baseAPIProjectsUrl + '/remove/id/' + id).map(
+    return this.http.delete(this.baseAPIProjectsUrl + '/id/' + id).map(
       response => response,
       error => error
     );
@@ -161,23 +160,6 @@ export class ElasticsearchService {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  async getTabsByProjectAsync(project: string) {
-    try {
-      const response = await this.http.get<Tab[]>(this.baseAPITabsUrl + '/project/' + project).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  deleteTagByName(name: any, project: string) {
-    const composedUrl = this.baseAPITabsUrl + '/name/' + name + '?project=' + project;
-    return this.http.delete(composedUrl).map(
-      response => response,
-      error => error
-    );
   }
 
   async postDiff(text1: string, text2: string) {

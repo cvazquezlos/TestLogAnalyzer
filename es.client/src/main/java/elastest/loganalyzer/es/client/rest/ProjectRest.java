@@ -26,12 +26,6 @@ public class ProjectRest {
 	@Autowired
 	private ProjectService projectService;
 
-	@Autowired
-	public ProjectRest(LogService logService, ProjectService projectService) {
-		this.logService = logService;
-		this.projectService = projectService;
-	}
-
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<List<Project>> getAll() {
 		Iterable<Project> projects = projectService.findAll();
@@ -39,12 +33,21 @@ public class ProjectRest {
 		for (Project project : projects) {
 			result.add(project);
 		}
-		return new ResponseEntity<>(result, HttpStatus.OK);
+		if (result.size() > 0) {
+			return new ResponseEntity<>(result, HttpStatus.OK);	
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@RequestMapping(value = "/name/{name}", method = RequestMethod.GET)
 	public ResponseEntity<Project> getByName(@PathVariable String name) {
-		return new ResponseEntity<>(projectService.findByName(name), HttpStatus.OK);
+		Project project = projectService.findByName(name);
+		if (project != null) {
+			return new ResponseEntity<>(project, HttpStatus.OK);	
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

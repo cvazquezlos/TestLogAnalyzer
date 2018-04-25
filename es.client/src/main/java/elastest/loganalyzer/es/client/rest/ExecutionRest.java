@@ -25,12 +25,22 @@ public class ExecutionRest {
 
 	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
 	public ResponseEntity<List<Execution>> getByProject(@PathVariable String project) {
-		return new ResponseEntity<>(executionService.findByProjectOrderById(project), HttpStatus.OK);
+		List<Execution> executions = executionService.findByProjectOrderById(project);
+		if (executions.size() > 0) {
+			return new ResponseEntity<>(executions, HttpStatus.OK);	
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
 	public ResponseEntity<Execution> getByTest(@PathVariable String test) {
-		return new ResponseEntity<>(executionService.findByTestId(test), HttpStatus.OK);
+		Execution execution = executionService.findByTestId(test);
+		if (execution != null) {
+			return new ResponseEntity<>(execution, HttpStatus.OK);	
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)

@@ -81,11 +81,15 @@ public class LogRest {
 			@RequestParam(value = "project", required = true) String project) {
 		String testNo = String.format("%02d", test);
 		Project target = projectService.findByName(project);
-		int idDeleted = Integer.valueOf(testNo);
-		target.setRecently_deleted(idDeleted);
-		target.setNum_execs(target.getNum_execs() - 1);
-		logService.deleteIterable(logService.findByTestAndProjectOrderByIdAsc(testNo, project));
-		projectService.save(target);
-		return new ResponseEntity<>(HttpStatus.OK);
+		if (target != null) {
+			int idDeleted = Integer.valueOf(testNo);
+			target.setRecently_deleted(idDeleted);
+			target.setNum_execs(target.getNum_execs() - 1);
+			logService.deleteIterable(logService.findByTestAndProjectOrderByIdAsc(testNo, project));
+			projectService.save(target);
+			return new ResponseEntity<>(HttpStatus.OK);	
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }
