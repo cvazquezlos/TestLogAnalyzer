@@ -36,7 +36,6 @@ public class Execution {
 		this.flakes = 0;
 		this.skipped = 0;
 		this.tests = 0;
-		this.test = "";
 		this.testcases = new ArrayList<ReportTestCase>();
 		this.time_elapsed = 0.0f;
 	}

@@ -37,7 +37,7 @@ public class ExecutionRest {
 	public ResponseEntity<Execution> deleteById(@PathVariable int id) {
 		Execution execution = executionService.findOne(id);
 		if (execution != null) {
-			logService.deleteIterable(logService.findByTestOrderByIdAsc(execution.getTest()));
+			logService.deleteIterable(logService.findByTestOrderByIdAsc(String.format("%02d", execution.getId())));
 			executionService.delete(execution);
 			return new ResponseEntity<>(execution, HttpStatus.OK);
 		} else {

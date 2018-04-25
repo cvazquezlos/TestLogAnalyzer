@@ -131,18 +131,18 @@ public class FileRest {
 					}
 				}
 			}
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public String postProject(@RequestBody String project) {
+	public ResponseEntity<String> postProject(@RequestBody String project) {
 		recentProject = project.replaceAll("\"", "");
 		this.execution = new Execution(Lists.newArrayList(executionService.findAll()).size() + 1);
 		this.execution.setProject(this.recentProject);
-		return "\"" + recentProject + "\"";
+		return new ResponseEntity<>("\"" + recentProject + "\"", HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/url", method = RequestMethod.POST)
@@ -151,7 +151,7 @@ public class FileRest {
 		Project target = projectService.findByName(recentProject);
 		target.setNum_execs(target.getNum_execs() + 1);
 		projectService.save(target);
-		this.executionParserService.parse(data, target, Lists.newArrayList(logService.findAll()).size());
+		// this.executionParserService.parse(data, target, Lists.newArrayList(logService.findAll()).size());
 		return executionParserService.getStreamByUrl(url);
 	}
 
