@@ -1,7 +1,7 @@
 # TestLogAnalyzer - API REST System
 
 ## About our API
-All you can find in our API Rest is information about projects, executions, logs, file and diffs. All you need to do is simply; you have to follow the API rules. If you try to do following a different way, it's probably what you will receive an error.
+All you can find in our API Rest is information about projects, executions, logs, file and diff. All you need to do is simply; you have to follow the API rules. If you try to do following a different way, it's probably what you will receive an error.
 
 ## How to use our API
 1. Download [Postman][Postman link].
@@ -85,6 +85,31 @@ All Request URLs can be send by typing `http://localhost:8443/api/files` followe
 |----|-------------------|-----------|------------|----------------|--------------|
 |1|Charges a list of files.|/file|List of files (.xml and .txt)|*CREATED* (201)|*BAD_REQUEST* (406)|
 |2|Charges a file by its url|/url|File (.xml or .txt)|*CREATED* (201)|*BAD_REQUEST* (406)|
-|3|Updates the name of the project||*CREATED* (201)|Not error possible|
+|3|Updates the name of the project||See below|*CREATED* (201)|Not error possible|
+
+##### Type 1 method Request body example:
+```json
+{
+  "ElasTest"
+}
+```
+
+### Diff
+Diff API has POST(1) method.
+All Request URLs can be send by typing `http://localhost:8443/api/diff` followed by the request URL containt in the following tables.
+
+#### POST method
+
+|Type|Request description|Request URL|Request body|Success response|Error response|
+|----|-------------------|-----------|------------|----------------|--------------|
+|1|Load a comparison.||See below|*CREATED* (201)|Not error possible|
+
+##### Type 1 method Request body example:
+```json
+{
+  "text1": "This is the first text to compare.",
+  "text2": "This is the second text to compare to."
+}
+```
 
 [Postman link]: https://www.getpostman.com/
