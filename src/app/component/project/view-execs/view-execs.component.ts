@@ -53,7 +53,7 @@ export class ViewExecsComponent implements OnInit {
   }
 
   goTo(row: any) {
-    this.router.navigate(['./', row.test], {relativeTo: this.activatedRoute});
+    this.router.navigate(['./', row.id], {relativeTo: this.activatedRoute});
   }
 
   ngOnInit() {
@@ -72,8 +72,6 @@ export class ViewExecsComponent implements OnInit {
 
   async reloadTabContent() {
     const response = await this.elasticsearchService.getExecutionsByProjectAsync(this.project.name);
-    console.log(response);
-    console.log(response.length);
     this.execsRow = [];
     for (let i = 0; i < response.length; i++) {
       let icon, classi: any;
@@ -101,43 +99,5 @@ export class ViewExecsComponent implements OnInit {
         'time_elapsed': response[i].time_elapsed + ' seconds'
       });
     }
-    /*
-    this.tabs = [];
-    const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);
-    for (let i = 0; i < response0.length; i++) {
-      const response1 = await this.elasticsearchService.getExecutionsByProjectAndTabAsync(this.project.name, response0[i].tab);
-      const executions = [];
-      for (let j = 0; j < response1.length; j++) {
-        let icon, classi: any;
-        if (response1[j].status.indexOf('SUCCESS') !== -1) {
-          icon = 'check_circle';
-          classi = 'tc-green-700';
-        } else {
-          icon = 'error';
-          classi = 'tc-red-700';
-        }
-        executions[j] = {
-          'id': response1[j].id,
-          'startdate': response1[j].start_date,
-          'entries': response1[j].entries,
-          'status': {
-            'icon': icon,
-            'class': classi,
-            'status': response1[j].status
-          },
-          'errors': response1[j].errors,
-          'failures': response1[j].failures,
-          'flakes': response1[j].flakes,
-          'skipped': response1[j].skipped,
-          'tests': response1[j].tests,
-          'test': response1[j].test,
-          'time_elapsed': response1[j].time_elapsed + ' seconds'
-        }
-      }
-      this.tabs[i] = {
-        'name': response0[i].tab,
-        'executions': executions
-      }
-    }*/
   }
 }

@@ -4,16 +4,16 @@
       <p class="text-18 text-center height-auto toolbar-text">View</p>
     </div>&nbsp;&nbsp;
     <button mat-raised-button class="iconBtn-lg" color="{{viewButtonsClasses[0]}}" (click)="updateViewMode(0, 0)">
-      <b>Raw</b>
+      <b>Complete log</b>
+    </button>&nbsp;&nbsp;
+    <button mat-raised-button class="iconBtn-lg" color="{{viewButtonsClasses[3]}}" (click)="updateViewMode(0, 3)">
+      <b>Only tests log</b>
     </button>&nbsp;&nbsp;
     <button mat-raised-button class="iconBtn-lg" color="{{viewButtonsClasses[1]}}" (click)="updateViewMode(0, 1)">
       <b>All tests</b>
     </button>&nbsp;&nbsp;
     <button mat-raised-button class="iconBtn-lg" color="{{viewButtonsClasses[2]}}" (click)="updateViewMode(0, 2)">
-      <b>Unsuccessful tests</b>
-    </button>&nbsp;&nbsp;
-    <button mat-raised-button class="iconBtn-lg" color="{{viewButtonsClasses[3]}}" (click)="updateViewMode(0, 3)">
-      <b>Hide Maven</b>
+      <b>Failed tests</b>
     </button>&nbsp;&nbsp;&nbsp;
     <mat-divider class="divider-vertical"></mat-divider>&nbsp;&nbsp;&nbsp;
     <div class="toolbar-text-container">
