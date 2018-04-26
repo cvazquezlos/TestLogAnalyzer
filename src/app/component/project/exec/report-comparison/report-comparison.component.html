@@ -93,8 +93,43 @@
       </ng-template>
     </td-data-table>
   </div>
+  <div style="padding-top: 10px; height: 100px;">
+    <div *ngIf="comparisonInProgress; else showBasicMessage">
+      <div class="half-part" style="float: left;">
+        <div style="float: left; margin-right: 4em;">
+          <div><span class="span-title">Id:</span> {{execution.id}}</div>
+          <div><span class="span-title">Start date: </span> {{execution.start_date}}</div>
+          <div><span class="span-title">Status:</span> {{execution.status}}</div>
+        </div>
+        <div style="float: left;">
+          <div><span class="span-title">Time elapsed:</span> {{execution.time_elapsed}}</div>
+        </div>
+      </div>
+      <div class="half-part" style="float: right;">
+        <div style="float: left; margin-right: 4em;">
+          <div><span class="span-title">Id:</span> {{selected[0].id}}</div>
+          <div><span class="span-title">Start date: </span> {{selected[0].start_date}}</div>
+          <div><span class="span-title">Status:</span> {{selected[0].status}}</div>
+        </div>
+        <div style="float: left;">
+          <div><span class="span-title">Time elapsed:</span> {{selected[0].time_elapsed}}</div>
+        </div>
+      </div>
+    </div>
+    <ng-template #showBasicMessage>
+      <div style="float: left; margin-right: 4em;">
+        <div><span class="span-title">Id:</span> {{execution.id}}</div>
+        <div><span class="span-title">Start date: </span> {{execution.start_date}}</div>
+        <div><span class="span-title">Status:</span> {{execution.status}}</div>
+      </div>
+      <div style="float: left;">
+        <div><span class="span-title">Time elapsed:</span> {{execution.time_elapsed}}</div>
+      </div>
+    </ng-template>
+  </div>
+
 </mat-card>
-<mat-card style="margin-top: 88px; margin-bottom: 50px">
+<mat-card style="padding-top: 160px; margin-bottom: 50px">
   <mat-card-content>
     <div *ngIf="comparisonInProgress; else notComparing">
       <table *ngIf="viewMode == 0 || viewMode == 3" class="diff-table">
@@ -160,19 +195,3 @@
     </ng-template>
   </mat-card-content>
 </mat-card>
-<div class="status-feedback">
-  <div *ngIf="comparisonInProgress; else showBasicMessage">
-    <div class="half-part" style="float: left">
-      <td-message *ngIf="status.includes('FAILURE')" label="Build failure" sublabel="This execution contains some errors so the build had failed." color="warn" icon="error"><br></td-message>
-      <td-message *ngIf="!status.includes('FAILURE')" label="Build success" sublabel="This execution has finished successfully." color="green" icon="check_circle"></td-message>
-    </div>
-    <div class="half-part" style="float: right; border-left: 2px white">
-      <td-message *ngIf="selected[0].status.status.includes('FAILURE')" label="Build failure" sublabel="This execution contains some errors so the build had failed." color="warn" icon="error"><br></td-message>
-      <td-message *ngIf="!selected[0].status.status.includes('FAILURE')" label="Build success" sublabel="This execution has finished successfully." color="green" icon="check_circle"></td-message>
-    </div>
-  </div>
-  <ng-template #showBasicMessage>
-    <td-message *ngIf="status.includes('FAILURE')" label="Build failure" sublabel="This execution contains some errors so the build had failed." color="warn" icon="error"><br></td-message>
-    <td-message *ngIf="!status.includes('FAILURE')" label="Build success" sublabel="This execution has finished successfully." color="green" icon="check_circle"></td-message>
-  </ng-template>
-</div>

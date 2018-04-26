@@ -203,3 +203,15 @@ h3, h5 {
 .half-part {
   width: 50%;
 }
+
+.span-title {
+  font-weight: bold;
+}
+
+.red-back {
+  background-color: red;
+}
+
+.green-black {
+  background-color: green;
+}

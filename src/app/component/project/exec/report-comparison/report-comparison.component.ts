@@ -8,6 +8,7 @@ import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 import {TableService} from '../../../../service/table.service';
 import {ClassC} from '../../../../model/classc.model';
 import {TestC} from '../../../../model/testc.model';
+import {Execution} from '../../../../model/execution.model';
 
 @Component({
   selector: 'app-report-comparison',
@@ -43,6 +44,7 @@ export class ReportComparisonComponent implements OnInit {
     {name: 'options', label: 'Options', width: 150}
   ];
   execsRow = [];
+  execution: Execution;
   showExecSelection: boolean;
   showSelectionMessage = false;
   project: string;
@@ -90,6 +92,7 @@ export class ReportComparisonComponent implements OnInit {
 
   async ngOnInit() {
     this.test = this.activatedRoute.snapshot.parent.params['exec'];
+    this.execution = await this.elasticsearchService.getExecutionByIdAsync(this.test);
     this.project = this.activatedRoute.snapshot.parent.parent.params['project'];
     this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
       {label: this.project, url: '/projects/' + this.project, params: []},
