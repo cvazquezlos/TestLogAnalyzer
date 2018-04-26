@@ -19,7 +19,6 @@ export class AddProjectComponent implements OnInit {
   filesXml: File[];
   isFile: boolean;
   project: Project;
-  targetTab = 'test';
   urlTxt: string;
   urlXml: string;
 

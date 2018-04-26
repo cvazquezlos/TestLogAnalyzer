@@ -94,6 +94,7 @@ public class FileRest {
 						files.remove(0);
 						continue;
 					} else {
+						System.out.println(file);
 						if (file.getOriginalFilename().contains("txt")) {
 							List<String> data = executionParserService.getStreamByFile(file);
 							Project target = projectService.findByName(recentProject);
@@ -115,6 +116,7 @@ public class FileRest {
 								this.execution.setTime_elapsed(this.execution.getTime_elapsed() + tests.get(i).getTimeElapsed());
 							}
 						}
+						files.remove(0);
 					}
 				}
 				List<Log> logs = logService.findByTestAndProjectOrderByIdAsc(String.format("%02d", this.execution.getId()), recentProject);

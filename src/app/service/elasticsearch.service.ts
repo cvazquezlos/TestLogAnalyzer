@@ -1,9 +1,11 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
+import 'rxjs/Rx';
 import {CountFormat} from '../model/count-format.model';
 import {Execution} from '../model/execution.model';
 import {Project} from '../model/project.model';
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class ElasticsearchService {
@@ -76,10 +78,9 @@ export class ElasticsearchService {
   }
 
   getProjectsAll() {
-    return this.http.get(this.baseAPIProjectsUrl + '/all').map(
-      response => response as Project[],
-      error => error
-    );
+    return this.http.get(this.baseAPIProjectsUrl)
+      .map(response => response as Project[])
+      .catch(error => Observable.throw('No projects available. You must create the first project to see it.'));
   }
 
   getProjectByName(name: string) {
