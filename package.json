@@ -38,7 +38,7 @@
     "@covalent/highlight": "1.0.0-rc.1",
     "@covalent/http": "1.0.0-rc.1",
     "@covalent/markdown": "1.0.0-rc.1",
-    "@ng-bootstrap/ng-bootstrap": "^1.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^1.1.2",
     "@swimlane/ngx-charts": "^7.0.1",
     "codemirror": "^5.22.2",
     "core-js": "^2.4.1",

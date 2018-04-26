@@ -215,3 +215,7 @@ h3, h5 {
 .green-black {
   background-color: green;
 }
+
+.float-left {
+  float: left;
+}

@@ -32,16 +32,9 @@ export class ReportComparisonComponent implements OnInit {
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 60},
     {name: 'start_date', label: 'Start date', width: 240},
-    {name: 'entries', label: 'Entries', width: 100},
     {name: 'status', label: 'Status'},
-    {name: 'errors', label: 'ERRORS', width: 100},
-    {name: 'failures', label: 'FAILURES', width: 100},
-    {name: 'flakes', label: 'FLAKES', width: 100},
-    {name: 'skipped', label: 'SKIPPED', width: 100},
     {name: 'tests', label: 'tests', width: 70},
-    {name: 'test', label: 'test id', width: 70},
     {name: 'time_elapsed', label: 'Time elapsed'},
-    {name: 'options', label: 'Options', width: 150}
   ];
   execsRow = [];
   execution: Execution;
@@ -120,16 +113,11 @@ export class ReportComparisonComponent implements OnInit {
       this.execsRow[i] = {
         'id': response[i].id,
         'start_date': response[i].start_date,
-        'entries': response[i].entries,
         'status': {
           'icon': icon,
           'class': classi,
           'status': response[i].status
         },
-        'errors': response[i].errors,
-        'failures': response[i].failures,
-        'flakes': response[i].flakes,
-        'skipped': response[i].skipped,
         'tests': response[i].tests,
         'time_elapsed': response[i].time_elapsed + ' seconds'
       }
