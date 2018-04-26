@@ -76,7 +76,6 @@ export class ViewExecsComponent implements OnInit {
     console.log(response.length);
     this.execsRow = [];
     for (let i = 0; i < response.length; i++) {
-      console.log("First iteration");
       let icon, classi: any;
       if (response[i].status.indexOf('SUCCESS') !== -1) {
         icon = 'check_circle';
@@ -102,7 +101,6 @@ export class ViewExecsComponent implements OnInit {
         'time_elapsed': response[i].time_elapsed + ' seconds'
       });
     }
-    console.log(this.execsRow);
     /*
     this.tabs = [];
     const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);

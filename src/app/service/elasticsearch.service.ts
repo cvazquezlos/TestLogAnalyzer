@@ -5,7 +5,7 @@ import 'rxjs/Rx';
 import {CountFormat} from '../model/count-format.model';
 import {Execution} from '../model/execution.model';
 import {Project} from '../model/project.model';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class ElasticsearchService {
