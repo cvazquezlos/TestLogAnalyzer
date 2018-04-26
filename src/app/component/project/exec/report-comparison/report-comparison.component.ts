@@ -31,7 +31,7 @@ export class ReportComparisonComponent implements OnInit {
   execDeleting: string;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 60},
-    {name: 'startdate', label: 'Start date', width: 240},
+    {name: 'start_date', label: 'Start date', width: 240},
     {name: 'entries', label: 'Entries', width: 100},
     {name: 'status', label: 'Status'},
     {name: 'errors', label: 'ERRORS', width: 100},
@@ -119,7 +119,7 @@ export class ReportComparisonComponent implements OnInit {
       }
       this.execsRow[i] = {
         'id': response[i].id,
-        'startdate': response[i].start_date,
+        'start_date': response[i].start_date,
         'entries': response[i].entries,
         'status': {
           'icon': icon,
