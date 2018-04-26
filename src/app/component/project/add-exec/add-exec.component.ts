@@ -58,7 +58,13 @@ export class AddExecComponent implements OnInit {
     switch (this.currentTab) {
       case 0:
         this.code = 2;
-        const files = this.filesTxt.concat(this.filesXml);
+        const files: File[] = [];
+        for (let i = 0; i < this.filesTxt.length; i++) {
+          files.push(this.filesTxt[i]);
+        }
+        for (let i = 0; i < this.filesXml.length; i++) {
+          files.push(this.filesXml[i]);
+        }
         await this.elasticsearchService.postFileByUpload(files);
         break;
       case 1:

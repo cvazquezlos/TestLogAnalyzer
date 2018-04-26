@@ -124,13 +124,20 @@ public class FileRest {
 				this.execution.setStart_date(this.findLogWhoseTimestampIsUseful(logs));
 				logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentProject,
 						testNumber, "BUILD");
+				System.out.println(logs);
+				boolean fail = false;
 				for (int j = 0; j < logs.size(); j++) {
-					if (logs.get(j).getMessage().contains("BUILD ")) {
+					if (logs.get(j).getMessage().contains("BUILD FAILURE")) {
 						if (logs.get(j).getMessage().length() > 2) {
-							this.execution.setStatus(logs.get(j).getMessage());
+							fail = true;
 							break;
 						}
 					}
+				}
+				if (fail) {
+					this.execution.setStatus("BUILD FAILURE");
+				} else {
+					this.execution.setStatus("BUILD SUCCESS");
 				}
 				this.executionService.save(this.execution);
 			}

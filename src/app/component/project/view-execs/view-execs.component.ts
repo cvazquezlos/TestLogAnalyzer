@@ -17,7 +17,7 @@ export class ViewExecsComponent implements OnInit {
   execDeleting: string;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 60},
-    {name: 'startdate', label: 'Start date', width: 240},
+    {name: 'start_date', label: 'Start date', width: 240},
     {name: 'entries', label: 'Entries', width: 100},
     {name: 'status', label: 'Status'},
     {name: 'errors', label: 'ERRORS', width: 100},
@@ -25,7 +25,6 @@ export class ViewExecsComponent implements OnInit {
     {name: 'flakes', label: 'FLAKES', width: 100},
     {name: 'skipped', label: 'SKIPPED', width: 100},
     {name: 'tests', label: 'tests', width: 70},
-    {name: 'test', label: 'test id', width: 70},
     {name: 'time_elapsed', label: 'Time elapsed'},
     {name: 'options', label: 'Options', width: 150}
   ];
@@ -73,8 +72,11 @@ export class ViewExecsComponent implements OnInit {
 
   async reloadTabContent() {
     const response = await this.elasticsearchService.getExecutionsByProjectAsync(this.project.name);
+    console.log(response);
+    console.log(response.length);
     this.execsRow = [];
     for (let i = 0; i < response.length; i++) {
+      console.log("First iteration");
       let icon, classi: any;
       if (response[i].status.indexOf('SUCCESS') !== -1) {
         icon = 'check_circle';
@@ -83,9 +85,9 @@ export class ViewExecsComponent implements OnInit {
         icon = 'error';
         classi = 'tc-red-700';
       }
-      this.execsRow[i] = {
+      this.execsRow.push({
         'id': response[i].id,
-        'startdate': response[i].start_date,
+        'start_date': response[i].start_date,
         'entries': response[i].entries,
         'status': {
           'icon': icon,
@@ -97,10 +99,10 @@ export class ViewExecsComponent implements OnInit {
         'flakes': response[i].flakes,
         'skipped': response[i].skipped,
         'tests': response[i].tests,
-        'test': response[i].test,
         'time_elapsed': response[i].time_elapsed + ' seconds'
-      }
+      });
     }
+    console.log(this.execsRow);
     /*
     this.tabs = [];
     const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);
