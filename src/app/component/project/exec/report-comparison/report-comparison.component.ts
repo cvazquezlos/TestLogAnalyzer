@@ -32,9 +32,9 @@ export class ReportComparisonComponent implements OnInit {
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 60},
     {name: 'start_date', label: 'Start date', width: 240},
-    {name: 'status', label: 'Status'},
+    {name: 'status', label: 'Status', width: 200},
     {name: 'tests', label: 'tests', width: 70},
-    {name: 'time_elapsed', label: 'Time elapsed'},
+    {name: 'time_elapsed', label: 'Time elapsed', width: 200},
   ];
   execsRow = [];
   execution: Execution;
