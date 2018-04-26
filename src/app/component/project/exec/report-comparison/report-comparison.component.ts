@@ -32,9 +32,7 @@ export class ReportComparisonComponent implements OnInit {
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 60},
     {name: 'start_date', label: 'Start date', width: 240},
-    {name: 'status', label: 'Status', width: 200},
-    {name: 'tests', label: 'tests', width: 70},
-    {name: 'time_elapsed', label: 'Time elapsed', width: 200},
+    {name: 'status', label: 'Status', width: 200}
   ];
   execsRow = [];
   execution: Execution;
@@ -110,16 +108,18 @@ export class ReportComparisonComponent implements OnInit {
         icon = 'error';
         classi = 'tc-red-700';
       }
-      this.execsRow[i] = {
-        'id': response[i].id,
-        'start_date': response[i].start_date,
-        'status': {
-          'icon': icon,
-          'class': classi,
-          'status': response[i].status
-        },
-        'tests': response[i].tests,
-        'time_elapsed': response[i].time_elapsed + ' seconds'
+      if (this.test !== (response[i].id + '')) {
+        this.execsRow.push({
+          'id': response[i].id,
+          'start_date': response[i].start_date,
+          'status': {
+            'icon': icon,
+            'class': classi,
+            'status': response[i].status
+          }
+        });
+      } else {
+        this.selected[0] = this.execsRow[this.execsRow.length - 1];
       }
     }
   }
