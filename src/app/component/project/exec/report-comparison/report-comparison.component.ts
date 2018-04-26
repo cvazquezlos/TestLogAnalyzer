@@ -128,7 +128,6 @@ export class ReportComparisonComponent implements OnInit {
         'flakes': response[i].flakes,
         'skipped': response[i].skipped,
         'tests': response[i].tests,
-        'test': response[i].test,
         'time_elapsed': response[i].time_elapsed + ' seconds'
       }
     }

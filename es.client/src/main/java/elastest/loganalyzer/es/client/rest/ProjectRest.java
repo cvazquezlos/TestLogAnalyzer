@@ -64,9 +64,8 @@ public class ProjectRest {
 	public ResponseEntity<Project> deleteById(@PathVariable int id) {
 		Project deleted = projectService.findOne(id);
 		if (deleted != null) {
-			List<Log> logs = logService.findByProject(deleted.getName());
-			logService.deleteIterable(logs);
-			executionService.deleteById(Integer.valueOf(logs.get(0).getTest()));
+			logService.deleteIterable(logService.findByProject(deleted.getName()));
+			executionService.deleteIterable(executionService.findByProject(deleted.getName()));
 			projectService.delete(deleted);
 			return new ResponseEntity<>(deleted, HttpStatus.OK);
 		} else {
