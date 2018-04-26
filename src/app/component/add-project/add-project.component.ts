@@ -19,7 +19,6 @@ export class AddProjectComponent implements OnInit {
   filesXml: File[];
   isFile: boolean;
   project: Project;
-  targetTab = 'test';
   urlTxt: string;
   urlXml: string;
 
@@ -53,14 +52,17 @@ export class AddProjectComponent implements OnInit {
     this.code = 1;
     await this.elasticsearchService.postProject(this.project);
     await this.elasticsearchService.postFileProject(this.project.name);
-    await this.elasticsearchService.postFileTab(this.targetTab);
     switch (this.currentTab) {
       case 0:
         this.code = 2;
+        const files: File[] = [];
         for (let i = 0; i < this.filesTxt.length; i++) {
-          await this.elasticsearchService.postFileByUpload(this.filesTxt[i]);
-          await this.elasticsearchService.postFileByUpload(this.filesXml[i]);
+          files.push(this.filesTxt[i]);
         }
+        for (let i = 0; i < this.filesXml.length; i++) {
+          files.push(this.filesXml[i]);
+        }
+        await this.elasticsearchService.postFileByUpload(files);
         break;
       case 1:
         this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(

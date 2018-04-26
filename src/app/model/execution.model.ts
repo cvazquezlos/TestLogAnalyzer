@@ -6,13 +6,11 @@ export interface Execution {
   errors: number;
   failures: number;
   flakes: number;
-  test_id: string;
   project: string;
   skipped: number;
   start_date: string;
   status: string;
   tests: number;
-  test: string;
   testcases: TestCase[];
   time_elapsed: number;
 }

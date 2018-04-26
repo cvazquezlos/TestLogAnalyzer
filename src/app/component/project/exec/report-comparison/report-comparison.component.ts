@@ -42,6 +42,7 @@ export class ReportComparisonComponent implements OnInit {
     {name: 'time_elapsed', label: 'Time elapsed'},
     {name: 'options', label: 'Options', width: 150}
   ];
+  execsRow = [];
   showExecSelection: boolean;
   showSelectionMessage = false;
   project: string;
@@ -49,7 +50,6 @@ export class ReportComparisonComponent implements OnInit {
   status = 'BUILD FAILURE';
   ready: boolean;
   resultData: any[] = [];
-  tabs: any[];
   test: string;
   viewButtonsClasses = ['accent', 'primary', 'primary', 'primary'];
   viewMode: number;
@@ -98,50 +98,37 @@ export class ReportComparisonComponent implements OnInit {
     this.classesLc = [];
     this.updateViewMode(0, 0);
     this.reloadTabContent();
-    const result = await this.elasticsearchService.getExecutionByTestAsync(this.test);
+    const result = await this.elasticsearchService.getExecutionByIdAsync(this.test);
     this.status = result.status;
   }
 
   async reloadTabContent() {
-    this.tabs = [];
-    const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project);
-    for (let i = 0; i < response0.length; i++) {
-      const response1 = await this.elasticsearchService.getExecutionsByProjectAndTabAsync(this.project, response0[i].tab);
-      const executions = [];
-      for (let j = 0; j < response1.length; j++) {
-        let icon, classi: any;
-        if (response1[j].status.indexOf('SUCCESS') !== -1) {
-          icon = 'check_circle';
-          classi = 'tc-green-700';
-        } else {
-          icon = 'error';
-          classi = 'tc-red-700';
-        }
-        if (this.test !== (response1[j].test + '')) {
-          executions.push({
-            'id': response1[j].id,
-            'startdate': response1[j].start_date,
-            'entries': response1[j].entries,
-            'status': {
-              'icon': icon,
-              'class': classi,
-              'status': response1[j].status
-            },
-            'errors': response1[j].errors,
-            'failures': response1[j].failures,
-            'flakes': response1[j].flakes,
-            'skipped': response1[j].skipped,
-            'tests': response1[j].tests,
-            'test': response1[j].test,
-            'time_elapsed': response1[j].time_elapsed + ' seconds'
-          });
-        } else {
-          this.selected[0] = executions[executions.length - 1];
-        }
+    const response = await this.elasticsearchService.getExecutionsByProjectAsync(this.project);
+    this.execsRow = [];
+    for (let i = 0; i < response.length; i++) {
+      let icon, classi: any;
+      if (response[i].status.indexOf('SUCCESS') !== -1) {
+        icon = 'check_circle';
+        classi = 'tc-green-700';
+      } else {
+        icon = 'error';
+        classi = 'tc-red-700';
       }
-      this.tabs[i] = {
-        'name': response0[i].tab,
-        'executions': executions
+      this.execsRow[i] = {
+        'id': response[i].id,
+        'startdate': response[i].start_date,
+        'entries': response[i].entries,
+        'status': {
+          'icon': icon,
+          'class': classi,
+          'status': response[i].status
+        },
+        'errors': response[i].errors,
+        'failures': response[i].failures,
+        'flakes': response[i].flakes,
+        'skipped': response[i].skipped,
+        'tests': response[i].tests,
+        'time_elapsed': response[i].time_elapsed + ' seconds'
       }
     }
   }
@@ -213,8 +200,8 @@ export class ReportComparisonComponent implements OnInit {
     let auxC = [];
     (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
-    const execution = await this.elasticsearchService.getExecutionByTestAsync((mode === 0) ? (this.test)
-      : (this.selected[0].test + ''));
+    const execution = await this.elasticsearchService.getExecutionByIdAsync((mode === 0) ? (this.test)
+      : (this.selected[0].id + ''));
     const testcases = [];
     for (let i = 0; i < execution.testcases.length; i++) {
       const name = execution.testcases[i].name;
@@ -341,13 +328,13 @@ export class ReportComparisonComponent implements OnInit {
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const loggers = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
-      : (this.selected[0].test), this.project, true, false);
+      : (this.selected[0].id), this.project, true, false);
     for (let i = 0; i < loggers.length; i++) {
       if (loggers[i].split(' ').length === 2) {
         const logger = loggers[i].split(' ')[1];
         const partialLogger = logger.split('.')[logger.split('.').length - 1];
         const methods = await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, (mode === 0)
-          ? (this.test) : (this.selected[0].test), undefined);
+          ? (this.test) : (this.selected[0].id), undefined);
         const methodsData = [];
         for (let j = 0; j < methods.length; j++) {
           if (methods[j] !== '') {
@@ -355,7 +342,7 @@ export class ReportComparisonComponent implements OnInit {
             methodsData.push({
               'name': methods[j],
               'logs': await this.elasticsearchService.getLogsByLoggerAsync(partialLogger, this.project, (mode === 0)
-                ? (this.test) : (this.selected[0].test), cleanMethod)
+                ? (this.test) : (this.selected[0].id), cleanMethod)
             });
           }
         }
@@ -371,7 +358,7 @@ export class ReportComparisonComponent implements OnInit {
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const logs = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
-      : (this.selected[0].test), this.project, false, maven);
+      : (this.selected[0].id), this.project, false, maven);
     for (let i = 0; i < logs.length; i++) {
       (mode === 0) ? (this.classesL.push(logs[i])) : (this.classesLc.push(logs[i]));
     }

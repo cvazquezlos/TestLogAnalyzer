@@ -1,6 +1,8 @@
 package elastest.loganalyzer.es.client.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import elastest.loganalyzer.es.client.model.Log;
@@ -12,20 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/logs")
+@RequestMapping("/api/logs")
 public class LogRest {
 
-	private final LogService logService;
-	private final ProjectService projectService;
-
 	@Autowired
-	public LogRest(LogService logService, ProjectService projectService) {
-		this.logService = logService;
-		this.projectService = projectService;
-	}
+	private LogService logService;
+	@Autowired
+	private ProjectService projectService;
 
 	@RequestMapping(value = "/logger/{logger}", method = RequestMethod.GET)
-	public List<?> getByLogger(@PathVariable String logger,
+	public ResponseEntity<List<?>> getByLogger(@PathVariable String logger,
 			@RequestParam(name = "project", required = true) String project,
 			@RequestParam(name = "test", required = true) int test,
 			@RequestParam(name = "method", required = false) String method) {
@@ -39,15 +37,18 @@ public class LogRest {
 					methods.add(logs.get(i).getMethod());
 				}
 			}
-			return methods;
+			return new ResponseEntity<>(methods, HttpStatus.OK);
 		} else {
-			return logService.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project,
-					testNo, method);
+			return new ResponseEntity<>(
+					logService.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project,
+							testNo, method),
+					HttpStatus.OK);
 		}
 	}
 
 	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
-	public List<?> getByTest(@PathVariable int test, @RequestParam(value = "project", required = true) String project,
+	public ResponseEntity<List<?>> getByTest(@PathVariable int test,
+			@RequestParam(value = "project", required = true) String project,
 			@RequestParam(value = "classes", required = true) boolean classes,
 			@RequestParam(value = "maven", required = false) boolean maven) {
 		String testNo = String.format("%02d", test);
@@ -58,30 +59,37 @@ public class LogRest {
 			for (Log log : logs) {
 				classL.add(log.getMessage());
 			}
-			return classL;
+			return new ResponseEntity<>(classL, HttpStatus.OK);
 		} else {
 			if (project == null) {
-				return logService.findByTestOrderByIdAsc(testNo);
+				return new ResponseEntity<>(logService.findByTestOrderByIdAsc(testNo), HttpStatus.OK);
 			} else {
 				if (!maven) {
-					return logService.findByTestAndProjectAndThreadOrderByIdAsc(testNo, project, "main");
+					return new ResponseEntity<>(
+							logService.findByTestAndProjectAndThreadOrderByIdAsc(testNo, project, "main"),
+							HttpStatus.OK);
 				} else {
-					return logService.findByTestAndProjectOrderByIdAsc(testNo, project);
+					return new ResponseEntity<>(logService.findByTestAndProjectOrderByIdAsc(testNo, project),
+							HttpStatus.OK);
 				}
 			}
 		}
 	}
 
-	@RequestMapping(value = "/remove/test/{test}", method = RequestMethod.DELETE)
-	public String deleteByTestAndProject(@PathVariable int test,
+	@RequestMapping(value = "/test/{test}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteByTestAndProject(@PathVariable int test,
 			@RequestParam(value = "project", required = true) String project) {
 		String testNo = String.format("%02d", test);
 		Project target = projectService.findByName(project);
-		int idDeleted = Integer.valueOf(testNo);
-		target.setRecently_deleted(idDeleted);
-		target.setNum_execs(target.getNum_execs() - 1);
-		logService.deleteIterable(logService.findByTestAndProjectOrderByIdAsc(testNo, project));
-		projectService.save(target);
-		return "200";
+		if (target != null) {
+			int idDeleted = Integer.valueOf(testNo);
+			target.setRecently_deleted(idDeleted);
+			target.setNum_execs(target.getNum_execs() - 1);
+			logService.deleteIterable(logService.findByTestAndProjectOrderByIdAsc(testNo, project));
+			projectService.save(target);
+			return new ResponseEntity<>(HttpStatus.OK);	
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

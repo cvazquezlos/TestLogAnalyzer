@@ -46,27 +46,13 @@ public class LogService {
 		return repository.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(project, test, partialMessage);
 	}
 
-	public int findByTabAndProjectAndTestAndLevelOrderByIdAsc(String tab, String project, String test, String level) {
-		List<Log> logs = repository.findByTabAndProjectAndTestAndLevelOrderByIdAsc(tab, project, test, level);
+	public int findByProjectAndTestAndLevelOrderByIdAsc(String project, String test, String level) {
+		List<Log> logs = repository.findByProjectAndTestAndLevelOrderByIdAsc(project, test, level);
 		return logs.size();
-	}
-
-	public List<Log> findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String tab, String project,
-			String test, String partialMessage) {
-		return repository.findByTabAndProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(tab, project, test,
-				partialMessage);
 	}
 
 	public List<Log> findByTestAndProjectAndThreadOrderByIdAsc(String test, String project, String thread) {
 		return repository.findByTestAndProjectAndThreadOrderByIdAsc(test, project, thread);
-	}
-
-	public List<Log> findByTabAndProject(String tab, String project) {
-		return repository.findByTabAndProject(tab, project);
-	}
-
-	public List<Log> findByTabAndTestAndProjectOrderByIdAsc(String tab, String test, String project) {
-		return repository.findByTabAndTestAndProjectOrderByIdAsc(tab, test, project);
 	}
 
 	public List<Log> findByTestAndProjectOrderByIdAsc(String test, String project) {

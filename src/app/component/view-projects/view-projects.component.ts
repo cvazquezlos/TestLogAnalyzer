@@ -59,7 +59,7 @@ export class ViewProjectsComponent implements OnInit {
           'name': response[i].name
         };
       }
-    });
+    }, error => this.projectsRowData = []);
     this.exec = false;
   }
 

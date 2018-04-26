@@ -17,7 +17,7 @@ export class ViewExecsComponent implements OnInit {
   execDeleting: string;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 60},
-    {name: 'startdate', label: 'Start date', width: 240},
+    {name: 'start_date', label: 'Start date', width: 240},
     {name: 'entries', label: 'Entries', width: 100},
     {name: 'status', label: 'Status'},
     {name: 'errors', label: 'ERRORS', width: 100},
@@ -25,12 +25,11 @@ export class ViewExecsComponent implements OnInit {
     {name: 'flakes', label: 'FLAKES', width: 100},
     {name: 'skipped', label: 'SKIPPED', width: 100},
     {name: 'tests', label: 'tests', width: 70},
-    {name: 'test', label: 'test id', width: 70},
     {name: 'time_elapsed', label: 'Time elapsed'},
     {name: 'options', label: 'Options', width: 150}
   ];
+  execsRow = [];
   project: Project = new Project();
-  tabs: any[];
 
   constructor(private activatedRoute: ActivatedRoute, private elasticsearchService: ElasticsearchService,
               private router: Router, private breadcrumbs: BreadcrumbsService) {
@@ -53,16 +52,6 @@ export class ViewExecsComponent implements OnInit {
     )
   }
 
-  async deleteTab(tab: any) {
-    this.elasticsearchService.deleteTagByName(tab.name, this.project.name).subscribe(
-      response => response,
-      error => console.log(error)
-    );
-    setTimeout(() => {
-      this.reloadTabContent();
-    }, 400);
-  }
-
   goTo(row: any) {
     this.router.navigate(['./', row.test], {relativeTo: this.activatedRoute});
   }
@@ -82,6 +71,37 @@ export class ViewExecsComponent implements OnInit {
   }
 
   async reloadTabContent() {
+    const response = await this.elasticsearchService.getExecutionsByProjectAsync(this.project.name);
+    console.log(response);
+    console.log(response.length);
+    this.execsRow = [];
+    for (let i = 0; i < response.length; i++) {
+      let icon, classi: any;
+      if (response[i].status.indexOf('SUCCESS') !== -1) {
+        icon = 'check_circle';
+        classi = 'tc-green-700';
+      } else {
+        icon = 'error';
+        classi = 'tc-red-700';
+      }
+      this.execsRow.push({
+        'id': response[i].id,
+        'start_date': response[i].start_date,
+        'entries': response[i].entries,
+        'status': {
+          'icon': icon,
+          'class': classi,
+          'status': response[i].status
+        },
+        'errors': response[i].errors,
+        'failures': response[i].failures,
+        'flakes': response[i].flakes,
+        'skipped': response[i].skipped,
+        'tests': response[i].tests,
+        'time_elapsed': response[i].time_elapsed + ' seconds'
+      });
+    }
+    /*
     this.tabs = [];
     const response0 = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);
     for (let i = 0; i < response0.length; i++) {
@@ -118,6 +138,6 @@ export class ViewExecsComponent implements OnInit {
         'name': response0[i].tab,
         'executions': executions
       }
-    }
+    }*/
   }
 }

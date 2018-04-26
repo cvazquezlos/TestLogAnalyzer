@@ -38,12 +38,8 @@ public class ExecutionService {
 		return repository.findByProject(project);
 	}
 
-	public List<Execution> findByProjectAndTabOrderById(String project, String tab) {
-		return repository.findByProjectAndTabOrderById(project, tab);
-	}
-
-	public Execution findByTestId(String test) {
-		return repository.findByTest(test);
+	public List<Execution> findByProjectOrderById(String project) {
+		return repository.findByProjectOrderById(project);
 	}
 
 	public Execution findOne(int id) {

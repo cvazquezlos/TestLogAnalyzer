@@ -1,21 +1,21 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
+import 'rxjs/Rx';
 import {CountFormat} from '../model/count-format.model';
 import {Execution} from '../model/execution.model';
 import {Project} from '../model/project.model';
-import {Tab} from '../model/tab.model';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class ElasticsearchService {
 
   baseAPIUrl = 'http://localhost:8443/';
-  baseAPIExecutionsUrl = this.baseAPIUrl + 'executions';
-  baseAPILogsUrl = this.baseAPIUrl + 'logs';
-  baseAPIDiffMatchPatchUrl = this.baseAPIUrl + 'diff';
-  baseAPIFilesUrl = this.baseAPIUrl + 'files';
-  baseAPIProjectsUrl = this.baseAPIUrl + 'projects';
-  baseAPITabsUrl = this.baseAPIUrl + 'tabs';
+  baseAPIExecutionsUrl = this.baseAPIUrl + 'api/executions';
+  baseAPILogsUrl = this.baseAPIUrl + 'api/logs';
+  baseAPIDiffMatchPatchUrl = this.baseAPIUrl + 'api/diff';
+  baseAPIFilesUrl = this.baseAPIUrl + 'api/files';
+  baseAPIProjectsUrl = this.baseAPIUrl + 'api/projects';
   baseELASTICSEARCHUrl = 'http://localhost:9200/';
 
   constructor(private http: HttpClient) {
@@ -28,20 +28,19 @@ export class ElasticsearchService {
     )
   }
 
-  async getExecutionsByProjectAndTabAsync(project: string, tab: string) {
+  async getExecutionByIdAsync(id: string) {
     try {
-      const response = await this.http.get<Execution[]>(this.baseAPIExecutionsUrl + '/project/' + project + '?tab='
-        + tab).toPromise();
-      return response;
+      const response = await this.http.get(this.baseAPIExecutionsUrl + '/id/' + id).toPromise();
+      return response as Execution;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getExecutionByTestAsync(test_id: string) {
+  async getExecutionsByProjectAsync(project: string) {
     try {
-      const response = await this.http.get<Execution>(this.baseAPIExecutionsUrl + '/test/' + test_id).toPromise();
-      return response;
+      const response = await this.http.get(this.baseAPIExecutionsUrl + '/project/' + project).toPromise();
+      return response as Execution[];
     } catch (error) {
       console.log(error);
     }
@@ -60,8 +59,8 @@ export class ElasticsearchService {
       if (method !== undefined) {
         composedUrl += '&method=' + method;
       }
-      const response = await this.http.get<any[]>(composedUrl).toPromise();
-      return response;
+      const response = await this.http.get(composedUrl).toPromise();
+      return response as string[];
     } catch (error) {
       console.log(error);
     }
@@ -71,23 +70,22 @@ export class ElasticsearchService {
     try {
       let composedUrl = this.baseAPILogsUrl + '/test/' + test + '?project=' + project + '&classes=' + classes;
       (composedUrl += '&maven=' + maven) && (maven);
-      const response = await this.http.get<any[]>(composedUrl).toPromise();
-      return response;
+      const response = await this.http.get(composedUrl).toPromise();
+      return response as string[];
     } catch (error) {
       console.log(error);
     }
   }
 
   getProjectsAll() {
-    return this.http.get<Project[]>(this.baseAPIProjectsUrl + '/all').map(
-      response => response,
-      error => error
-    );
+    return this.http.get(this.baseAPIProjectsUrl)
+      .map(response => response as Project[])
+      .catch(error => Observable.throw('No projects available. You must create the first project to see it.'));
   }
 
   getProjectByName(name: string) {
-    return this.http.get<Project>(this.baseAPIProjectsUrl + '/name/' + name).map(
-      response => response,
+    return this.http.get(this.baseAPIProjectsUrl + '/name/' + name).map(
+      response => response as Project,
       error => error
     );
   }
@@ -110,16 +108,19 @@ export class ElasticsearchService {
   }
 
   deleteProjectById(id: number) {
-    return this.http.delete(this.baseAPIProjectsUrl + '/remove/id/' + id).map(
+    return this.http.delete(this.baseAPIProjectsUrl + '/id/' + id).map(
       response => response,
       error => error
     );
   }
 
-  async postFileByUpload(file: File) {
+  async postFileByUpload(files: File[]) {
     try {
+      // https://medium.com/@ahmedhamedTN/multiple-files-upload-with-angular-2-express-and-multer-1d951a32a1b3
       const body = new FormData();
-      body.append('file', file);
+      for (let i = 0; i < files.length; i++) {
+        body.append('files', files[i]);
+      }
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'application/pdf');
       const response = await this.http.post(this.baseAPIFilesUrl + '/file', body, {headers: headers}).toPromise();
@@ -144,40 +145,11 @@ export class ElasticsearchService {
       const body = JSON.stringify(project);
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'text/plain');
-      const response = this.http.post(this.baseAPIFilesUrl + '/project', body, {headers: headers}).toPromise();
+      const response = this.http.post(this.baseAPIFilesUrl, body, {headers: headers}).toPromise();
       return response;
     } catch (error) {
       console.log(error);
     }
-  }
-
-  async postFileTab(tab: string) {
-    try {
-      const body = JSON.stringify(tab);
-      const headers = new HttpHeaders();
-      headers.append('Content-Type', 'text/plain');
-      const response = this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers}).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getTabsByProjectAsync(project: string) {
-    try {
-      const response = await this.http.get<Tab[]>(this.baseAPITabsUrl + '/project/' + project).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  deleteTagByName(name: any, project: string) {
-    const composedUrl = this.baseAPITabsUrl + '/name/' + name + '?project=' + project;
-    return this.http.delete(composedUrl).map(
-      response => response,
-      error => error
-    );
   }
 
   async postDiff(text1: string, text2: string) {

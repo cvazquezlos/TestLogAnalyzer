@@ -19,7 +19,6 @@ export class AddExecComponent implements OnInit {
   filesXml: File[];
   isFile: boolean;
   project: Project = new Project();
-  tabs: string[] = ['test'];
   targetTab: string;
   urlTxt: string;
   urlXml: string;
@@ -45,7 +44,6 @@ export class AddExecComponent implements OnInit {
     this.elasticsearchService.getProjectByName(name).subscribe(
       response => {
         this.project = response;
-        this.updateTabs();
       },
       error => console.log(error)
     );
@@ -57,14 +55,17 @@ export class AddExecComponent implements OnInit {
   async save() {
     this.code = 1;
     await this.elasticsearchService.postFileProject(this.project.name);
-    await this.elasticsearchService.postFileTab(this.targetTab);
     switch (this.currentTab) {
       case 0:
         this.code = 2;
+        const files: File[] = [];
         for (let i = 0; i < this.filesTxt.length; i++) {
-          await this.elasticsearchService.postFileByUpload(this.filesTxt[i]);
-          await this.elasticsearchService.postFileByUpload(this.filesXml[i]);
+          files.push(this.filesTxt[i]);
         }
+        for (let i = 0; i < this.filesXml.length; i++) {
+          files.push(this.filesXml[i]);
+        }
+        await this.elasticsearchService.postFileByUpload(files);
         break;
       case 1:
         this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
@@ -85,14 +86,5 @@ export class AddExecComponent implements OnInit {
     (files[0].name.includes('.txt')) ? (this.filesTxt = files) : (this.filesXml = files);
     this.urlTxt = 'Empty';
     this.urlXml = 'Empty';
-  }
-
-  private async updateTabs() {
-    const response = await this.elasticsearchService.getTabsByProjectAsync(this.project.name);
-    this.tabs = [];
-    for (let i = 0; i < response.length; i++) {
-      this.tabs[i] = response[i].tab;
-    }
-    this.targetTab = this.tabs[0];
   }
 }
