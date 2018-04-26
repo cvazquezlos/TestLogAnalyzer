@@ -119,7 +119,7 @@ export class ElasticsearchService {
       // https://medium.com/@ahmedhamedTN/multiple-files-upload-with-angular-2-express-and-multer-1d951a32a1b3
       const body = new FormData();
       for (let i = 0; i < files.length; i++) {
-        body.append('files[]', files[i], files[i]['name']);
+        body.append('files', files[i]);
       }
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'application/pdf');

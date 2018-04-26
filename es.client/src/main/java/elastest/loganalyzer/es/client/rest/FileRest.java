@@ -132,6 +132,7 @@ public class FileRest {
 						}
 					}
 				}
+				this.executionService.save(this.execution);
 			}
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -144,6 +145,8 @@ public class FileRest {
 		recentProject = project.replaceAll("\"", "");
 		this.execution = new Execution(Lists.newArrayList(executionService.findAll()).size() + 1);
 		this.execution.setProject(this.recentProject);
+		System.out.println(this.execution);
+		this.executionService.save(this.execution);
 		return new ResponseEntity<>("\"" + recentProject + "\"", HttpStatus.CREATED);
 	}
 
