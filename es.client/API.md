@@ -49,8 +49,8 @@ All Request URLs can be send by typing `http://localhost:8443/api/executions` fo
 
 |Type|Request description|Request URL|Success response|Error response|
 |----|-------------------|-----------|----------------|--------------|
-|1|Shows executions by its project.|/project/{project}|Execution list and *OK* (200).|*NOT_FOUND* (404)|
-|2|Shows a concrete execution by its test.|/test/{test}|Execution and *OK* (200).|*NOT_FOUND* (404)|
+|1|Shows a concrete execution by its id.|/id/{id}|Execution and *OK* (200).|*NOT_FOUND* (404)|
+|2|Shows executions by its project.|/project/{project}|Execution list and *OK* (200).|*NOT_FOUND* (404)|
 
 #### DELETE method
 

@@ -4,7 +4,6 @@ import 'rxjs/add/operator/map';
 import {CountFormat} from '../model/count-format.model';
 import {Execution} from '../model/execution.model';
 import {Project} from '../model/project.model';
-import {Tab} from '../model/tab.model';
 
 @Injectable()
 export class ElasticsearchService {
@@ -27,20 +26,19 @@ export class ElasticsearchService {
     )
   }
 
-  async getExecutionsByProjectAndTabAsync(project: string, tab: string) {
+  async getExecutionByIdAsync(id: string) {
     try {
-      const response = await this.http.get<Execution[]>(this.baseAPIExecutionsUrl + '/project/' + project + '?tab='
-        + tab).toPromise();
-      return response;
+      const response = await this.http.get(this.baseAPIExecutionsUrl + '/id/' + id).toPromise();
+      return response as Execution;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async getExecutionByTestAsync(test_id: string) {
+  async getExecutionsByProjectAsync(project: string) {
     try {
-      const response = await this.http.get<Execution>(this.baseAPIExecutionsUrl + '/test/' + test_id).toPromise();
-      return response;
+      const response = await this.http.get(this.baseAPIExecutionsUrl + '/project/' + project).toPromise();
+      return response as Execution[];
     } catch (error) {
       console.log(error);
     }
@@ -59,8 +57,8 @@ export class ElasticsearchService {
       if (method !== undefined) {
         composedUrl += '&method=' + method;
       }
-      const response = await this.http.get<any[]>(composedUrl).toPromise();
-      return response;
+      const response = await this.http.get(composedUrl).toPromise();
+      return response as string[];
     } catch (error) {
       console.log(error);
     }
@@ -70,23 +68,23 @@ export class ElasticsearchService {
     try {
       let composedUrl = this.baseAPILogsUrl + '/test/' + test + '?project=' + project + '&classes=' + classes;
       (composedUrl += '&maven=' + maven) && (maven);
-      const response = await this.http.get<any[]>(composedUrl).toPromise();
-      return response;
+      const response = await this.http.get(composedUrl).toPromise();
+      return response as string[];
     } catch (error) {
       console.log(error);
     }
   }
 
   getProjectsAll() {
-    return this.http.get<Project[]>(this.baseAPIProjectsUrl + '/all').map(
-      response => response,
+    return this.http.get(this.baseAPIProjectsUrl + '/all').map(
+      response => response as Project[],
       error => error
     );
   }
 
   getProjectByName(name: string) {
-    return this.http.get<Project>(this.baseAPIProjectsUrl + '/name/' + name).map(
-      response => response,
+    return this.http.get(this.baseAPIProjectsUrl + '/name/' + name).map(
+      response => response as Project,
       error => error
     );
   }
@@ -115,10 +113,13 @@ export class ElasticsearchService {
     );
   }
 
-  async postFileByUpload(file: File) {
+  async postFileByUpload(files: File[]) {
     try {
+      // https://medium.com/@ahmedhamedTN/multiple-files-upload-with-angular-2-express-and-multer-1d951a32a1b3
       const body = new FormData();
-      body.append('file', file);
+      for (let i = 0; i < files.length; i++) {
+        body.append('files[]', files[i], files[i]['name']);
+      }
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'application/pdf');
       const response = await this.http.post(this.baseAPIFilesUrl + '/file', body, {headers: headers}).toPromise();
@@ -143,19 +144,7 @@ export class ElasticsearchService {
       const body = JSON.stringify(project);
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'text/plain');
-      const response = this.http.post(this.baseAPIFilesUrl + '/project', body, {headers: headers}).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async postFileTab(tab: string) {
-    try {
-      const body = JSON.stringify(tab);
-      const headers = new HttpHeaders();
-      headers.append('Content-Type', 'text/plain');
-      const response = this.http.post(this.baseAPIFilesUrl + '/tab', body, {headers: headers}).toPromise();
+      const response = this.http.post(this.baseAPIFilesUrl, body, {headers: headers}).toPromise();
       return response;
     } catch (error) {
       console.log(error);

@@ -17,52 +17,44 @@
   <mat-divider></mat-divider>
   <mat-card-content>
     <mat-tab-group>
-      <mat-tab *ngFor="let tab of tabs" label="{{tab.name}}">
-        <ng-template mat-tab-label>
-          {{tab.name}}
-          <button mat-icon-button (click)="deleteTab(tab)">
-            <mat-icon>close</mat-icon>
-          </button>
+      <td-data-table [clickable]="true"
+                     [data]="execsRow"
+                     [columns]="execsData"
+                     [sortable]="false">
+        <ng-template *ngFor="let column of execsData" tdDataTableTemplate="{{column.name}}" let-value="value"
+                     let-row="row">
+          <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
         </ng-template>
-        <td-data-table [clickable]="true"
-                       [data]="tab.executions"
-                       [columns]="execsData"
-                       [sortable]="false">
-          <ng-template *ngFor="let column of execsData" tdDataTableTemplate="{{column.name}}" let-value="value"
-                       let-row="row">
-            <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
-          </ng-template>
-          <ng-template tdDataTableTemplate="status" let-value="value">
-            <mat-icon [ngClass]="value.class">{{value.icon}}</mat-icon>&nbsp;&nbsp;{{value.status}}
-          </ng-template>
-          <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
-            <div *ngIf="(deleteInProgress && (row.id === execDeleting)); else notDeleting">
-              <div class="iconBtn-lg">
-                <mat-spinner [diameter]="25"></mat-spinner>
-              </div>
+        <ng-template tdDataTableTemplate="status" let-value="value">
+          <mat-icon [ngClass]="value.class">{{value.icon}}</mat-icon>&nbsp;&nbsp;{{value.status}}
+        </ng-template>
+        <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
+          <div *ngIf="(deleteInProgress && (row.id === execDeleting)); else notDeleting">
+            <div class="iconBtn-lg">
+              <mat-spinner [diameter]="25"></mat-spinner>
             </div>
-            <ng-template #notDeleting>
-              <div layout="row">
-                <button class="iconBtn-lg"
-                        mat-button
-                        stopRowClick
-                        title="Delete execution"
-                        (click)="delete(row)"
-                        [disabled]="(row.id !== execDeleting) && deleteInProgress">
-                  <mat-icon [ngClass]="{'tc-grey-300': (row.id !== execDeleting) && deleteInProgress}">delete</mat-icon>
-                </button>
-                <button class="iconBtn-lg"
-                        mat-button
-                        stopRowClick
-                        title="View execution"
-                        (click)="goTo(row)">
-                  <mat-icon>remove_red_eye</mat-icon>
-                </button>
-              </div>
-            </ng-template>
+          </div>
+          <ng-template #notDeleting>
+            <div layout="row">
+              <button class="iconBtn-lg"
+                      mat-button
+                      stopRowClick
+                      title="Delete execution"
+                      (click)="delete(row)"
+                      [disabled]="(row.id !== execDeleting) && deleteInProgress">
+                <mat-icon [ngClass]="{'tc-grey-300': (row.id !== execDeleting) && deleteInProgress}">delete</mat-icon>
+              </button>
+              <button class="iconBtn-lg"
+                      mat-button
+                      stopRowClick
+                      title="View execution"
+                      (click)="goTo(row)">
+                <mat-icon>remove_red_eye</mat-icon>
+              </button>
+            </div>
           </ng-template>
-        </td-data-table>
-      </mat-tab>
+        </ng-template>
+      </td-data-table>
     </mat-tab-group>
   </mat-card-content>
 </mat-card>

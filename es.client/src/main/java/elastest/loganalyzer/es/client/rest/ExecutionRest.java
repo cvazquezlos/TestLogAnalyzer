@@ -23,21 +23,21 @@ public class ExecutionRest {
 	@Autowired
 	private LogService logService;
 
-	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
-	public ResponseEntity<List<Execution>> getByProject(@PathVariable String project) {
-		List<Execution> executions = executionService.findByProjectOrderById(project);
-		if (executions.size() > 0) {
-			return new ResponseEntity<>(executions, HttpStatus.OK);	
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Execution> getById(@PathVariable int id) {
+		Execution execution = executionService.findOne(id);
+		if (execution != null) {
+			return new ResponseEntity<>(execution, HttpStatus.OK);	
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
-	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
-	public ResponseEntity<Execution> getByTest(@PathVariable String test) {
-		Execution execution = executionService.findByTestId(test);
-		if (execution != null) {
-			return new ResponseEntity<>(execution, HttpStatus.OK);	
+	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
+	public ResponseEntity<List<Execution>> getByProject(@PathVariable String project) {
+		List<Execution> executions = executionService.findByProjectOrderById(project);
+		if (executions.size() > 0) {
+			return new ResponseEntity<>(executions, HttpStatus.OK);	
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

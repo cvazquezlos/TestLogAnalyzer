@@ -50,55 +50,48 @@
     <div *ngIf="showSelectionMessage">
       <td-message label="Error!" sublabel="You must select an execution to compare with." color="warn" icon="error"></td-message>
     </div>
-    <mat-tab-group style="height: 150px">
-      <mat-tab *ngFor="let tab of tabs" label="{{tab.name}}">
-        <ng-template mat-tab-label>
-          {{tab.name}}
+    <td-data-table [clickable]="true"
+                   [columns]="execsData"
+                   [data]="execsRow"
+                   [multiple]="false"
+                   [selectable]="true"
+                   [sortable]="false"
+                   (rowSelect)="selectEvent($event)"
+                   [(ngModel)]="selected">
+      <ng-template *ngFor="let column of execsData" tdDataTableTemplate="{{column.name}}" let-value="value"
+                   let-row="row">
+        <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
+      </ng-template>
+      <ng-template tdDataTableTemplate="status" let-value="value">
+        <mat-icon [ngClass]="value.class">{{value.icon}}</mat-icon>&nbsp;&nbsp;{{value.status}}
+      </ng-template>
+      <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
+        <div *ngIf="(deleteInProgress && (row.id === execDeleting)); else notDeleting">
+          <div class="iconBtn-lg">
+            <mat-spinner [diameter]="25"></mat-spinner>
+          </div>
+        </div>
+        <ng-template #notDeleting>
+          <div layout="row">
+            <button class="iconBtn-lg"
+                    mat-button
+                    stopRowClick
+                    title="Delete execution"
+                    (click)="delete(row)"
+                    [disabled]="(row.id !== execDeleting) && deleteInProgress">
+              <mat-icon [ngClass]="{'tc-grey-300': (row.id !== execDeleting) && deleteInProgress}">delete</mat-icon>
+            </button>
+            <button class="iconBtn-lg"
+                    mat-button
+                    stopRowClick
+                    title="View execution"
+                    (click)="goTo(row)">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </div>
         </ng-template>
-        <td-data-table [clickable]="true"
-                       [columns]="execsData"
-                       [data]="tab.executions"
-                       [multiple]="false"
-                       [selectable]="true"
-                       [sortable]="false"
-                       (rowSelect)="selectEvent($event)"
-                       [(ngModel)]="selected">
-          <ng-template *ngFor="let column of execsData" tdDataTableTemplate="{{column.name}}" let-value="value"
-                       let-row="row">
-            <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
-          </ng-template>
-          <ng-template tdDataTableTemplate="status" let-value="value">
-            <mat-icon [ngClass]="value.class">{{value.icon}}</mat-icon>&nbsp;&nbsp;{{value.status}}
-          </ng-template>
-          <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
-            <div *ngIf="(deleteInProgress && (row.id === execDeleting)); else notDeleting">
-              <div class="iconBtn-lg">
-                <mat-spinner [diameter]="25"></mat-spinner>
-              </div>
-            </div>
-            <ng-template #notDeleting>
-              <div layout="row">
-                <button class="iconBtn-lg"
-                        mat-button
-                        stopRowClick
-                        title="Delete execution"
-                        (click)="delete(row)"
-                        [disabled]="(row.id !== execDeleting) && deleteInProgress">
-                  <mat-icon [ngClass]="{'tc-grey-300': (row.id !== execDeleting) && deleteInProgress}">delete</mat-icon>
-                </button>
-                <button class="iconBtn-lg"
-                        mat-button
-                        stopRowClick
-                        title="View execution"
-                        (click)="goTo(row)">
-                  <mat-icon>remove_red_eye</mat-icon>
-                </button>
-              </div>
-            </ng-template>
-          </ng-template>
-        </td-data-table>
-      </mat-tab>
-    </mat-tab-group>
+      </ng-template>
+    </td-data-table>
   </div>
 </mat-card>
 <mat-card style="margin-top: 88px; margin-bottom: 50px">
