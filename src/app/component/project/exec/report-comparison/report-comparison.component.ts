@@ -40,6 +40,7 @@ export class ReportComparisonComponent implements OnInit {
   showSelectionMessage = false;
   project: string;
   selected: any[] = [];
+  singleSelected: Execution;
   status = 'BUILD FAILURE';
   ready: boolean;
   resultData: any[] = [];
@@ -116,7 +117,8 @@ export class ReportComparisonComponent implements OnInit {
             'icon': icon,
             'class': classi,
             'status': response[i].status
-          }
+          },
+          'time_elapsed': response[i].time_elapsed
         });
       } else {
         this.selected[0] = this.execsRow[this.execsRow.length - 1];
@@ -172,6 +174,7 @@ export class ReportComparisonComponent implements OnInit {
 
   disableComparison() {
     this.comparisonInProgress = false;
+    this.selected[0] = undefined;
     this.resetComparisonButtonsClasses();
   }
 

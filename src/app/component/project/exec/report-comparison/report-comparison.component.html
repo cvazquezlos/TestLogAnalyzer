@@ -19,30 +19,35 @@
         </button>
       </div>
     </div>
-    <div *ngIf="selected[0] !== undefined; else notSelected">
-      <mat-divider class="divider-vertical"></mat-divider>&nbsp;&nbsp;&nbsp;
-      <div class="toolbar-text-container">
-        <p class="text-18 text-center height-auto toolbar-text">Comparison</p>
-      </div>&nbsp;&nbsp;
-      <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[0]}}"
-              (click)="updateComparisonMode(0)">
-        <b>Complete</b>
-      </button>&nbsp;&nbsp;
-      <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[1]}}"
-              (click)="updateComparisonMode(1)">
-        <b>No timestamp</b>
-      </button>&nbsp;&nbsp;
-      <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[2]}}"
-              (click)="updateComparisonMode(2)">
-        <b>Time diff</b>
-      </button>&nbsp;&nbsp;
-      <button mat-icon-button color="accent" (click)="showExecSelection = !showExecSelection">
-        <mat-icon *ngIf="showExecSelection == false">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="showExecSelection == true">keyboard_arrow_up</mat-icon>
-      </button>
-      <button *ngIf="comparisonInProgress" mat-icon-button color="accent" (click)="disableComparison()">
-        <mat-icon>wrap_text</mat-icon>
-      </button>
+    <div *ngIf="selected[0] !== undefined; else notSelected" class="half-part">
+      <mat-divider class="divider-vertical float-left"></mat-divider>
+      <div class="toolbar-text-container float-left">
+        <p class="text-18 text-center height-auto toolbar-text">&nbsp;&nbsp;&nbsp;Comparison&nbsp;&nbsp;</p>
+      </div>
+      <div class="float-left">
+        <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[0]}}"
+                (click)="updateComparisonMode(0)">
+          <b>Complete</b>
+        </button>&nbsp;&nbsp;
+        <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[1]}}"
+                (click)="updateComparisonMode(1)">
+          <b>No timestamp</b>
+        </button>&nbsp;&nbsp;
+        <button mat-raised-button class="iconBtn-lg" color="{{comparisonButtonsClasses[2]}}"
+                (click)="updateComparisonMode(2)">
+          <b>Time diff</b>
+        </button>&nbsp;&nbsp;
+        <button mat-raised-button class="iconBtn-lg bgc-red-500" (click)="disableComparison()">
+          <span style="font-weight: bold; color: #FFF;">Cancel comparison</span>
+        </button>&nbsp;&nbsp;
+        <button mat-raised-button
+                class="iconBtn-lg bgc-green-500"
+                placement="left"
+                popoverTitle="Select an execution to compare with"
+                [ngbPopover]="selection">
+          <span style="font-weight: bold; color: #FFF;">Change execution</span>
+        </button>
+      </div>
     </div>
     <ng-template #notSelected>
       <mat-divider class="divider-vertical"></mat-divider>&nbsp;&nbsp;&nbsp;
@@ -50,7 +55,7 @@
               class="iconBtn-lg bgc-green-500"
               placement="bottom"
               popoverTitle="Select an execution to compare with"
-              [ngbPopover]="selection" >
+              [ngbPopover]="selection">
         <span style="font-weight: bold; color: #FFF;">Select execution</span>
       </button>
     </ng-template>
@@ -68,8 +73,8 @@
                   icon="error"></td-message>
     </div>
   </div>
-  <div style="padding-top: 10px; height: 100px;">
-    <div *ngIf="comparisonInProgress; else showBasicMessage">
+  <div class="cover-data">
+    <div *ngIf="selected[0] !== undefined; else showBasicMessage">
       <div class="half-part" style="float: left;">
         <div style="float: left; margin-right: 4em;">
           <div><span class="span-title">Id:</span> {{execution.id}}</div>
@@ -77,7 +82,7 @@
           <div><span class="span-title">Status:</span> {{execution.status}}</div>
         </div>
         <div style="float: left;">
-          <div><span class="span-title">Time elapsed:</span> {{execution.time_elapsed}}</div>
+          <div><span class="span-title">Time elapsed:</span> {{execution.time_elapsed}} seconds</div>
         </div>
       </div>
       <div class="half-part" style="float: right;">
@@ -87,24 +92,20 @@
           <div><span class="span-title">Status:</span> {{selected[0].status.status}}</div>
         </div>
         <div style="float: left;">
-          <div><span class="span-title">Time elapsed:</span> {{selected[0].time_elapsed}}</div>
+          <div><span class="span-title">Time elapsed:</span> {{selected[0].time_elapsed}} seconds</div>
         </div>
       </div>
     </div>
+
     <ng-template #showBasicMessage>
-      <div style="float: left; margin-right: 4em;">
-        <div><span class="span-title">Id:</span> {{execution.id}}</div>
-        <div><span class="span-title">Start date: </span> {{execution.start_date}}</div>
-        <div><span class="span-title">Status:</span> {{execution.status}}</div>
-      </div>
-      <div style="float: left;">
-        <div><span class="span-title">Time elapsed:</span> {{execution.time_elapsed}}</div>
+      <div class="cover-data" [ngClass]="(execution.status.indexOf('SUCCESS') !== -1) ? ('bgc-green-50') : ('bgc-red-50')">
+        Execution <span class="md-title">{{execution.id}}</span> has been completed in <span class="md-title">{{execution.time_elapsed}} seconds</span>,
+        starting at <span class="md-title">{{execution.start_date}}</span> and its result is <span class="md-title">{{execution.status}}</span>.
       </div>
     </ng-template>
   </div>
-
 </mat-card>
-<mat-card style="padding-top: 160px; margin-bottom: 50px">
+<mat-card id="main-content">
   <mat-card-content>
     <div *ngIf="comparisonInProgress; else notComparing">
       <table *ngIf="viewMode == 0 || viewMode == 3" class="diff-table">
@@ -215,12 +216,3 @@
     </ng-template>
   </td-data-table>
 </ng-template>
-<!--
-<popover-content #selection
-                 title="Select an execution"
-                 placement="left"
-                 [animation]="true"
-                 [closeOnClickOutside]="true">
-
-</popover-content>
--->

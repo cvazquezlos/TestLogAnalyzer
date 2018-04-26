@@ -219,3 +219,13 @@ h3, h5 {
 .float-left {
   float: left;
 }
+
+#main-content {
+  padding-top: 160px;
+  margin-bottom: 50px
+}
+
+.cover-data {
+  padding-top: 10px;
+  height: 80px;
+}
