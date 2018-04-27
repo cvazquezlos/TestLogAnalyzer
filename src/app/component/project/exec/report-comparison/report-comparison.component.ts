@@ -340,7 +340,7 @@ export class ReportComparisonComponent implements OnInit {
   private async cleanDictionary(dictionary: any) {
     const execution = await this.elasticsearchService.getExecutionByIdAsync(this.test);
     const testcases = execution.testcases;
-    var map: { [name: string]: ClassC } = {};
+    const map: { [name: string]: ClassC } = {};
     for (const classC in dictionary) {
       if (dictionary.hasOwnProperty(classC)) {
         const value = dictionary[classC];
