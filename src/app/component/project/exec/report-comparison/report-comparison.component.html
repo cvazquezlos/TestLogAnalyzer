@@ -1,5 +1,5 @@
 <mat-card class="toolbar-view-comp">
-  <div layout="row" style="padding-right: 16px; padding-left: 16px;">
+  <div layout="row" class="padding-xl-sides">
     <div class="half-part">
       <div class="toolbar-text-container float-left">
         <p class="text-18 text-center height-auto toolbar-text">View&nbsp;&nbsp;</p>
@@ -38,14 +38,14 @@
           <b>Time diff</b>
         </button>&nbsp;&nbsp;
         <button mat-raised-button class="iconBtn-lg bgc-red-500" (click)="disableComparison()">
-          <span style="font-weight: bold; color: #FFF;">Cancel comparison</span>
+          <span class="over-custom-button">Cancel comparison</span>
         </button>&nbsp;&nbsp;
         <button mat-raised-button
                 class="iconBtn-lg bgc-green-500"
                 placement="left"
                 popoverTitle="Select an execution to compare with"
                 [ngbPopover]="selection">
-          <span style="font-weight: bold; color: #FFF;">Change execution</span>
+          <span class="over-custom-button">Change execution</span>
         </button>
       </div>
     </div>
@@ -56,7 +56,7 @@
               placement="bottom"
               popoverTitle="Select an execution to compare with"
               [ngbPopover]="selection">
-        <span style="font-weight: bold; color: #FFF;">Select execution</span>
+        <span class="over-custom-button">Select execution</span>
       </button>
     </ng-template>
     <span flex></span>
@@ -75,7 +75,7 @@
   </div>
   <div class="cover-data">
     <div *ngIf="selected[0] !== undefined; else showBasicMessage">
-      <div class="half-part" style="float: left;">
+      <div class="half-part float-left">
         <div class="cover-data padding-sides"
              [ngClass]="(execution.status.indexOf('SUCCESS') !== -1) ? ('bgc-green-50') : ('bgc-red-50')"
              [ngStyle]="{'border': (execution.status.indexOf('SUCCESS') !== -1) ? ('2px solid #A5D6A7') : ('2px solid #EF9A9A')}">
@@ -83,7 +83,7 @@
           starting at <span class="md-title">{{execution.start_date}}</span> and its result is <span class="md-title">{{execution.status}}</span>.
         </div>
       </div>
-      <div class="half-part" style="float: right;">
+      <div class="half-part float-right">
         <div class="cover-data padding-sides"
              [ngClass]="(selected[0].status.status.indexOf('SUCCESS') !== -1) ? ('bgc-green-50') : ('bgc-red-50')"
              [ngStyle]="{'border': (selected[0].status.status.indexOf('SUCCESS') !== -1) ? ('2px solid #A5D6A7') : ('2px solid #EF9A9A'), 'border-right': '0px'}">
@@ -96,7 +96,7 @@
       <div class="cover-data padding-sides"
            [ngClass]="(execution.status.indexOf('SUCCESS') !== -1) ? ('bgc-green-50') : ('bgc-red-50')"
            [ngStyle]="{'border': (execution.status.indexOf('SUCCESS') !== -1) ? ('2px solid #A5D6A7') : ('2px solid #EF9A9A')}">
-         Execution <span class="md-title">{{execution.id}}</span> has been completed in <span class="md-title">{{execution.time_elapsed}} seconds</span>,
+        Execution <span class="md-title">{{execution.id}}</span> has been completed in <span class="md-title">{{execution.time_elapsed}} seconds</span>,
         starting at <span class="md-title">{{execution.start_date}}</span> and its result is <span class="md-title">{{execution.status}}</span>.
       </div>
     </ng-template>
@@ -104,68 +104,78 @@
 </mat-card>
 <mat-card id="main-content">
   <mat-card-content>
-    <div *ngIf="comparisonInProgress; else notComparing">
-      <table *ngIf="viewMode == 0 || viewMode == 3" class="diff-table">
-        <tbody>
-        <tr *ngFor="let result of resultData[0].logs">
-          <td [innerHTML]="result.index_p" class="index" style="width: 1%"></td>
-          <td [innerHTML]="result.com_p.content" [class]="result.com_p.class" style="width: 49%"></td>
-          <td [innerHTML]="result.indexp" class="index" style="width: 1%"></td>
-          <td [innerHTML]="result.comp.content" [class]="result.comp.class" style="width: 49%"></td>
-        </tr>
-        </tbody>
-      </table>
-      <div *ngIf="viewMode == 1 || viewMode == 2">
-        <ng-template ngFor let-class [ngForOf]="resultData">
-          <h3>{{class.name}}</h3>
-          <ng-template ngFor let-method [ngForOf]="class.methods">
-            <h5>{{method.name}}</h5>
-            <table class="diff-table">
-              <tbody>
-              <tr *ngFor="let result of method.logs">
-                <td [innerHTML]="result.index_p" class="index" style="width: 1%"></td>
-                <td [innerHTML]="result.com_p.content" [class]="result.com_p.class" style="width: 49%"></td>
-                <td [innerHTML]="result.indexp" class="index" style="width: 1%"></td>
-                <td [innerHTML]="result.comp.content" [class]="result.comp.class" style="width: 49%"></td>
-              </tr>
-              </tbody>
-            </table>
-          </ng-template>
-        </ng-template>
+    <div *ngIf="loadingData; else notLoading"
+         style="width: 100%; display: flex; align-content: center; justify-content: center;">
+      <div style="display: inline-block; align-content: center; justify-content: center;">
+        <mat-progress-spinner color="accent" mode="indeterminate" style="margin: auto;"></mat-progress-spinner>
+        <br>
+        <p>Fetching data. Please wait...</p>
       </div>
     </div>
-    <ng-template #notComparing>
-      <div *ngIf="viewMode == 0 || viewMode == 3">
-        <table class="diff-table">
+    <ng-template #notLoading>
+      <div *ngIf="comparisonInProgress; else notComparing">
+        <table *ngIf="viewMode == 0 || viewMode == 3" class="diff-table">
           <tbody>
-          <tr *ngFor="let log of classesL; index as i">
-            <td class="index">{{i}}.</td>
-            <td>{{log.log}}</td>
+          <tr *ngFor="let result of resultData[0].logs">
+            <td [innerHTML]="result.index_p" class="index" style="width: 1% !important"></td>
+            <td [innerHTML]="result.com_p.content" [class]="result.com_p.class" style="width: 49% !important"></td>
+            <td [innerHTML]="result.indexp" class="index" style="width: 1% !important;"></td>
+            <td [innerHTML]="result.comp.content" [class]="result.comp.class" style="width: 49% !important;"></td>
           </tr>
           </tbody>
         </table>
-      </div>
-      <div *ngIf="viewMode == 1 || viewMode == 2">
-        <ng-template ngFor let-item [ngForOf]="classesL">
-          <h3>{{item.name}}</h3>
-          <ng-template ngFor let-itemm [ngForOf]="item.methods">
-            <h5>{{itemm.name}}</h5>
-            <table class="diff-table">
-              <tbody>
-              <tr *ngFor="let log of itemm.logs; index as i">
-                <td class="index">{{i}}.</td>
-                <td>{{log.timestamp}} [{{log.thread}}] {{log.level}} {{log.logger}} - {{log.message}}</td>
-              </tr>
-              </tbody>
-            </table>
-            <br>
+        <div *ngIf="viewMode == 1 || viewMode == 2">
+          <ng-template ngFor let-class [ngForOf]="resultData">
+            <h3>{{class.name}}</h3>
+            <ng-template ngFor let-method [ngForOf]="class.methods">
+              <h5>{{method.name}}</h5>
+              <table class="diff-table">
+                <tbody>
+                <tr *ngFor="let result of method.logs">
+                  <td [innerHTML]="result.index_p" class="index" style="width: 1%"></td>
+                  <td [innerHTML]="result.com_p.content" [class]="result.com_p.class" style="width: 49%"></td>
+                  <td [innerHTML]="result.indexp" class="index" style="width: 1%"></td>
+                  <td [innerHTML]="result.comp.content" [class]="result.comp.class" style="width: 49%"></td>
+                </tr>
+                </tbody>
+              </table>
+            </ng-template>
           </ng-template>
-        </ng-template>
-        <div *ngIf="classesL.length == 0">
-          <td-message label="Info" sublabel="The execution has not unsuccessful methods." color="blue"
-                      icon="info"></td-message>
         </div>
       </div>
+      <ng-template #notComparing>
+        <div *ngIf="viewMode == 0 || viewMode == 3">
+          <table class="diff-table">
+            <tbody>
+            <tr *ngFor="let log of classesL; index as i">
+              <td class="index">{{i}}.</td>
+              <td>{{log.log}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="viewMode == 1 || viewMode == 2">
+          <ng-template ngFor let-item [ngForOf]="classesL">
+            <h3>{{item.name}}</h3>
+            <ng-template ngFor let-itemm [ngForOf]="item.methods">
+              <h5>{{itemm.name}}</h5>
+              <table class="diff-table">
+                <tbody>
+                <tr *ngFor="let log of itemm.logs; index as i">
+                  <td class="index">{{i}}.</td>
+                  <td>{{log.timestamp}} [{{log.thread}}] {{log.level}} {{log.logger}} - {{log.message}}</td>
+                </tr>
+                </tbody>
+              </table>
+              <br>
+            </ng-template>
+          </ng-template>
+          <div *ngIf="classesL.length == 0">
+            <td-message label="Info" sublabel="The execution has not unsuccessful methods." color="blue"
+                        icon="info"></td-message>
+          </div>
+        </div>
+      </ng-template>
     </ng-template>
   </mat-card-content>
 </mat-card>

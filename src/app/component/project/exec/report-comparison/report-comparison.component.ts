@@ -36,9 +36,10 @@ export class ReportComparisonComponent implements OnInit {
   ];
   execsRow = [];
   execution: Execution;
+  loadingData: boolean;
+  project: string;
   showExecSelection: boolean;
   showSelectionMessage = false;
-  project: string;
   selected: any[] = [];
   singleSelected: Execution;
   status = 'BUILD FAILURE';
@@ -51,7 +52,9 @@ export class ReportComparisonComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
               private tableService: TableService, private elasticsearchService: ElasticsearchService) {
     this.comparisonInProgress = false;
+    this.loadingData = true;
     this.showExecSelection = false;
+
   }
 
   private generateOutput(logs: Log[]) {
@@ -128,9 +131,11 @@ export class ReportComparisonComponent implements OnInit {
 
   async updateComparisonMode(mode: number) {
     this.comparisonMode = mode;
+    this.loadingData = true;
     if (this.selected[0] === undefined) {
       this.showSelectionMessage = true;
       this.showExecSelection = true;
+      this.loadingData = false;
     } else {
       switch (this.viewMode) {
         case 0:
@@ -152,6 +157,7 @@ export class ReportComparisonComponent implements OnInit {
 
   async updateViewMode(comp: number, mode: number) {
     this.viewMode = mode;
+    this.loadingData = true;
     this.resetViewButtonsClasses();
     switch (this.viewMode) {
       case 0:
@@ -169,6 +175,8 @@ export class ReportComparisonComponent implements OnInit {
     }
     if (this.comparisonInProgress) {
       this.updateComparisonMode(this.comparisonMode);
+    } else {
+      this.loadingData = false;
     }
   }
 
@@ -394,6 +402,7 @@ export class ReportComparisonComponent implements OnInit {
     if (this.comparisonInProgress) {
       this.comparisonButtonsClasses[this.comparisonMode] = 'accent';
     }
+    this.loadingData = false;
   }
 
   private resetViewButtonsClasses() {

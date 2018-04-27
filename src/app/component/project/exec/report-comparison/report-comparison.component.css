@@ -220,9 +220,12 @@ h3, h5 {
   float: left;
 }
 
+.float-right {
+  float: right;
+}
+
 #main-content {
-  padding-top: 160px;
-  margin-bottom: 50px
+  margin-top: 135px;
 }
 
 .cover-data {
@@ -233,4 +236,14 @@ h3, h5 {
 .padding-sides {
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.padding-xl-sides {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.over-custom-button {
+  font-weight: bold;
+  color: #FFF;
 }
