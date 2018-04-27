@@ -8,6 +8,7 @@ import {ElasticsearchService} from '../../../../service/elasticsearch.service';
 import {TableService} from '../../../../service/table.service';
 import {ClassC} from '../../../../model/classc.model';
 import {TestC} from '../../../../model/testc.model';
+import {Execution} from '../../../../model/execution.model';
 
 @Component({
   selector: 'app-report-comparison',
@@ -30,23 +31,17 @@ export class ReportComparisonComponent implements OnInit {
   execDeleting: string;
   execsData: ITdDataTableColumn[] = [
     {name: 'id', label: 'Id', width: 60},
-    {name: 'startdate', label: 'Start date', width: 240},
-    {name: 'entries', label: 'Entries', width: 100},
-    {name: 'status', label: 'Status'},
-    {name: 'errors', label: 'ERRORS', width: 100},
-    {name: 'failures', label: 'FAILURES', width: 100},
-    {name: 'flakes', label: 'FLAKES', width: 100},
-    {name: 'skipped', label: 'SKIPPED', width: 100},
-    {name: 'tests', label: 'tests', width: 70},
-    {name: 'test', label: 'test id', width: 70},
-    {name: 'time_elapsed', label: 'Time elapsed'},
-    {name: 'options', label: 'Options', width: 150}
+    {name: 'start_date', label: 'Start date', width: 240},
+    {name: 'status', label: 'Status', width: 200}
   ];
   execsRow = [];
+  execution: Execution;
+  loadingData: boolean;
+  project: string;
   showExecSelection: boolean;
   showSelectionMessage = false;
-  project: string;
   selected: any[] = [];
+  singleSelected: Execution;
   status = 'BUILD FAILURE';
   ready: boolean;
   resultData: any[] = [];
@@ -57,7 +52,9 @@ export class ReportComparisonComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
               private tableService: TableService, private elasticsearchService: ElasticsearchService) {
     this.comparisonInProgress = false;
+    this.loadingData = true;
     this.showExecSelection = false;
+
   }
 
   private generateOutput(logs: Log[]) {
@@ -90,6 +87,7 @@ export class ReportComparisonComponent implements OnInit {
 
   async ngOnInit() {
     this.test = this.activatedRoute.snapshot.parent.params['exec'];
+    this.execution = await this.elasticsearchService.getExecutionByIdAsync(this.test);
     this.project = this.activatedRoute.snapshot.parent.parent.params['project'];
     this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
       {label: this.project, url: '/projects/' + this.project, params: []},
@@ -114,30 +112,30 @@ export class ReportComparisonComponent implements OnInit {
         icon = 'error';
         classi = 'tc-red-700';
       }
-      this.execsRow[i] = {
-        'id': response[i].id,
-        'startdate': response[i].start_date,
-        'entries': response[i].entries,
-        'status': {
-          'icon': icon,
-          'class': classi,
-          'status': response[i].status
-        },
-        'errors': response[i].errors,
-        'failures': response[i].failures,
-        'flakes': response[i].flakes,
-        'skipped': response[i].skipped,
-        'tests': response[i].tests,
-        'time_elapsed': response[i].time_elapsed + ' seconds'
+      if (this.test !== (response[i].id + '')) {
+        this.execsRow.push({
+          'id': response[i].id,
+          'start_date': response[i].start_date,
+          'status': {
+            'icon': icon,
+            'class': classi,
+            'status': response[i].status
+          },
+          'time_elapsed': response[i].time_elapsed
+        });
+      } else {
+        this.selected[0] = this.execsRow[this.execsRow.length - 1];
       }
     }
   }
 
   async updateComparisonMode(mode: number) {
     this.comparisonMode = mode;
+    this.loadingData = true;
     if (this.selected[0] === undefined) {
       this.showSelectionMessage = true;
       this.showExecSelection = true;
+      this.loadingData = false;
     } else {
       switch (this.viewMode) {
         case 0:
@@ -159,16 +157,17 @@ export class ReportComparisonComponent implements OnInit {
 
   async updateViewMode(comp: number, mode: number) {
     this.viewMode = mode;
+    this.loadingData = true;
     this.resetViewButtonsClasses();
     switch (this.viewMode) {
       case 0:
         await this.viewRaw(comp, true);
         break;
       case 1:
-        await this.viewByMethods(comp, false);
+        await this.viewByMethods(comp);
         break;
       case 2:
-        await this.viewByMethods(comp, true);
+        await this.viewByMethods(comp);
         break;
       case 3:
         await this.viewRaw(comp, false);
@@ -176,11 +175,14 @@ export class ReportComparisonComponent implements OnInit {
     }
     if (this.comparisonInProgress) {
       this.updateComparisonMode(this.comparisonMode);
+    } else {
+      this.loadingData = false;
     }
   }
 
   disableComparison() {
     this.comparisonInProgress = false;
+    this.selected[0] = undefined;
     this.resetComparisonButtonsClasses();
   }
 
@@ -199,6 +201,8 @@ export class ReportComparisonComponent implements OnInit {
   private async cleanContent(mode: number) {
     let auxC = [];
     (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
+    console.log(this.classesL);
+    console.log(this.classesLc);
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const execution = await this.elasticsearchService.getExecutionByIdAsync((mode === 0) ? (this.test)
       : (this.selected[0].id + ''));
@@ -225,6 +229,7 @@ export class ReportComparisonComponent implements OnInit {
         });
       }
     }
+    console.log(aux);
     (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
   }
 
@@ -232,16 +237,18 @@ export class ReportComparisonComponent implements OnInit {
     this.comparisonInProgress = false;
     const comparisonDictionary: { [name: string]: ClassC } = {};
     await this.updateViewMode(0, this.viewMode);
+    console.log(this.classesL);
     await this.updateViewMode(1, this.viewMode);
+    console.log(this.classesLc);
     for (let i = 0; i < this.classesL.length; i++) {
       if (comparisonDictionary[this.classesL[i].name] === undefined) {
         const methods = [];
         for (let j = 0; j < this.classesL[i].methods.length; j++) {
-         methods.push({
-           'name': this.classesL[i].methods[j].name,
-           'comparator': this.generateOutput(this.classesL[i].methods[j].logs),
-           'compared': ''
-         });
+          methods.push({
+            'name': this.classesL[i].methods[j].name,
+            'comparator': this.generateOutput(this.classesL[i].methods[j].logs),
+            'compared': ''
+          });
         }
         comparisonDictionary[this.classesL[i].name] = {
           'name': this.classesL[i].name,
@@ -249,7 +256,7 @@ export class ReportComparisonComponent implements OnInit {
         }
       }
     }
-    for (let i = 0; i < this.classesLc.length; i++)  {
+    for (let i = 0; i < this.classesLc.length; i++) {
       if (comparisonDictionary[this.classesLc[i].name] !== undefined) {
         const targetClass = comparisonDictionary[this.classesLc[i].name];
         for (let j = 0; j < this.classesLc[i].methods.length; j++) {
@@ -280,28 +287,90 @@ export class ReportComparisonComponent implements OnInit {
         }
       }
     }
-    this.resultData = [];
-    for (const classC in comparisonDictionary) {
-      if (comparisonDictionary.hasOwnProperty(classC)) {
-        const value = comparisonDictionary[classC];
-        const methodsData = [];
-        this.comparatorText = '';
-        this.comparedText = '';
-        for (let i = 0; i < value.tests.length; i++) {
-          this.comparatorText = value.tests[i].comparator;
-          this.comparedText = value.tests[i].compared;
-          methodsData.push({
-            'name': value.tests[i].name,
-            'logs': await this.readDiffer()
+    if (this.viewMode === 2) {
+      const map = await this.cleanDictionary(comparisonDictionary);
+      this.resultData = [];
+      for (const classC in map) {
+        if (map.hasOwnProperty(classC)) {
+          const value = map[classC];
+          const methodsData = [];
+          this.comparatorText = '';
+          this.comparedText = '';
+          for (let i = 0; i < value.tests.length; i++) {
+            this.comparatorText = value.tests[i].comparator;
+            this.comparedText = value.tests[i].compared;
+            methodsData.push({
+              'name': value.tests[i].name,
+              'logs': await this.readDiffer()
+            });
+          }
+          this.resultData.push({
+            'name': value.name,
+            'methods': methodsData
           });
         }
-        this.resultData.push({
-          'name': value.name,
-          'methods': methodsData
-        });
+      }
+    } else {
+      this.resultData = [];
+      for (const classC in comparisonDictionary) {
+        if (comparisonDictionary.hasOwnProperty(classC)) {
+          const value = comparisonDictionary[classC];
+          const methodsData = [];
+          this.comparatorText = '';
+          this.comparedText = '';
+          for (let i = 0; i < value.tests.length; i++) {
+            this.comparatorText = value.tests[i].comparator;
+            this.comparedText = value.tests[i].compared;
+            methodsData.push({
+              'name': value.tests[i].name,
+              'logs': await this.readDiffer()
+            });
+          }
+          this.resultData.push({
+            'name': value.name,
+            'methods': methodsData
+          });
+        }
       }
     }
+    console.log(this.resultData);
     this.comparisonInProgress = true;
+  }
+
+  private async cleanDictionary(dictionary: any) {
+    const execution = await this.elasticsearchService.getExecutionByIdAsync(this.test);
+    const testcases = execution.testcases;
+    const map: { [name: string]: ClassC } = {};
+    for (const classC in dictionary) {
+      if (dictionary.hasOwnProperty(classC)) {
+        const value = dictionary[classC];
+        for (let i = 0; i < value.tests.length; i++) {
+          if (this.containsError(value.tests[i].name, execution.testcases)) {
+            if (!map.hasOwnProperty(classC)) {
+              map[classC] = {
+                'name': classC,
+                'tests': []
+              };
+            }
+            map[classC].tests.push({
+              'name': value.tests[i].name,
+              'comparator': value.tests[i].comparator,
+              'compared': value.tests[i].compared
+            });
+          }
+        }
+      }
+    }
+    return map;
+  }
+
+  private containsError(value: string, testcases: any[]): boolean {
+    for (let i = 0; i < testcases.length; i++) {
+      if ((testcases[i].failureDetail !== null) && (testcases[i].name.indexOf(value) !== -1)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private async generateRawComparison() {
@@ -324,7 +393,7 @@ export class ReportComparisonComponent implements OnInit {
     return this.tableService.generateTable(response);
   }
 
-  private async viewByMethods(mode: number, clean?: boolean) {
+  private async viewByMethods(mode: number) {
     this.ready = false;
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const loggers = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
@@ -350,7 +419,7 @@ export class ReportComparisonComponent implements OnInit {
           : (this.classesLc.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}));
       }
     }
-    (clean) && (await this.cleanContent(mode));
+    // (clean) && (await this.cleanContent(mode));
     this.ready = true;
   }
 
@@ -400,6 +469,7 @@ export class ReportComparisonComponent implements OnInit {
     if (this.comparisonInProgress) {
       this.comparisonButtonsClasses[this.comparisonMode] = 'accent';
     }
+    this.loadingData = false;
   }
 
   private resetViewButtonsClasses() {

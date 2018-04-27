@@ -166,7 +166,7 @@ h3, h5 {
   background-color: white;
   position: fixed;
   width: calc(100% - 2.063em);
-  padding: 16px;
+  padding-top: 16px;
   z-index: 1;
 }
 
@@ -202,4 +202,48 @@ h3, h5 {
 
 .half-part {
   width: 50%;
+}
+
+.span-title {
+  font-weight: bold;
+}
+
+.red-back {
+  background-color: red;
+}
+
+.green-black {
+  background-color: green;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+#main-content {
+  margin-top: 135px;
+}
+
+.cover-data {
+  margin-top: 10px;
+  padding-top: 5px;
+}
+
+.padding-sides {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.padding-xl-sides {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.over-custom-button {
+  font-weight: bold;
+  color: #FFF;
 }
