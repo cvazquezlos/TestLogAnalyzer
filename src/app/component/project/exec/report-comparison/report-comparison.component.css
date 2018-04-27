@@ -166,7 +166,7 @@ h3, h5 {
   background-color: white;
   position: fixed;
   width: calc(100% - 2.063em);
-  padding: 16px;
+  padding-top: 16px;
   z-index: 1;
 }
 
@@ -226,6 +226,11 @@ h3, h5 {
 }
 
 .cover-data {
-  padding-top: 10px;
-  height: 80px;
+  margin-top: 10px;
+  padding-top: 5px;
+}
+
+.padding-sides {
+  padding-left: 5px;
+  padding-right: 5px;
 }

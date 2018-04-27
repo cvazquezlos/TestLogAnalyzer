@@ -1,5 +1,5 @@
 <mat-card class="toolbar-view-comp">
-  <div layout="row">
+  <div layout="row" style="padding-right: 16px; padding-left: 16px;">
     <div class="half-part">
       <div class="toolbar-text-container float-left">
         <p class="text-18 text-center height-auto toolbar-text">View&nbsp;&nbsp;</p>
@@ -19,7 +19,7 @@
         </button>
       </div>
     </div>
-    <div *ngIf="selected[0] !== undefined; else notSelected" class="half-part">
+    <div *ngIf="selected[0] !== undefined; else notSelected" class="">
       <mat-divider class="divider-vertical float-left"></mat-divider>
       <div class="toolbar-text-container float-left">
         <p class="text-18 text-center height-auto toolbar-text">&nbsp;&nbsp;&nbsp;Comparison&nbsp;&nbsp;</p>
@@ -76,30 +76,27 @@
   <div class="cover-data">
     <div *ngIf="selected[0] !== undefined; else showBasicMessage">
       <div class="half-part" style="float: left;">
-        <div style="float: left; margin-right: 4em;">
-          <div><span class="span-title">Id:</span> {{execution.id}}</div>
-          <div><span class="span-title">Start date: </span> {{execution.start_date}}</div>
-          <div><span class="span-title">Status:</span> {{execution.status}}</div>
-        </div>
-        <div style="float: left;">
-          <div><span class="span-title">Time elapsed:</span> {{execution.time_elapsed}} seconds</div>
+        <div class="cover-data padding-sides"
+             [ngClass]="(execution.status.indexOf('SUCCESS') !== -1) ? ('bgc-green-50') : ('bgc-red-50')"
+             [ngStyle]="{'border': (execution.status.indexOf('SUCCESS') !== -1) ? ('2px solid #A5D6A7') : ('2px solid #EF9A9A')}">
+          Execution <span class="md-title">{{execution.id}}</span> has been completed in <span class="md-title">{{execution.time_elapsed}} seconds</span>,
+          starting at <span class="md-title">{{execution.start_date}}</span> and its result is <span class="md-title">{{execution.status}}</span>.
         </div>
       </div>
       <div class="half-part" style="float: right;">
-        <div style="float: left; margin-right: 4em;">
-          <div><span class="span-title">Id:</span> {{selected[0].id}}</div>
-          <div><span class="span-title">Start date: </span> {{selected[0].start_date}}</div>
-          <div><span class="span-title">Status:</span> {{selected[0].status.status}}</div>
-        </div>
-        <div style="float: left;">
-          <div><span class="span-title">Time elapsed:</span> {{selected[0].time_elapsed}} seconds</div>
+        <div class="cover-data padding-sides"
+             [ngClass]="(selected[0].status.status.indexOf('SUCCESS') !== -1) ? ('bgc-green-50') : ('bgc-red-50')"
+             [ngStyle]="{'border': (selected[0].status.status.indexOf('SUCCESS') !== -1) ? ('2px solid #A5D6A7') : ('2px solid #EF9A9A'), 'border-right': '0px'}">
+          Execution <span class="md-title">{{selected[0].id}}</span> has been completed in <span class="md-title">{{selected[0].time_elapsed}} seconds</span>,
+          starting at <span class="md-title">{{selected[0].start_date}}</span> and its result is <span class="md-title">{{selected[0].status.status}}</span>.
         </div>
       </div>
     </div>
-
     <ng-template #showBasicMessage>
-      <div class="cover-data" [ngClass]="(execution.status.indexOf('SUCCESS') !== -1) ? ('bgc-green-50') : ('bgc-red-50')">
-        Execution <span class="md-title">{{execution.id}}</span> has been completed in <span class="md-title">{{execution.time_elapsed}} seconds</span>,
+      <div class="cover-data padding-sides"
+           [ngClass]="(execution.status.indexOf('SUCCESS') !== -1) ? ('bgc-green-50') : ('bgc-red-50')"
+           [ngStyle]="{'border': (execution.status.indexOf('SUCCESS') !== -1) ? ('2px solid #A5D6A7') : ('2px solid #EF9A9A')}">
+         Execution <span class="md-title">{{execution.id}}</span> has been completed in <span class="md-title">{{execution.time_elapsed}} seconds</span>,
         starting at <span class="md-title">{{execution.start_date}}</span> and its result is <span class="md-title">{{execution.status}}</span>.
       </div>
     </ng-template>
