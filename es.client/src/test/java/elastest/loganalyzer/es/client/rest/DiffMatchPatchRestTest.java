@@ -41,7 +41,7 @@ public class DiffMatchPatchRestTest {
 		String diffs = "{text1: " + diff1 + ", text2: " + diff2 + "}";
 		System.out.println(diffs);
 		mockMvc.perform(
-				post("/diff")
+				post("/api/diff")
 					.accept(MediaType.APPLICATION_JSON)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(diffs))
