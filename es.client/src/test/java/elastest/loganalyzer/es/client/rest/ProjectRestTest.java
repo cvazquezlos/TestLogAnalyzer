@@ -1,5 +1,7 @@
 package elastest.loganalyzer.es.client.rest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,9 +22,9 @@ import elastest.loganalyzer.es.client.EsConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = { DiffMatchPatchRest.class, EsConfiguration.class })
+@ContextConfiguration(classes = { ProjectRest.class, EsConfiguration.class })
 @WebAppConfiguration
-public class DiffMatchPatchRestTest {
+public class ProjectRestTest {
 
 	private MockMvc mockMvc;
 
@@ -35,11 +37,21 @@ public class DiffMatchPatchRestTest {
 	}
 
 	@Test
-	public void get() throws Exception {
-		String diff1 = "This is the first text to probe the diff algorithm.";
-		String diff2 = "This is the 2º text to test the diff algorithm provided by Google.";
-		String diffs = "{text1: " + diff1 + ", text2: " + diff2 + "}";
-		mockMvc.perform(post("/api/diff").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
-				.content(diffs)).andExpect(status().isOk());
+	public void getAll() throws Exception {
+		mockMvc.perform(get("/api/projects"));
+	}
+
+	@Test
+	public void getByName() throws Exception {
+		String name = "JUnit4ProjectTestingLTA";
+		mockMvc.perform(get("/api/projects/name/").param("name", name)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void postAndDelete() throws Exception {
+		mockMvc.perform(post("/api/projects").contentType(MediaType.APPLICATION_JSON).content(
+				"{ \"id\": 999999999, \"name\": \"JUnit4ProjectTestingLTA\", \"num_execs\": 0, \"recently_deleted\": -1}"))
+				.andExpect(status().isCreated());
+		mockMvc.perform(delete("/api/projects/id/").param("id", Integer.toString(999999999)));
 	}
 }

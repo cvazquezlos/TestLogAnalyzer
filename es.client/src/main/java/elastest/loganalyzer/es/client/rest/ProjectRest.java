@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.model.Project;
 import elastest.loganalyzer.es.client.service.ExecutionService;
 import elastest.loganalyzer.es.client.service.LogService;
@@ -63,6 +62,7 @@ public class ProjectRest {
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Project> deleteById(@PathVariable int id) {
 		Project deleted = projectService.findOne(id);
+		System.out.println(deleted);
 		if (deleted != null) {
 			logService.deleteIterable(logService.findByProject(deleted.getName()));
 			executionService.deleteIterable(executionService.findByProject(deleted.getName()));

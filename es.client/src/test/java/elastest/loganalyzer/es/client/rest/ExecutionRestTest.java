@@ -1,6 +1,7 @@
 package elastest.loganalyzer.es.client.rest;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
@@ -8,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -20,9 +20,9 @@ import elastest.loganalyzer.es.client.EsConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = { DiffMatchPatchRest.class, EsConfiguration.class })
+@ContextConfiguration(classes = { ExecutionRest.class, EsConfiguration.class })
 @WebAppConfiguration
-public class DiffMatchPatchRestTest {
+public class ExecutionRestTest {
 
 	private MockMvc mockMvc;
 
@@ -35,11 +35,20 @@ public class DiffMatchPatchRestTest {
 	}
 
 	@Test
-	public void get() throws Exception {
-		String diff1 = "This is the first text to probe the diff algorithm.";
-		String diff2 = "This is the 2º text to test the diff algorithm provided by Google.";
-		String diffs = "{text1: " + diff1 + ", text2: " + diff2 + "}";
-		mockMvc.perform(post("/api/diff").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
-				.content(diffs)).andExpect(status().isOk());
+	public void getById() throws Exception {
+		int id = 0;
+		mockMvc.perform(get("/api/executions/id/").param("id", String.valueOf(id)));
+	}
+
+	@Test
+	public void getByProject() throws Exception {
+		String project = "JUnit4ClassTestingTLA";
+		mockMvc.perform(get("/api/executions/project/").param("project", project)).andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void deleteById() throws Exception {
+		int id = -1;
+		mockMvc.perform(delete("/api/executions/id/").param("id", String.valueOf(id))).andExpect(status().isNotFound());
 	}
 }
