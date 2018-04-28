@@ -7,7 +7,6 @@ import {CovalentHttpModule} from '@covalent/http';
 import {CovalentMarkdownModule} from '@covalent/markdown';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 import {BreadcrumbsModule} from 'ng2-breadcrumbs';
-import {CodemirrorModule} from 'ng2-codemirror';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 import {AddProjectComponent} from './component/add-project/add-project.component';
@@ -43,7 +42,6 @@ const httpInterceptorProviders: Type<any>[] = [
     BreadcrumbsModule,
     BrowserAnimationsModule,
     BrowserModule,
-    CodemirrorModule,
     CovalentHighlightModule,
     CovalentHttpModule.forRoot({
       interceptors: [{

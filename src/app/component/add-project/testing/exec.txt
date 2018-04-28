@@ -1,0 +1,79 @@
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building backend 0.5-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO]
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ full-teaching ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO] Copying 48 resources
+[INFO]
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ full-teaching ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ full-teaching ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 2 resources
+[INFO]
+[INFO] --- maven-compiler-plugin:3.1:testCompile (default-testCompile) @ full-teaching ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO]
+[INFO] --- maven-surefire-plugin:2.18.1:test (default-test) @ full-teaching ---
+[INFO] Surefire report directory: /home/pablo/Desktop/full-teaching-experiment/target/surefire-reports
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running com.fullteaching.backend.e2e.FullTeachingTestE2EChat
+2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]
+2018-04-09 14:25:07.389  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [chromedriver] is 2.37
+2018-04-09 14:25:07.397  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.chrome.driver as /home/pablo/.m2/repository/webdriver/chromedriver/linux64/2.37/chromedriver
+2018-04-09 14:25:10.167  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://api.github.com/repos/mozilla/geckodriver/releases to seek [wires, geckodriver]
+2018-04-09 14:25:10.655  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [wires, geckodriver] is 0.20.1
+2018-04-09 14:25:10.664  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.gecko.driver as /home/pablo/.m2/repository/webdriver/geckodriver/linux64/0.20.1/geckodriver
+2018-04-09 14:25:10.664  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Using URL https://localhost:5000/ to connect to openvidu-testapp
+2018-04-09 14:25:10.768  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]
+2018-04-09 14:25:11.031  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [chromedriver] is 2.37
+2018-04-09 14:25:11.031  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.chrome.driver as /home/pablo/.m2/repository/webdriver/chromedriver/linux64/2.37/chromedriver
+2018-04-09 14:25:11.600  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://api.github.com/repos/mozilla/geckodriver/releases to seek [wires, geckodriver]
+2018-04-09 14:25:11.969  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [wires, geckodriver] is 0.20.1
+2018-04-09 14:25:11.972  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.gecko.driver as /home/pablo/.m2/repository/webdriver/geckodriver/linux64/0.20.1/geckodriver
+2018-04-09 14:25:11.991  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : ##### Start test: oneToOneChatInSessionChrome
+2018-04-09 14:25:11.991  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Starting browser (chrome)
+2018-04-09 14:25:12.670  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Navigating to https://localhost:5000/
+2018-04-09 14:25:14.971  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in user Teacher with mail 'teacher@gmail.com'
+2018-04-09 14:25:19.298  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in successful for user Teacher
+2018-04-09 14:25:20.298  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher entering first course
+2018-04-09 14:25:21.472  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher navigating to 'Sessions' tab
+2018-04-09 14:25:22.634  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher getting into first session
+2018-04-09 14:25:23.870  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system message ("Connected") for Teacher
+2018-04-09 14:25:24.452  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Starting browser (chrome)
+2018-04-09 14:25:24.819  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Navigating to https://localhost:5000/
+2018-04-09 14:25:27.552  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in user Student with mail 'student1@gmail.com'
+2018-04-09 14:25:31.519  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in successful for user Student
+2018-04-09 14:25:36.058  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system message ("Student Imprudent has connected") for Teacher
+2018-04-09 14:25:36.139  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system message ("Teacher Cheater has connected") for Student
+2018-04-09 14:25:38.776  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking own message ("TEACHER CHAT MESSAGE") for Teacher
+2018-04-09 14:25:38.965  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking another user's message ("TEACHER CHAT MESSAGE") for Student
+2018-04-09 14:25:40.608  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking another user's message ("STUDENT CHAT MESSAGE") for Teacher
+2018-04-09 14:25:40.809  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking own message ("STUDENT CHAT MESSAGE") for Student
+2018-04-09 14:25:42.957  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out Student
+2018-04-09 14:25:44.760  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Student
+2018-04-09 14:25:45.865  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system message ("Student Imprudent has disconnected") for Teacher
+2018-04-09 14:25:45.934  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out Teacher
+2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher
+2018-04-09 14:25:48.552  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : ##### Finish test: oneToOneChatInSessionChrome
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 42.52 sec - in com.fullteaching.backend.e2e.FullTeachingTestE2EChat
+
+Results :
+
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 44.704 s
+[INFO] Finished at: 2018-04-09T14:25:48+02:00
+[INFO] Final Memory: 27M/482M
+[INFO] ------------------------------------------------------------------------
