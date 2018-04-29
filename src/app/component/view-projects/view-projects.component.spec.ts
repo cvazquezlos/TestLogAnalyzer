@@ -12,4 +12,9 @@ describe('Component: View Projects', () => {
     fixture = TestBed.createComponent(ViewProjectsComponent);
     component = fixture.componentInstance;
   });
+
+  it('Should create the component', () => {
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  });
 });

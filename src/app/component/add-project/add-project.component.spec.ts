@@ -50,45 +50,82 @@ describe('Component: Add Project', () => {
     ' T E S T S\n' +
     '-------------------------------------------------------\n' +
     'Running com.fullteaching.backend.e2e.FullTeachingTestE2EChat\n' +
-    '2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]\n' +
-    '2018-04-09 14:25:07.389  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [chromedriver] is 2.37\n' +
-    '2018-04-09 14:25:07.397  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.chrome.driver as /home/pablo/.m2/repository/webdriver/chromedriver/linux64/2.37/chromedriver\n' +
-    '2018-04-09 14:25:10.167  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://api.github.com/repos/mozilla/geckodriver/releases to seek [wires, geckodriver]\n' +
-    '2018-04-09 14:25:10.655  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [wires, geckodriver] is 0.20.1\n' +
-    '2018-04-09 14:25:10.664  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.gecko.driver as /home/pablo/.m2/repository/webdriver/geckodriver/linux64/0.20.1/geckodriver\n' +
-    '2018-04-09 14:25:10.664  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Using URL https://localhost:5000/ to connect to openvidu-testapp\n' +
-    '2018-04-09 14:25:10.768  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]\n' +
-    '2018-04-09 14:25:11.031  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [chromedriver] is 2.37\n' +
-    '2018-04-09 14:25:11.031  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.chrome.driver as /home/pablo/.m2/repository/webdriver/chromedriver/linux64/2.37/chromedriver\n' +
-    '2018-04-09 14:25:11.600  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://api.github.com/repos/mozilla/geckodriver/releases to seek [wires, geckodriver]\n' +
-    '2018-04-09 14:25:11.969  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [wires, geckodriver] is 0.20.1\n' +
-    '2018-04-09 14:25:11.972  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.gecko.driver as /home/pablo/.m2/repository/webdriver/geckodriver/linux64/0.20.1/geckodriver\n' +
-    '2018-04-09 14:25:11.991  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : ##### Start test: oneToOneChatInSessionChrome\n' +
-    '2018-04-09 14:25:11.991  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Starting browser (chrome)\n' +
-    '2018-04-09 14:25:12.670  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Navigating to https://localhost:5000/\n' +
-    '2018-04-09 14:25:14.971  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in user Teacher with mail \'teacher@gmail.com\'\n' +
-    '2018-04-09 14:25:19.298  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in successful for user Teacher\n' +
-    '2018-04-09 14:25:20.298  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher entering first course\n' +
-    '2018-04-09 14:25:21.472  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher navigating to \'Sessions\' tab\n' +
-    '2018-04-09 14:25:22.634  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher getting into first session\n' +
-    '2018-04-09 14:25:23.870  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system message ("Connected") for Teacher\n' +
-    '2018-04-09 14:25:24.452  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Starting browser (chrome)\n' +
-    '2018-04-09 14:25:24.819  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Navigating to https://localhost:5000/\n' +
-    '2018-04-09 14:25:27.552  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in user Student with mail \'student1@gmail.com\'\n' +
-    '2018-04-09 14:25:31.519  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in successful for user Student\n' +
-    '2018-04-09 14:25:36.058  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system message ("Student Imprudent has connected") for Teacher\n' +
-    '2018-04-09 14:25:36.139  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system message ("Teacher Cheater has connected") for Student\n' +
-    '2018-04-09 14:25:38.776  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking own message ("TEACHER CHAT MESSAGE") for Teacher\n' +
-    '2018-04-09 14:25:38.965  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking another user\'s message ("TEACHER CHAT MESSAGE") for Student\n' +
-    '2018-04-09 14:25:40.608  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking another user\'s message ("STUDENT CHAT MESSAGE") for Teacher\n' +
-    '2018-04-09 14:25:40.809  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking own message ("STUDENT CHAT MESSAGE") for Student\n' +
+    '2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chro' +
+    'medriver.storage.googleapis.com/ to seek [chromedriver]\n' +
+    '2018-04-09 14:25:07.389  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [c' +
+    'hromedriver] is 2.37\n' +
+    '2018-04-09 14:25:07.397  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.' +
+    'chrome.driver as /home/pablo/.m2/repository/webdriver/chromedriver/linux64/2.37/chromedriver\n' +
+    '2018-04-09 14:25:10.167  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://api.' +
+    'github.com/repos/mozilla/geckodriver/releases to seek [wires, geckodriver]\n' +
+    '2018-04-09 14:25:10.655  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [w' +
+    'ires, geckodriver] is 0.20.1\n' +
+    '2018-04-09 14:25:10.664  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.' +
+    'gecko.driver as /home/pablo/.m2/repository/webdriver/geckodriver/linux64/0.20.1/geckodriver\n' +
+    '2018-04-09 14:25:10.664  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Using URL https://lo' +
+    'calhost:5000/ to connect to openvidu-testapp\n' +
+    '2018-04-09 14:25:10.768  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chro' +
+    'medriver.storage.googleapis.com/ to seek [chromedriver]\n' +
+    '2018-04-09 14:25:11.031  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [c' +
+    'hromedriver] is 2.37\n' +
+    '2018-04-09 14:25:11.031  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.' +
+    'chrome.driver as /home/pablo/.m2/repository/webdriver/chromedriver/linux64/2.37/chromedriver\n' +
+    '2018-04-09 14:25:11.600  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://api.' +
+    'github.com/repos/mozilla/geckodriver/releases to seek [wires, geckodriver]\n' +
+    '2018-04-09 14:25:11.969  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Latest version of [w' +
+    'ires, geckodriver] is 0.20.1\n' +
+    '2018-04-09 14:25:11.972  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Exporting webdriver.' +
+    'gecko.driver as /home/pablo/.m2/repository/webdriver/geckodriver/linux64/0.20.1/geckodriver\n' +
+    '2018-04-09 14:25:11.991  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : ##### Start test: on' +
+    'eToOneChatInSessionChrome\n' +
+    '2018-04-09 14:25:11.991  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Starting browser (ch' +
+    'rome)\n' +
+    '2018-04-09 14:25:12.670  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Navigating to https:' +
+    '//localhost:5000/\n' +
+    '2018-04-09 14:25:14.971  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in user Teac' +
+    'her with mail \'teacher@gmail.com\'\n' +
+    '2018-04-09 14:25:19.298  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in successfu' +
+    'l for user Teacher\n' +
+    '2018-04-09 14:25:20.298  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher entering fir' +
+    'st course\n' +
+    '2018-04-09 14:25:21.472  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher navigating t' +
+    'o \'Sessions\' tab\n' +
+    '2018-04-09 14:25:22.634  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Teacher getting into' +
+    ' first session\n' +
+    '2018-04-09 14:25:23.870  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system mess' +
+    'age ("Connected") for Teacher\n' +
+    '2018-04-09 14:25:24.452  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Starting browser (ch' +
+    'rome)\n' +
+    '2018-04-09 14:25:24.819  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Navigating to https:' +
+    '//localhost:5000/\n' +
+    '2018-04-09 14:25:27.552  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in user Stud' +
+    'ent with mail \'student1@gmail.com\'\n' +
+    '2018-04-09 14:25:31.519  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging in successfu' +
+    'l for user Student\n' +
+    '2018-04-09 14:25:36.058  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system mess' +
+    'age ("Student Imprudent has connected") for Teacher\n' +
+    '2018-04-09 14:25:36.139  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system mess' +
+    'age ("Teacher Cheater has connected") for Student\n' +
+    '2018-04-09 14:25:38.776  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking own message' +
+    ' ("TEACHER CHAT MESSAGE") for Teacher\n' +
+    '2018-04-09 14:25:38.965  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking another use' +
+    'r\'s message ("TEACHER CHAT MESSAGE") for Student\n' +
+    '2018-04-09 14:25:40.608  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking another use' +
+    'r\'s message ("STUDENT CHAT MESSAGE") for Teacher\n' +
+    '2018-04-09 14:25:40.809  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking own message' +
+    ' ("STUDENT CHAT MESSAGE") for Student\n' +
     '2018-04-09 14:25:42.957  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out Student\n' +
-    '2018-04-09 14:25:44.760  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Student\n' +
-    '2018-04-09 14:25:45.865  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system message ("Student Imprudent has disconnected") for Teacher\n' +
+    '2018-04-09 14:25:44.760  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successf' +
+    'ul for Student\n' +
+    '2018-04-09 14:25:45.865  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Checking system mess' +
+    'age ("Student Imprudent has disconnected") for Teacher\n' +
     '2018-04-09 14:25:45.934  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out Teacher\n' +
-    '2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher\n' +
-    '2018-04-09 14:25:48.552  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : ##### Finish test: oneToOneChatInSessionChrome\n' +
-    'Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 42.52 sec - in com.fullteaching.backend.e2e.FullTeachingTestE2EChat\n' +
+    '2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successf' +
+    'ul for Teacher\n' +
+    '2018-04-09 14:25:48.552  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : ##### Finish test: o' +
+    'neToOneChatInSessionChrome\n' +
+    'Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 42.52 sec - in com.fullteaching.backend.e2e.FullTeach' +
+    'ingTestE2EChat\n' +
     '\n' +
     'Results :\n' +
     '\n' +
@@ -105,7 +142,8 @@ describe('Component: Add Project', () => {
     });
     txtFileUploader = fixture.debugElement.query(By.css('#txt-file-uploader'));
     xmlFile = new File(['<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<testsuite name="com.fullteaching.backend.e2e.FullTeachingTestE2EChat" time="36.583" tests="1" errors="0" skipped="0" failures="0">\n' +
+    '<testsuite name="com.fullteaching.backend.e2e.FullTeachingTestE2EChat" time="36.583" tests="1" errors="0" skipped="0"' +
+    ' failures="0">\n' +
     '  <properties>\n' +
     '    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>\n' +
     '    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64"/>\n' +
@@ -133,7 +171,8 @@ describe('Component: Add Project', () => {
     '    <property name="os.name" value="Linux"/>\n' +
     '    <property name="classworlds.conf" value="/usr/share/maven/bin/m2.conf"/>\n' +
     '    <property name="sun.jnu.encoding" value="UTF-8"/>\n' +
-    '    <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>\n' +
+    '    <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-' +
+    'linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>\n' +
     '    <property name="java.specification.name" value="Java Platform API Specification"/>\n' +
     '    <property name="java.class.version" value="52.0"/>\n' +
     '    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>\n' +
@@ -148,7 +187,8 @@ describe('Component: Add Project', () => {
     '    <property name="java.vm.specification.version" value="1.8"/>\n' +
     '    <property name="sun.arch.data.model" value="64"/>\n' +
     '    <property name="java.home" value="/usr/lib/jvm/java-8-openjdk-amd64/jre"/>\n' +
-    '    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=FullTeachingTestE2EChat -B test"/>\n' +
+    '    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=FullTeachingTest' +
+    'E2EChat -B test"/>\n' +
     '    <property name="java.specification.vendor" value="Oracle Corporation"/>\n' +
     '    <property name="user.language" value="en"/>\n' +
     '    <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>\n' +
@@ -156,7 +196,10 @@ describe('Component: Add Project', () => {
     '    <property name="java.version" value="1.8.0_162"/>\n' +
     '    <property name="java.ext.dirs" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext:/usr/java/packages/lib/ext"/>\n' +
     '    <property name="securerandom.source" value="file:/dev/./urandom"/>\n' +
-    '    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfr.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/classes"/>\n' +
+    '    <property name="sun.boot.class.path" value="/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm' +
+    '/java-8-openjdk-amd64/jre/lib/rt.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-op' +
+    'enjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre' +
+    '/lib/charsets.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfr.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/classes"/>\n' +
     '    <property name="java.vendor" value="Oracle Corporation"/>\n' +
     '    <property name="maven.home" value="/usr/share/maven"/>\n' +
     '    <property name="file.separator" value="/"/>\n' +
@@ -173,7 +216,7 @@ describe('Component: Add Project', () => {
     xmlFileUploader = fixture.debugElement.query(By.css('#xml-file-uploader'));
   });
 
-  it('Should create the app', () => {
+  it('Should create the component', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });

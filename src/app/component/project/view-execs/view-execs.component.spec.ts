@@ -12,4 +12,9 @@ describe('Component: View Executions', () => {
     fixture = TestBed.createComponent(ViewExecsComponent);
     component = fixture.componentInstance;
   });
+
+  it('Should create the component', () => {
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  });
 });
