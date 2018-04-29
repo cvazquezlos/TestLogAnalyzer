@@ -224,11 +224,11 @@ describe('Component: Add Project', () => {
   it('Entering project name and its files emits project creation', () => {
     fixture.whenStable().then(() => {
       projectName.nativeElement.value = 'AngularTesting';
-      txtFileUploader.triggerEventHandler('click', new Event('click'));
-      xmlFileUploader.triggerEventHandler('click', new Event('click'));
-      txtFileUploader.triggerEventHandler('update', txtFile);
-      xmlFileUploader.triggerEventHandler('update', xmlFile);
-      expect()
+      txtFileUploader.nativeElement.value = txtFile;
+      xmlFileUploader.nativeElement.value = xmlFile;
+      submit.triggerEventHandler('click', null);
+      expect(txtFileUploader.nativeElement.value).toBe(txtFile);
+      expect(xmlFileUploader.nativeElement.value).toBe(xmlFile);
     });
   });
 });

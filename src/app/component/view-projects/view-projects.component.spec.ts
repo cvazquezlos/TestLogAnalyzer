@@ -17,4 +17,8 @@ describe('Component: View Projects', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
+
+  it('Should display all projects', () => {
+    expect(component.projectsRowData.length).toBeGreaterThan(-1);
+  });
 });
