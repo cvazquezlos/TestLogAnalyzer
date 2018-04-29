@@ -86,7 +86,7 @@ export class ElasticsearchService {
   getProjectByName(name: string) {
     return this.http.get(this.baseAPIProjectsUrl + '/name/' + name).map(
       response => response as Project,
-      error => error
+      error => 'No project found with the given name.'
     );
   }
 

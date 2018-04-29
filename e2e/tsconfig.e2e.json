@@ -6,11 +6,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
-      "es2016"
+      "es2017"
     ],
-    "outDir": "../dist/out-tsc-e2e",
+    "outDir": "../out-tsc/e2e",
     "module": "commonjs",
-    "target": "es6",
+    "target": "es5",
     "types":[
       "jasmine",
       "node"

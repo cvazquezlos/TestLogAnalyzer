@@ -16,7 +16,8 @@
         <form>
           <ng-template matStepLabel>Fill out the name of the project</ng-template>
           <mat-form-field>
-            <input matInput
+            <input id="project-name"
+                   matInput
                    maxlength="20"
                    name="Name of the project"
                    onclick="this.select()"
@@ -36,6 +37,7 @@
                 <p>Choose the file which contains the logs of the execution...</p>
                 <td-file-upload #txtFileUpload
                                 accept=".txt"
+                                id="txt-file-uploader"
                                 multiple
                                 required
                                 (cancel)="cancel()"
@@ -57,6 +59,7 @@
                 <p>Choose the file which contains the Surfire data...</p>
                 <td-file-upload #xmlFileUpload
                                 accept=".xml"
+                                id="xml-file-uploader"
                                 multiple
                                 required
                                 (cancel)="cancel()"
@@ -137,7 +140,7 @@
           </div>
           <ng-template #hideSave>
             <div layout="row" layout-align="center center">
-              <button color="accent" mat-raised-button (click)="save()">Save
+              <button id="submit" color="accent" mat-raised-button (click)="save()">Save
               </button>
             </div>
           </ng-template>

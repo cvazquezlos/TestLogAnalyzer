@@ -5,20 +5,15 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "target": "es5",
     "lib": [
-      "es2016",
+      "es2017",
       "dom"
     ],
     "outDir": "../out-tsc/app",
-    "target": "es5",
     "module": "es2015",
     "baseUrl": "",
-    "types": [
-      "node"
-    ],
-    "typeRoots": [
-      "../node_modules/@types"
-    ]
+    "types": []
   },
   "exclude": [
     "test.ts",

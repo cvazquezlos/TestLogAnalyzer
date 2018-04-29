@@ -20,31 +20,26 @@ import elastest.loganalyzer.es.client.EsConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = {DiffMatchPatchRest.class, EsConfiguration.class})
+@ContextConfiguration(classes = { DiffMatchPatchRest.class, EsConfiguration.class })
 @WebAppConfiguration
 public class DiffMatchPatchRestTest {
-	
+
 	private MockMvc mockMvc;
-	
+
 	@Autowired
 	private WebApplicationContext wac;
-	
+
 	@Before
 	public void pre() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
-	
+
 	@Test
 	public void get() throws Exception {
-		String diff1 = "sadds12e1dsaasdasdadsasdasd";
-		String diff2 = "asddasasdadsadsadsdasdasdsadasadsadsads";
+		String diff1 = "This is the first text to probe the diff algorithm.";
+		String diff2 = "This is the 2º text to test the diff algorithm provided by Google.";
 		String diffs = "{text1: " + diff1 + ", text2: " + diff2 + "}";
-		System.out.println(diffs);
-		mockMvc.perform(
-				post("/diff")
-					.accept(MediaType.APPLICATION_JSON)
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(diffs))
-				.andExpect(status().isOk());
+		mockMvc.perform(post("/api/diff").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
+				.content(diffs)).andExpect(status().isOk());
 	}
 }
