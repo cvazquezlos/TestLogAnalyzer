@@ -27,7 +27,7 @@ public class Execution {
 
 	public Execution() {
 	}
-	
+
 	public Execution(int id) {
 		super();
 		this.id = id;
@@ -57,96 +57,96 @@ public class Execution {
 		this.time_elapsed = time_elapsed;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public int getEntries() {
 		return entries;
-	}
-
-	public void setEntries(int entries) {
-		this.entries = entries;
 	}
 
 	public int getErrors() {
 		return errors;
 	}
 
-	public void setErrors(int errors) {
-		this.errors = errors;
-	}
-
 	public int getFailures() {
 		return failures;
-	}
-
-	public void setFailures(int failures) {
-		this.failures = failures;
 	}
 
 	public int getFlakes() {
 		return flakes;
 	}
 
-	public void setFlakes(int flakes) {
-		this.flakes = flakes;
+	public int getId() {
+		return id;
 	}
 
 	public String getProject() {
 		return project;
 	}
 
-	public void setProject(String project) {
-		this.project = project;
-	}
-
 	public int getSkipped() {
 		return skipped;
-	}
-
-	public void setSkipped(int skipped) {
-		this.skipped = skipped;
 	}
 
 	public String getStart_date() {
 		return start_date;
 	}
 
-	public void setStart_date(String start_date) {
-		this.start_date = start_date;
-	}
-
 	public String getStatus() {
 		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public int getTests() {
-		return tests;
-	}
-
-	public void setTests(int tests) {
-		this.tests = tests;
 	}
 
 	public List<ReportTestCase> getTestcases() {
 		return testcases;
 	}
 
-	public void setTestcases(List<ReportTestCase> testcases) {
-		this.testcases = testcases;
+	public int getTests() {
+		return tests;
 	}
 
 	public float getTime_elapsed() {
 		return time_elapsed;
+	}
+
+	public void setEntries(int entries) {
+		this.entries = entries;
+	}
+
+	public void setErrors(int errors) {
+		this.errors = errors;
+	}
+
+	public void setFailures(int failures) {
+		this.failures = failures;
+	}
+
+	public void setFlakes(int flakes) {
+		this.flakes = flakes;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setProject(String project) {
+		this.project = project;
+	}
+
+	public void setSkipped(int skipped) {
+		this.skipped = skipped;
+	}
+
+	public void setStart_date(String start_date) {
+		this.start_date = start_date;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setTestcases(List<ReportTestCase> testcases) {
+		this.testcases = testcases;
+	}
+
+	public void setTests(int tests) {
+		this.tests = tests;
 	}
 
 	public void setTime_elapsed(float time_elapsed) {
@@ -157,7 +157,7 @@ public class Execution {
 	public String toString() {
 		return "Execution [id=" + id + ", entries=" + entries + ", errors=" + errors + ", failures=" + failures
 				+ ", flakes=" + flakes + ", project=" + project + ", skipped=" + skipped + ", start_date=" + start_date
-				+ ", status=" + status + ", tests=" + tests + ", testcases=" + testcases 
-				+ ", time_elapsed=" + time_elapsed + "]";
+				+ ", status=" + status + ", tests=" + tests + ", testcases=" + testcases + ", time_elapsed="
+				+ time_elapsed + "]";
 	}
 }

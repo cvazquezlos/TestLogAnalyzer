@@ -23,11 +23,23 @@ public class ExecutionRest {
 	@Autowired
 	private LogService logService;
 
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Execution> deleteById(@PathVariable int id) {
+		Execution execution = executionService.findOne(id);
+		if (execution != null) {
+			logService.deleteIterable(logService.findByTestOrderByIdAsc(String.format("%02d", execution.getId())));
+			executionService.delete(execution);
+			return new ResponseEntity<>(execution, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
 	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Execution> getById(@PathVariable int id) {
 		Execution execution = executionService.findOne(id);
 		if (execution != null) {
-			return new ResponseEntity<>(execution, HttpStatus.OK);	
+			return new ResponseEntity<>(execution, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -37,19 +49,7 @@ public class ExecutionRest {
 	public ResponseEntity<List<Execution>> getByProject(@PathVariable String project) {
 		List<Execution> executions = executionService.findByProjectOrderById(project);
 		if (executions.size() > 0) {
-			return new ResponseEntity<>(executions, HttpStatus.OK);	
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-	}
-
-	@RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Execution> deleteById(@PathVariable int id) {
-		Execution execution = executionService.findOne(id);
-		if (execution != null) {
-			logService.deleteIterable(logService.findByTestOrderByIdAsc(String.format("%02d", execution.getId())));
-			executionService.delete(execution);
-			return new ResponseEntity<>(execution, HttpStatus.OK);
+			return new ResponseEntity<>(executions, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}

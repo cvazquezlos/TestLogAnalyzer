@@ -20,30 +20,11 @@ public class ProjectRepositoryTest {
 
 	@Autowired
 	private ProjectRepository repository;
-	
+
 	@Before
 	public void pre() {
 	}
-	
-	@Test
-	public void shouldReturnAddedId() {
-		// Given
-		Project p1 = new Project(99999999, "JUnit4ClassTestingTLA1", 2, -1);
-		Project p2 = new Project(99999998, "JUnit4ClassTestingTLA2", 6, -1);
-		Project p3 = new Project(99999997, "JUnit4ClassTestingTLA3", 1, -1);
-		// When
-		Project returnedValue1 = repository.save(p1);
-		Project returnedValue2 = repository.save(p2);
-		Project returnedValue3 = repository.save(p3);
-		// Then
-		assertEquals(returnedValue1.toString(), p1.toString());
-		assertEquals(returnedValue2.toString(), p2.toString());
-		assertEquals(returnedValue3.toString(), p3.toString());
-		repository.delete(p1);
-		repository.delete(p2);
-		repository.delete(p3);
-	}
-	
+
 	@Test
 	public void shouldCountSuccessfully() {
 		// Given: Not nullable accounting.
@@ -52,13 +33,32 @@ public class ProjectRepositoryTest {
 		// Then
 		assertNotNull(count);
 	}
-	
+
+	@Test
+	public void shouldDontExist() {
+		// Given
+		Project p1 = new Project(99999998, "JUnit4ClassTestingTLA2", 6);
+		Project p2 = new Project(99999997, "JUnit4ClassTestingTLA3", 1);
+		int id1 = 99999998;
+		int id2 = 99999997;
+		// When
+		repository.save(p1);
+		repository.save(p2);
+		repository.delete(p1);
+		repository.delete(p2);
+		boolean v1 = repository.exists(id1);
+		boolean v2 = repository.exists(id2);
+		// Then
+		assertFalse(v1);
+		assertFalse(v2);
+	}
+
 	@Test
 	public void shouldFindAnyValue() {
 		// Given
-		Project p1 = new Project(99999999, "JUnit4ClassTestingTLA1", 2, -1);
-		Project p2 = new Project(99999998, "JUnit4ClassTestingTLA2", 6, -1);
-		Project p3 = new Project(99999997, "JUnit4ClassTestingTLA3", 1, -1);
+		Project p1 = new Project(99999999, "JUnit4ClassTestingTLA1", 2);
+		Project p2 = new Project(99999998, "JUnit4ClassTestingTLA2", 6);
+		Project p3 = new Project(99999997, "JUnit4ClassTestingTLA3", 1);
 		String project = "JUnit4ClassTestingTLA1";
 		repository.save(p1);
 		repository.save(p2);
@@ -73,23 +73,23 @@ public class ProjectRepositoryTest {
 		repository.delete(p2);
 		repository.delete(p3);
 	}
-	
+
 	@Test
-	public void shouldDontExist() {
+	public void shouldReturnAddedId() {
 		// Given
-		Project p1 = new Project(99999998, "JUnit4ClassTestingTLA2", 6, -1);
-		Project p2 = new Project(99999997, "JUnit4ClassTestingTLA3", 1, -1);
-		int id1 = 99999998;
-		int id2 = 99999997;
+		Project p1 = new Project(99999999, "JUnit4ClassTestingTLA1", 2);
+		Project p2 = new Project(99999998, "JUnit4ClassTestingTLA2", 6);
+		Project p3 = new Project(99999997, "JUnit4ClassTestingTLA3", 1);
 		// When
-		repository.save(p1);
-		repository.save(p2);
+		Project returnedValue1 = repository.save(p1);
+		Project returnedValue2 = repository.save(p2);
+		Project returnedValue3 = repository.save(p3);
+		// Then
+		assertEquals(returnedValue1.toString(), p1.toString());
+		assertEquals(returnedValue2.toString(), p2.toString());
+		assertEquals(returnedValue3.toString(), p3.toString());
 		repository.delete(p1);
 		repository.delete(p2);
-		boolean v1 = repository.exists(id1);
-		boolean v2 = repository.exists(id2);
-		// Then
-		assertFalse(v1);
-		assertFalse(v2);
+		repository.delete(p3);
 	}
 }

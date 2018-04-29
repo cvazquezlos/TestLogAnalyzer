@@ -29,9 +29,10 @@ public class ExecutionRestTest {
 	@Autowired
 	private WebApplicationContext wac;
 
-	@Before
-	public void pre() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+	@Test
+	public void deleteById() throws Exception {
+		int id = -1;
+		mockMvc.perform(delete("/api/executions/id/").param("id", String.valueOf(id))).andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -46,9 +47,8 @@ public class ExecutionRestTest {
 		mockMvc.perform(get("/api/executions/project/").param("project", project)).andExpect(status().isNotFound());
 	}
 
-	@Test
-	public void deleteById() throws Exception {
-		int id = -1;
-		mockMvc.perform(delete("/api/executions/id/").param("id", String.valueOf(id))).andExpect(status().isNotFound());
+	@Before
+	public void pre() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 }
