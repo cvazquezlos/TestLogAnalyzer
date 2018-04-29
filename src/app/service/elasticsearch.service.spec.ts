@@ -22,14 +22,14 @@ describe('Service: Elasticsearch', () => {
     httpMock.verify();
   });
 
-  it('Should create the service', inject([ElasticsearchService], (service: ElasticsearchService) => {
-    expect(service).toBeTruthy();
+  it('Should create the service', inject([ElasticsearchService], (s: ElasticsearchService) => {
+    expect(s).toBeTruthy();
   }));
 
   it('Should return the number of the projects', () => {
     service.getCountOfProjects().subscribe(
       response => {
-        expect(typeof response).toEqual("number");
+        expect(typeof response).toEqual('number');
       }
     );
   });
@@ -61,8 +61,8 @@ describe('Service: Elasticsearch', () => {
     const response = await service.postProject(project);
     expect(response).toBe(99999999);
     service.deleteProjectById(99999999).subscribe(
-      response => {
-        expect(response).toBe(project);
+      r => {
+        expect(r).toBe(project);
       }
     );
   });
