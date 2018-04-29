@@ -1,4 +1,4 @@
-import {TestBed, inject, getTestBed, async} from '@angular/core/testing';
+import {getTestBed, inject, TestBed} from '@angular/core/testing';
 import {ElasticsearchService} from './elasticsearch.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {Project} from '../model/project.model';
@@ -44,7 +44,8 @@ describe('Service: Elasticsearch', () => {
 
   it('Should return an error when calling a no existing project', () => {
     service.getProjectByName('JasmineTestingName').subscribe(
-      () => {},
+      () => {
+      },
       error => {
         expect(error).toBe('No project found with the given name.')
       }
@@ -67,7 +68,7 @@ describe('Service: Elasticsearch', () => {
     );
   });
 
-  it('Should return a diff', async() => {
+  it('Should return a diff', async () => {
     const text1 = 'This is a demo text';
     const text2 = 'Thise are a demou test';
     const response = await service.postDiff(text1, text2);
