@@ -15,8 +15,8 @@ public class Log {
 	private String message;
 	private String method;
 	private String project;
-	private String thread;
 	private String test;
+	private String thread;
 	private String timestamp;
 
 	public Log() {
@@ -32,8 +32,8 @@ public class Log {
 		this.message = message;
 		this.method = "-";
 		this.project = project;
-		this.thread = "-";
 		this.test = test;
+		this.thread = "-";
 		this.timestamp = "-";
 	}
 
@@ -41,76 +41,76 @@ public class Log {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getLevel() {
 		return level;
-	}
-
-	public void setLevel(String level) {
-		this.level = level;
 	}
 
 	public String getLog() {
 		return log;
 	}
 
-	public void setLog(String log) {
-		this.log = log;
-	}
-
 	public String getLogger() {
 		return logger;
-	}
-
-	public void setLogger(String logger) {
-		this.logger = logger;
 	}
 
 	public String getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
 	public String getMethod() {
 		return method;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
 	}
 
 	public String getProject() {
 		return project;
 	}
 
-	public void setProject(String project) {
-		this.project = project;
+	public String getTest() {
+		return test;
 	}
 
 	public String getThread() {
 		return thread;
 	}
 
-	public void setThread(String thread) {
-		this.thread = thread;
+	public String getTimestamp() {
+		return timestamp;
 	}
 
-	public String getTest() {
-		return test;
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	public void setLog(String log) {
+		this.log = log;
+	}
+
+	public void setLogger(String logger) {
+		this.logger = logger;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public void setProject(String project) {
+		this.project = project;
 	}
 
 	public void setTest(String test) {
 		this.test = test;
 	}
 
-	public String getTimestamp() {
-		return timestamp;
+	public void setThread(String thread) {
+		this.thread = thread;
 	}
 
 	public void setTimestamp(String timestamp) {
@@ -120,7 +120,7 @@ public class Log {
 	@Override
 	public String toString() {
 		return "Log [id=" + id + ", level=" + level + ", log=" + log + ", logger=" + logger + ", message=" + message
-				+ ", method=" + method + ", project=" + project + ", thread=" + thread + ", test="
-				+ test + ", timestamp=" + timestamp + "]";
+				+ ", method=" + method + ", project=" + project + ", test=" + test + ", thread=" + thread
+				+ ", timestamp=" + timestamp + "]";
 	}
 }

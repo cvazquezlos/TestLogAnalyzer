@@ -24,11 +24,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class EsConfiguration {
 
 	@Bean
-	public NodeBuilder nodeBuilder() {
-		return new NodeBuilder();
-	}
-
-	@Bean
 	public ElasticsearchOperations elasticsearchTemplate() throws IOException {
 		final Path tmpDir = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")),
 				"elasticsearch_data");
@@ -36,5 +31,10 @@ public class EsConfiguration {
 				.put("path.data", tmpDir.toAbsolutePath().toString()).put("path.home", "C:\\elasticsearch-2.4.6");
 		return new ElasticsearchTemplate(
 				nodeBuilder().local(true).settings(elasticsearchSettings.build()).node().client());
+	}
+
+	@Bean
+	public NodeBuilder nodeBuilder() {
+		return new NodeBuilder();
 	}
 }

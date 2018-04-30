@@ -35,7 +35,6 @@ export class AddProjectComponent implements OnInit {
     this.project.name = '';
     this.elasticsearchService.getCountOfProjects().subscribe(response => this.project.id = response);
     this.project.num_execs = 0;
-    this.project.recently_deleted = -1;
   }
 
   cancel() {
@@ -50,8 +49,6 @@ export class AddProjectComponent implements OnInit {
 
   async save() {
     this.code = 1;
-    await this.elasticsearchService.postProject(this.project);
-    await this.elasticsearchService.postFileProject(this.project.name);
     switch (this.currentTab) {
       case 0:
         this.code = 2;
@@ -62,19 +59,19 @@ export class AddProjectComponent implements OnInit {
         for (let i = 0; i < this.filesXml.length; i++) {
           files.push(this.filesXml[i]);
         }
-        await this.elasticsearchService.postFileByUpload(files);
+        await this.elasticsearchService.postFile(files, this.project.name);
         break;
       case 1:
-        this.elasticsearchService.postFileByUrl(this.urlTxt).subscribe(
-          a => {
-            this.code = 2;
-            this.elasticsearchService.postFileByUrl(this.urlXml).subscribe(
-              b => b,
-              error => console.log(error)
-            );
-          },
-          error => console.log(error)
-        );
+        const logs = await this.elasticsearchService.downloadResource(this.urlTxt);
+        const l: File = new File([logs], "logs.txt", {
+          type: 'text/plain'
+        });
+        const surefire = await this.elasticsearchService.downloadResource(this.urlXml);
+        const s: File = new File([surefire], "surefire.xml", {
+          type: 'text/plain'
+        });
+        const filesByUrl: File[] = [l, s];
+        await this.elasticsearchService.postFile(files, this.project.name);
         break;
     }
   }

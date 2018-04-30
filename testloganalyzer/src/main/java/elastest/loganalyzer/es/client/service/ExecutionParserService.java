@@ -32,7 +32,30 @@ public class ExecutionParserService {
 		this.esProjectService = esProjectService;
 	}
 
-	public String parse(List<String> dirtyData, Project project, int lastId, String testNo) throws Exception, IOException {
+	public List<String> getStreamByFile(MultipartFile file) throws IOException, Exception {
+		List<String> data = new ArrayList<>(
+				Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
+		return data;
+	}
+
+	public List<String> getStreamByUrl(String url) throws IOException {
+		@SuppressWarnings("resource")
+		ApplicationContext appContext = new ClassPathXmlApplicationContext();
+		Resource resource = appContext.getResource(url);
+
+		InputStream is = resource.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		List<String> data = new ArrayList<>();
+		String line;
+		while ((line = br.readLine()) != null) {
+			data.add(line);
+		}
+		br.close();
+		return data;
+	}
+
+	public String parse(List<String> dirtyData, Project project, int lastId, String testNo)
+			throws Exception, IOException {
 		List<Log> logs = new ArrayList<Log>();
 		ArrayList<String> data = new ArrayList<>();
 		for (int i = 0; i < dirtyData.size(); i++) {
@@ -40,9 +63,7 @@ public class ExecutionParserService {
 		}
 
 		int num_execs = project.getNum_execs();
-		int recently_deleted = project.getRecently_deleted();
 		project.setNum_execs(num_execs + 1);
-		project.setRecently_deleted(recently_deleted);
 		esProjectService.save(project);
 
 		data.add(0, "[INFO] Building project and starting unit test number " + testNo + "...");
@@ -119,27 +140,5 @@ public class ExecutionParserService {
 		}
 		esLogService.save(logs);
 		return testNumber;
-	}
-
-	public List<String> getStreamByUrl(String url) throws IOException {
-		@SuppressWarnings("resource")
-		ApplicationContext appContext = new ClassPathXmlApplicationContext();
-		Resource resource = appContext.getResource(url);
-
-		InputStream is = resource.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		List<String> data = new ArrayList<>();
-		String line;
-		while ((line = br.readLine()) != null) {
-			data.add(line);
-		}
-		br.close();
-		return data;
-	}
-
-	public List<String> getStreamByFile(MultipartFile file) throws IOException, Exception {
-		List<String> data = new ArrayList<>(
-				Arrays.asList((new String(file.getBytes(), "UTF-8")).split(System.getProperty("line.separator"))));
-		return data;
 	}
 }

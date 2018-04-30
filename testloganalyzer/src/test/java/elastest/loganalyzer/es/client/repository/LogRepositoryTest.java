@@ -27,12 +27,76 @@ public class LogRepositoryTest {
 	}
 
 	@Test
+	public void shouldDeleteById() {
+		// Given
+		Log l1 = new Log("99999998",
+				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA",
+				"01");
+		String id = "99999998";
+		repository.save(l1);
+		// When
+		Log returnedValue = repository.findOne(id);
+		// Then
+		assertEquals(returnedValue.toString(), l1.toString());
+		repository.delete(l1);
+	}
+
+	@Test
+	public void shouldDontExist() {
+		// Given
+		Log l1 = new Log("99999998",
+				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA",
+				"01");
+		Log l2 = new Log("99999999",
+				"2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
+				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
+		String id1 = "99999998";
+		String id2 = "99999999";
+		// When
+		repository.save(l1);
+		repository.save(l2);
+		repository.delete(l1);
+		repository.delete(l2);
+		boolean v1 = repository.exists(id1);
+		boolean v2 = repository.exists(id2);
+		// Then
+		assertFalse(v1);
+		assertFalse(v2);
+	}
+
+	@Test
+	public void shouldFindAnyValueByTabAndProject() {
+		// Given
+		Log l1 = new Log("99999998",
+				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA",
+				"01");
+		Log l2 = new Log("99999999",
+				"2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
+				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
+		String project = "JUnit4ClassTestingTLA";
+		repository.save(l1);
+		repository.save(l2);
+		// When
+		List<Log> logs = repository.findByProject(project);
+		// Then
+		assertNotNull(logs);
+		assertEquals(logs.size(), 2);
+		repository.delete(l1);
+		repository.delete(l2);
+	}
+
+	@Test
 	public void shouldReturnAddedId() {
 		// Given
 		Log l1 = new Log("99999998",
 				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
-		Log l2 = new Log("99999999", "2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA",
+				"01");
+		Log l2 = new Log("99999999",
+				"2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
 				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
 		// When
 		Log returnedValue1 = repository.save(l1);
@@ -43,14 +107,16 @@ public class LogRepositoryTest {
 		repository.delete(l1);
 		repository.delete(l2);
 	}
-	
+
 	@Test
 	public void shouldReturnNullByIncompleteData() {
 		// Given
 		Log l1 = new Log("99999998",
 				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
-		Log l2 = new Log("99999999", "2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
+				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA",
+				"01");
+		Log l2 = new Log("99999999",
+				"2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
 				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
 		// When
 		repository.save(l1);
@@ -68,62 +134,5 @@ public class LogRepositoryTest {
 		assertEquals("-", l2.getTimestamp());
 		repository.delete(l1);
 		repository.delete(l2);
-	}
-	
-	@Test
-	public void shouldFindAnyValueByTabAndProject() {
-		// Given
-		Log l1 = new Log("99999998",
-				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
-		Log l2 = new Log("99999999", "2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
-				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
-		String project = "JUnit4ClassTestingTLA";
-		repository.save(l1);
-		repository.save(l2);
-		// When
-		List<Log> logs = repository.findByProject(project);
-		// Then
-		assertNotNull(logs);
-		assertEquals(logs.size(), 2);
-		repository.delete(l1);
-		repository.delete(l2);
-	}
-	
-	@Test
-	public void shouldDeleteById() {
-		// Given
-		Log l1 = new Log("99999998",
-				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
-		String id = "99999998";
-		repository.save(l1);
-		// When
-		Log returnedValue = repository.findOne(id);
-		// Then
-		assertEquals(returnedValue.toString(), l1.toString());
-		repository.delete(l1);
-	}
-	
-	@Test
-	public void shouldDontExist() {
-		// Given
-		Log l1 = new Log("99999998",
-				"2018-04-09 14:25:06.823  INFO   --- [           main] io.github.bonigarcia.wdm.BrowserManager  : Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]",
-				"Reading https://chromedriver.storage.googleapis.com/ to seek [chromedriver]", "JUnit4ClassTestingTLA", "01");
-		Log l2 = new Log("99999999", "2018-04-09 14:25:47.419  INFO   --- [           main] c.f.backend.e2e.FullTeachingTestE2E      : Logging out successful for Teacher",
-				"Logging out successful for Teacher", "JUnit4ClassTestingTLA", "01");
-		String id1 = "99999998";
-		String id2 = "99999999";
-		// When
-		repository.save(l1);
-		repository.save(l2);
-		repository.delete(l1);
-		repository.delete(l2);
-		boolean v1 = repository.exists(id1);
-		boolean v2 = repository.exists(id2);
-		// Then
-		assertFalse(v1);
-		assertFalse(v2);
 	}
 }

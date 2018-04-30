@@ -31,11 +31,6 @@ public class ProjectRestTest {
 	@Autowired
 	private WebApplicationContext wac;
 
-	@Before
-	public void pre() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	}
-
 	@Test
 	public void getAll() throws Exception {
 		mockMvc.perform(get("/api/projects"));
@@ -53,5 +48,10 @@ public class ProjectRestTest {
 				"{ \"id\": 999999999, \"name\": \"JUnit4ProjectTestingLTA\", \"num_execs\": 0, \"recently_deleted\": -1}"))
 				.andExpect(status().isCreated());
 		mockMvc.perform(delete("/api/projects/id/").param("id", Integer.toString(999999999)));
+	}
+
+	@Before
+	public void pre() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 }

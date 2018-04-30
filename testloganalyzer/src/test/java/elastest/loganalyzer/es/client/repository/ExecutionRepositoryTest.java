@@ -27,42 +27,11 @@ public class ExecutionRepositoryTest {
 
 	@Autowired
 	private ExecutionRepository repository;
-	// private final Logger log = LoggerFactory.getLogger(ExecutionRepositoryTest.class);
+	// private final Logger log =
+	// LoggerFactory.getLogger(ExecutionRepositoryTest.class);
 
 	@Before
 	public void pre() {
-	}
-
-	@Test
-	public void shouldReturnAddedId() {
-		// Given
-		Execution e1 = new Execution(99999998, 201, 23, 2, 34, "JUnit4ClassTestingTLA", 0, new Date().toString(),
-				"BUILD SUCCESS", 3, new ArrayList<ReportTestCase>(), (float) 20.3);
-		Execution e2 = new Execution(99999999, 43, 3, 4, 0, "JUnit4ClassTestingTLA", 3, new Date().toString(),
-				"BUILD FAILURE", 2, new ArrayList<ReportTestCase>(), (float) 603.2);
-		// When
-		Execution returnedValue1 = repository.save(e1);
-		Execution returnedValue2 = repository.save(e2);
-		// Then
-		assertEquals(returnedValue1, e1);
-		assertEquals(returnedValue2, e2);
-		repository.delete(e1);
-		repository.delete(e2);
-	}
-
-	@Test
-	public void shouldFindAnyValueByProject() {
-		// Given
-		Execution e1 = new Execution(99999997, 123, 2, 27, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
-				"BUILD UNKNOWN", 3, new ArrayList<ReportTestCase>(), (float) 0.3);
-		String project = "JUnit4ClassTestingTLA";
-		// When
-		repository.save(e1);
-		List<Execution> executions = repository.findByProject(project);
-		// Then
-		assertNotNull(executions);
-		assertEquals(executions.size(), 1);
-		repository.delete(e1);
 	}
 
 	@Test
@@ -72,29 +41,6 @@ public class ExecutionRepositoryTest {
 		long count = repository.count();
 		// Then
 		assertNotNull(count);
-	}
-
-	@Test
-	public void shouldFindAnyValueByProjectAndTab() {
-		// Given
-		Execution e1 = new Execution(99999996, 123, 13, 2, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
-				"BUILD UNKNOWN", 3, new ArrayList<ReportTestCase>(), (float) 0.3);
-		Execution e2 = new Execution(99999995, 34, 20, 59, 6, "JUnit4ClassTestingTLA", 3, new Date().toString(),
-				"BUILD UNKNOWN", 3, new ArrayList<ReportTestCase>(), (float) 80.6);
-		Execution e3 = new Execution(99999994, 305, 45, 30, 2, "JUnit4ClassTestingTLA", 0, new Date().toString(),
-				"BUILD UNKNOWN", 3, new ArrayList<ReportTestCase>(), (float) 2.0);
-		String project = "JUnit4ClassTestingTLA";
-		// When
-		repository.save(e1);
-		repository.save(e2);
-		repository.save(e3);
-		List<Execution> executions = repository.findByProjectOrderById(project);
-		// Then
-		assertNotNull(executions);
-		assertEquals(executions.size(), 3);
-		repository.delete(e1);
-		repository.delete(e2);
-		repository.delete(e3);
 	}
 
 	@Test
@@ -135,5 +81,60 @@ public class ExecutionRepositoryTest {
 		// Then
 		assertFalse(v1);
 		assertFalse(v2);
+	}
+
+	@Test
+	public void shouldFindAnyValueByProject() {
+		// Given
+		Execution e1 = new Execution(99999997, 123, 2, 27, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
+				"BUILD UNKNOWN", 3, new ArrayList<ReportTestCase>(), (float) 0.3);
+		String project = "JUnit4ClassTestingTLA";
+		// When
+		repository.save(e1);
+		List<Execution> executions = repository.findByProject(project);
+		// Then
+		assertNotNull(executions);
+		assertEquals(executions.size(), 1);
+		repository.delete(e1);
+	}
+
+	@Test
+	public void shouldFindAnyValueByProjectAndTab() {
+		// Given
+		Execution e1 = new Execution(99999996, 123, 13, 2, 1, "JUnit4ClassTestingTLA", 2, new Date().toString(),
+				"BUILD UNKNOWN", 3, new ArrayList<ReportTestCase>(), (float) 0.3);
+		Execution e2 = new Execution(99999995, 34, 20, 59, 6, "JUnit4ClassTestingTLA", 3, new Date().toString(),
+				"BUILD UNKNOWN", 3, new ArrayList<ReportTestCase>(), (float) 80.6);
+		Execution e3 = new Execution(99999994, 305, 45, 30, 2, "JUnit4ClassTestingTLA", 0, new Date().toString(),
+				"BUILD UNKNOWN", 3, new ArrayList<ReportTestCase>(), (float) 2.0);
+		String project = "JUnit4ClassTestingTLA";
+		// When
+		repository.save(e1);
+		repository.save(e2);
+		repository.save(e3);
+		List<Execution> executions = repository.findByProjectOrderById(project);
+		// Then
+		assertNotNull(executions);
+		assertEquals(executions.size(), 3);
+		repository.delete(e1);
+		repository.delete(e2);
+		repository.delete(e3);
+	}
+
+	@Test
+	public void shouldReturnAddedId() {
+		// Given
+		Execution e1 = new Execution(99999998, 201, 23, 2, 34, "JUnit4ClassTestingTLA", 0, new Date().toString(),
+				"BUILD SUCCESS", 3, new ArrayList<ReportTestCase>(), (float) 20.3);
+		Execution e2 = new Execution(99999999, 43, 3, 4, 0, "JUnit4ClassTestingTLA", 3, new Date().toString(),
+				"BUILD FAILURE", 2, new ArrayList<ReportTestCase>(), (float) 603.2);
+		// When
+		Execution returnedValue1 = repository.save(e1);
+		Execution returnedValue2 = repository.save(e2);
+		// Then
+		assertEquals(returnedValue1, e1);
+		assertEquals(returnedValue2, e2);
+		repository.delete(e1);
+		repository.delete(e2);
 	}
 }

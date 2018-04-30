@@ -114,42 +114,25 @@ export class ElasticsearchService {
     );
   }
 
-  async postFileByUpload(files: File[]) {
+  async postFile(files: File[], project: string) {
     try {
-      // https://medium.com/@ahmedhamedTN/multiple-files-upload-with-angular-2-express-and-multer-1d951a32a1b3
       const body = new FormData();
       for (let i = 0; i < files.length; i++) {
         body.append('files', files[i]);
       }
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'application/pdf');
-      const response = await this.http.post(this.baseAPIFilesUrl + '/file', body, {headers: headers}).toPromise();
+      let composedUrl = this.baseAPIFilesUrl + '/' + project;
+      const response = await this.http.post(composedUrl, body, {headers: headers}).toPromise();
       return response;
     } catch (error) {
       console.log(error);
     }
   }
 
-  postFileByUrl(url: string) {
-    const body = JSON.stringify(url);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'text/plain');
-    return this.http.post(this.baseAPIFilesUrl + '/url', body, {headers: headers}).map(
-      response => response,
-      error => error
-    );
-  }
-
-  async postFileProject(project: string) {
-    try {
-      const body = JSON.stringify(project);
-      const headers = new HttpHeaders();
-      headers.append('Content-Type', 'text/plain');
-      const response = this.http.post(this.baseAPIFilesUrl, body, {headers: headers}).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
+  async downloadResource(url): Promise<Blob> {
+    const file = await this.http.get<Blob>(url, {responseType: 'blob' as 'json'}).toPromise();
+    return file;
   }
 
   async postDiff(text1: string, text2: string) {

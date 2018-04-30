@@ -28,11 +28,6 @@ public class LogRestTest {
 	@Autowired
 	private WebApplicationContext wac;
 
-	@Before
-	public void pre() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	}
-
 	@Test
 	public void getByLoggerTypeA() throws Exception {
 		String logger = "JUnit4LoggerTestingLTA";
@@ -51,16 +46,16 @@ public class LogRestTest {
 		mockMvc.perform(get("/api/logs/logger/").param("logger", logger).param("project", project)
 				.param("test", String.valueOf(test)).param("method", method)).andExpect(status().isNotFound());
 	}
-	
+
 	@Test
 	public void getByTestTypeA() throws Exception {
 		String test = "JUnit4TestTestingLTA";
 		String project = "JUnit4ProjectTestingLTA";
 		boolean classes = true;
-		mockMvc.perform(get("/api/logs/logger/").param("test", test).param("project", project)
-				.param("classes", String.valueOf(classes))).andExpect(status().isNotFound());
+		mockMvc.perform(get("/api/logs/logger/").param("test", test).param("project", project).param("classes",
+				String.valueOf(classes))).andExpect(status().isNotFound());
 	}
-	
+
 	@Test
 	public void getByTestTypeB() throws Exception {
 		String test = "JUnit4TestTestingLTA";
@@ -68,9 +63,10 @@ public class LogRestTest {
 		boolean classes = false;
 		boolean maven = true;
 		mockMvc.perform(get("/api/logs/logger/").param("test", test).param("project", project)
-				.param("classes", String.valueOf(classes)).param("maven", String.valueOf(maven))).andExpect(status().isNotFound());
+				.param("classes", String.valueOf(classes)).param("maven", String.valueOf(maven)))
+				.andExpect(status().isNotFound());
 	}
-	
+
 	@Test
 	public void getByTestTypeC() throws Exception {
 		String test = "JUnit4TestTestingLTA";
@@ -78,6 +74,12 @@ public class LogRestTest {
 		boolean classes = false;
 		boolean maven = false;
 		mockMvc.perform(get("/api/logs/logger/").param("test", test).param("project", project)
-				.param("classes", String.valueOf(classes)).param("maven", String.valueOf(maven))).andExpect(status().isNotFound());
+				.param("classes", String.valueOf(classes)).param("maven", String.valueOf(maven)))
+				.andExpect(status().isNotFound());
+	}
+
+	@Before
+	public void pre() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 }

@@ -1,12 +1,12 @@
 package elastest.loganalyzer.es.client.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import elastest.loganalyzer.es.client.model.Log;
 import elastest.loganalyzer.es.client.repository.LogRepository;
-
-import java.util.List;
 
 @Service
 public class LogService {
@@ -25,7 +25,7 @@ public class LogService {
 	public Iterable<Log> findAll() {
 		return repository.findAll();
 	}
-
+	
 	public List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(String logger,
 			String project, String test, String method) {
 		return repository.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project, test,
@@ -41,14 +41,14 @@ public class LogService {
 		return repository.findByProject(project);
 	}
 
-	public List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String project, String test,
-			String partialMessage) {
-		return repository.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(project, test, partialMessage);
-	}
-
 	public int findByProjectAndTestAndLevelOrderByIdAsc(String project, String test, String level) {
 		List<Log> logs = repository.findByProjectAndTestAndLevelOrderByIdAsc(project, test, level);
 		return logs.size();
+	}
+
+	public List<Log> findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(String project, String test,
+			String partialMessage) {
+		return repository.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(project, test, partialMessage);
 	}
 
 	public List<Log> findByTestAndProjectAndThreadOrderByIdAsc(String test, String project, String thread) {

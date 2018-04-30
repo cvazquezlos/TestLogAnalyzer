@@ -29,11 +29,6 @@ public class DiffMatchPatchRestTest {
 	@Autowired
 	private WebApplicationContext wac;
 
-	@Before
-	public void pre() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	}
-
 	@Test
 	public void get() throws Exception {
 		String diff1 = "This is the first text to probe the diff algorithm.";
@@ -41,5 +36,10 @@ public class DiffMatchPatchRestTest {
 		String diffs = "{text1: " + diff1 + ", text2: " + diff2 + "}";
 		mockMvc.perform(post("/api/diff").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON)
 				.content(diffs)).andExpect(status().isOk());
+	}
+
+	@Before
+	public void pre() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 }
