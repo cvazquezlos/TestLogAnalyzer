@@ -130,26 +130,9 @@ export class ElasticsearchService {
     }
   }
 
-  postFileByUrl(url: string) {
-    const body = JSON.stringify(url);
-    const headers = new HttpHeaders();
-    headers.append('Content-Type', 'text/plain');
-    return this.http.post(this.baseAPIFilesUrl + '/url', body, {headers: headers}).map(
-      response => response,
-      error => error
-    );
-  }
-
-  async postFileProject(project: string) {
-    try {
-      const body = JSON.stringify(project);
-      const headers = new HttpHeaders();
-      headers.append('Content-Type', 'text/plain');
-      const response = this.http.post(this.baseAPIFilesUrl, body, {headers: headers}).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
+  async downloadResource(url): Promise<Blob> {
+    const file = await this.http.get<Blob>(url, {responseType: 'blob' as 'json'}).toPromise();
+    return file;
   }
 
   async postDiff(text1: string, text2: string) {

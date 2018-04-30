@@ -164,27 +164,6 @@ public class FileRest {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/url", method = RequestMethod.POST)
-	public List<String> postByUrl(@RequestBody String url) throws Exception {
-		List<String> data = executionParserService.getStreamByUrl(url);
-		Project target = projectService.findByName(recentProject);
-		target.setNum_execs(target.getNum_execs() + 1);
-		projectService.save(target);
-		this.executionParserService.parse(data, target,
-				Integer.valueOf(this.findGreater(Lists.newArrayList(logService.findAll())).getId()) + 1,
-				String.format("%02d", this.execution.getId()));
-		return executionParserService.getStreamByUrl(url);
-	}
-
-	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ResponseEntity<String> postProject(@RequestBody String project) {
-		recentProject = project.replaceAll("\"", "");
-		this.execution = new Execution(this.findGreaterE(Lists.newArrayList(executionService.findAll())).getId() + 1);
-		this.execution.setProject(FileRest.recentProject);
-		this.executionService.save(this.execution);
-		return new ResponseEntity<>("\"" + recentProject + "\"", HttpStatus.CREATED);
-	}
-
 	private Execution findGreaterE(List<Execution> executions) {
 		Execution execution;
 		if (executions.size() == 0) {

@@ -67,6 +67,16 @@ export class AddExecComponent implements OnInit {
         await this.elasticsearchService.postFile(files, this.project.name);
         break;
       case 1:
+        const logs = await this.elasticsearchService.downloadResource(this.urlTxt);
+        const l: File = new File([logs], "logs.txt", {
+          type: 'text/plain'
+        });
+        const surefire = await this.elasticsearchService.downloadResource(this.urlXml);
+        const s: File = new File([surefire], "surefire.xml", {
+          type: 'text/plain'
+        });
+        const filesByUrl: File[] = [l, s];
+        await this.elasticsearchService.postFile(files, this.project.name);
         break;
     }
   }
