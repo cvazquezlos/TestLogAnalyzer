@@ -139,77 +139,29 @@ public class FileRest {
 					}
 				}
 			}
+			List<Log> logs = logService
+					.findByTestAndProjectOrderByIdAsc(String.format("%02d", this.execution.getId()), recentProject);
+			this.execution.setEntries(logs.size());
+			this.execution.setStart_date(this.findLogWhoseTimestampIsUseful(logs));
+			logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentProject,
+					testNumber, "BUILD");
+			boolean fail = false;
+			for (int j = 0; j < logs.size(); j++) {
+				if (logs.get(j).getMessage().contains("BUILD FAILURE")) {
+					if (logs.get(j).getMessage().length() > 2) {
+						fail = true;
+						break;
+					}
+				}
+			}
+			if (fail) {
+				this.execution.setStatus("BUILD FAILURE");
+			} else {
+				this.execution.setStatus("BUILD SUCCESS");
+			}
+			this.executionService.save(this.execution);
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
-
-	@RequestMapping(value = "/file", method = RequestMethod.POST)
-	public ResponseEntity<String> postByUpload(@RequestBody List<MultipartFile> files) {
-		try {
-			if (files == null) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			} else {
-				while (!files.isEmpty()) {
-					MultipartFile file = files.get(0);
-					if (file == null) {
-						files.remove(0);
-						continue;
-					} else {
-						if (file.getOriginalFilename().contains("txt")) {
-							List<String> data = executionParserService.getStreamByFile(file);
-							Project target = projectService.findByName(recentProject);
-							this.executionParserService.parse(data, target,
-									Integer.valueOf(this.findGreater(Lists.newArrayList(logService.findAll())).getId()) + 1,
-									String.format("%02d", this.execution.getId()));
-						} else {
-							TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
-							InputStream inputStream = file.getInputStream();
-							InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-							List<ReportTestSuite> tests = parser.parse(inputStreamReader);
-							for (int i = 0; i < tests.size(); i++) {
-								this.execution.setErrors(this.execution.getErrors() + tests.get(i).getNumberOfErrors());
-								this.execution
-										.setFailures(this.execution.getFailures() + tests.get(i).getNumberOfFailures());
-								this.execution.setFlakes(this.execution.getFlakes() + tests.get(i).getNumberOfFlakes());
-								this.execution
-										.setSkipped(this.execution.getSkipped() + tests.get(i).getNumberOfSkipped());
-								this.execution.setTests(this.execution.getTests() + tests.get(i).getNumberOfTests());
-								List<ReportTestCase> testcases = this.execution.getTestcases();
-								testcases.addAll(tests.get(i).getTestCases());
-								this.execution.setTestcases(testcases);
-								this.execution.setTime_elapsed(
-										this.execution.getTime_elapsed() + tests.get(i).getTimeElapsed());
-							}
-						}
-						files.remove(0);
-					}
-				}
-				List<Log> logs = logService
-						.findByTestAndProjectOrderByIdAsc(String.format("%02d", this.execution.getId()), recentProject);
-				this.execution.setEntries(logs.size());
-				this.execution.setStart_date(this.findLogWhoseTimestampIsUseful(logs));
-				logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentProject,
-						testNumber, "BUILD");
-				boolean fail = false;
-				for (int j = 0; j < logs.size(); j++) {
-					if (logs.get(j).getMessage().contains("BUILD FAILURE")) {
-						if (logs.get(j).getMessage().length() > 2) {
-							fail = true;
-							break;
-						}
-					}
-				}
-				if (fail) {
-					this.execution.setStatus("BUILD FAILURE");
-				} else {
-					this.execution.setStatus("BUILD SUCCESS");
-				}
-				this.executionService.save(this.execution);
-			}
-			return new ResponseEntity<>(HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
 	}
 
 	@RequestMapping(value = "/url", method = RequestMethod.POST)
