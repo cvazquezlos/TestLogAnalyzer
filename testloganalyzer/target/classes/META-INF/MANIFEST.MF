@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Implementation-Title: Elasticsearch client
-Implementation-Version: 2.0.0
+Implementation-Version: 5.0.0
 Built-By: Usuario
 Implementation-Vendor-Id: elastest.testloganalyzer
 Build-Jdk: 1.8.0_161
