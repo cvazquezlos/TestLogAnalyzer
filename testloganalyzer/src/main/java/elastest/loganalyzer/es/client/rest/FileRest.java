@@ -1,5 +1,6 @@
 package elastest.loganalyzer.es.client.rest;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,6 +91,56 @@ public class FileRest {
 				loggedErrors.add(message);
 			}
 		};
+	}
+	
+	@RequestMapping(value = "/{project}", method = RequestMethod.POST)
+	public ResponseEntity<String> post(@PathVariable String project, @RequestBody List<MultipartFile> files) throws IOException, Exception {
+		Project target = projectService.findByName(project);
+		if (target == null) {
+			target = new Project(this.findGreaterP(Lists.newArrayList(projectService.findAll())).getId() + 1, project, 0);
+			recentProject = project;
+		}
+		projectService.save(target);
+		this.execution = new Execution(this.findGreaterE(Lists.newArrayList(executionService.findAll())).getId() + 1);
+		this.execution.setProject(FileRest.recentProject);
+		this.executionService.save(this.execution);
+		if (files == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			for (int i = 0; i < files.size(); i++) {
+				MultipartFile file = files.get(i);
+				if (file == null) {
+					continue;
+				} else {
+					if (file.getOriginalFilename().contains("txt")) {
+						List<String> data = executionParserService.getStreamByFile(file);
+						this.executionParserService.parse(data, target,
+								Integer.valueOf(this.findGreater(Lists.newArrayList(logService.findAll())).getId()) + 1,
+								String.format("%02d", this.execution.getId()));
+					} else {
+						TestSuiteXmlParser parser = new TestSuiteXmlParser(consoleLogger);
+						InputStream inputStream = file.getInputStream();
+						InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+						List<ReportTestSuite> tests = parser.parse(inputStreamReader);
+						for (int j = 0; j < tests.size(); j++) {
+							this.execution.setErrors(this.execution.getErrors() + tests.get(j).getNumberOfErrors());
+							this.execution
+									.setFailures(this.execution.getFailures() + tests.get(j).getNumberOfFailures());
+							this.execution.setFlakes(this.execution.getFlakes() + tests.get(j).getNumberOfFlakes());
+							this.execution
+									.setSkipped(this.execution.getSkipped() + tests.get(j).getNumberOfSkipped());
+							this.execution.setTests(this.execution.getTests() + tests.get(j).getNumberOfTests());
+							List<ReportTestCase> testcases = this.execution.getTestcases();
+							testcases.addAll(tests.get(j).getTestCases());
+							this.execution.setTestcases(testcases);
+							this.execution.setTime_elapsed(
+									this.execution.getTime_elapsed() + tests.get(j).getTimeElapsed());
+						}
+					}
+				}
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/file", method = RequestMethod.POST)
@@ -211,5 +263,21 @@ public class FileRest {
 			}
 		}
 		return log;
+	}
+
+	private Project findGreaterP(List<Project> projects) {
+		Project project;
+		if (projects.size() == 0) {
+			project = new Project();
+			project.setId(-1);
+		} else {
+			project = projects.get(0);
+			for (int i = 1; i < projects.size(); i++) {
+				if (project.getId() < projects.get(i).getId()) {
+					project = projects.get(i);
+				}
+			}
+		}
+		return project;
 	}
 }
