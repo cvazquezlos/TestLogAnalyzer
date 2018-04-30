@@ -132,6 +132,7 @@ public class DiffMatchPatch {
 			return "Diff(" + this.operation + ",\"" + prettyText + "\")";
 		}
 	}
+
 	/**
 	 * Internal class for returning results from diff_linesToChars(). Other less
 	 * paranoid languages just use a three-element array.
@@ -147,6 +148,7 @@ public class DiffMatchPatch {
 			this.lineArray = lineArray;
 		}
 	}
+
 	/**
 	 * The data structure representing a diff is a Linked list of Diff objects:
 	 * {Diff(Operation.DELETE, "Hello"), Diff(Operation.INSERT, "Goodbye"),
@@ -156,6 +158,7 @@ public class DiffMatchPatch {
 	public enum Operation {
 		DELETE, INSERT, EQUAL
 	}
+
 	/**
 	 * Class representing one patch operation.
 	 */
@@ -221,6 +224,7 @@ public class DiffMatchPatch {
 			return unescapeForEncodeUriCompatability(text.toString());
 		}
 	}
+
 	/**
 	 * Unescape selected chars for compatability with JavaScript's encodeURI. In
 	 * speed critical applications this could be dropped since the receiving
@@ -241,6 +245,7 @@ public class DiffMatchPatch {
 				.replace("%26", "&").replace("%3D", "=").replace("%2B", "+").replace("%24", "$").replace("%2C", ",")
 				.replace("%23", "#");
 	}
+
 	/**
 	 * Number of seconds to map a diff before giving up (0 for infinity).
 	 */
@@ -1275,6 +1280,7 @@ public class DiffMatchPatch {
 			return new String[] { hm[2], hm[3], hm[0], hm[1], hm[4] };
 		}
 	}
+
 	/**
 	 * Does a substring of shorttext exist within longtext such that the substring
 	 * is at least half the length of longtext?
