@@ -62,6 +62,7 @@ export class AddProjectComponent implements OnInit {
         await this.elasticsearchService.postFile(files, this.project.name);
         break;
       case 1:
+        this.code = 2;
         const logs = await this.elasticsearchService.downloadResource(this.urlTxt);
         const l: File = new File([logs], "logs.txt", {
           type: 'text/plain'
