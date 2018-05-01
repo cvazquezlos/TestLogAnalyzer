@@ -1,11 +1,7 @@
 
 ![logo](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/resources/media/README/TestLogAnalyzer-logo.png)
 
-[![Build Status](https://travis-ci.org/cvazquezlos/TestLogAnalyzer.svg?branch=master)](https://travis-ci.org/cvazquezlos/LOGANALYZER)
-[![npm version](https://badge.fury.io/js/%40angular%2Fcore.svg)](https://badge.fury.io/js/%40angular%2Fcore)
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/49620eff71270c3bdb61/maintainability)](https://codeclimate.com/github/cvazquezlos/TestLogAnalyzer/maintainability)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build Status](https://travis-ci.org/cvazquezlos/TestLogAnalyzer.svg?branch=master)](https://travis-ci.org/cvazquezlos/LOGANALYZER) [![npm version](https://badge.fury.io/js/%40angular%2Fcore.svg)](https://badge.fury.io/js/%40angular%2Fcore) [![Maintainability](https://api.codeclimate.com/v1/badges/49620eff71270c3bdb61/maintainability)](https://codeclimate.com/github/cvazquezlos/TestLogAnalyzer/maintainability) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # TestLogAnalyzer - Log analysis module for ElasTest.
 
