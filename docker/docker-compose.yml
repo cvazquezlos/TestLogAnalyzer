@@ -1,0 +1,22 @@
+version: "2.2"
+
+services:
+    elk:
+        image: cvazquezlos/elk:2.4.6
+        ports:
+            - 5000:5000
+            - 5601:5601
+            - 9200:9200
+            - 9300:9300
+        volumes:
+            - elk-data:/var/lib/elasticsearch
+    
+    testloganalyzer-gui:
+        image: cvazquezlos/testloganalyzer-gui:5.0.0
+        depends_on:
+            - elk
+        ports:
+            - 4200:4200
+
+volumes: 
+    elk-data:
