@@ -69,6 +69,7 @@ Component | What does it mean?
 41. http://www.damirscorner.com/ - Angular await and async requests.
 42. https://medium.com/@alecwazzy - Angular Promises for async requests.
 43. https://docs.oracle.com/javase/8/docs/api/ - Java REGEX
+44. https://github.com/compodoc/compodoc - Compodoc 
 
 ## Involved technologies
 Element           | TestLogAnalyzer needs it because...                    | Official site
@@ -76,10 +77,12 @@ Element           | TestLogAnalyzer needs it because...                    | Off
 Angular 5         | App development framework                          | https://angular.io/
 Angular Material  | Material Design components for Angular             | https://material.angular.io/
 Angular-CLI       | Command line interface for Angular                 | https://cli.angular.io/
+NgBootstrap       | Bootstrap components for Angular                   | https://ng-bootstrap.github.io
 CircleCI          | Continuous Integration and Delivery                | https://circleci.com/
 CODEBEAT          | Automated code review for the browser              | https://codebeat.co
 CodeMirror        | Text editor for the browser                        | https://codemirror.net/
 Code Climate      | Code quality test                                  | https://codeclimate.com/
+Compodoc          | Missing documentation tool for Angular app         | https://compodoc.github.io/website/
 Docker            | Project packaging and virtualization               | https://www.docker.com/
 Docker Compose    | Tool for running multi-container Docker apps       | https://docs.docker.com/compose/
 Elasticsearch     | Search, indexing and analytics data engine         | https://www.elastic.co/products/elasticsearch
