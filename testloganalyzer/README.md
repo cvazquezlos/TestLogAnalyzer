@@ -1,4 +1,4 @@
-# TestLogAnalyzer - API REST System
+# TestLogAnalyzer - Back end API REST
 
 ## About our API
 All you can find in our API Rest is information about projects, executions, logs, file and diff. All you need to do is simply; you have to follow the API rules. If you try to do following a different way, it's probably what you will receive an error.
@@ -76,22 +76,14 @@ All Request URLs can be send by typing `http://localhost:8443/api/logs` followed
 |1|Deletes a log by its id.|/id/{id}|Deleted log and *OK* (200)|*NOT_FOUND* (404)|
 
 ### Files
-Files API has POST(3) methods.
+Files API has POST(1) method.
 All Request URLs can be send by typing `http://localhost:8443/api/files` followed by the request URL containt in the following tables.
 
 #### POST method
 
 |Type|Request description|Request URL|Request body|Success response|Error response|
 |----|-------------------|-----------|------------|----------------|--------------|
-|1|Charges a list of files.|/file|List of files (.xml and .txt)|*CREATED* (201)|*BAD_REQUEST* (406)|
-|2|Charges a file by its url|/url|File (.xml or .txt)|*CREATED* (201)|*BAD_REQUEST* (406)|
-|3|Updates the name of the project||See below|*CREATED* (201)|Not error possible|
-
-##### Type 1 method Request body example:
-```json
-{
-  "ElasTest"
-}
+|1|Charges a list of files in the selected project (if it doesn't exist, then the back end creates it).|/{project}|List of files (.xml and .txt)|*CREATED* (201)|*BAD_REQUEST* (406)|
 ```
 
 ### Diff

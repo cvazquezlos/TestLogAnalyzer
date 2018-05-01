@@ -33,7 +33,7 @@ public class ExecutionService {
 	public Iterable<Execution> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public List<Execution> findByProject(String project) {
 		return repository.findByProject(project);
 	}

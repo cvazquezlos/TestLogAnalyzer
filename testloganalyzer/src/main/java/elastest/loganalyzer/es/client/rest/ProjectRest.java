@@ -45,6 +45,22 @@ public class ProjectRest {
 		}
 	}
 
+	private Project findGreater(List<Project> projects) {
+		Project project;
+		if (projects.size() == 0) {
+			project = new Project();
+			project.setId(-1);
+		} else {
+			project = projects.get(0);
+			for (int i = 1; i < projects.size(); i++) {
+				if (project.getId() < projects.get(i).getId()) {
+					project = projects.get(i);
+				}
+			}
+		}
+		return project;
+	}
+
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ResponseEntity<List<Project>> getAll() {
 		Iterable<Project> projects = projectService.findAll();
@@ -73,21 +89,5 @@ public class ProjectRest {
 	public ResponseEntity<Integer> post(@RequestBody Project project) {
 		project.setId(this.findGreater(Lists.newArrayList(projectService.findAll())).getId() + 1);
 		return new ResponseEntity<>(projectService.save(project), HttpStatus.CREATED);
-	}
-	
-	private Project findGreater(List<Project> projects) {
-		Project project;
-		if (projects.size() == 0) {
-			project = new Project();
-			project.setId(-1);
-		} else {
-			project = projects.get(0);
-			for (int i = 1; i < projects.size(); i++) {
-				if (project.getId() < projects.get(i).getId()) {
-					project = projects.get(i);
-				}
-			}
-		}
-		return project;
 	}
 }

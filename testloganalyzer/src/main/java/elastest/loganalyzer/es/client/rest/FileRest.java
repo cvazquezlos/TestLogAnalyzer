@@ -51,6 +51,54 @@ public class FileRest {
 	@Autowired
 	private ProjectService projectService;
 
+	private Log findGreater(List<Log> logs) {
+		Log log;
+		if (logs.size() == 0) {
+			log = new Log();
+			log.setId("-1");
+		} else {
+			log = logs.get(0);
+			for (int i = 1; i < logs.size(); i++) {
+				if (Integer.valueOf(log.getId()) < Integer.valueOf(logs.get(i).getId())) {
+					log = logs.get(i);
+				}
+			}
+		}
+		return log;
+	}
+
+	private Execution findGreaterE(List<Execution> executions) {
+		Execution execution;
+		if (executions.size() == 0) {
+			execution = new Execution();
+			execution.setId(-1);
+		} else {
+			execution = executions.get(0);
+			for (int i = 1; i < executions.size(); i++) {
+				if (execution.getId() < executions.get(i).getId()) {
+					execution = executions.get(i);
+				}
+			}
+		}
+		return execution;
+	}
+
+	private Project findGreaterP(List<Project> projects) {
+		Project project;
+		if (projects.size() == 0) {
+			project = new Project();
+			project.setId(-1);
+		} else {
+			project = projects.get(0);
+			for (int i = 1; i < projects.size(); i++) {
+				if (project.getId() < projects.get(i).getId()) {
+					project = projects.get(i);
+				}
+			}
+		}
+		return project;
+	}
+
 	private String findLogWhoseTimestampIsUseful(List<Log> logs) {
 		for (int i = 0; i < logs.size(); i++) {
 			if (logs.get(i).getTimestamp().length() > 3) {
@@ -92,12 +140,14 @@ public class FileRest {
 			}
 		};
 	}
-	
+
 	@RequestMapping(value = "/{project}", method = RequestMethod.POST)
-	public ResponseEntity<String> post(@PathVariable String project, @RequestBody List<MultipartFile> files) throws IOException, Exception {
+	public ResponseEntity<String> post(@PathVariable String project, @RequestBody List<MultipartFile> files)
+			throws IOException, Exception {
 		Project target = projectService.findByName(project);
 		if (target == null) {
-			target = new Project(this.findGreaterP(Lists.newArrayList(projectService.findAll())).getId() + 1, project, 0);
+			target = new Project(this.findGreaterP(Lists.newArrayList(projectService.findAll())).getId() + 1, project,
+					0);
 			recentProject = project;
 		}
 		projectService.save(target);
@@ -127,24 +177,23 @@ public class FileRest {
 							this.execution
 									.setFailures(this.execution.getFailures() + tests.get(j).getNumberOfFailures());
 							this.execution.setFlakes(this.execution.getFlakes() + tests.get(j).getNumberOfFlakes());
-							this.execution
-									.setSkipped(this.execution.getSkipped() + tests.get(j).getNumberOfSkipped());
+							this.execution.setSkipped(this.execution.getSkipped() + tests.get(j).getNumberOfSkipped());
 							this.execution.setTests(this.execution.getTests() + tests.get(j).getNumberOfTests());
 							List<ReportTestCase> testcases = this.execution.getTestcases();
 							testcases.addAll(tests.get(j).getTestCases());
 							this.execution.setTestcases(testcases);
-							this.execution.setTime_elapsed(
-									this.execution.getTime_elapsed() + tests.get(j).getTimeElapsed());
+							this.execution
+									.setTime_elapsed(this.execution.getTime_elapsed() + tests.get(j).getTimeElapsed());
 						}
 					}
 				}
 			}
-			List<Log> logs = logService
-					.findByTestAndProjectOrderByIdAsc(String.format("%02d", this.execution.getId()), recentProject);
+			List<Log> logs = logService.findByTestAndProjectOrderByIdAsc(String.format("%02d", this.execution.getId()),
+					recentProject);
 			this.execution.setEntries(logs.size());
 			this.execution.setStart_date(this.findLogWhoseTimestampIsUseful(logs));
-			logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentProject,
-					testNumber, "BUILD");
+			logs = logService.findByProjectAndTestAndMessageContainingIgnoreCaseOrderByIdAsc(recentProject, testNumber,
+					"BUILD");
 			boolean fail = false;
 			for (int j = 0; j < logs.size(); j++) {
 				if (logs.get(j).getMessage().contains("BUILD FAILURE")) {
@@ -162,53 +211,5 @@ public class FileRest {
 			this.executionService.save(this.execution);
 		}
 		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
-
-	private Execution findGreaterE(List<Execution> executions) {
-		Execution execution;
-		if (executions.size() == 0) {
-			execution = new Execution();
-			execution.setId(-1);
-		} else {
-			execution = executions.get(0);
-			for (int i = 1; i < executions.size(); i++) {
-				if (execution.getId() < executions.get(i).getId()) {
-					execution = executions.get(i);
-				}
-			}
-		}
-		return execution;
-	}
-
-	private Log findGreater(List<Log> logs) {
-		Log log;
-		if (logs.size() == 0) {
-			log = new Log();
-			log.setId("-1");
-		} else {
-			log = logs.get(0);
-			for (int i = 1; i < logs.size(); i++) {
-				if (Integer.valueOf(log.getId()) < Integer.valueOf(logs.get(i).getId())) {
-					log = logs.get(i);
-				}
-			}
-		}
-		return log;
-	}
-
-	private Project findGreaterP(List<Project> projects) {
-		Project project;
-		if (projects.size() == 0) {
-			project = new Project();
-			project.setId(-1);
-		} else {
-			project = projects.get(0);
-			for (int i = 1; i < projects.size(); i++) {
-				if (project.getId() < projects.get(i).getId()) {
-					project = projects.get(i);
-				}
-			}
-		}
-		return project;
 	}
 }

@@ -1,5 +1,5 @@
 #  Create a new image from the base nodejs 7 image.
-FROM node:8.6
+FROM node:8-alpine as builder
 # Create the target directory in the imahge
 RUN mkdir -p /usr/src/app
 # Set the created directory as the working directory

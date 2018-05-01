@@ -25,7 +25,7 @@ public class LogService {
 	public Iterable<Log> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public List<Log> findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(String logger,
 			String project, String test, String method) {
 		return repository.findByLoggerContainingIgnoreCaseAndProjectAndTestAndMethodOrderByIdAsc(logger, project, test,

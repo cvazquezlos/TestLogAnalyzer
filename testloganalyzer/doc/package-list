@@ -1,0 +1,5 @@
+elastest.loganalyzer.es.client
+elastest.loganalyzer.es.client.model
+elastest.loganalyzer.es.client.repository
+elastest.loganalyzer.es.client.rest
+elastest.loganalyzer.es.client.service

@@ -1,5 +1,6 @@
 FROM openjdk:8-jre-alpine
-COPY ./target/es.client-2.0.0.jar /usr/src/es.client/
-WORKDIR /usr/src/es.client
+COPY ./target/testloganalyzer-5.0.0.jar /usr/src/testloganalyzer/
+WORKDIR /usr/src/testloganalyzer
 EXPOSE 8443
-CMD ["java", "-jar", "es.client-2.0.0.jar"]
+CMD ["sleep", "45"]
+CMD ["java", "-jar", "testloganalyzer-5.0.0.jar"]

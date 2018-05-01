@@ -2,7 +2,6 @@
 ![logo](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/resources/media/README/TestLogAnalyzer-logo.png)
 
 [![Build Status](https://travis-ci.org/cvazquezlos/TestLogAnalyzer.svg?branch=master)](https://travis-ci.org/cvazquezlos/LOGANALYZER)
-[![CircleCI](https://circleci.com/gh/cvazquezlos/TestLogAnalyzer.svg?style=shield)](https://circleci.com/gh/cvazquezlos/LOGANALYZER)
 [![npm version](https://badge.fury.io/js/%40angular%2Fcore.svg)](https://badge.fury.io/js/%40angular%2Fcore)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/49620eff71270c3bdb61/maintainability)](https://codeclimate.com/github/cvazquezlos/TestLogAnalyzer/maintainability)
@@ -11,65 +10,22 @@
 # TestLogAnalyzer - Log analysis module for ElasTest.
 
 ## Getting started
-1. Clone this repository.
-2. Open your comand prompt and navigate to the root project.
-3. Execute `docker-compose up` and navigate to **http://localhost:4200** on your favourite browser.
-4. Enjoy!
+This repository contains a front end developed in Angular 5 and a back end developed in Spring. Each project has its own README so if you want more information, read them.
 
-## TestLogAnalyzer
-TestLogAnalyzer allows you to work with determinate kinds of logs. In this moment, `Beta version`, TestLogAnalyzer works with Logback logs.
+To run this project, just download the `docker-compose.yml` file inside of docker folder and execute it with `docker-compose up` in the same directory.
 
-### Data format allowed
-#### Logback format
-LOGANALYZER works with the following format `%d{yyyy-MM-dd hh:mm:ss.SSS} [%t] %5-level %logger{36} %m%n`. In the table below, you can see, in case that you don't know, what each component means:
+### Allowed data format
+TestLogAnalyzer works with the following format `%d{yyyy-MM-dd hh:mm:ss.SSS}  %5-level   --- [%t] &logger{36} : %m%n`. In the table below, you can see, in case that you don't know, what each component means:
 
 Component | What does it mean?
 :--------: | -------------
 %d | Timestamp following the format yyyy-MM-dd HH:mm:ss.SSS.
-[%t] | Thread identifier between square brackets.
 %-5level | Level of logging event.
+[%t] | Thread identifier between square brackets.
 %logger{36} | Name of the logger at the origin of the logging event (name class and package).
 %m%n | Log message.
 
-### Content of pages
-#### Projects
-##### Home
-All projects created are displayed. You can access to the executions of a concrete project or delete it. If you delete a project, all its executions will be deleted too.
-![Projects](resources/media/README/release4page1.png)
-
-##### Create project
-A new project can be created and the user must provide at least one execution.
-![CreateProject](resources/media/README/release4page2.png)
-
-#### Executions of project
-##### Executions
-For a target project, this page displays all its executions grouped by tabs.
-![Executions](resources/media/README/release4page3.png)
-
-#### Logs of execution
-##### Comparison
-The user just has to select a view mode, an execution to compare with and a mode of comparison. 
-![Comparison](resources/media/README/release4page4.png)
-
-
-## Getting started with Spring Logs Generator
-Ensure `JAVA_HOME` environment variable is se and points to your JDK installation directory. Follow these steps:
-1. Go to Apache Maven Project [download](https://maven.apache.org/download.cgi) page and download the Binary tar.gz archive.
-2. Extract it to the directory you wish to install Maven. The best way to do it is inside Program Files directory.
-3. Set the environment variables: `M2_HOME=C:\Program Files\apache-maven-version`, `M2=%M2_HOME%\bin`.
-4. Append the string `%M2` to the end of the system variable *Path*.
-5. Open Command Console and type `mvn --version`.
-6. Go to Spring Logs Generator project in [Github](https://github.com/cvazquezlos/LOGANALYZER-SpringLogsGenerator) and clone or download it.
-7. Open the Command Console and navigate inside project. Then, execute `mvn clean install --log-file log.txt` to save all the information about the test.
-
-## Getting started with Elasticsearch Data Updater
-Ensure you have Elasticsearch installed and an instance of it running.
-1. Go to Elasticsearch Data Updater project in [Github](https://github.com/cvazquezlos/LOGANALYZER-ElasticsearchDataUpdater) and clone or download it.
-2. Make sure that your Elasticsearch version is the same than POM ES version.
-3. Create (you can use Kibana) an index called "loganalyzer" (don't required timestamp field).
-4. Run it.
-
-## Bibliography
+## References
 1. https://ag-grid.com/javascript-grid-properties - Grid properties.
 2. https://qbox.io/blog/parsing-logs-using-logstash - Parsing logs using Logstash.
 3. https://elastic.co/guide/index.html - Getting started guide, API, Pagination and Kibana requests (filtering, ranges, POST and GET requests).

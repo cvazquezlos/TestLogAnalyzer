@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: elastest.loganalyzer.es.client.rest.DiffMatchPatchRestTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.072 sec - in elastest.loganalyzer.es.client.rest.DiffMatchPatchRestTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.998 sec - in elastest.loganalyzer.es.client.rest.DiffMatchPatchRestTest
