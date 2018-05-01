@@ -12,6 +12,8 @@
 ## Getting started
 This repository contains a front end developed in Angular 5 and a back end developed in Spring. Each project has its own README so if you want more information, read them.
 
+To run this project, just download the `docker-compose.yml` file inside of docker folder and execute it with `docker-compose up` in the same directory.
+
 ### Allowed data format
 TestLogAnalyzer works with the following format `%d{yyyy-MM-dd hh:mm:ss.SSS}  %5-level   --- [%t] &logger{36} : %m%n`. In the table below, you can see, in case that you don't know, what each component means:
 

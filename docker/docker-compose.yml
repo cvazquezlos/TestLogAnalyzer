@@ -11,6 +11,16 @@ services:
         volumes:
             - elk-data:/var/lib/elasticsearch
     
+    testloganalyzer:
+        image: cvazquezlos/testloganalyzer:5.0.0
+        depends_on:
+            elk:
+                condition: service_started
+        links: 
+            - elk:elk
+        ports:
+            - 8443:8443
+    
     testloganalyzer-gui:
         image: cvazquezlos/testloganalyzer-gui:5.0.0
         depends_on:
