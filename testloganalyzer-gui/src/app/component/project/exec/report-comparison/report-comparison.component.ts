@@ -339,7 +339,6 @@ export class ReportComparisonComponent implements OnInit {
 
   private async cleanDictionary(dictionary: any) {
     const execution = await this.elasticsearchService.getExecutionByIdAsync(this.test);
-    const testcases = execution.testcases;
     const map: { [name: string]: ClassC } = {};
     for (const classC in dictionary) {
       if (dictionary.hasOwnProperty(classC)) {
@@ -419,12 +418,29 @@ export class ReportComparisonComponent implements OnInit {
           : (this.classesLc.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}));
       }
     }
-    // (clean) && (await this.cleanContent(mode));
+    if (this.viewMode === 2 && !this.comparisonInProgress) {
+      const execution = await this.elasticsearchService.getExecutionByIdAsync(this.test);
+      let classAux = [];
+      for (let i = 0; i < this.classesL.length; i++) {
+        let failMethods = [];
+        for (let j = 0; j < this.classesL[i].methods.length; j++) {
+          if (this.containsError(this.classesL[i].methods[j].name, execution.testcases)) {
+            failMethods.push(this.classesL[i].methods[j]);
+          }
+        }
+        if (failMethods.length > 0) {
+          classAux.push(this.classesL[i]);
+        }
+      }
+      this.classesL = classAux;
+    }
     this.ready = true;
   }
 
   private async viewRaw(mode: number, maven: boolean) {
     this.ready = false;
+    console.log(this.execution.testcases);
+
     (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
     const logs = await this.elasticsearchService.getLogsByTestAsync((mode === 0) ? (this.test)
       : (this.selected[0].id), this.project, false, maven);
