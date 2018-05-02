@@ -54,7 +54,6 @@ export class ReportComparisonComponent implements OnInit {
     this.comparisonInProgress = false;
     this.loadingData = true;
     this.showExecSelection = false;
-
   }
 
   private generateOutput(logs: Log[]) {
@@ -182,6 +181,7 @@ export class ReportComparisonComponent implements OnInit {
 
   disableComparison() {
     this.comparisonInProgress = false;
+    this.comparisonMode = 0;
     this.selected[0] = undefined;
     this.resetComparisonButtonsClasses();
   }
@@ -418,7 +418,7 @@ export class ReportComparisonComponent implements OnInit {
           : (this.classesLc.push({'name': loggers[i].split(' ')[1], 'methods': methodsData}));
       }
     }
-    if (this.viewMode === 2 && !this.comparisonInProgress) {
+    if ((this.viewMode === 2) && !this.comparisonInProgress) {
       const execution = await this.elasticsearchService.getExecutionByIdAsync(this.test);
       let classAux = [];
       for (let i = 0; i < this.classesL.length; i++) {
@@ -429,7 +429,10 @@ export class ReportComparisonComponent implements OnInit {
           }
         }
         if (failMethods.length > 0) {
-          classAux.push(this.classesL[i]);
+          classAux.push({
+            'name': this.classesL[i].name,
+            'methods': failMethods
+          });
         }
       }
       this.classesL = classAux;
