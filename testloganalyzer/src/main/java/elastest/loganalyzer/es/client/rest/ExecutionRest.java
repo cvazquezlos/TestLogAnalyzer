@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import elastest.loganalyzer.es.client.model.Execution;
@@ -23,7 +24,7 @@ public class ExecutionRest {
 	@Autowired
 	private LogService logService;
 
-	@RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Execution> deleteById(@PathVariable int id) {
 		Execution execution = executionService.findOne(id);
 		if (execution != null) {
@@ -35,8 +36,8 @@ public class ExecutionRest {
 		}
 	}
 
-	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Execution> getById(@PathVariable int id) {
+	@RequestMapping(value = "", method = RequestMethod.GET, params = "id")
+	public ResponseEntity<Execution> getById(@RequestParam int id) {
 		Execution execution = executionService.findOne(id);
 		if (execution != null) {
 			return new ResponseEntity<>(execution, HttpStatus.OK);
@@ -45,8 +46,8 @@ public class ExecutionRest {
 		}
 	}
 
-	@RequestMapping(value = "/project/{project}", method = RequestMethod.GET)
-	public ResponseEntity<List<Execution>> getByProject(@PathVariable String project) {
+	@RequestMapping(value = "", method = RequestMethod.GET, params = "project")
+	public ResponseEntity<List<Execution>> getByProject(@RequestParam String project) {
 		List<Execution> executions = executionService.findByProjectOrderById(project);
 		if (executions.size() > 0) {
 			return new ResponseEntity<>(executions, HttpStatus.OK);

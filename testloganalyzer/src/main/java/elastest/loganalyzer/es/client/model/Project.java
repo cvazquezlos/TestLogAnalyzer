@@ -1,15 +1,33 @@
 package elastest.loganalyzer.es.client.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Document(indexName = "projects", type = "projects")
 public class Project {
 
+	public static Project findGreater(List<Project> projects) {
+		Project project;
+		if (projects.size() == 0) {
+			project = new Project();
+			project.setId(-1);
+		} else {
+			project = projects.get(0);
+			for (int i = 1; i < projects.size(); i++) {
+				if (project.getId() < projects.get(i).getId()) {
+					project = projects.get(i);
+				}
+			}
+		}
+		return project;
+	}
+
 	@Id
 	private int id;
-
 	private String name;
+
 	private int num_execs;
 
 	public Project() {

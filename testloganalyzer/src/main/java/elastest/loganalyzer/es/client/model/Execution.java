@@ -10,9 +10,24 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Document(indexName = "executions", type = "executions")
 public class Execution {
 
+	public static Execution findGreater(List<Execution> executions) {
+		Execution execution;
+		if (executions.size() == 0) {
+			execution = new Execution();
+			execution.setId(-1);
+		} else {
+			execution = executions.get(0);
+			for (int i = 1; i < executions.size(); i++) {
+				if (execution.getId() < executions.get(i).getId()) {
+					execution = executions.get(i);
+				}
+			}
+		}
+		return execution;
+	}
+
 	@Id
 	private int id;
-
 	private int entries;
 	private int errors;
 	private int failures;
@@ -23,6 +38,7 @@ public class Execution {
 	private String status;
 	private int tests;
 	private List<ReportTestCase> testcases;
+
 	private float time_elapsed;
 
 	public Execution() {

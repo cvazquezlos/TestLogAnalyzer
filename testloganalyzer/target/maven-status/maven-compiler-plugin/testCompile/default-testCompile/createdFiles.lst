@@ -1,0 +1,8 @@
+elastest\loganalyzer\es\client\repository\ProjectRepositoryTest.class
+elastest\loganalyzer\es\client\DiffMatchPatchTest.class
+elastest\loganalyzer\es\client\rest\ExecutionRestTest.class
+elastest\loganalyzer\es\client\repository\ExecutionRepositoryTest.class
+elastest\loganalyzer\es\client\rest\DiffMatchPatchRestTest.class
+elastest\loganalyzer\es\client\rest\LogRestTest.class
+elastest\loganalyzer\es\client\repository\LogRepositoryTest.class
+elastest\loganalyzer\es\client\rest\ProjectRestTest.class

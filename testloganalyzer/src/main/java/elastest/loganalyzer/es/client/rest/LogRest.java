@@ -26,7 +26,7 @@ public class LogRest {
 	@Autowired
 	private ProjectService projectService;
 
-	@RequestMapping(value = "/test/{test}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{test}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteByTestAndProject(@PathVariable int test,
 			@RequestParam(value = "project", required = true) String project) {
 		String testNo = String.format("%02d", test);
@@ -41,8 +41,8 @@ public class LogRest {
 		}
 	}
 
-	@RequestMapping(value = "/logger/{logger}", method = RequestMethod.GET)
-	public ResponseEntity<List<?>> getByLogger(@PathVariable String logger,
+	@RequestMapping(value = "", method = RequestMethod.GET, params = "logger")
+	public ResponseEntity<List<?>> getByLogger(@RequestParam String logger,
 			@RequestParam(name = "project", required = true) String project,
 			@RequestParam(name = "test", required = true) int test,
 			@RequestParam(name = "method", required = false) String method) {
@@ -65,7 +65,7 @@ public class LogRest {
 		}
 	}
 
-	@RequestMapping(value = "/test/{test}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{test}", method = RequestMethod.GET)
 	public ResponseEntity<List<?>> getByTest(@PathVariable int test,
 			@RequestParam(value = "project", required = true) String project,
 			@RequestParam(value = "classes", required = true) boolean classes,

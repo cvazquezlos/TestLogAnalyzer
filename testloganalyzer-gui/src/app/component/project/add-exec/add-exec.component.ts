@@ -19,7 +19,6 @@ export class AddExecComponent implements OnInit {
   filesXml: File[];
   isFile: boolean;
   project: Project = new Project();
-  targetTab: string;
   urlTxt: string;
   urlXml: string;
 

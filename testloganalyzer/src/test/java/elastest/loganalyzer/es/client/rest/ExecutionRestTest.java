@@ -31,20 +31,20 @@ public class ExecutionRestTest {
 
 	@Test
 	public void deleteById() throws Exception {
-		int id = -1;
-		mockMvc.perform(delete("/api/executions/id/").param("id", String.valueOf(id))).andExpect(status().isNotFound());
+		int id = 999999999;
+		mockMvc.perform(delete("/api/executions/{id}", id)).andExpect(status().isNotFound());
 	}
 
 	@Test
 	public void getById() throws Exception {
 		int id = 0;
-		mockMvc.perform(get("/api/executions/id/").param("id", String.valueOf(id)));
+		mockMvc.perform(get("/api/executions").param("id", String.valueOf(id)));
 	}
 
 	@Test
 	public void getByProject() throws Exception {
 		String project = "JUnit4ClassTestingTLA";
-		mockMvc.perform(get("/api/executions/project/").param("project", project)).andExpect(status().isNotFound());
+		mockMvc.perform(get("/api/executions").param("project", project)).andExpect(status().isNotFound());
 	}
 
 	@Before

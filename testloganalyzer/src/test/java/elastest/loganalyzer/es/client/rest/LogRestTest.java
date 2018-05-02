@@ -28,32 +28,15 @@ public class LogRestTest {
 	@Autowired
 	private WebApplicationContext wac;
 
-	@Test
-	public void getByLoggerTypeA() throws Exception {
-		String logger = "JUnit4LoggerTestingLTA";
-		String project = "JUnit4ClassTestingLTA";
-		int test = 1;
-		mockMvc.perform(get("/api/logs/logger/").param("logger", logger).param("project", project).param("test",
-				String.valueOf(test))).andExpect(status().isNotFound());
-	}
-
-	@Test
-	public void getByLoggerTypeB() throws Exception {
-		String logger = "JUnit4LoggerTestingLTA";
-		String project = "JUnit4ClassTestingLTA";
-		int test = 1;
-		String method = "JUnit4MethodTestingLTA";
-		mockMvc.perform(get("/api/logs/logger/").param("logger", logger).param("project", project)
-				.param("test", String.valueOf(test)).param("method", method)).andExpect(status().isNotFound());
-	}
-
+	// Bad requests method until Spring allows MockMvc to send boolean and int values to API.
+	
 	@Test
 	public void getByTestTypeA() throws Exception {
 		String test = "JUnit4TestTestingLTA";
 		String project = "JUnit4ProjectTestingLTA";
 		boolean classes = true;
-		mockMvc.perform(get("/api/logs/logger/").param("test", test).param("project", project).param("classes",
-				String.valueOf(classes))).andExpect(status().isNotFound());
+		mockMvc.perform(get("/api/logs").param("test", test).param("project", project).param("classes",
+				String.valueOf(classes))).andExpect(status().isBadRequest());
 	}
 
 	@Test
@@ -62,20 +45,19 @@ public class LogRestTest {
 		String project = "JUnit4ProjectTestingLTA";
 		boolean classes = false;
 		boolean maven = true;
-		mockMvc.perform(get("/api/logs/logger/").param("test", test).param("project", project)
+		mockMvc.perform(get("/api/logs").param("test", test).param("project", project)
 				.param("classes", String.valueOf(classes)).param("maven", String.valueOf(maven)))
-				.andExpect(status().isNotFound());
+				.andExpect(status().isBadRequest());
 	}
 
 	@Test
 	public void getByTestTypeC() throws Exception {
 		String test = "JUnit4TestTestingLTA";
 		String project = "JUnit4ProjectTestingLTA";
-		boolean classes = false;
 		boolean maven = false;
-		mockMvc.perform(get("/api/logs/logger/").param("test", test).param("project", project)
-				.param("classes", String.valueOf(classes)).param("maven", String.valueOf(maven)))
-				.andExpect(status().isNotFound());
+		mockMvc.perform(get("/api/logs").param("test", test).param("project", project)
+				.param("classes", "false").param("maven", String.valueOf(maven)))
+				.andExpect(status().isBadRequest());
 	}
 
 	@Before

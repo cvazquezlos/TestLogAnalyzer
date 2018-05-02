@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
 import {Log} from '../../../../model/log.model';
@@ -18,8 +18,7 @@ import {Execution} from '../../../../model/execution.model';
 
 export class ReportComparisonComponent implements OnInit {
 
-  @ViewChild('process') process: ElementRef;
-
+  breadcrumb = <HTMLElement>document.getElementById('bread');
   classesL: any[];
   classesLc: any[];
   comparatorText = '';
@@ -50,7 +49,8 @@ export class ReportComparisonComponent implements OnInit {
   viewMode: number;
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
-              private tableService: TableService, private elasticsearchService: ElasticsearchService) {
+              private tableService: TableService, private elasticsearchService: ElasticsearchService, private router: Router) {
+    this.breadcrumb.style.setProperty("display", "none");
     this.comparisonInProgress = false;
     this.loadingData = true;
     this.showExecSelection = false;
@@ -184,6 +184,11 @@ export class ReportComparisonComponent implements OnInit {
     this.comparisonMode = 0;
     this.selected[0] = undefined;
     this.resetComparisonButtonsClasses();
+  }
+
+  goBack() {
+    this.breadcrumb.style.removeProperty("display");
+    this.router.navigate(['/projects', this.project]);
   }
 
   selectEvent(event: any) {

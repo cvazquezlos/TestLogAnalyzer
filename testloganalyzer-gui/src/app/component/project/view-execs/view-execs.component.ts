@@ -59,10 +59,9 @@ export class ViewExecsComponent implements OnInit {
   ngOnInit() {
     const name = this.activatedRoute.snapshot.params['project'];
     this.elasticsearchService.getProjectByName(name).subscribe(response => {
-        this.project = response;
-        this.reloadTabContent();
-      }
-    );
+      this.project = response;
+      this.reloadTabContent();
+    });
     this.breadcrumbs.store([{label: 'Home', url: '/', params: []}, {
       label: name,
       url: '/projects/' + name,

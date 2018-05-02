@@ -52,22 +52,6 @@ describe('Service: Elasticsearch', () => {
     )
   });
 
-  it('Should create a project and then delete it', async () => {
-    const project = new Project();
-    expect(project.assigned_ids.length).toBe(0);
-    expect(project.name).toBe('');
-    project.name = 'JasmineTestingProject';
-    expect(project.name).toBe('JasmineTestingProject');
-    project.id = 99999999;
-    const response = await service.postProject(project);
-    expect(response).toBe(99999999);
-    service.deleteProjectById(99999999).subscribe(
-      r => {
-        expect(r).toBe(project);
-      }
-    );
-  });
-
   it('Should return a diff', async () => {
     const text1 = 'This is a demo text';
     const text2 = 'Thise are a demou test';

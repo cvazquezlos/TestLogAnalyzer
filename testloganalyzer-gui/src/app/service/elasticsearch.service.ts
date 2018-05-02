@@ -14,7 +14,6 @@ export class ElasticsearchService {
   baseAPIExecutionsUrl = this.baseAPIUrl + 'api/executions';
   baseAPILogsUrl = this.baseAPIUrl + 'api/logs';
   baseAPIDiffMatchPatchUrl = this.baseAPIUrl + 'api/diff';
-  baseAPIFilesUrl = this.baseAPIUrl + 'api/files';
   baseAPIProjectsUrl = this.baseAPIUrl + 'api/projects';
   baseELASTICSEARCHUrl = 'http://localhost:9200/';
 
@@ -30,7 +29,7 @@ export class ElasticsearchService {
 
   async getExecutionByIdAsync(id: string) {
     try {
-      const response = await this.http.get(this.baseAPIExecutionsUrl + '/id/' + id).toPromise();
+      const response = await this.http.get(this.baseAPIExecutionsUrl + '?id=' + id).toPromise();
       return response as Execution;
     } catch (error) {
       console.log(error);
@@ -39,7 +38,7 @@ export class ElasticsearchService {
 
   async getExecutionsByProjectAsync(project: string) {
     try {
-      const response = await this.http.get(this.baseAPIExecutionsUrl + '/project/' + project).toPromise();
+      const response = await this.http.get(this.baseAPIExecutionsUrl + '?project=' + project).toPromise();
       return response as Execution[];
     } catch (error) {
       console.log(error);
@@ -47,7 +46,7 @@ export class ElasticsearchService {
   }
 
   deleteExecutionById(id: string) {
-    return this.http.delete(this.baseAPIExecutionsUrl + '/id/' + id).map(
+    return this.http.delete(this.baseAPIExecutionsUrl + '/' + id).map(
       response => response,
       error => error
     );
@@ -55,7 +54,7 @@ export class ElasticsearchService {
 
   async getLogsByLoggerAsync(logger: string, project: string, test: string, method?: string) {
     try {
-      let composedUrl = this.baseAPILogsUrl + '/logger/' + logger + '?project=' + project + '&test=' + test;
+      let composedUrl = this.baseAPILogsUrl + '?logger=' + logger + '&project=' + project + '&test=' + test;
       if (method !== undefined) {
         composedUrl += '&method=' + method;
       }
@@ -66,9 +65,9 @@ export class ElasticsearchService {
     }
   }
 
-  async getLogsByTestAsync(test: string, project: string, classes: boolean, maven?: boolean) {
+  async getLogsByTestAsync(test: number, project: string, classes: boolean, maven?: boolean) {
     try {
-      let composedUrl = this.baseAPILogsUrl + '/test/' + test + '?project=' + project + '&classes=' + classes;
+      let composedUrl = this.baseAPILogsUrl + '/' + test + '?project=' + project + '&classes=' + classes;
       (composedUrl += '&maven=' + maven) && (maven);
       const response = await this.http.get(composedUrl).toPromise();
       return response as string[];
@@ -84,31 +83,14 @@ export class ElasticsearchService {
   }
 
   getProjectByName(name: string) {
-    return this.http.get(this.baseAPIProjectsUrl + '/name/' + name).map(
+    return this.http.get(this.baseAPIProjectsUrl + '/' + name).map(
       response => response as Project,
       error => 'No project found with the given name.'
     );
   }
 
-  async postProject(project: Project) {
-    try {
-      const headers: HttpHeaders = new HttpHeaders();
-      headers.append('Content-Type', 'application/json');
-      headers.append('X-Requested-With', 'XMLHttpRequest');
-      const object = {
-        id: project.id,
-        name: project.name,
-        'num_execs': project.num_execs
-      };
-      const response = this.http.post(this.baseAPIProjectsUrl, object, {headers: headers}).toPromise();
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   deleteProjectById(id: number) {
-    return this.http.delete(this.baseAPIProjectsUrl + '/id/' + id).map(
+    return this.http.delete(this.baseAPIProjectsUrl + '/' + id).map(
       response => response,
       error => error
     );
@@ -122,7 +104,7 @@ export class ElasticsearchService {
       }
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'application/pdf');
-      let composedUrl = this.baseAPIFilesUrl + '/' + project;
+      let composedUrl = this.baseAPIProjectsUrl + '/' + project;
       const response = await this.http.post(composedUrl, body, {headers: headers}).toPromise();
       return response;
     } catch (error) {

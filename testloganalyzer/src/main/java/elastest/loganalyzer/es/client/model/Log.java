@@ -1,14 +1,31 @@
 package elastest.loganalyzer.es.client.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 @Document(indexName = "cluster", type = "logs")
 public class Log {
 
+	public static Log findGreater(List<Log> logs) {
+		Log log;
+		if (logs.size() == 0) {
+			log = new Log();
+			log.setId("-1");
+		} else {
+			log = logs.get(0);
+			for (int i = 1; i < logs.size(); i++) {
+				if (Integer.valueOf(log.getId()) < Integer.valueOf(logs.get(i).getId())) {
+					log = logs.get(i);
+				}
+			}
+		}
+		return log;
+	}
+
 	@Id
 	private String id;
-
 	private String level;
 	private String log;
 	private String logger;
@@ -17,6 +34,7 @@ public class Log {
 	private String project;
 	private String test;
 	private String thread;
+
 	private String timestamp;
 
 	public Log() {
