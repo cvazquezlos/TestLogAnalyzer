@@ -38,6 +38,11 @@ And that's it! The project is running.
 
 Once the project is running, you can create, delete and compare executions, logs and projects. If you access inside the project creation page or adding a new execution page, you have to know that both the .txt files and the .xml files must be updated at once, because you can't modify the execution later. If you use the upload by url way, you only can upload a single .txt and .xml file. The files are uploaded in order of selection (so the best practise is to upload the files in order of creation, that is, the older first than the newer).
 
+### Connecting CI environments with TestLogAnalyzer
+TestLogAnalyzer allows you to inject your executions from the CI environments that you are using with cURL requests. The request format is:
+
+`curl -F test1.txt -F test2.txt ... -F testN.txt -F surefire1.xml -F surefire2.xml ... -F surefireN.xml http://localhost:8443/api/projects/{project}`
+
 ### Allowed data format
 TestLogAnalyzer works with the following format `%d{yyyy-MM-dd hh:mm:ss.SSS}  %5-level   --- [%t] &logger{36} : %m%n`. In the table below, you can see, in case that you don't know, what each component means:
 
