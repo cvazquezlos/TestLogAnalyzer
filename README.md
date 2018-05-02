@@ -8,8 +8,8 @@
 ## Getting started
 This repository contains a front end developed in Angular 5 and a back end developed in Spring. Each project has its own README so if you want more information, read them:
 
-+ Front end: Developed by using the latest version of Angular 5 and Angular CLI (managed by NPM), the GUI contains a complete functionality to create and delete projects, manage projects (by adding or deleting the executions which are displayed on them) and to compare the logs of each execution. You can access to the readme by clicking [Link-TLA-GUI](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/testloganalyzer-gui/README.md "here").
-+ Back end: Developed by using the latest version of Spring 3 as a Spring Boot project, this project contains a complete API REST to post, get and delete projects, executions and logs. It is really important for the new users to follow the guidelines exposed in [LINK-TLA](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/testloganalyzer/README.md "this") document.
++ Front end: Developed by using the latest version of Angular 5 and Angular CLI (managed by NPM), the GUI contains a complete functionality to create and delete projects, manage projects (by adding or deleting the executions which are displayed on them) and to compare the logs of each execution. You can access to the readme by clicking [here](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/testloganalyzer-gui/README.md).
++ Back end: Developed by using the latest version of Spring 3 as a Spring Boot project, this project contains a complete API REST to post, get and delete projects, executions and logs. It is really important for the new users to follow the guidelines exposed in [this](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/testloganalyzer/README.md) document.
 + Elasticsearch: The dockerized instance of Elasticsearch that I've used in the develop process is accessible for you if you want to download it.
 + Docker: The whole app is dockerized and if you want to try and run it the only thing that you need is the content of the `docker-compose.yml` file. If you want to run the whole project, follow these steps:
   1. Open the `docker` directory and the file which is inside of it and which name is `docker-compose.yml`.
@@ -17,10 +17,26 @@ This repository contains a front end developed in Angular 5 and a back end devel
   3. Open your cmd (don't care about if you use Windows, Linux or other OS) and navigate inside the directory where you saved the file.
   4. Run `docker-compose up`.
   5. Wait few seconds. Once all the services has started, you can:
-    + Access to the GUI at `http://localhost:4200`.
-    + Access to the API REST at `http://localhost:8443`.
-    + Access to the Elasticsearch instance at `http://localhost:9200`.
-    + Access to the Kibana instance at `http://localhost:5601` (useful if you want to make any analysis of the data that you ingest through the application).
+     + Access to the GUI at `http://localhost:4200`.
+     + Access to the API REST at `http://localhost:8443`.
+     + Access to the Elasticsearch instance at `http://localhost:9200`.
+     + Access to the Kibana instance at `http://localhost:5601` (useful if you want to make any analysis of the data that you ingest through the application).
+
+The other way to start this tool is to download the whole project and to run each element separately:
+
+1. In the case of the Angular project:
+   1. Open a cmd and access to the `testloganalyzer-gui` directory.
+   2. Run `ng serve` or `npm start`.
+   3. TestLogAnalyzer GUI will be avaible at `http://localhost:4200`.
+2. Download a instance of Elasticsearch compatible with the client that I have made (2.4.6) and run it.
+3. In the case of the Spring project:
+   1. Open a cmd and access to the `testloganalyzer\target` dorectory.
+   2. Run `java -jar -Dspring.profiles.active=dev testloganalyzer-5.0.0.jar`.
+   3. TestLogAnalyzer API REST will be avaible at `http://localhost:8443`.
+
+And that's it! The project is running.
+
+Once the project is running, you can create, delete and compare executions, logs and projects. 
 
 ### Allowed data format
 TestLogAnalyzer works with the following format `%d{yyyy-MM-dd hh:mm:ss.SSS}  %5-level   --- [%t] &logger{36} : %m%n`. In the table below, you can see, in case that you don't know, what each component means:
