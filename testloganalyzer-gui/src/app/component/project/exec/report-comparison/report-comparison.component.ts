@@ -198,48 +198,11 @@ export class ReportComparisonComponent implements OnInit {
     }
   }
 
-  private async cleanContent(mode: number) {
-    let auxC = [];
-    (mode === 0) ? (auxC = this.classesL) : (auxC = this.classesLc);
-    console.log(this.classesL);
-    console.log(this.classesLc);
-    (mode === 0) ? (this.classesL = []) : (this.classesLc = []);
-    const execution = await this.elasticsearchService.getExecutionByIdAsync((mode === 0) ? (this.test)
-      : (this.selected[0].id + ''));
-    const testcases = [];
-    for (let i = 0; i < execution.testcases.length; i++) {
-      const name = execution.testcases[i].name;
-      testcases.push(name.substring(0, name.indexOf('(')) + ',' + (execution.testcases[i].failureDetail !== null));
-    }
-    let aux;
-    for (let i = 0; i < auxC.length; i++) {
-      aux = [];
-      const failedMethods = [];
-      for (let j = 0; j < auxC[i].methods.length; j++) {
-        if (!this.index(testcases, auxC[i].methods[j].name)) {
-          // Aditional functionality
-        } else {
-          failedMethods.push(auxC[i].methods[j]);
-        }
-      }
-      if (failedMethods.length > 0) {
-        aux.push({
-          'name': auxC[i].name,
-          'methods': failedMethods
-        });
-      }
-    }
-    console.log(aux);
-    (mode === 0) ? (this.classesL = aux) : (this.classesLc = aux);
-  }
-
   private async generateMethodsComparison() {
     this.comparisonInProgress = false;
     const comparisonDictionary: { [name: string]: ClassC } = {};
     await this.updateViewMode(0, this.viewMode);
-    console.log(this.classesL);
     await this.updateViewMode(1, this.viewMode);
-    console.log(this.classesLc);
     for (let i = 0; i < this.classesL.length; i++) {
       if (comparisonDictionary[this.classesL[i].name] === undefined) {
         const methods = [];
@@ -333,7 +296,6 @@ export class ReportComparisonComponent implements OnInit {
         }
       }
     }
-    console.log(this.resultData);
     this.comparisonInProgress = true;
   }
 

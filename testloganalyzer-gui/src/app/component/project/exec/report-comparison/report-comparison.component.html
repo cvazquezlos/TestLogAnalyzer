@@ -73,7 +73,7 @@
                   icon="error"></td-message>
     </div>
   </div>
-  <div class="cover-data">
+  <div *ngIf="execution !== undefined" class="cover-data">
     <div *ngIf="selected[0] !== undefined; else showBasicMessage">
       <div class="half-part float-left">
         <div class="cover-data padding-sides"
@@ -113,7 +113,7 @@
       </div>
     </div>
     <ng-template #notLoading>
-      <div *ngIf="comparisonInProgress; else notComparing">
+      <div *ngIf="comparisonInProgress">
         <table *ngIf="viewMode == 0 || viewMode == 3" class="diff-table">
           <tbody>
           <tr *ngFor="let result of resultData[0].logs">
@@ -143,7 +143,7 @@
           </ng-template>
         </div>
       </div>
-      <ng-template #notComparing>
+      <div *ngIf="!comparisonInProgress">
         <div *ngIf="viewMode == 0 || viewMode == 3">
           <table class="diff-table">
             <tbody>
@@ -175,7 +175,7 @@
                         icon="info"></td-message>
           </div>
         </div>
-      </ng-template>
+      </div>
     </ng-template>
   </mat-card-content>
 </mat-card>
