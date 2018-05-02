@@ -6,9 +6,21 @@
 # TestLogAnalyzer - Log analysis module for ElasTest.
 
 ## Getting started
-This repository contains a front end developed in Angular 5 and a back end developed in Spring. Each project has its own README so if you want more information, read them.
+This repository contains a front end developed in Angular 5 and a back end developed in Spring. Each project has its own README so if you want more information, read them:
 
-To run this project, just download the `docker-compose.yml` file inside of docker folder and execute it with `docker-compose up` in the same directory.
++ Front end: Developed by using the latest version of Angular 5 and Angular CLI (managed by NPM), the GUI contains a complete functionality to create and delete projects, manage projects (by adding or deleting the executions which are displayed on them) and to compare the logs of each execution. You can access to the readme by clicking [Link-TLA-GUI](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/testloganalyzer-gui/README.md "here").
++ Back end: Developed by using the latest version of Spring 3 as a Spring Boot project, this project contains a complete API REST to post, get and delete projects, executions and logs. It is really important for the new users to follow the guidelines exposed in [LINK-TLA](https://github.com/cvazquezlos/TestLogAnalyzer/blob/master/testloganalyzer/README.md "this") document.
++ Elasticsearch: The dockerized instance of Elasticsearch that I've used in the develop process is accessible for you if you want to download it.
++ Docker: The whole app is dockerized and if you want to try and run it the only thing that you need is the content of the `docker-compose.yml` file. If you want to run the whole project, follow these steps:
+  1. Open the `docker` directory and the file which is inside of it and which name is `docker-compose.yml`.
+  2. Copy or download it and save it in your Desktop (for example).
+  3. Open your cmd (don't care about if you use Windows, Linux or other OS) and navigate inside the directory where you saved the file.
+  4. Run `docker-compose up`.
+  5. Wait few seconds. Once all the services has started, you can:
+    + Access to the GUI at `http://localhost:4200`.
+    + Access to the API REST at `http://localhost:8443`.
+    + Access to the Elasticsearch instance at `http://localhost:9200`.
+    + Access to the Kibana instance at `http://localhost:5601` (useful if you want to make any analysis of the data that you ingest through the application).
 
 ### Allowed data format
 TestLogAnalyzer works with the following format `%d{yyyy-MM-dd hh:mm:ss.SSS}  %5-level   --- [%t] &logger{36} : %m%n`. In the table below, you can see, in case that you don't know, what each component means:
