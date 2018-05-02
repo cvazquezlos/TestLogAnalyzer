@@ -1,5 +1,7 @@
 # TestLogAnalyzer - Front end
 
+The front end has been tested and has been developed by using the latest Angular version, 5.
+
 ## About this front end
 This front end has been developed in Angular 5 and, as a Angular CLI Project, you can easily make it works just downloading it and then opening the cmd and executing `ng serve`.
 

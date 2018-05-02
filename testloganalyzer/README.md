@@ -1,7 +1,7 @@
 # TestLogAnalyzer - Back end API REST
 
 ## About our API
-All you can find in our API Rest is information about projects, executions, logs, file and diff. All you need to do is simply; you have to follow the API rules. If you try to do following a different way, it's probably what you will receive an error.
+All you can find in our API Rest is information about projects, executions, logs, file and diff. All you need to do is simply; you have to follow the API rules. If you try to do following a different way, it's probably what you will receive an error. The requests have been tested by using Mocks.
 
 ## How to use our API
 1. Download [Postman](https://www.getpostman.com/).
