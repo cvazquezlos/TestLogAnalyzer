@@ -36,6 +36,5 @@ matrix:
           script:
             - yarn lint
             - ng build
-            - ng test
           after_script:
             - cd ..

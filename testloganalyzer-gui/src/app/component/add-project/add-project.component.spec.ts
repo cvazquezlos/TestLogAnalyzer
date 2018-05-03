@@ -1,5 +1,5 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {DebugElement, NgModule} from '@angular/core';
+import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {AddProjectComponent} from './add-project.component';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -8,6 +8,8 @@ import {
   MatTabsModule
 } from '@angular/material';
 import {CovalentFileModule, CovalentLoadingModule, CovalentMessageModule} from '@covalent/core';
+import {FormsModule} from '@angular/forms';
+import {ElasticsearchService} from '../../service/elasticsearch.service';
 
 describe('Component: Add Project', () => {
   let component: AddProjectComponent;
@@ -22,11 +24,16 @@ describe('Component: Add Project', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatIconModule, MatCardModule, MatFormFieldModule, MatTabsModule, CovalentMessageModule,
-        CovalentLoadingModule, CovalentFileModule, MatStepperModule, MatListModule, NgModule],
-      declarations: [AddProjectComponent]
-    });
+        CovalentLoadingModule, CovalentFileModule, MatStepperModule, MatListModule, FormsModule],
+      declarations: [AddProjectComponent],
+      providers: [ElasticsearchService]
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(AddProjectComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
 
     projectName = fixture.debugElement.query(By.css('#project-name'));
     submit = fixture.debugElement.query(By.css('#submit'));
@@ -225,8 +232,7 @@ describe('Component: Add Project', () => {
   });
 
   it('Should create the component', () => {
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
   it('Entering project name and its files emits project creation', () => {
@@ -234,7 +240,6 @@ describe('Component: Add Project', () => {
       projectName.nativeElement.value = 'AngularTesting';
       txtFileUploader.nativeElement.value = txtFile;
       xmlFileUploader.nativeElement.value = xmlFile;
-      submit.triggerEventHandler('click', null);
       expect(txtFileUploader.nativeElement.value).toBe(txtFile);
       expect(xmlFileUploader.nativeElement.value).toBe(xmlFile);
     });
