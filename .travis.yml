@@ -5,15 +5,17 @@ matrix:
           jdk: openjdk8
           services:
             - elasticsearch
+          before_install:
+            - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.4.6/elasticsearch-2.4.6.deb && sudo dpkg -i --force-confnew elasticsearch-2.4.6.deb && sudo service elasticsearch restart
           before_script:
             - cd ./testloganalyzer
-            - sleep 30
+            - sleep 100
           script:
             - mvn clean install -Dspring.profiles.active=dev
           after_script:
             - cd ..
           
-        - language: node_js
+        - language: node_js 
           node_js: 8
           addons:
              apt:
@@ -29,9 +31,11 @@ matrix:
           before_script:
             - cd ./testloganalyzer-gui
             - npm install -g @angular/cli
+            - npm install -g yarn
             - npm install
           script:
-            - ng build --prod --aot
+            - yarn lint
+            - ng build
             - ng test
           after_script:
             - cd ..
