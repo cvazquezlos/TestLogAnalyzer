@@ -241,7 +241,6 @@ describe('Component: Add Execution', () => {
         project.name = 'JasmineTestingProject';
         project.id = 99999999;
         component.project = project;
-        await service.postProject(project);
       }
       txtFileUploader.nativeElement.value = txtFile;
       xmlFileUploader.nativeElement.value = xmlFile;
