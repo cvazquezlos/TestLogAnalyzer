@@ -3,10 +3,14 @@ matrix:
     include:
         - language: java
           jdk: openjdk8
+          services:
+            - docker
           before_script:
             - cd ./testloganalyzer
+            - docker pull cvazquezlos/elk:2.4.6
+            - docker run -p 5000:5000 -p 5601:5601 -p 9200:9200 -p 9300:9300 cvazquezlos/elk:2.4.6
           script:
-            - mvn clean install -Dspring.profiles.active=prod -DskipTests
+            - mvn clean install -Dspring.profiles.active=prod
           after_script:
             - cd ..
           
