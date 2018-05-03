@@ -50,7 +50,7 @@ export class ReportComparisonComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
               private tableService: TableService, private elasticsearchService: ElasticsearchService, private router: Router) {
-    this.breadcrumb.style.setProperty("display", "none");
+    this.breadcrumb.style.setProperty('display', 'none');
     this.comparisonInProgress = false;
     this.loadingData = true;
     this.showExecSelection = false;
@@ -187,7 +187,7 @@ export class ReportComparisonComponent implements OnInit {
   }
 
   goBack() {
-    this.breadcrumb.style.removeProperty("display");
+    this.breadcrumb.style.removeProperty('display');
     this.router.navigate(['/projects', this.project]);
   }
 
@@ -387,9 +387,9 @@ export class ReportComparisonComponent implements OnInit {
     }
     if ((this.viewMode === 2) && !this.comparisonInProgress) {
       const execution = await this.elasticsearchService.getExecutionByIdAsync(this.test);
-      let classAux = [];
+      const classAux = [];
       for (let i = 0; i < this.classesL.length; i++) {
-        let failMethods = [];
+        const failMethods = [];
         for (let j = 0; j < this.classesL[i].methods.length; j++) {
           if (this.containsError(this.classesL[i].methods[j].name, execution.testcases)) {
             failMethods.push(this.classesL[i].methods[j]);
