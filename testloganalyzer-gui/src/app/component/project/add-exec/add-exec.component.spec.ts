@@ -4,6 +4,19 @@ import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {Project} from '../../../model/project.model';
 import {ElasticsearchService} from '../../../service/elasticsearch.service';
+import {RouterTestingModule} from '@angular/router/testing';
+import {
+  MatCardModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatListModule,
+  MatStepperModule,
+  MatTabsModule
+} from '@angular/material';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {CovalentFileModule, CovalentLoadingModule, CovalentMessageModule} from '@covalent/core';
+import {BreadcrumbsModule} from 'ng2-breadcrumbs';
+import {FormsModule} from '@angular/forms';
 
 describe('Component: Add Execution', () => {
   let component: AddExecComponent;
@@ -17,6 +30,9 @@ describe('Component: Add Execution', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule, MatIconModule, MatCardModule, MatFormFieldModule, MatTabsModule, CovalentMessageModule,
+        CovalentLoadingModule, CovalentFileModule, MatStepperModule, MatListModule, FormsModule, HttpClientTestingModule,
+        BreadcrumbsModule],
       declarations: [AddExecComponent],
       providers: [ElasticsearchService]
     });
@@ -235,7 +251,7 @@ describe('Component: Add Execution', () => {
 
   it('Check constructor values', async () => {
     fixture.whenStable().then(async () => {
-      expect(component.project).toBeUndefined();
+      expect(component.project).toBeDefined();
       if (component.project === undefined) {
         const project = new Project();
         project.name = 'JasmineTestingProject';

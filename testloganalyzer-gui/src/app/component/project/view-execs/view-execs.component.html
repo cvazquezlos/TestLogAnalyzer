@@ -30,7 +30,7 @@
       <ng-template tdDataTableTemplate="options" let-value="value" let-row="row" let-column="column">
         <div *ngIf="(deleteInProgress && (row.id === execDeleting)); else notDeleting">
           <div class="iconBtn-lg">
-            <mat-spinner [diameter]="25"></mat-spinner>
+            <mat-progress-spinner [diameter]="25"></mat-progress-spinner>
           </div>
         </div>
         <ng-template #notDeleting>

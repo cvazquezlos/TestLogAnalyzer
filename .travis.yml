@@ -35,6 +35,7 @@ matrix:
             - npm install
           script:
             - yarn lint
+            - ng test
             - ng build
           after_script:
             - cd ..

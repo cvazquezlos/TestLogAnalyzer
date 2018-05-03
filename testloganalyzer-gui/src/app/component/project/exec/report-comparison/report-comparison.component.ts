@@ -1,5 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ITdDataTableColumn} from '@covalent/core';
 import {BreadcrumbsService} from 'ng2-breadcrumbs';
@@ -48,40 +47,11 @@ export class ReportComparisonComponent implements OnInit {
   viewButtonsClasses = ['accent', 'primary', 'primary', 'primary'];
   viewMode: number;
 
-  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService, private dialog: MatDialog,
+  constructor(private activatedRoute: ActivatedRoute, private breadcrumbs: BreadcrumbsService,
               private tableService: TableService, private elasticsearchService: ElasticsearchService, private router: Router) {
-    this.breadcrumb.style.setProperty('display', 'none');
     this.comparisonInProgress = false;
     this.loadingData = true;
     this.showExecSelection = false;
-  }
-
-  private generateOutput(logs: Log[]) {
-    let result = '';
-    let comparatorDate = new Date();
-    if (logs[0] === undefined) {
-      return result;
-    }
-    for (let i = 0; i < logs.length; i++) {
-      (logs[i].timestamp.length > 2) ? (logs[i].timestamp = logs[i].timestamp.substring(0, 23)) : (logs[i].timestamp = '');
-      (logs[i].thread.length > 2) ? ((logs[i].thread.indexOf('[') === -1) && (logs[i].thread = ' ['
-        + logs[i].thread + '] ')) : (logs[i].thread = '');
-      (logs[i].level.length > 2) ? (logs[i].level = logs[i].level) : (logs[i].level = '');
-      (logs[i].logger.length > 2) ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
-    }
-    if ((this.comparisonMode + '') === '2') {
-      comparatorDate = new Date(this.findValidTimestamp(logs));
-    }
-    for (let i = 0; i < logs.length; i++) {
-      ((this.comparisonMode + '') === '1') && (logs[i].timestamp = '');
-      if (((this.comparisonMode + '') === '2') && (logs[i].timestamp.length > 2)) {
-        logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
-          - (comparatorDate).valueOf()).toString();
-      }
-      result += (logs[i].timestamp + logs[i].thread + logs[i].level + ' ' + logs[i].logger + '' +
-        ' ' + logs[i].message) + '\r\n';
-    }
-    return result;
   }
 
   async ngOnInit() {
@@ -91,6 +61,7 @@ export class ReportComparisonComponent implements OnInit {
     this.breadcrumbs.store([{label: 'Home', url: '/', params: []},
       {label: this.project, url: '/projects/' + this.project, params: []},
       {label: this.test, url: '/projects/' + this.project + '/' + this.test, params: []}]);
+    this.breadcrumb.style.setProperty('display', 'none');
     this.classesL = [];
     this.classesLc = [];
     this.updateViewMode(0, 0);
@@ -201,6 +172,34 @@ export class ReportComparisonComponent implements OnInit {
       this.updateComparisonMode(this.comparisonMode);
       this.showExecSelection = false;
     }
+  }
+
+  private generateOutput(logs: Log[]) {
+    let result = '';
+    let comparatorDate = new Date();
+    if (logs[0] === undefined) {
+      return result;
+    }
+    for (let i = 0; i < logs.length; i++) {
+      (logs[i].timestamp.length > 2) ? (logs[i].timestamp = logs[i].timestamp.substring(0, 23)) : (logs[i].timestamp = '');
+      (logs[i].thread.length > 2) ? ((logs[i].thread.indexOf('[') === -1) && (logs[i].thread = ' ['
+        + logs[i].thread + '] ')) : (logs[i].thread = '');
+      (logs[i].level.length > 2) ? (logs[i].level = logs[i].level) : (logs[i].level = '');
+      (logs[i].logger.length > 2) ? (logs[i].logger = logs[i].logger) : (logs[i].logger = '');
+    }
+    if ((this.comparisonMode + '') === '2') {
+      comparatorDate = new Date(this.findValidTimestamp(logs));
+    }
+    for (let i = 0; i < logs.length; i++) {
+      ((this.comparisonMode + '') === '1') && (logs[i].timestamp = '');
+      if (((this.comparisonMode + '') === '2') && (logs[i].timestamp.length > 2)) {
+        logs[i].timestamp = ((new Date(logs[i].timestamp)).valueOf()
+          - (comparatorDate).valueOf()).toString();
+      }
+      result += (logs[i].timestamp + logs[i].thread + logs[i].level + ' ' + logs[i].logger + '' +
+        ' ' + logs[i].message) + '\r\n';
+    }
+    return result;
   }
 
   private async generateMethodsComparison() {
