@@ -104,7 +104,7 @@ export class ElasticsearchService {
       }
       const headers = new HttpHeaders();
       headers.append('Content-Type', 'application/pdf');
-      let composedUrl = this.baseAPIProjectsUrl + '/' + project;
+      const composedUrl = this.baseAPIProjectsUrl + '/' + project;
       const response = await this.http.post(composedUrl, body, {headers: headers}).toPromise();
       return response;
     } catch (error) {

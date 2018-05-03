@@ -38,10 +38,6 @@ public class ExecutionService {
 		return repository.findByProject(project);
 	}
 
-	public List<Execution> findByProjectOrderById(String project) {
-		return repository.findByProjectOrderById(project);
-	}
-
 	public Execution findOne(int id) {
 		return repository.findOne(id);
 	}
