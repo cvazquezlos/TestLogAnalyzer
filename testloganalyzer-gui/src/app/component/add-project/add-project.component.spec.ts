@@ -1,7 +1,13 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {DebugElement} from '@angular/core';
+import {DebugElement, NgModule} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {AddProjectComponent} from './add-project.component';
+import {RouterTestingModule} from '@angular/router/testing';
+import {
+  MatCardModule, MatFormFieldModule, MatIconModule, MatListModule, MatStepperModule,
+  MatTabsModule
+} from '@angular/material';
+import {CovalentFileModule, CovalentLoadingModule, CovalentMessageModule} from '@covalent/core';
 
 describe('Component: Add Project', () => {
   let component: AddProjectComponent;
@@ -15,6 +21,8 @@ describe('Component: Add Project', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule, MatIconModule, MatCardModule, MatFormFieldModule, MatTabsModule, CovalentMessageModule,
+        CovalentLoadingModule, CovalentFileModule, MatStepperModule, MatListModule, NgModule],
       declarations: [AddProjectComponent]
     });
     fixture = TestBed.createComponent(AddProjectComponent);

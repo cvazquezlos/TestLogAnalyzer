@@ -1,7 +1,6 @@
 import {getTestBed, inject, TestBed} from '@angular/core/testing';
 import {TableService} from './table.service';
 import {HttpTestingController} from '@angular/common/http/testing';
-import {HttpClientTestingBackend} from '@angular/common/http/testing/src/backend';
 
 describe('Service: Table', () => {
   let httpMock: HttpTestingController;
@@ -10,7 +9,6 @@ describe('Service: Table', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingBackend],
       providers: [TableService]
     });
     injector = getTestBed();

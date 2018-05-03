@@ -48,7 +48,7 @@ public class ExecutionRest {
 
 	@RequestMapping(value = "", method = RequestMethod.GET, params = "project")
 	public ResponseEntity<List<Execution>> getByProject(@RequestParam String project) {
-		List<Execution> executions = executionService.findByProjectOrderById(project);
+		List<Execution> executions = executionService.findByProject(project);
 		if (executions.size() > 0) {
 			return new ResponseEntity<>(executions, HttpStatus.OK);
 		} else {
