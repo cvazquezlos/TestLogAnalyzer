@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: elastest.loganalyzer.es.client.rest.LogRestTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.504 sec - in elastest.loganalyzer.es.client.rest.LogRestTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.819 sec - in elastest.loganalyzer.es.client.rest.LogRestTest

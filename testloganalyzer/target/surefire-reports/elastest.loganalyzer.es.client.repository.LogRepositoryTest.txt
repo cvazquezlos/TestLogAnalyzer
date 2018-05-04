@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: elastest.loganalyzer.es.client.repository.LogRepositoryTest
 -------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.818 sec - in elastest.loganalyzer.es.client.repository.LogRepositoryTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.32 sec - in elastest.loganalyzer.es.client.repository.LogRepositoryTest
