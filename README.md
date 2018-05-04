@@ -36,7 +36,7 @@ The other way to start this tool is to download the whole project and to run eac
 
 And that's it! The project is running.
 
-Once the project is running, you can create, delete and compare executions, logs and projects. If you access inside the project creation page or adding a new execution page, you have to know that both the .txt files and the .xml files must be updated at once, because you can't modify the execution later. If you use the upload by url way, you only can upload a single .txt and .xml file. The files are uploaded in order of selection (so the best practise is to upload the files in order of creation, that is, the older first than the newer).
+Once the project is running, you can create, delete and compare executions, logs and projects. If you access inside the project creation page or adding a new execution page, you have to know that both the .txt files and the .xml files must be updated at once, because you can't modify the execution later. If you use the upload by url way, you only can upload a single .txt and .xml file. The files are uploaded in order of selection (so the best practise is to upload the files in order of creation, that is, the newer before than the older).
 
 ### Connecting CI environments with TestLogAnalyzer
 TestLogAnalyzer allows you to inject your executions from the CI environments that you are using with cURL requests. The request format is:
