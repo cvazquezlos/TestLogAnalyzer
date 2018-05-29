@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.2" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="elastest.loganalyzer.es.client.model.Execution" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/model/Execution.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="184" x="118" y="216"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="elastest.loganalyzer.es.client.model.Log" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/model/Log.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="184" x="118" y="292"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="elastest.loganalyzer.es.client.model.Project" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/model/Project.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="184" x="118" y="370"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="4" language="java" name="elastest.loganalyzer.es.client.repository.ExecutionRepository" 
+    project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/repository/ExecutionRepository.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="184" x="325" y="216"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="5" language="java" name="elastest.loganalyzer.es.client.repository.LogRepository" 
+    project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/repository/LogRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="184" x="324" y="293"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="6" language="java" name="elastest.loganalyzer.es.client.repository.ProjectRepository" 
+    project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/repository/ProjectRepository.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="53" width="184" x="324" y="370"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="7" language="java" name="elastest.loganalyzer.es.client.service.ExecutionService" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/service/ExecutionService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="184" x="556" y="215"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="elastest.loganalyzer.es.client.service.LogService" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/service/LogService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="183" x="555" y="293"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="elastest.loganalyzer.es.client.service.ProjectService" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/service/ProjectService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="184" x="556" y="369"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="elastest.loganalyzer.es.client.rest.DiffMatchPatchRest" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/rest/DiffMatchPatchRest.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="154" x="794" y="397"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="elastest.loganalyzer.es.client.rest.ExecutionRest" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/rest/ExecutionRest.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="154" x="794" y="321"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="elastest.loganalyzer.es.client.rest.LogRest" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/rest/LogRest.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="154" x="794" y="243"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="elastest.loganalyzer.es.client.rest.ProjectRest" project="testloganalyzer" 
+    file="/testloganalyzer/src/main/java/elastest/loganalyzer/es/client/rest/ProjectRest.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="53" width="154" x="794" y="163"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="14">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="15" name="repository"/>      
+      <multiplicity id="16" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="17">    
+    <bendpoint x="209" y="190"/>    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="18" name="execution"/>      
+      <multiplicity id="19" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="20">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="21" name="repository"/>      
+      <multiplicity id="22" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="23">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="24" name="repository"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
