@@ -1,4 +1,4 @@
-version: "2.2"
+version: "2.0"
 
 services:
     elk:
@@ -12,17 +12,14 @@ services:
             - elk-data:/var/lib/elasticsearch
     
     testloganalyzer:
-        image: cvazquezlos/testloganalyzer:5.0.0
-        depends_on:
-            elk:
-                condition: service_started
+        image: cvazquezlos/testloganalyzer:5.0.1
         links: 
             - elk:elk
         ports:
             - 8443:8443
     
     testloganalyzer-gui:
-        image: cvazquezlos/testloganalyzer-gui:5.0.0
+        image: cvazquezlos/testloganalyzer-gui:5.0.1
         depends_on:
             - elk
         ports:
