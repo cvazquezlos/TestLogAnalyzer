@@ -112,7 +112,7 @@ public class ExecutionRepositoryTest {
 		repository.save(e1);
 		repository.save(e2);
 		repository.save(e3);
-		List<Execution> executions = repository.findByProjectOrderById(project);
+		List<Execution> executions = repository.findByProjectOrderByIdAsc(project);
 		// Then
 		assertNotNull(executions);
 		assertEquals(executions.size(), 3);

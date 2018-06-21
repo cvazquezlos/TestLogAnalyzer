@@ -12,5 +12,5 @@ public interface ExecutionRepository extends ElasticsearchCrudRepository<Executi
 
 	List<Execution> findByProject(String project);
 
-	List<Execution> findByProjectOrderById(String project);
+	List<Execution> findByProjectOrderByIdAsc(String project);
 }
