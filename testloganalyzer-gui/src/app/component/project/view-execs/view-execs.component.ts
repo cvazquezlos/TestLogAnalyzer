@@ -74,6 +74,7 @@ export class ViewExecsComponent implements OnInit {
     this.execsRow = [];
     for (let i = 0; i < response.length; i++) {
       let icon, classi: any;
+      console.log(response[i].status + response[i].id)
       if (response[i].status.indexOf('SUCCESS') !== -1) {
         icon = 'check_circle';
         classi = 'tc-green-700';

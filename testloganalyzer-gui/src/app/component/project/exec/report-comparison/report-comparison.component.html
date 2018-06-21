@@ -188,7 +188,8 @@
                  [selectable]="true"
                  [sortable]="false"
                  (rowSelect)="selectEvent($event)"
-                 [(ngModel)]="selected">
+                 [(ngModel)]="selected"
+                 [style.height.px]="150">
     <ng-template *ngFor="let column of execsData" tdDataTableTemplate="{{column.name}}" let-value="value"
                  let-row="row">
       <div *ngIf="column.name !== 'options'" (click)="viewExec(row)">{{value}}</div>
